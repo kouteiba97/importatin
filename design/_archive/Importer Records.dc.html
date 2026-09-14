@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+html,body{margin:0;padding:0;background:oklch(0.975 0.008 80);color:oklch(0.22 0.02 60);font-family:"IBM Plex Sans Arabic",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+*{box-sizing:border-box}
+a{color:oklch(0.42 0.07 150)}a:hover{color:oklch(0.32 0.07 150)}
+button,input,select{font-family:inherit}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</helmet>
+<div dir="rtl" lang="ar" style="min-height:100vh;display:flex;justify-content:center;background:oklch(0.975 0.008 80)">
+<div style="width:100%;max-width:430px;min-height:100vh;display:flex;flex-direction:column;border-inline:1px solid oklch(0.9 0.012 80)">
+
+<header style="display:flex;justify-content:space-between;align-items:center;padding:10px 16px;border-bottom:1px solid oklch(0.88 0.012 80)">
+<div style="display:flex;align-items:center;gap:8px"><span style="font-weight:600;font-size:17px">مَعْبَر</span><span style="font-size:13px;color:oklch(0.48 0.02 60)">السجلات</span></div>
+<a href="./Importer App.dc.html" style="font-size:13px;text-decoration:none">→ الرحلة</a>
+</header>
+
+<nav aria-label="أقسام" style="display:grid;grid-template-columns:repeat(3,1fr);border-bottom:1px solid oklch(0.88 0.012 80)">
+<sc-for list="{{ tabs }}" as="t" hint-placeholder-count="3">
+<button type="button" onClick="{{ t.pick }}" aria-current="{{ t.on }}" style="height:46px;border:0;border-bottom:2px solid {{ t.bd }};background:transparent;color:{{ t.fg }};font-size:14px;font-weight:{{ t.fw }};cursor:pointer">{{ t.label }}</button>
+</sc-for>
+</nav>
+
+<main style="flex:1;padding:18px 16px 32px">
+
+<sc-if value="{{ tabLedger }}" hint-placeholder-val="{{ true }}">
+<div style="display:flex;flex-direction:column;gap:18px">
+<div>
+<h1 style="margin:0 0 6px;font-size:24px;font-weight:500;line-height:1.4">الدفتر</h1>
+<p style="margin:0;font-size:14px;line-height:1.7;color:oklch(0.48 0.02 60)">سجل مرقّم للمشتريات والمبيعات، مبنيّ من معاملاتك تلقائياً. المادة 4 تفرض مسك هذا الدفتر — لا تكتبه مرّتين.</p>
+</div>
+
+<div style="display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;margin-inline:-16px;padding-inline:16px">
+<sc-for list="{{ periods }}" as="p" hint-placeholder-count="3">
+<button type="button" onClick="{{ p.pick }}" aria-pressed="{{ p.on }}" style="height:36px;padding:0 13px;border:1px solid oklch(0.82 0.012 80);border-radius:18px;background:{{ p.bg }};color:{{ p.fg }};font-size:13px;white-space:nowrap;cursor:pointer;flex:none">{{ p.label }}</button>
+</sc-for>
+</div>
+
+<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;padding:14px;background:oklch(0.95 0.01 80);border-radius:8px">
+<sc-for list="{{ totals }}" as="t" hint-placeholder-count="3">
+<div style="min-width:0"><div style="font-size:11px;color:oklch(0.48 0.02 60);line-height:1.4">{{ t.k }}</div><div style="font-size:16px;font-weight:500;font-variant-numeric:tabular-nums;line-height:1.3;white-space:nowrap;color:{{ t.fg }}"><bdi>{{ t.v }}</bdi></div></div>
+</sc-for>
+</div>
+
+<table style="width:100%;border-collapse:collapse;font-size:14px">
+<caption style="text-align:start;font-size:12px;color:oklch(0.48 0.02 60);padding-bottom:8px">القيود مرقّمة تسلسلياً ولا تُحذف — التصحيح يتمّ بقيد عكسي.</caption>
+<thead><tr style="font-size:12px;color:oklch(0.48 0.02 60)">
+<th scope="col" style="text-align:start;padding:7px 0;border-bottom:1px solid oklch(0.85 0.012 80);font-weight:400">رقم · تاريخ</th>
+<th scope="col" style="text-align:start;padding:7px 0;border-bottom:1px solid oklch(0.85 0.012 80);font-weight:400">البيان</th>
+<th scope="col" style="text-align:end;padding:7px 0;border-bottom:1px solid oklch(0.85 0.012 80);font-weight:400">المبلغ</th>
+</tr></thead>
+<tbody>
+<sc-for list="{{ entries }}" as="e" hint-placeholder-count="6">
+<tr>
+<td style="padding:11px 0;border-bottom:1px solid oklch(0.92 0.012 80);vertical-align:top"><span style="display:block;font-family:'IBM Plex Mono',monospace;font-size:12px;color:{{ e.fg }}"><bdi>{{ e.no }}</bdi></span><span style="display:block;font-size:11px;color:oklch(0.48 0.02 60);font-variant-numeric:tabular-nums;white-space:nowrap"><bdi>{{ e.date }}</bdi></span></td>
+<td style="padding:11px 0;border-bottom:1px solid oklch(0.92 0.012 80);line-height:1.5;vertical-align:top"><span style="display:block">{{ e.label }}</span><span style="display:block;font-size:12px;color:oklch(0.48 0.02 60)">{{ e.meta }}</span></td>
+<td style="padding:11px 0;border-bottom:1px solid oklch(0.92 0.012 80);text-align:end;vertical-align:top;font-variant-numeric:tabular-nums;white-space:nowrap;color:{{ e.fg }}"><bdi>{{ e.amount }}</bdi></td>
+</tr>
+</sc-for>
+</tbody>
+</table>
+
+<div style="display:flex;gap:8px">
+<button type="button" style="flex:1;height:48px;border:1px solid oklch(0.42 0.07 150);border-radius:6px;background:transparent;color:oklch(0.42 0.07 150);font-size:15px;font-weight:500;cursor:pointer">صدّر PDF</button>
+<button type="button" style="flex:1;height:48px;border:1px solid oklch(0.82 0.012 80);border-radius:6px;background:transparent;color:inherit;font-size:15px;cursor:pointer">صدّر Excel</button>
+</div>
+<p style="margin:0;font-size:12px;line-height:1.7;color:oklch(0.48 0.02 60)">مَعْبَر لا يحسب ضرائبك ولا يقدّم استشارة جبائية. الدفتر سجل لمعاملاتك على المنصّة، تستعمله أنت أو محاسبك.</p>
+</div>
+</sc-if>
+
+<sc-if value="{{ tabLabels }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;gap:18px">
+<div>
+<h1 style="margin:0 0 6px;font-size:24px;font-weight:500;line-height:1.4">الوسم وسند التسليم</h1>
+<p style="margin:0;font-size:14px;line-height:1.7;color:oklch(0.48 0.02 60)">المادة 14 تفرض بيانات محدّدة على كل سلعة وكل سند. نملأها من بيانات رحلتك — أنت تراجع وتطبع.</p>
+</div>
+
+<div style="display:flex;flex-direction:column;gap:8px">
+<label for="lot" style="font-size:13px;color:oklch(0.48 0.02 60)">اختر الصنف</label>
+<div style="display:flex;flex-wrap:wrap;gap:8px">
+<sc-for list="{{ lots }}" as="l" hint-placeholder-count="3">
+<button type="button" onClick="{{ l.pick }}" aria-pressed="{{ l.on }}" style="min-height:44px;padding:0 13px;border:1px solid {{ l.bd }};border-radius:6px;background:{{ l.bg }};color:{{ l.fg }};font-size:14px;cursor:pointer">{{ l.name }}</button>
+</sc-for>
+</div>
+</div>
+
+<section style="display:flex;flex-direction:column;gap:10px">
+<h2 style="margin:0;font-size:15px;font-weight:500">بطاقة الوسم</h2>
+<div style="background:#fff;border:1px solid oklch(0.78 0.015 70);border-radius:4px;padding:14px;display:flex;flex-direction:column;gap:8px">
+<sc-for list="{{ labelRows }}" as="r" hint-placeholder-count="5">
+<div style="display:grid;grid-template-columns:88px 1fr;gap:10px;padding-bottom:7px;border-bottom:1px solid oklch(0.93 0.012 80);align-items:baseline">
+<span style="font-size:11px;color:oklch(0.48 0.02 60);line-height:1.4">{{ r.k }}</span>
+<span style="font-size:14px;line-height:1.5;font-weight:{{ r.fw }}"><bdi>{{ r.v }}</bdi></span>
+</div>
+</sc-for>
+<div style="display:flex;justify-content:space-between;align-items:center;padding-top:4px"><span style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:oklch(0.48 0.02 60)"><bdi>{{ labelRef }}</bdi></span><span aria-hidden="true" style="width:40px;height:40px;border:1px solid oklch(0.85 0.012 80);background:repeating-conic-gradient(oklch(0.22 0.02 60) 0% 25%, #fff 0% 50%) 0 0/8px 8px"></span></div>
+</div>
+<div style="display:flex;gap:8px"><button type="button" style="flex:1;height:48px;border:0;border-radius:6px;background:oklch(0.42 0.07 150);color:#fff;font-size:15px;font-weight:500;cursor:pointer">اطبع الورقة (24 بطاقة)</button><button type="button" style="height:48px;padding:0 14px;border:1px solid oklch(0.82 0.012 80);border-radius:6px;background:transparent;color:inherit;font-size:15px;cursor:pointer">PDF</button></div>
+</section>
+
+<section style="display:flex;flex-direction:column;gap:10px">
+<h2 style="margin:0;font-size:15px;font-weight:500">سند التسليم</h2>
+<div style="background:#fff;border:1px solid oklch(0.78 0.015 70);border-radius:4px;padding:14px;display:flex;flex-direction:column;gap:10px">
+<div style="display:flex;justify-content:space-between;align-items:baseline;border-bottom:1px solid oklch(0.88 0.012 80);padding-bottom:8px"><span style="font-size:15px;font-weight:500">سند تسليم</span><span style="font-family:'IBM Plex Mono',monospace;font-size:12px"><bdi>{{ noteRef }}</bdi></span></div>
+<sc-for list="{{ noteRows }}" as="r" hint-placeholder-count="4">
+<div style="display:grid;grid-template-columns:88px 1fr;gap:10px;font-size:13px;line-height:1.55"><span style="color:oklch(0.48 0.02 60)">{{ r.k }}</span><span><bdi>{{ r.v }}</bdi></span></div>
+</sc-for>
+<table style="width:100%;border-collapse:collapse;font-size:13px;margin-top:4px">
+<thead><tr style="font-size:11px;color:oklch(0.48 0.02 60)"><th scope="col" style="text-align:start;padding:6px 0;border-bottom:1px solid oklch(0.88 0.012 80);font-weight:400">التعيين</th><th scope="col" style="text-align:end;padding:6px 0;border-bottom:1px solid oklch(0.88 0.012 80);font-weight:400">الكمية</th><th scope="col" style="text-align:end;padding:6px 0;border-bottom:1px solid oklch(0.88 0.012 80);font-weight:400">الوزن</th><th scope="col" style="text-align:end;padding:6px 0;border-bottom:1px solid oklch(0.88 0.012 80);font-weight:400">الحجم</th></tr></thead>
+<tbody><tr><td style="padding:9px 0;border-bottom:1px solid oklch(0.93 0.012 80)"><bdi>{{ lotName }}</bdi></td><td style="padding:9px 0;border-bottom:1px solid oklch(0.93 0.012 80);text-align:end;font-variant-numeric:tabular-nums"><bdi>{{ lotQty }}</bdi></td><td style="padding:9px 0;border-bottom:1px solid oklch(0.93 0.012 80);text-align:end;font-variant-numeric:tabular-nums"><bdi>{{ lotWeight }}</bdi></td><td style="padding:9px 0;border-bottom:1px solid oklch(0.93 0.012 80);text-align:end;font-variant-numeric:tabular-nums"><bdi>{{ lotVolume }}</bdi></td></tr></tbody>
+</table>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;padding-top:6px"><div style="font-size:11px;color:oklch(0.48 0.02 60);line-height:2.4;border-top:1px solid oklch(0.85 0.012 80);padding-top:4px">توقيع المُسلِّم</div><div style="font-size:11px;color:oklch(0.48 0.02 60);line-height:2.4;border-top:1px solid oklch(0.85 0.012 80);padding-top:4px">توقيع المُستلِم</div></div>
+</div>
+<button type="button" style="height:48px;border:1px solid oklch(0.42 0.07 150);border-radius:6px;background:transparent;color:oklch(0.42 0.07 150);font-size:15px;font-weight:500;cursor:pointer">أنشئ سنداً لكل التزام (9 سندات)</button>
+<p style="margin:0;font-size:12px;line-height:1.7;color:oklch(0.48 0.02 60)">البيانات الإلزامية: اسم ولقب المستورد وعنوانه · تعيين السلعة · بلد المنشأ أو المصدر · سند تسليم بالكمية والوزن والحجم (المادة 14). النقص في الوسم سبب شائع للإيقاف.</p>
+</section>
+</div>
+</sc-if>
+
+<sc-if value="{{ tabCredits }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;gap:18px">
+<div>
+<h1 style="margin:0 0 6px;font-size:24px;font-weight:500;line-height:1.4">الرصيد والاشتراك</h1>
+<p style="margin:0;font-size:14px;line-height:1.7;color:oklch(0.48 0.02 60)">تدفع مقابل استعمال المنصّة فقط. لا نأخذ أي نسبة من بضاعتك ولا نمرّ عليها أموالك.</p>
+</div>
+
+<div style="display:flex;flex-direction:column;gap:5px;padding:14px;background:oklch(0.95 0.01 80);border-radius:8px">
+<div style="font-size:12px;color:oklch(0.48 0.02 60)">رصيدك</div>
+<div style="display:flex;align-items:baseline;gap:8px"><span style="font-size:34px;font-weight:500;font-variant-numeric:tabular-nums;line-height:1.1"><bdi>{{ credits }}</bdi></span><span style="font-size:15px">وحدة</span></div>
+<div style="font-size:12px;color:oklch(0.48 0.02 60);line-height:1.6">يكفي لـ <bdi>4</bdi> رحلات أو <bdi>28</bdi> فتح ملف تاجر. آخر شحن: 2 أكتوبر.</div>
+</div>
+
+<section style="display:flex;flex-direction:column;gap:10px">
+<h2 style="margin:0;font-size:15px;font-weight:500">الحزم</h2>
+<div style="display:flex;flex-direction:column;gap:8px">
+<sc-for list="{{ packs }}" as="p" hint-placeholder-count="3">
+<button type="button" onClick="{{ p.pick }}" aria-pressed="{{ p.on }}" style="display:grid;grid-template-columns:1fr auto;gap:4px 12px;align-items:baseline;padding:14px;border:1px solid {{ p.bd }};border-radius:8px;background:{{ p.bg }};cursor:pointer;text-align:start;color:inherit">
+<span style="font-size:16px;font-weight:500"><bdi>{{ p.units }}</bdi> وحدة</span>
+<span style="font-size:16px;font-weight:500;font-variant-numeric:tabular-nums;white-space:nowrap"><bdi>{{ p.price }} دج</bdi></span>
+<span style="font-size:12px;color:oklch(0.48 0.02 60)">{{ p.note }}</span>
+<span style="font-size:12px;color:oklch(0.48 0.02 60);text-align:end;white-space:nowrap;font-variant-numeric:tabular-nums"><bdi>{{ p.unit }}</bdi> دج/وحدة</span>
+</button>
+</sc-for>
+</div>
+</section>
+
+<section style="display:flex;flex-direction:column;gap:10px">
+<h2 style="margin:0;font-size:15px;font-weight:500">طريقة الدفع</h2>
+<div style="display:flex;flex-direction:column;gap:8px">
+<sc-for list="{{ methods }}" as="m" hint-placeholder-count="2">
+<button type="button" onClick="{{ m.pick }}" aria-pressed="{{ m.on }}" style="display:flex;gap:12px;align-items:flex-start;padding:14px;border:1px solid {{ m.bd }};border-radius:8px;background:{{ m.bg }};cursor:pointer;text-align:start;color:inherit">
+<span aria-hidden="true" style="width:18px;height:18px;border-radius:50%;border:1.5px solid {{ m.dot }};background:{{ m.fill }};flex:none;margin-top:2px"></span>
+<span style="min-width:0"><span style="display:block;font-size:15px;font-weight:500;line-height:1.4">{{ m.label }}</span><span style="display:block;font-size:12px;color:oklch(0.48 0.02 60);line-height:1.6;margin-top:2px">{{ m.note }}</span></span>
+</button>
+</sc-for>
+</div>
+</section>
+
+<sc-if value="{{ isManual }}" hint-placeholder-val="{{ false }}">
+<section style="border:1px solid oklch(0.85 0.012 80);border-radius:8px;padding:16px;display:flex;flex-direction:column;gap:14px;background:#fff">
+<h2 style="margin:0;font-size:16px;font-weight:500">تحويل بريدي — 3 خطوات</h2>
+<ol style="margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:12px">
+<li style="display:grid;grid-template-columns:auto 1fr;gap:12px"><span style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:oklch(0.48 0.02 60);padding-top:3px"><bdi>01</bdi></span>
+<div><div style="font-size:14px;line-height:1.6">حوّل المبلغ إلى الحساب التالي</div>
+<div style="margin-top:7px;padding:11px;background:oklch(0.95 0.01 80);border-radius:6px;display:flex;flex-direction:column;gap:6px">
+<sc-for list="{{ ccp }}" as="c" hint-placeholder-count="3">
+<div style="display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:baseline;font-size:13px"><span style="color:oklch(0.48 0.02 60);white-space:nowrap">{{ c.k }}</span><span style="font-family:'IBM Plex Mono',monospace;font-variant-numeric:tabular-nums;overflow-wrap:anywhere"><bdi>{{ c.v }}</bdi></span><button type="button" style="height:32px;padding:0 9px;border:1px solid oklch(0.82 0.012 80);border-radius:5px;background:#fff;font-size:12px;cursor:pointer;color:inherit;white-space:nowrap">نسخ</button></div>
+</sc-for>
+</div></div></li>
+<li style="display:grid;grid-template-columns:auto 1fr;gap:12px"><span style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:oklch(0.48 0.02 60);padding-top:3px"><bdi>02</bdi></span>
+<div><div style="font-size:14px;line-height:1.6">صوّر الوصل وارفعه</div>
+<div style="margin-top:7px;border:1px dashed oklch(0.78 0.015 70);border-radius:8px;padding:18px;display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center"><span aria-hidden="true" style="width:30px;height:24px;border:1.5px solid oklch(0.48 0.02 60);border-radius:4px"></span><span style="font-size:13px;line-height:1.55">صوّر الوصل كاملاً مع رقم العملية والتاريخ</span></div>
+<button type="button" style="margin-top:8px;width:100%;height:48px;border:0;border-radius:6px;background:oklch(0.42 0.07 150);color:#fff;font-size:15px;font-weight:500;cursor:pointer">افتح الكاميرا</button></div></li>
+<li style="display:grid;grid-template-columns:auto 1fr;gap:12px"><span style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:oklch(0.48 0.02 60);padding-top:3px"><bdi>03</bdi></span>
+<div><div style="font-size:14px;line-height:1.6">ننتظر التأكيد اليدوي</div><div style="font-size:12px;color:oklch(0.48 0.02 60);line-height:1.65;margin-top:3px">عادة أقل من 24 ساعة في أيام العمل. يصلك إشعار فور التأكيد، ورصيدك يُضاف كاملاً.</div></div></li>
+</ol>
+<div style="display:grid;grid-template-columns:auto 1fr;gap:10px;padding:11px 12px;background:oklch(0.95 0.045 85);border-radius:6px;font-size:13px;line-height:1.6"><span aria-hidden="true" style="font-weight:600;color:oklch(0.5 0.12 70)">!</span><span>لديك تحويل قيد التأكيد منذ <bdi style="font-variant-numeric:tabular-nums">5 ساعات</bdi> — <bdi>2 500 دج</bdi>. لا حاجة لإعادة التحويل.</span></div>
+</section>
+</sc-if>
+
+<sc-if value="{{ isCard }}" hint-placeholder-val="{{ false }}">
+<section style="border:1px solid oklch(0.85 0.012 80);border-radius:8px;padding:16px;display:flex;flex-direction:column;gap:12px;background:#fff">
+<h2 style="margin:0;font-size:16px;font-weight:500">الدفع بالبطاقة</h2>
+<p style="margin:0;font-size:13px;line-height:1.7;color:oklch(0.48 0.02 60)">دفعة واحدة فقط. لا اقتطاع تلقائي ولا تجديد دون طلبك — نُذكّرك قبل نفاد رصيدك وتقرّر أنت.</p>
+<button type="button" style="height:52px;border:0;border-radius:6px;background:oklch(0.42 0.07 150);color:#fff;font-size:16px;font-weight:500;cursor:pointer">ادفع <bdi>{{ selectedPrice }} دج</bdi></button>
+<p style="margin:0;font-size:11px;line-height:1.65;color:oklch(0.48 0.02 60)">تتمّ العملية لدى مزوّد الدفع المحلي. مَعْبَر لا يحتفظ ببيانات بطاقتك.</p>
+</section>
+</sc-if>
+
+<section style="display:flex;flex-direction:column;gap:10px">
+<h2 style="margin:0;font-size:15px;font-weight:500">ما الذي يستهلك الرصيد</h2>
+<ul style="margin:0;padding:0;list-style:none;display:flex;flex-direction:column">
+<sc-for list="{{ costs }}" as="c" hint-placeholder-count="4">
+<li style="display:grid;grid-template-columns:1fr auto;gap:12px;padding:10px 0;border-top:1px solid oklch(0.9 0.012 80);font-size:14px;align-items:baseline"><span style="line-height:1.5">{{ c.k }}</span><span style="font-variant-numeric:tabular-nums;font-weight:500;white-space:nowrap;color:{{ c.fg }}"><bdi>{{ c.v }}</bdi></span></li>
+</sc-for>
+</ul>
+<p style="margin:0;font-size:12px;line-height:1.7;color:oklch(0.48 0.02 60)">فحص المطابقة والحاسبات مجانية دائماً وبلا رصيد — الوصول لا يُغلق، الأفعال فقط تُكلِّف.</p>
+</section>
+</div>
+</sc-if>
+
+</main>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:430,&quot;height&quot;:900}}">
+class Component extends DCLogic {
+  state = { tab: 'ledger', period: 'oct', lot: 0, pack: 1, method: 'ccp' };
+  OLIVE = 'oklch(0.42 0.07 150)'; CLAY = 'oklch(0.5 0.14 35)'; OCHRE = 'oklch(0.55 0.12 70)'; INK = 'oklch(0.22 0.02 60)'; MUTED = 'oklch(0.48 0.02 60)';
+  TABS = [{ id: 'ledger', label: 'الدفتر' }, { id: 'labels', label: 'الوسم' }, { id: 'credits', label: 'الرصيد' }];
+  PERIODS = [{ id: 'oct', label: 'أكتوبر 2026' }, { id: 'sep', label: 'سبتمبر 2026' }, { id: 'q3', label: 'الثلاثي الثالث' }, { id: 'y', label: 'السنة كاملة' }];
+  ENTRIES = [
+    { no: 'J-2026-0091', date: '18/10', label: 'تسليم — ياسين ب.', meta: '40 معطفاً · CMT-26-0331', amount: '+ 204 000 دج', kind: 'in' },
+    { no: 'J-2026-0090', date: '18/10', label: 'رسوم جمركية 5%', meta: 'TRP-26-0412 · المادة 4', amount: '− 65 500 دج', kind: 'out' },
+    { no: 'J-2026-0089', date: '16/10', label: 'مشتريات الرحلة — إسطنبول', meta: '460 وحدة · قيمة مصرَّحة عند الجمارك', amount: '− 1 310 000 دج', kind: 'out' },
+    { no: 'J-2026-0088', date: '19/10', label: 'تسليم — نادية ر.', meta: '25 حقيبة · CMT-26-0334', amount: '+ 177 500 دج', kind: 'in' },
+    { no: 'J-2026-0087', date: '19/10', label: 'قيد عكسي — تصحيح القيد 0086', meta: 'خطأ في الكمية · لا يُحذف الأصل', amount: '+ 12 000 دج', kind: 'rev' },
+    { no: 'J-2026-0086', date: '19/10', label: 'تسليم جزئي — سمير ع.', meta: '18 من 30 · الباقي موقوف في الجمارك', amount: '+ 54 000 دج', kind: 'in' }];
+  LOTS = [
+    { name: 'معاطف نسائية شتوية', qty: '120 وحدة', weight: '96 كغ', volume: '0.48 م³', origin: 'تركيا', ref: 'LOT-26-0412-01' },
+    { name: 'حقائب يد نسائية', qty: '80 وحدة', weight: '8 كغ', volume: '0.30 م³', origin: 'تركيا', ref: 'LOT-26-0412-02' },
+    { name: 'عطور نسائية 100 مل', qty: '60 وحدة', weight: '27 كغ', volume: '0.06 م³', origin: 'الإمارات', ref: 'LOT-26-0412-03' }];
+  PACKS = [{ units: 20, price: '1 200', unit: '60', note: 'تجربة — تكفي رحلة واحدة' }, { units: 60, price: '3 000', unit: '50', note: 'الأكثر استعمالاً · رحلتان شهرياً' }, { units: 150, price: '6 000', unit: '40', note: 'للنشاط المنتظم · صالحة 12 شهراً' }];
+  METHODS = [
+    { id: 'ccp', label: 'تحويل بريدي — CCP / BaridiMob', note: 'حوّل من أي مكتب بريد أو من التطبيق، صوّر الوصل، ونؤكّده يدوياً خلال 24 ساعة عادة.' },
+    { id: 'card', label: 'بطاقة CIB أو الذهبية', note: 'دفعة واحدة فوريّة. لا اقتطاع تلقائي ولا تجديد دون طلبك.' }];
+  COSTS = [{ k: 'فتح ملف تاجر مُتحقَّق', v: '2 وحدات', kind: 'n' }, { k: 'نشر رحلة', v: '5 وحدات', kind: 'n' }, { k: 'ظهور مميّز في المطابقة (7 أيام)', v: '8 وحدات', kind: 'n' }, { k: 'فحص المطابقة والحاسبات', v: 'مجاناً', kind: 'free' }, { k: 'الرسائل والتسليم والدفتر', v: 'مجاناً', kind: 'free' }];
+  CCP = [{ k: 'الحساب', v: 'CCP 0021 4471 88 · مفتاح 42' }, { k: 'المستفيد', v: 'Maabar SARL' }, { k: 'المرجع الإلزامي', v: 'MB-4471-SOF' }];
+  renderVals() {
+    const { tab, period, lot, pack, method } = this.state, L = this.LOTS[lot];
+    const kindFg = { in: this.OLIVE, out: this.INK, rev: this.OCHRE };
+    return {
+      tabs: this.TABS.map(t => ({ ...t, on: tab === t.id, bd: tab === t.id ? this.INK : 'transparent', fg: tab === t.id ? this.INK : this.MUTED, fw: tab === t.id ? 500 : 400, pick: () => this.setState({ tab: t.id }) })),
+      tabLedger: tab === 'ledger', tabLabels: tab === 'labels', tabCredits: tab === 'credits',
+      periods: this.PERIODS.map(p => ({ ...p, on: period === p.id, bg: period === p.id ? this.INK : 'transparent', fg: period === p.id ? '#fff' : this.INK, pick: () => this.setState({ period: p.id }) })),
+      totals: [{ k: 'مشتريات', v: '1 310 000', fg: this.INK }, { k: 'مبيعات مؤكَّدة', v: '447 500', fg: this.OLIVE }, { k: 'رسوم وضرائب', v: '72 050', fg: this.INK }],
+      entries: this.ENTRIES.map(e => ({ ...e, fg: kindFg[e.kind] })),
+      lots: this.LOTS.map((l, i) => ({ ...l, on: i === lot, bd: i === lot ? this.INK : 'oklch(0.82 0.012 80)', bg: i === lot ? this.INK : 'transparent', fg: i === lot ? '#fff' : this.INK, pick: () => this.setState({ lot: i }) })),
+      labelRows: [{ k: 'المستورد', v: 'سفيان مرابط', fw: 500 }, { k: 'العنوان', v: 'حي 1200 مسكن، عمارة ب، الجزائر الوسطى', fw: 400 }, { k: 'تعيين السلعة', v: L.name, fw: 500 }, { k: 'بلد المنشأ', v: L.origin, fw: 400 }, { k: 'الكمية', v: L.qty, fw: 400 }],
+      labelRef: L.ref, noteRef: 'BL-26-0412-' + String(lot + 1).padStart(2, '0'),
+      noteRows: [{ k: 'المُسلِّم', v: 'سفيان مرابط · NIF 198 2617 4409' }, { k: 'المُستلِم', v: 'ياسين ب. · RC 19/00-1140322 B 24' }, { k: 'التاريخ', v: '18 أكتوبر 2026' }, { k: 'مكان التسليم', v: 'سطيف — شارع 8 ماي، محل رقم 12' }],
+      lotName: L.name, lotQty: L.qty, lotWeight: L.weight, lotVolume: L.volume,
+      credits: 38, packs: this.PACKS.map((p, i) => ({ ...p, on: i === pack, bd: i === pack ? this.INK : 'oklch(0.85 0.012 80)', bg: i === pack ? 'oklch(0.95 0.01 80)' : '#fff', pick: () => this.setState({ pack: i }) })),
+      methods: this.METHODS.map(m => ({ ...m, on: method === m.id, bd: method === m.id ? this.INK : 'oklch(0.85 0.012 80)', bg: method === m.id ? 'oklch(0.95 0.01 80)' : '#fff', dot: method === m.id ? this.INK : 'oklch(0.78 0.015 70)', fill: method === m.id ? this.INK : 'transparent', pick: () => this.setState({ method: m.id }) })),
+      isManual: method === 'ccp', isCard: method === 'card', selectedPrice: this.PACKS[pack].price, ccp: this.CCP,
+      costs: this.COSTS.map(c => ({ ...c, fg: c.kind === 'free' ? this.OLIVE : this.INK }))
+    };
+  }
+}
+</script>
+</body>
+</html>

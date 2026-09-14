@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./tokens.css">
+<style>
+.scrollx{overflow-x:auto;scrollbar-width:none}
+.scrollx::-webkit-scrollbar{display:none}
+.meter{height:5px;border-radius:3px;background:var(--neutral-bg);overflow:hidden}
+.meter>i{display:block;height:100%;border-radius:3px;transition:width .18s ease}
+.step{width:34px;height:34px;border:1px solid var(--rule-strong);border-radius:var(--r-sm);background:var(--surface);font-size:17px;line-height:1;cursor:pointer;color:inherit;display:grid;place-items:center}
+.track{position:relative;height:5px;border-radius:3px;background:var(--neutral-bg)}
+.track>b{position:absolute;top:0;height:100%;border-radius:3px;background:var(--allowed)}
+</style>
+</helmet>
+
+<div dir="rtl" lang="ar" class="tier-op" style="min-height:100vh;display:flex;justify-content:center">
+<div style="width:100%;max-width:430px;min-height:100vh;display:flex;flex-direction:column;background:var(--paper);border-inline:1px solid var(--rule)">
+
+<header style="position:sticky;top:0;z-index:20;background:var(--surface);border-bottom:1px solid var(--rule)">
+<div style="display:flex;align-items:center;gap:10px;padding:12px 16px 10px">
+<span style="font-size:var(--t-h2);font-weight:600">لوحة الطلب</span>
+<div style="flex:1"></div>
+<span class="num" style="font-size:var(--t-xs);color:var(--ink-3)"><bdi>{{ basis }}</bdi></span>
+</div>
+
+<!-- live capacity — the signature interaction -->
+<div style="padding:0 16px 11px">
+<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+<span style="font-size:var(--t-xs);color:var(--ink-2);flex:1">{{ tripLabel }}</span>
+<span class="num" style="font-size:var(--t-micro);color:var(--ink-3)"><bdi>{{ tripCounter }}</bdi></span>
+</div>
+<div style="display:flex;gap:10px">
+<sc-for list="{{ meters }}" as="m" hint-placeholder-count="3">
+<div style="flex:1">
+<div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:4px">
+<span style="font-size:var(--t-micro);color:var(--ink-3)">{{ m.label }}</span>
+<span class="num" style="font-size:var(--t-micro);font-weight:600;color:{{ m.fg }}"><bdi>{{ m.left }}</bdi></span>
+</div>
+<div class="meter"><i style="width:{{ m.pct }}%;background:{{ m.fg }}"></i></div>
+</div>
+</sc-for>
+</div>
+</div>
+
+<div class="scrollx" style="display:flex;gap:7px;padding:0 16px 11px">
+<sc-for list="{{ filters }}" as="f" hint-placeholder-count="5">
+<button type="button" onClick="{{ f.pick }}" aria-pressed="{{ f.on }}" style="flex:none;height:31px;padding:0 12px;border:1px solid {{ f.bd }};border-radius:var(--r-pill);background:{{ f.bg }};color:{{ f.fg }};font-size:var(--t-sm);cursor:pointer">{{ f.label }}</button>
+</sc-for>
+</div>
+</header>
+
+<main style="flex:1;padding:14px 16px 96px;display:flex;flex-direction:column;gap:12px">
+
+<sc-for list="{{ items }}" as="it" hint-placeholder-count="4">
+<article class="card" style="padding:13px;display:flex;flex-direction:column;gap:11px">
+
+<div style="display:flex;gap:12px">
+<span class="img ph {{ it.ph }}" style="flex:none;width:62px;height:78px;border-radius:var(--r-sm);display:block"></span>
+<div style="flex:1;min-width:0">
+<div style="display:flex;align-items:flex-start;gap:8px">
+<h2 style="margin:0;flex:1;min-width:0;font-size:var(--t-h3);font-weight:500;line-height:1.4">{{ it.name }}</h2>
+<span class="chip {{ it.compChip }}" style="height:20px;font-size:var(--t-micro);flex:none">{{ it.comp }}</span>
+</div>
+<div style="font-size:var(--t-xs);color:var(--ink-2);margin-top:5px">{{ it.wilayas }}</div>
+<div style="display:flex;align-items:baseline;gap:7px;margin-top:9px">
+<span class="num" style="font-size:24px;font-weight:600;line-height:1;color:var(--allowed-ink)"><bdi>{{ it.confirmed }}</bdi></span>
+<span style="font-size:var(--t-sm);color:var(--ink-2)">مؤكَّد</span>
+<span class="num" style="font-size:var(--t-sm);color:var(--ink-3);margin-inline-start:3px"><bdi>+{{ it.interested }} مهتمّ</bdi></span>
+</div>
+</div>
+</div>
+
+<!-- price band on a market track -->
+<div style="padding:11px 0;border-block:1px solid var(--rule-faint)">
+<div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:7px">
+<span style="font-size:var(--t-xs);color:var(--ink-3)">سعر البيع المرجعي</span>
+<span class="num" style="font-size:var(--t-sm);font-weight:600"><bdi>{{ it.band }}</bdi></span>
+</div>
+<div class="track"><b style="inset-inline-start:{{ it.bandStart }}%;width:{{ it.bandWidth }}%"></b></div>
+<div class="num" style="display:flex;justify-content:space-between;font-size:9.5px;color:var(--ink-3);margin-top:5px"><bdi>{{ it.trackLo }}</bdi><bdi>{{ it.trackHi }}</bdi></div>
+</div>
+
+<sc-if value="{{ it.hasNote }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;gap:8px;padding:10px 11px;background:{{ it.noteBg }};border:1px solid {{ it.noteBd }};border-radius:var(--r-sm)">
+<span aria-hidden="true" style="flex:none;font-weight:600;color:{{ it.noteFg }};font-size:var(--t-sm)">!</span>
+<p style="margin:0;font-size:var(--t-xs);line-height:1.6;color:var(--ink-2)">{{ it.note }}</p>
+</div>
+</sc-if>
+
+<sc-if value="{{ it.inList }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;align-items:center;gap:9px">
+<div style="flex:1;min-width:0">
+<div class="num" style="font-size:var(--t-sm);font-weight:500"><bdi>{{ it.qty }} وحدة في قائمتك</bdi></div>
+<div class="num" style="font-size:var(--t-micro);color:var(--ink-3);margin-top:2px"><bdi>{{ it.lineCost }}</bdi></div>
+</div>
+<button type="button" class="step" onClick="{{ it.dec }}" aria-label="أنقص">−</button>
+<button type="button" class="step" onClick="{{ it.inc }}" aria-label="زد">+</button>
+</div>
+</sc-if>
+
+<sc-if value="{{ it.notInList }}" hint-placeholder-val="{{ true }}">
+<button type="button" onClick="{{ it.add }}" disabled="{{ it.blocked }}" style="height:44px;border:0;border-radius:var(--r-sm);background:{{ it.addBg }};color:{{ it.addFg }};font-size:var(--t-sm);font-weight:500;cursor:pointer">{{ it.addLabel }}</button>
+</sc-if>
+
+</article>
+</sc-for>
+
+</main>
+
+<sc-if value="{{ hasList }}" hint-placeholder-val="{{ true }}">
+<div style="position:fixed;inset-block-end:0;inset-inline:0;margin:0 auto;max-width:430px;display:flex;align-items:center;gap:12px;padding:12px 16px 16px;background:var(--surface);border-top:1px solid var(--rule);box-shadow:0 -2px 14px oklch(0.20 0.02 60 / 0.06)">
+<div style="flex:1;min-width:0">
+<div style="font-size:var(--t-sm);font-weight:500">قائمة الشراء</div>
+<div class="num" style="font-size:var(--t-xs);color:var(--ink-2);margin-top:2px"><bdi>{{ listSummary }}</bdi></div>
+</div>
+<button type="button" style="flex:none;height:46px;padding:0 20px;border:0;border-radius:var(--r);background:var(--allowed);color:var(--ink-on);font-size:var(--t-sm);font-weight:600;cursor:pointer">افتح القائمة</button>
+</div>
+</sc-if>
+
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:430,&quot;height&quot;:1560}}">
+class Component extends DCLogic {
+  state = { qty: { coats: 30 }, filter: 'all' };
+
+  LRI = '⁦'; PDI = '⁩';
+  ltr(s) { return this.LRI + s + this.PDI; }
+  fmt(n, d = 0) {
+    const s = Number(n).toFixed(d), [i, f] = s.split('.');
+    return '⁦' + i.replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + (f ? '.' + f : '') + '⁩';
+  }
+
+  TRIP = { dest: 'إسطنبول', dates: '12 – 16 أكتوبر', value: 1800000, weight: 46, volume: 1.2, no: 1, max: 2 };
+
+  FILTERS = [['all','الكل'],['clothes','ألبسة'],['bags','حقائب'],['cosm','تجميل'],['shoes','أحذية']];
+
+  ITEMS = [
+    { id: 'coats', cat: 'clothes', ph: 'ph-coat', name: 'معاطف نسائية شتوية',
+      wilayas: 'سطيف · الجزائر · وهران', confirmed: 95, interested: 245,
+      band: [4500, 6200], track: [3000, 8000], comp: 'مسموح', compKind: 'ok',
+      unitCost: 2600, w: 0.8, v: 0.004 },
+    { id: 'bags', cat: 'bags', ph: 'ph-bag', name: 'حقائب يد نسائية',
+      wilayas: 'الجزائر · البليدة · تيزي وزو', confirmed: 80, interested: 160,
+      band: [6500, 9000], track: [4000, 12000], comp: 'مسموح', compKind: 'ok',
+      unitCost: 3400, w: 0.6, v: 0.008 },
+    { id: 'perfume', cat: 'cosm', ph: 'ph-perfume', name: 'عطور نسائية 100 مل',
+      wilayas: 'وهران · الجزائر · قسنطينة', confirmed: 62, interested: 118,
+      band: [2800, 4200], track: [1500, 7000], comp: 'بشرط', compKind: 'cond',
+      unitCost: 1500, w: 0.45, v: 0.001,
+      note: 'يجب أن يتبقّى أكثر من نصف مدة الصلاحية عند دخول البضاعة.' },
+    { id: 'shoes', cat: 'shoes', ph: 'ph-shoe', name: 'أحذية رياضية رجالية',
+      wilayas: 'الجزائر · عنابة · باتنة', confirmed: 40, interested: 210,
+      band: [3800, 5500], track: [2500, 9000], comp: 'مسموح', compKind: 'ok',
+      unitCost: 2100, w: 0.7, v: 0.006,
+      note: 'ثلاثة بلاغات تقليد في هذه الفئة خلال 30 يوماً. اطلب تأكيد المواصفة قبل الالتزام.' }
+  ];
+
+  COMP = { ok: 'chip-verified', cond: 'chip-conditional' };
+  STEP = 10;
+
+  // Arabic counted nouns: one / two / few (3-10) / many (11+).
+  // "1 أصناف" is wrong; the noun changes form with the count.
+  counted(n, f) {
+    const m = n % 100;
+    if (n === 1) return f.one;
+    if (n === 2) return f.two;
+    if (m >= 3 && m <= 10) return this.fmt(n) + ' ' + f.few;
+    return this.fmt(n) + ' ' + f.many;
+  }
+  KIND_N = { one: 'صنف واحد', two: 'صنفان', few: 'أصناف', many: 'صنفاً' };
+  UNIT_N = { one: 'وحدة واحدة', two: 'وحدتان', few: 'وحدات', many: 'وحدة' };
+
+  used() {
+    return this.ITEMS.reduce((a, it) => {
+      const q = this.state.qty[it.id] || 0;
+      a.value += q * it.unitCost; a.weight += q * it.w; a.volume += q * it.v;
+      return a;
+    }, { value: 0, weight: 0, volume: 0 });
+  }
+
+  setQty(id, q) {
+    this.setState(s => {
+      const qty = { ...s.qty };
+      if (q <= 0) delete qty[id]; else qty[id] = q;
+      return { qty };
+    });
+  }
+
+  renderVals() {
+    const s = this.state, T = this.TRIP, u = this.used();
+
+    const caps = [
+      { id: 'value', label: 'القيمة', cap: T.value, used: u.value, unit: 'دج', d: 0 },
+      { id: 'weight', label: 'الوزن', cap: T.weight, used: u.weight, unit: 'كغ', d: 0 },
+      { id: 'volume', label: 'الحجم', cap: T.volume, used: u.volume, unit: 'م³', d: 2 }
+    ].map(m => {
+      const ratio = m.used / m.cap, pct = Math.min(100, ratio * 100);
+      const fg = ratio >= 1 ? 'var(--prohibited)' : ratio >= 0.9 ? 'var(--conditional)' : 'var(--allowed)';
+      return { ...m, pct, fg, rem: m.cap - m.used, left: this.ltr(this.fmt(Math.max(0, m.cap - m.used), m.d) + ' ' + m.unit) };
+    });
+
+    const fits = it => caps.every(m => {
+      const per = m.id === 'value' ? it.unitCost : m.id === 'weight' ? it.w : it.v;
+      return m.rem >= per * this.STEP;
+    });
+
+    const items = this.ITEMS.filter(it => s.filter === 'all' || it.cat === s.filter).map(it => {
+      const q = s.qty[it.id] || 0;
+      const span = it.track[1] - it.track[0];
+      const blocked = !q && !fits(it);
+      return {
+        ...it,
+        confirmed: this.fmt(it.confirmed),
+        interested: this.fmt(it.interested),
+        band: this.ltr(this.fmt(it.band[0]) + ' – ' + this.fmt(it.band[1]) + ' دج'),
+        bandStart: (it.band[0] - it.track[0]) / span * 100,
+        bandWidth: (it.band[1] - it.band[0]) / span * 100,
+        trackLo: this.fmt(it.track[0]), trackHi: this.fmt(it.track[1]),
+        compChip: this.COMP[it.compKind],
+        hasNote: !!it.note,
+        noteBg: it.compKind === 'cond' ? 'var(--conditional-bg)' : 'var(--neutral-bg)',
+        noteBd: it.compKind === 'cond' ? 'var(--conditional-bd)' : 'var(--neutral-bd)',
+        noteFg: it.compKind === 'cond' ? 'var(--conditional-ink)' : 'var(--ink-2)',
+        qty: this.fmt(q), inList: q > 0, notInList: q === 0, blocked,
+        lineCost: this.ltr('≈ ' + this.fmt(q * it.unitCost) + ' دج · ' + this.fmt(q * it.w, 1) + ' كغ'),
+        addLabel: blocked ? 'لا يتّسع في المتبقّي' : 'أضف ' + this.STEP + ' وحدات',
+        addBg: blocked ? 'var(--neutral-bg)' : 'var(--ink)',
+        addFg: blocked ? 'var(--ink-3)' : 'var(--ink-on)',
+        add: () => this.setQty(it.id, this.STEP),
+        inc: () => this.setQty(it.id, q + this.STEP),
+        dec: () => this.setQty(it.id, q - this.STEP)
+      };
+    });
+
+    const inList = this.ITEMS.filter(it => s.qty[it.id]);
+    const units = inList.reduce((a, it) => a + s.qty[it.id], 0);
+
+    return {
+      basis: 'مبنيّة على 214 طلباً',
+      tripLabel: T.dest + ' · ' + T.dates,
+      tripCounter: 'الرحلة ' + T.no + ' من ' + T.max,
+      meters: caps,
+      filters: this.FILTERS.map(([id, label]) => ({
+        label, on: s.filter === id,
+        bd: s.filter === id ? 'var(--ink)' : 'var(--rule-strong)',
+        bg: s.filter === id ? 'var(--ink)' : 'var(--surface)',
+        fg: s.filter === id ? 'var(--ink-on)' : 'var(--ink)',
+        pick: () => this.setState({ filter: id })
+      })),
+      items,
+      hasList: inList.length > 0,
+      listSummary: this.counted(inList.length, this.KIND_N) + ' · ' + this.counted(units, this.UNIT_N)
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./tokens.css">
+<style>
+.scrollx{overflow-x:auto;scrollbar-width:none}.scrollx::-webkit-scrollbar{display:none}
+.clamp2{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.sech{display:flex;justify-content:space-between;align-items:baseline;padding:0 16px 10px}
+.sech h2{margin:0;font-size:var(--t-h2);font-weight:500}
+.more{border:0;background:transparent;font-size:var(--t-sm);color:var(--accent-ink);cursor:pointer;padding:0}
+</style>
+</helmet>
+
+<div dir="rtl" lang="ar" class="tier-public" style="min-height:100vh;display:flex;justify-content:center">
+<div style="width:100%;max-width:430px;min-height:100vh;display:flex;flex-direction:column;background:var(--paper-public);border-inline:1px solid var(--rule)">
+
+<header style="position:sticky;top:0;z-index:20;background:var(--surface);border-bottom:1px solid var(--rule)">
+<div style="display:flex;align-items:center;gap:10px;padding:12px 16px 10px">
+<span style="font-weight:600;font-size:18px">مَعْبَر</span>
+<div style="flex:1"></div>
+<button type="button" aria-label="الرسائل" style="position:relative;width:36px;height:36px;border:1px solid var(--rule);border-radius:var(--r-sm);background:var(--surface);cursor:pointer;display:grid;place-items:center;color:inherit">
+<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 9 9 0 0 1-3.3-.6L3 21l1.7-5a8.2 8.2 0 0 1-.7-3.4 8.4 8.4 0 0 1 8.5-8.5 8.4 8.4 0 0 1 8.5 8.4z"/></svg>
+</button>
+</div>
+<div style="padding:0 16px 12px">
+<button type="button" style="width:100%;display:flex;align-items:center;gap:9px;height:44px;padding:0 13px;border:1px solid var(--rule-strong);border-radius:var(--r);background:var(--surface-2);cursor:pointer;color:var(--ink-3);font-size:15px;text-align:start">
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex:none"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+ابحث عن منتج أو متجر
+</button>
+</div>
+</header>
+
+<main style="flex:1;padding:18px 0 82px;display:flex;flex-direction:column;gap:22px">
+
+<!-- ══ CATEGORIES ══ -->
+<section>
+<div class="sech"><h2>الفئات</h2></div>
+<div class="scrollx" style="display:flex;gap:10px;padding:0 16px 4px">
+<sc-for list="{{ cats }}" as="c" hint-placeholder-count="5">
+<button type="button" class="card" style="flex:none;width:98px;overflow:hidden;padding:0;border:0;cursor:pointer;text-align:start;color:inherit">
+<span class="img img-tile ph {{ c.ph }}" style="border-radius:0;display:block"></span>
+<span style="display:block;padding:8px 9px 10px">
+<span style="display:block;font-size:var(--t-sm);font-weight:500">{{ c.label }}</span>
+<span class="num" style="display:block;font-size:var(--t-micro);color:var(--ink-3);margin-top:1px"><bdi>{{ c.n }}</bdi></span>
+</span>
+</button>
+</sc-for>
+</div>
+</section>
+
+<!-- ══ JUST ARRIVED — the reason to come back ══ -->
+<section>
+<div class="sech">
+<h2>وصل حديثاً</h2>
+<button type="button" class="more">الكل ←</button>
+</div>
+<div class="scrollx" style="display:flex;gap:12px;padding:0 16px 4px">
+<sc-for list="{{ fresh }}" as="p" hint-placeholder-count="4">
+<article class="card" style="flex:none;width:142px;overflow:hidden;cursor:pointer">
+<div style="position:relative">
+<span class="img img-card ph {{ p.ph }}" style="border-radius:0;display:block"></span>
+<span style="position:absolute;inset-block-start:8px;inset-inline-start:8px;height:20px;padding:0 8px;display:inline-flex;align-items:center;border-radius:var(--r-pill);background:var(--allowed-bg);color:var(--allowed-ink);font-size:var(--t-micro);font-weight:500">{{ p.when }}</span>
+</div>
+<span style="display:block;padding:9px 10px 11px">
+<span class="clamp2" style="display:-webkit-box;font-size:var(--t-xs);line-height:1.45;height:33px;overflow:hidden">{{ p.title }}</span>
+<span class="num" style="display:block;font-size:var(--t-sm);font-weight:600;color:var(--accent-ink);margin-top:5px"><bdi>{{ p.price }} دج</bdi></span>
+</span>
+</article>
+</sc-for>
+</div>
+</section>
+
+<!-- ══ TRUSTED SELLERS NEARBY ══ -->
+<section>
+<div class="sech">
+<h2>متاجر موثوقة قريبة منك</h2>
+<span class="num" style="font-size:var(--t-xs);color:var(--ink-3)"><bdi>قسنطينة</bdi></span>
+</div>
+<div style="margin:0 16px" class="card">
+<sc-for list="{{ sellers }}" as="s" hint-placeholder-count="3">
+<button type="button" style="width:100%;display:flex;align-items:center;gap:11px;padding:12px 13px;border:0;border-bottom:1px solid var(--rule-faint);background:transparent;color:inherit;text-align:start;cursor:pointer">
+<span aria-hidden="true" style="flex:none;width:40px;height:40px;border-radius:50%;background:{{ s.avBg }};display:grid;place-items:center;font-size:11px;font-weight:600;color:{{ s.avFg }}">{{ s.initials }}</span>
+<span style="flex:1;min-width:0">
+<span style="display:flex;align-items:center;gap:6px">
+<span style="font-size:var(--t-body);font-weight:500">{{ s.name }}</span>
+<svg width="13" height="13" viewBox="0 0 24 24" style="flex:none" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="var(--allowed)"/><path d="M7.4 12.4l3 3 6.2-6.6" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+</span>
+<span class="num" style="display:block;font-size:var(--t-micro);color:var(--ink-2);margin-top:3px"><bdi>{{ s.meta }}</bdi></span>
+</span>
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--ink-3)" stroke-width="2" style="flex:none"><path d="M15 5l-7 7 7 7"/></svg>
+</button>
+</sc-for>
+</div>
+</section>
+
+<!-- ══ YOUR SAVED — a reason the app remembers you ══ -->
+<section>
+<div class="sech">
+<h2>محفوظاتك</h2>
+<button type="button" class="more">الكل ←</button>
+</div>
+<div style="margin:0 16px" class="card" style="margin:0 16px;padding:4px 13px">
+<sc-for list="{{ saved }}" as="s" hint-placeholder-count="2">
+<div style="display:flex;align-items:center;gap:11px;padding:11px 0;border-bottom:1px solid var(--rule-faint)">
+<span class="img ph {{ s.ph }}" style="flex:none;width:38px;height:46px;border-radius:var(--r-sm);display:block"></span>
+<div style="flex:1;min-width:0">
+<div style="font-size:var(--t-sm);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ s.title }}</div>
+<div style="font-size:var(--t-micro);color:{{ s.fg }};margin-top:3px;font-weight:500">{{ s.note }}</div>
+</div>
+<span class="num" style="flex:none;font-size:var(--t-sm);font-weight:600;color:var(--accent-ink)"><bdi>{{ s.price }} دج</bdi></span>
+</div>
+</sc-for>
+</div>
+</section>
+
+<!-- ══ HOW BUYING WORKS — one calm explainer, once ══ -->
+<section style="margin:0 16px;padding:15px;border:1px solid var(--rule);border-radius:var(--r);background:var(--surface)">
+<h2 style="margin:0 0 11px;font-size:var(--t-h3);font-weight:600">كيفاش يخدم الشراء هنا</h2>
+<sc-for list="{{ how }}" as="h" hint-placeholder-count="3">
+<div style="display:flex;gap:11px;padding:7px 0">
+<span aria-hidden="true" style="flex:none;width:21px;height:21px;border-radius:50%;background:var(--neutral-bg);color:var(--ink-2);display:grid;place-items:center;font-size:10px;font-weight:600">{{ h.n }}</span>
+<span style="flex:1;font-size:var(--t-sm);line-height:1.65;color:var(--ink-2)">{{ h.t }}</span>
+</div>
+</sc-for>
+</section>
+
+</main>
+
+<nav aria-label="التنقّل" style="position:fixed;inset-block-end:0;inset-inline:0;margin:0 auto;max-width:430px;display:grid;grid-template-columns:repeat(5,1fr);background:var(--surface);border-top:1px solid var(--rule);padding-block:6px 8px">
+<sc-for list="{{ nav }}" as="n" hint-placeholder-count="5">
+<button type="button" aria-current="{{ n.on }}" style="display:flex;flex-direction:column;align-items:center;gap:3px;border:0;background:transparent;padding:5px 0;cursor:pointer;color:{{ n.fg }}">
+<span aria-hidden="true" style="width:21px;height:21px;display:grid;place-items:center">{{ n.icon }}</span>
+<span style="font-size:var(--t-micro);font-weight:{{ n.fw }}">{{ n.label }}</span>
+</button>
+</sc-for>
+</nav>
+
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:430,&quot;height&quot;:1320}}">
+class Component extends DCLogic {
+  fmt(n) { return '⁦' + String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + '⁩'; }
+
+  CATS = [
+    { ph: 'ph-coat', label: 'ألبسة', n: 1240 },
+    { ph: 'ph-perfume', label: 'تجميل', n: 913 },
+    { ph: 'ph-shoe', label: 'أحذية', n: 702 },
+    { ph: 'ph-bag', label: 'حقائب', n: 486 },
+    { ph: 'ph-home', label: 'منزل', n: 355 }
+  ];
+
+  FRESH = [
+    { ph: 'ph-coat', title: 'معطف نسائي شتوي — صوف مخلوط', price: 7400, when: 'اليوم' },
+    { ph: 'ph-bag', title: 'حقيبة يد جلدية بحزام كتف', price: 5900, when: 'اليوم' },
+    { ph: 'ph-watch', title: 'ساعة يد رجالية ستانلس', price: 11500, when: 'أمس' },
+    { ph: 'ph-perfume', title: 'عطر نسائي 100 مل', price: 4200, when: 'أمس' }
+  ];
+
+  SELLERS = [
+    { name: 'بوتيك نادية', initials: 'ب ن', meta: 'قسنطينة · 63 معاملة مؤكَّدة · ترد خلال ساعتين', tone: 0 },
+    { name: 'دار الأناقة', initials: 'د أ', meta: 'وهران · 118 معاملة مؤكَّدة', tone: 1 },
+    { name: 'محل ياسين', initials: 'م ي', meta: 'سطيف · 241 معاملة مؤكَّدة', tone: 2 }
+  ];
+
+  SAVED = [
+    { ph: 'ph-coat', title: 'معطف نسائي شتوي', price: 6900, note: 'نزل السعر 500 دج', good: true },
+    { ph: 'ph-perfume', title: 'عطر نسائي 100 مل', price: 4200, note: 'بقيت 3 وحدات', good: false }
+  ];
+
+  HOW = [
+    'تختار المنتج وتشوف سجل البائع قبل ما تتواصل.',
+    'تراسل البائع مباشرةً وتتّفقوا على السعر والتسليم.',
+    'البيع يتمّ بينك وبين البائع — مَعْبَر ما تبيعش وما تستلمش فلوس.'
+  ];
+
+  TONE = [
+    ['oklch(0.93 0.03 28)', 'var(--accent-ink)'],
+    ['oklch(0.93 0.03 250)', 'oklch(0.35 0.06 250)'],
+    ['oklch(0.92 0.03 150)', 'var(--allowed-ink)']
+  ];
+
+  ICON = {
+    home: React.createElement('svg', { width: 20, height: 20, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 1.8 }, React.createElement('path', { d: 'M4 11l8-7 8 7v8a1 1 0 0 1-1 1h-4v-6H9v6H5a1 1 0 0 1-1-1z' })),
+    shop: React.createElement('svg', { width: 20, height: 20, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 1.8 }, React.createElement('path', { d: 'M4 8h16l-1.2 11a1 1 0 0 1-1 .9H6.2a1 1 0 0 1-1-.9z' }), React.createElement('path', { d: 'M8.5 8a3.5 3.5 0 0 1 7 0' })),
+    heart: React.createElement('svg', { width: 20, height: 20, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 1.8 }, React.createElement('path', { d: 'M12 20s-7-4.4-7-9.3A4.2 4.2 0 0 1 12 8a4.2 4.2 0 0 1 7 2.7c0 4.9-7 9.3-7 9.3z' })),
+    msg: React.createElement('svg', { width: 20, height: 20, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 1.8 }, React.createElement('path', { d: 'M21 11.5a8.4 8.4 0 0 1-9 8.4 9 9 0 0 1-3.3-.6L3 21l1.7-5a8.2 8.2 0 0 1-.7-3.4 8.4 8.4 0 0 1 8.5-8.5 8.4 8.4 0 0 1 8.5 8.4z' })),
+    user: React.createElement('svg', { width: 20, height: 20, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 1.8 }, React.createElement('circle', { cx: 12, cy: 8.5, r: 3.7 }), React.createElement('path', { d: 'M4.8 20a7.4 7.4 0 0 1 14.4 0' }))
+  };
+
+  NAV = [
+    { id: 'home', label: 'الرئيسية', icon: 'home' },
+    { id: 'shop', label: 'السوق', icon: 'shop' },
+    { id: 'saved', label: 'المحفوظات', icon: 'heart' },
+    { id: 'msg', label: 'الرسائل', icon: 'msg' },
+    { id: 'me', label: 'حسابي', icon: 'user' }
+  ];
+
+  renderVals() {
+    return {
+      cats: this.CATS.map(c => ({ ...c, n: this.fmt(c.n) + ' منتج' })),
+      fresh: this.FRESH.map(p => ({ ...p, price: this.fmt(p.price) })),
+      sellers: this.SELLERS.map(s => {
+        const [avBg, avFg] = this.TONE[s.tone];
+        return { ...s, avBg, avFg };
+      }),
+      saved: this.SAVED.map(s => ({
+        ...s, price: this.fmt(s.price),
+        fg: s.good ? 'var(--allowed-ink)' : 'var(--conditional-ink)'
+      })),
+      how: this.HOW.map((t, i) => ({ n: String(i + 1), t })),
+      nav: this.NAV.map(n => ({
+        ...n, on: n.id === 'home',
+        fg: n.id === 'home' ? 'var(--ink)' : 'var(--ink-3)',
+        fw: n.id === 'home' ? 600 : 400,
+        icon: this.ICON[n.icon]
+      }))
+    };
+  }
+}
+</script>
+</body>
+</html>

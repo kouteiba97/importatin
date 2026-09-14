@@ -1,0 +1,226 @@
+/* ============================================================
+   MAABAR DESIGN TOKENS  v2
+   One source of truth. Replaces ~60 inline oklch() literals per
+   artboard in v1 (audit finding I.1).
+   At implementation this file becomes the CSS variable layer;
+   nothing below should ever be re-typed inside a component.
+   ============================================================ */
+
+:root {
+  /* ---- GROUND & SURFACE ---------------------------------- */
+  --paper:        oklch(0.972 0.009 80);   /* operational / compliance ground */
+  --paper-public: oklch(0.988 0.005 85);   /* public tier: cleaner, lets product imagery carry warmth */
+  --surface:      #ffffff;
+  --surface-2:    oklch(0.983 0.006 80);
+  --surface-3:    oklch(0.955 0.010 80);
+
+  /* ---- INK ----------------------------------------------- */
+  --ink:    oklch(0.20 0.02 60);
+  --ink-2:  oklch(0.44 0.02 60);           /* secondary text */
+  --ink-3:  oklch(0.58 0.015 65);          /* tertiary / meta */
+  --ink-on: #ffffff;
+
+  /* ---- STRUCTURE ----------------------------------------- */
+  --rule:        oklch(0.915 0.010 80);
+  --rule-strong: oklch(0.845 0.012 80);
+  --rule-faint:  oklch(0.950 0.008 80);
+
+  /* ---- STATUS SEMANTICS ---------------------------------
+     Saturation is reserved for status. Never decorative.      */
+  --allowed:     oklch(0.42 0.07 150);
+  --allowed-ink: oklch(0.32 0.075 150);
+  --allowed-bg:  oklch(0.962 0.030 150);
+  --allowed-bd:  oklch(0.865 0.050 150);
+
+  --conditional:     oklch(0.55 0.12 70);
+  --conditional-ink: oklch(0.44 0.12 65);
+  --conditional-bg:  oklch(0.962 0.048 85);
+  --conditional-bd:  oklch(0.870 0.075 85);
+
+  --prohibited:     oklch(0.50 0.14 32);
+  --prohibited-ink: oklch(0.42 0.15 32);
+  --prohibited-bg:  oklch(0.960 0.038 32);
+  --prohibited-bd:  oklch(0.870 0.060 32);
+
+  --neutral-bg: oklch(0.945 0.008 80);
+  --neutral-bd: oklch(0.880 0.010 80);
+
+  /* ---- COMMERCIAL ACCENT ---------------------------------
+     PUBLIC TIER ONLY. Prices, new arrivals, marketplace CTAs.
+     Never used on compliance or admin surfaces.               */
+  --accent:     oklch(0.47 0.13 28);
+  --accent-ink: oklch(0.38 0.14 28);
+  --accent-bg:  oklch(0.965 0.030 28);
+
+  /* ---- ELEVATION ----------------------------------------
+     Restrained. e1 for public cards, e2 for sheets/overlays,
+     e0 (none) everywhere else. Operational and admin tiers
+     use rules, not shadows.                                  */
+  --e0: none;
+  --e1: 0 1px 2px oklch(0.20 0.02 60 / 0.045), 0 1px 3px oklch(0.20 0.02 60 / 0.035);
+  --e2: 0 4px 16px oklch(0.20 0.02 60 / 0.10), 0 1px 3px oklch(0.20 0.02 60 / 0.05);
+
+  /* ---- RADII --------------------------------------------- */
+  --r-xs: 4px;
+  --r-sm: 6px;
+  --r:    9px;
+  --r-lg: 13px;
+  --r-pill: 999px;
+
+  /* ---- TYPE ----------------------------------------------
+     Arabic leads. Latin companion matches x-height.
+     Arabic line-height runs ~12% above Latin.                */
+  --font: "IBM Plex Sans Arabic", system-ui, -apple-system, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, monospace;
+
+  --t-display: 30px;
+  --t-h1: 23px;
+  --t-h2: 18px;
+  --t-h3: 15.5px;
+  --t-body: 14.5px;
+  --t-sm: 13px;
+  --t-xs: 11.5px;
+  --t-micro: 10.5px;
+
+  --lh-ar: 1.68;
+  --lh-lat: 1.52;
+  --lh-tight: 1.32;
+
+  /* ---- SPACING (4px base) -------------------------------- */
+  --s1: 4px;  --s2: 8px;  --s3: 12px; --s4: 16px;
+  --s5: 20px; --s6: 24px; --s8: 32px; --s10: 40px;
+
+  /* ---- DENSITY TIERS -------------------------------------
+     The single most important correction in v2: one density
+     level previously covered four incompatible jobs.          */
+  --pad-public: 20px;
+  --pad-op:     14px;
+  --pad-admin:  9px;
+  --gap-public: 20px;
+  --gap-op:     14px;
+  --gap-admin:  8px;
+}
+
+/* ============================================================
+   BASE
+   ============================================================ */
+* { box-sizing: border-box; }
+html, body {
+  margin: 0; padding: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font);
+  -webkit-font-smoothing: antialiased;
+}
+input, button, select, textarea { font-family: inherit; }
+a { color: var(--allowed-ink); }
+
+/* Arabic must never be letter-spaced (breaks joining) or uppercased. */
+[lang="ar"] { line-height: var(--lh-ar); letter-spacing: 0; }
+[lang="fr"], [lang="en"] { line-height: var(--lh-lat); }
+
+.num  { font-variant-numeric: tabular-nums; }
+.mono { font-family: var(--mono); }
+
+/* Reference IDs are typographic objects, not decoration.
+   Use only where the ID is the operational or legal handle. */
+.ref {
+  font-family: "IBM Plex Mono", "IBM Plex Sans Arabic", ui-monospace, monospace;
+  font-size: var(--t-xs);
+  color: var(--ink-3);
+
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+
+/* ============================================================
+   TIER SCOPES
+   Set on a container; children inherit the right density.
+   ============================================================ */
+.tier-public  { background: var(--paper-public); --pad: var(--pad-public); --gap: var(--gap-public); }
+.tier-op      { background: var(--paper);        --pad: var(--pad-op);     --gap: var(--gap-op); }
+.tier-comply  { background: var(--paper);        --pad: var(--pad-op);     --gap: var(--gap-op); }
+.tier-admin   { background: var(--surface-3);    --pad: var(--pad-admin);  --gap: var(--gap-admin); }
+
+/* ============================================================
+   CONTAINERS — the "no cards" rule was over-applied in v1.
+   Cards represent discrete comparable entities.
+   Rules represent structured data within one entity.
+   ============================================================ */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-radius: var(--r);
+  box-shadow: var(--e0);
+}
+.tier-public .card { box-shadow: var(--e1); border-color: var(--rule-faint); }
+
+.rowset > * + * { border-top: 1px solid var(--rule-faint); }
+
+/* ============================================================
+   TRUST VOCABULARY
+   Platform verification is never presented as state approval.
+   ============================================================ */
+.chip {
+  display: inline-flex; align-items: center; gap: 5px;
+  height: 22px; padding: 0 9px;
+  border-radius: var(--r-pill);
+  font-size: var(--t-xs); font-weight: 500;
+  border: 1px solid transparent;
+}
+.chip-verified   { background: var(--allowed-bg);     border-color: var(--allowed-bd);     color: var(--allowed-ink); }
+.chip-conditional{ background: var(--conditional-bg); border-color: var(--conditional-bd); color: var(--conditional-ink); }
+.chip-prohibited { background: var(--prohibited-bg);  border-color: var(--prohibited-bd);  color: var(--prohibited-ink); }
+.chip-neutral    { background: var(--neutral-bg);     border-color: var(--neutral-bd);     color: var(--ink-2); }
+
+/* ============================================================
+   PRODUCT IMAGERY SYSTEM
+   Aspect ratios are fixed so grids never jump.
+   The placeholder is DESIGNED — an un-imaged listing still
+   looks intentional, never a grey box.
+   Real photography is supplied by the trader. Maabar never
+   supplies product imagery, because Maabar never owns goods.
+   ============================================================ */
+.img       { position: relative; overflow: hidden; background: var(--surface-2); display: block; }
+.img-card  { aspect-ratio: 4 / 5; border-radius: var(--r-sm); }   /* apparel & cosmetics read taller */
+.img-hero  { aspect-ratio: 1 / 1; border-radius: var(--r); }
+.img-tile  { aspect-ratio: 16 / 9; border-radius: var(--r-sm); }
+.img-thumb { aspect-ratio: 1 / 1; border-radius: var(--r-xs); }
+.img > img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+/* Designed placeholders: category silhouette on a tinted ground. */
+.ph { background-repeat: no-repeat; background-position: center; background-size: 46%; }
+.ph-coat    { background-color: oklch(0.945 0.020 250); background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 120' fill='%2333425a' fill-opacity='0.30'%3E%3Cpath d='M32 18 L18 27 L12 62 L24 65 L26 110 L74 110 L76 65 L88 62 L82 27 L68 18 L50 33 Z'/%3E%3C/svg%3E"); }
+.ph-bag     { background-color: oklch(0.945 0.022 60);  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 120' fill='none' stroke='%236b4a2f' stroke-opacity='0.34' stroke-width='5'%3E%3Cpath d='M24 46 h52 l5 58 h-62 Z'/%3E%3Cpath d='M37 46 a13 13 0 0 1 26 0'/%3E%3C/svg%3E"); }
+.ph-perfume { background-color: oklch(0.948 0.020 350); background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 120' fill='%237a3f56' fill-opacity='0.30'%3E%3Crect x='39' y='14' width='22' height='15' rx='3'/%3E%3Crect x='27' y='33' width='46' height='74' rx='9'/%3E%3C/svg%3E"); }
+.ph-shoe    { background-color: oklch(0.945 0.018 160); background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 120' fill='%232f5145' fill-opacity='0.30'%3E%3Cpath d='M10 86 q0 -11 11 -13 l21 -6 18 -17 q15 -4 23 7 l13 16 q6 9 -5 13 l-70 6 q-11 0 -11 -6 z'/%3E%3C/svg%3E"); }
+.ph-watch   { background-color: oklch(0.945 0.014 300); background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 120' fill='%2345405e' fill-opacity='0.30'%3E%3Crect x='40' y='12' width='20' height='28' rx='5'/%3E%3Crect x='40' y='80' width='20' height='28' rx='5'/%3E%3Ccircle cx='50' cy='60' r='23'/%3E%3C/svg%3E"); }
+.ph-home    { background-color: oklch(0.945 0.018 110); background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 120' fill='none' stroke='%234a5a30' stroke-opacity='0.34' stroke-width='5'%3E%3Cpath d='M18 58 L50 30 L82 58'/%3E%3Cpath d='M27 56 v44 h46 v-44'/%3E%3C/svg%3E"); }
+.ph-elec    { background-color: oklch(0.945 0.016 220); background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 120' fill='none' stroke='%2330455a' stroke-opacity='0.34' stroke-width='5'%3E%3Crect x='30' y='18' width='40' height='84' rx='7'/%3E%3Cpath d='M43 90 h14'/%3E%3C/svg%3E"); }
+
+/* Focus is visible and direction-agnostic. */
+:focus-visible { outline: 2px solid var(--allowed); outline-offset: 2px; }
+
+/* ============================================================
+   MIXED-DIRECTION DISCIPLINE
+   Inside Arabic text, a Latin or numeric run must be isolated or
+   bidi reorders it: "60%" renders as "%60", and "S · M · L · XL"
+   reverses to "XL · L · M · S". Both were caught in RTL review.
+
+   In markup:  <bdi class="ltr">S · M · L · XL</bdi>
+   In data:    U+2066 (LRI) ... U+2069 (PDI)
+   Never rely on the surrounding paragraph direction.
+   ============================================================ */
+.ltr { direction: ltr; unicode-bidi: isolate; }
+.rtl { direction: rtl; unicode-bidi: isolate; }
+
+/* Code identifiers (--tokens, .class, HS codes, URLs) are Latin syntax and
+   must never inherit paragraph direction: "--t-display" renders as
+   "t-display--" and ".tier-admin" as "tier-admin." inside Arabic.
+   .ref and .mono are therefore isolated by default. */
+.mono, .code { direction: ltr; unicode-bidi: isolate; }
+/* .ref holds reference IDs, which may be Arabic OR Latin — isolate only,
+   never force a direction, never letter-space. */
+.ref { unicode-bidi: isolate; }

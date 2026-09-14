@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./tokens.css">
+<style>
+.scrollx{overflow-x:auto;scrollbar-width:none}.scrollx::-webkit-scrollbar{display:none}
+.sw{flex:none;height:27px;padding:0 10px;border:1px solid var(--rule-strong);border-radius:var(--r-pill);background:var(--surface);font-size:var(--t-micro);cursor:pointer;color:inherit}
+.ta{width:100%;min-height:98px;padding:12px 14px;border:1px solid var(--rule-strong);border-radius:var(--r);background:var(--surface);font-size:15px;color:inherit;line-height:1.65;resize:vertical}
+.cta{width:100%;height:52px;border:0;border-radius:var(--r);background:var(--ink);color:var(--ink-on);font-size:16px;font-weight:600;cursor:pointer}
+</style>
+</helmet>
+
+<div dir="rtl" lang="ar" class="tier-op" style="min-height:100vh;display:flex;justify-content:center">
+<div style="width:100%;max-width:430px;min-height:100vh;display:flex;flex-direction:column;background:var(--paper);border-inline:1px solid var(--rule)">
+
+<header style="display:flex;align-items:center;gap:10px;padding:11px 14px;background:var(--surface);border-bottom:1px solid var(--rule)">
+<button type="button" aria-label="رجوع" style="width:34px;height:34px;border:0;background:transparent;cursor:pointer;display:grid;place-items:center;color:inherit">
+<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 5l-7 7 7 7"/></svg>
+</button>
+<span style="flex:1;font-size:var(--t-h3);font-weight:500">{{ headline }}</span>
+</header>
+
+<div class="scrollx" style="display:flex;gap:6px;padding:9px 14px;background:var(--surface-2);border-bottom:1px solid var(--rule-faint)">
+<sc-for list="{{ views }}" as="v" hint-placeholder-count="6">
+<button type="button" onClick="{{ v.pick }}" aria-pressed="{{ v.on }}" class="sw" style="background:{{ v.bg }};color:{{ v.fg }};border-color:{{ v.bd }}">{{ v.label }}</button>
+</sc-for>
+</div>
+
+<main style="flex:1;padding:18px 16px 26px;display:flex;flex-direction:column;gap:16px">
+
+<!-- ══ 1 · PICK THE ISSUE ══ -->
+<sc-if value="{{ isPick }}" hint-placeholder-val="{{ true }}">
+<div style="display:flex;flex-direction:column;gap:16px">
+<div>
+<h1 style="margin:0 0 7px;font-size:23px;font-weight:600">واش صرا؟</h1>
+<p style="margin:0;font-size:var(--t-body);line-height:1.7;color:var(--ink-2)">اختر أقرب وصف. هذا يحدّد الأدلّة التي نطلبها منك.</p>
+</div>
+
+<div class="card" style="padding:12px;display:flex;align-items:center;gap:11px">
+<span class="img ph ph-coat" style="flex:none;width:36px;height:44px;border-radius:var(--r-sm);display:block"></span>
+<div style="flex:1;min-width:0">
+<div style="font-size:var(--t-sm);font-weight:500">معاطف نسائية شتوية</div>
+<div class="num" style="font-size:var(--t-micro);color:var(--ink-2);margin-top:2px"><bdi>كريمة ح. · 18 وحدة · سُلّمت 20 أكتوبر</bdi></div>
+</div>
+</div>
+
+<div style="display:flex;flex-direction:column;gap:9px">
+<sc-for list="{{ kinds }}" as="k" hint-placeholder-count="5">
+<button type="button" onClick="{{ k.pick }}" aria-pressed="{{ k.on }}" class="card" style="padding:14px;display:flex;gap:11px;align-items:flex-start;text-align:start;cursor:pointer;color:inherit;border-color:{{ k.bd }};border-width:{{ k.bw }}px">
+<span aria-hidden="true" style="flex:none;width:19px;height:19px;border-radius:50%;border:2px solid {{ k.dotBd }};background:{{ k.dotBg }};display:grid;place-items:center;color:#fff;font-size:10px;margin-block-start:1px">{{ k.check }}</span>
+<span style="flex:1;min-width:0">
+<span style="display:block;font-size:var(--t-body);font-weight:500">{{ k.title }}</span>
+<span style="display:block;font-size:var(--t-sm);color:var(--ink-2);line-height:1.6;margin-top:3px">{{ k.body }}</span>
+</span>
+</button>
+</sc-for>
+</div>
+
+<button type="button" onClick="{{ goDetail }}" class="cta">متابعة</button>
+</div>
+</sc-if>
+
+<!-- ══ 2 · EXPLAIN + EVIDENCE ══ -->
+<sc-if value="{{ isDetail }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;gap:16px">
+<div>
+<h1 style="margin:0 0 7px;font-size:23px;font-weight:600">وضّح المشكلة</h1>
+<p style="margin:0;font-size:var(--t-body);line-height:1.7;color:var(--ink-2)">اكتب ما حدث بدقّة. الوصف الواضح يُغلق البلاغ أسرع.</p>
+</div>
+
+<div>
+<span style="display:block;font-size:var(--t-sm);color:var(--ink-2);margin-bottom:7px">الوصف</span>
+<textarea class="ta" placeholder="مثال: 6 قطع من مقاس XL وصلت بلون كحلي بدل الأسود المتّفق عليه."></textarea>
+</div>
+
+<div>
+<span style="display:block;font-size:var(--t-sm);color:var(--ink-2);margin-bottom:7px">الأدلّة</span>
+<div style="display:flex;gap:9px">
+<button type="button" style="flex:none;width:82px;height:92px;border:1.5px dashed var(--rule-strong);border-radius:var(--r-sm);background:var(--surface-2);cursor:pointer;color:var(--ink-2);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;font-size:var(--t-micro)">
+<svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 16V6M8 10l4-4 4 4"/><path d="M4 18h16"/></svg>
+أضف صورة
+</button>
+<sc-for list="{{ evidence }}" as="e" hint-placeholder-count="2">
+<div style="flex:none;width:82px;height:92px;border-radius:var(--r-sm);background:linear-gradient(135deg, oklch(0.9 0.02 {{ e.h }}), oklch(0.84 0.03 {{ e.h }}));border:1px solid var(--rule);position:relative">
+<button type="button" aria-label="احذف" style="position:absolute;inset-block-start:5px;inset-inline-end:5px;width:21px;height:21px;border:0;border-radius:50%;background:oklch(1 0 0 / 0.9);cursor:pointer;font-size:10px;color:var(--ink-2)">✕</button>
+</div>
+</sc-for>
+</div>
+<p style="margin:9px 0 0;font-size:var(--t-xs);color:var(--ink-3);line-height:1.65">محادثتكما وتفاصيل الاتفاق تُرفق تلقائياً. لا تحتاج تصويرها.</p>
+</div>
+
+<div>
+<span style="display:block;font-size:var(--t-sm);color:var(--ink-2);margin-bottom:7px">ما الحلّ الذي تريده؟</span>
+<div style="display:flex;flex-wrap:wrap;gap:7px">
+<sc-for list="{{ wants }}" as="w" hint-placeholder-count="3">
+<button type="button" onClick="{{ w.pick }}" aria-pressed="{{ w.on }}" style="height:36px;padding:0 13px;border:1px solid {{ w.bd }};border-radius:var(--r-pill);background:{{ w.bg }};color:{{ w.fg }};font-size:var(--t-sm);cursor:pointer">{{ w.label }}</button>
+</sc-for>
+</div>
+</div>
+
+<div style="display:flex;gap:10px;padding:13px 14px;border:1px solid var(--rule);border-radius:var(--r);background:var(--surface-2)">
+<span aria-hidden="true" style="flex:none;color:var(--ink-3)">i</span>
+<p style="margin:0;font-size:var(--t-xs);line-height:1.7;color:var(--ink-2)">مَعْبَر تراجع الأدلّة وتصدر قراراً يؤثّر على سجلّ الطرفين. لا تحوّل أموالاً ولا تفرض تعويضاً — الاتفاق المالي يبقى بينكما.</p>
+</div>
+
+<button type="button" onClick="{{ goSubmitted }}" class="cta">أرسل البلاغ</button>
+</div>
+</sc-if>
+
+<!-- ══ 3 · SUBMITTED ══ -->
+<sc-if value="{{ isSubmitted }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;gap:17px;padding-top:12px">
+<div style="text-align:center">
+<span aria-hidden="true" style="display:inline-grid;place-items:center;width:58px;height:58px;border-radius:50%;background:var(--allowed-bg);color:var(--allowed-ink);font-size:26px;margin-bottom:13px">✓</span>
+<h1 style="margin:0 0 8px;font-size:22px;font-weight:600">وصلنا بلاغك</h1>
+<p style="margin:0;font-size:var(--t-body);line-height:1.7;color:var(--ink-2)">أعلمنا الطرف الآخر وطلبنا ردّه. عادةً يُبتّ خلال يومين.</p>
+</div>
+<div class="card" style="padding:4px 14px">
+<sc-for list="{{ attached }}" as="a" hint-placeholder-count="4">
+<div style="display:flex;align-items:center;gap:10px;padding:11px 0;border-bottom:1px solid var(--rule-faint)">
+<span aria-hidden="true" style="flex:none;width:17px;height:17px;border-radius:50%;background:var(--allowed-bg);display:grid;place-items:center;font-size:9px;color:var(--allowed-ink)">✓</span>
+<span style="flex:1;min-width:0;font-size:var(--t-sm)">{{ a }}</span>
+</div>
+</sc-for>
+</div>
+<button type="button" onClick="{{ goReview }}" class="cta" style="background:var(--allowed)">تابع حالة البلاغ</button>
+</div>
+</sc-if>
+
+<!-- ══ 4 · UNDER REVIEW / NEEDS MORE ══ -->
+<sc-if value="{{ isReview }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;gap:15px">
+<div style="display:flex;gap:12px;padding:15px;border:1px solid {{ rv.bd }};border-radius:var(--r);background:{{ rv.bg }}">
+<span aria-hidden="true" style="flex:none;width:32px;height:32px;border-radius:50%;background:{{ rv.dot }};color:#fff;display:grid;place-items:center;font-size:15px;font-weight:600">{{ rv.glyph }}</span>
+<div style="flex:1;min-width:0">
+<div style="font-size:var(--t-h3);font-weight:600;margin-bottom:4px">{{ rv.title }}</div>
+<p style="margin:0;font-size:var(--t-sm);line-height:1.7;color:var(--ink-2)">{{ rv.body }}</p>
+</div>
+</div>
+
+<sc-if value="{{ rv.needsMore }}" hint-placeholder-val="{{ false }}">
+<button type="button" class="cta" style="background:var(--conditional-ink)">أضف الدليل المطلوب</button>
+</sc-if>
+
+<section class="card" style="padding:15px">
+<div style="font-size:var(--t-xs);color:var(--ink-3);margin-bottom:13px">ما حدث حتى الآن</div>
+<sc-for list="{{ timeline }}" as="t" hint-placeholder-count="4">
+<div style="display:flex;gap:12px">
+<div style="flex:none;display:flex;flex-direction:column;align-items:center;width:16px">
+<span aria-hidden="true" style="width:11px;height:11px;border-radius:50%;background:{{ t.dot }}"></span>
+<sc-if value="{{ t.line }}" hint-placeholder-val="{{ true }}"><span aria-hidden="true" style="flex:1;width:2px;background:var(--rule);min-height:20px"></span></sc-if>
+</div>
+<div style="flex:1;min-width:0;padding-block-end:14px">
+<div style="display:flex;align-items:baseline;gap:8px">
+<span style="flex:1;min-width:0;font-size:var(--t-sm);font-weight:{{ t.fw }}">{{ t.what }}</span>
+<span class="num" style="flex:none;font-size:var(--t-micro);color:var(--ink-3)"><bdi>{{ t.when }}</bdi></span>
+</div>
+<sc-if value="{{ t.hasBy }}" hint-placeholder-val="{{ false }}">
+<div style="font-size:var(--t-micro);color:var(--ink-2);margin-top:3px">{{ t.by }}</div>
+</sc-if>
+</div>
+</div>
+</sc-for>
+</section>
+</div>
+</sc-if>
+
+<!-- ══ 5 · DECISION ══ -->
+<sc-if value="{{ isDecided }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;gap:15px">
+<div style="display:flex;gap:12px;padding:15px;border:1px solid var(--allowed-bd);border-radius:var(--r);background:var(--allowed-bg)">
+<span aria-hidden="true" style="flex:none;width:32px;height:32px;border-radius:50%;background:var(--allowed);color:#fff;display:grid;place-items:center;font-size:15px;font-weight:600">✓</span>
+<div style="flex:1;min-width:0">
+<div style="font-size:var(--t-h3);font-weight:600;margin-bottom:4px">صدر القرار لصالحك</div>
+<p style="margin:0;font-size:var(--t-sm);line-height:1.7;color:var(--ink-2)">ثبت عدم مطابقة اللون في 6 قطع.</p>
+</div>
+</div>
+
+<section class="card" style="padding:15px">
+<div style="font-size:var(--t-xs);color:var(--ink-3);margin-bottom:9px">السبب</div>
+<p style="margin:0 0 14px;font-size:var(--t-sm);line-height:1.75">الصور المرفقة والمواصفة المسجَّلة في الاتفاق تُظهران اختلافاً واضحاً في اللون لم يُعلَم به المشتري قبل التسليم.</p>
+<div style="font-size:var(--t-xs);color:var(--ink-3);margin-bottom:9px">الأثر</div>
+<sc-for list="{{ effects }}" as="e" hint-placeholder-count="3">
+<div style="display:flex;gap:9px;padding:6px 0">
+<span aria-hidden="true" style="flex:none;width:6px;height:6px;border-radius:50%;background:var(--ink-3);margin-block-start:8px"></span>
+<span style="flex:1;font-size:var(--t-sm);line-height:1.65;color:var(--ink-2)">{{ e }}</span>
+</div>
+</sc-for>
+</section>
+
+<div style="display:flex;gap:10px;padding:13px 14px;border:1px solid var(--rule);border-radius:var(--r);background:var(--surface-2)">
+<span aria-hidden="true" style="flex:none;color:var(--ink-3)">i</span>
+<p style="margin:0;font-size:var(--t-xs);line-height:1.7;color:var(--ink-2)">القرار يخصّ سجلّ الطرفين على المنصّة. أي تسوية مالية تبقى اتفاقاً بينكما.</p>
+</div>
+
+<button type="button" class="cta">اترك مراجعة</button>
+</div>
+</sc-if>
+
+</main>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:430,&quot;height&quot;:1100}}">
+class Component extends DCLogic {
+  state = { view: 'pick', kind: 'spec', want: 'replace' };
+
+  VIEWS = [['pick','النوع'],['detail','التفاصيل'],['submitted','أُرسل'],['review','قيد المراجعة'],['more','دليل ناقص'],['decided','القرار']];
+  HEAD = { pick: 'بلاغ', detail: 'بلاغ', submitted: 'بلاغ', review: 'بلاغك', more: 'بلاغك', decided: 'بلاغك' };
+
+  KINDS = [
+    { id: 'spec', title: 'البضاعة غير مطابقة', body: 'اللون أو المقاس أو الخامة تختلف عمّا اتّفقنا عليه.' },
+    { id: 'qty', title: 'الكمية ناقصة', body: 'وصلني أقلّ ممّا هو مسجَّل في الاتفاق.' },
+    { id: 'late', title: 'تأخّر التسليم', body: 'مرّ الأجل المتّفق عليه بلا تسليم ولا تفسير.' },
+    { id: 'noshow', title: 'لم يسلّم إطلاقاً', body: 'الطرف الآخر توقّف عن الردّ.' },
+    { id: 'price', title: 'تغيّر السعر بعد الاتفاق', body: 'طُلب منّي سعر خارج النطاق المسجَّل.' }
+  ];
+
+  WANTS = [
+    { id: 'replace', label: 'استبدال' },
+    { id: 'partial', label: 'تسوية جزئية' },
+    { id: 'record', label: 'توثيق فقط' }
+  ];
+
+  EVIDENCE = [{ h: 60 }, { h: 250 }];
+
+  ATTACHED = [
+    'وصفك وصور الأدلّة',
+    'مواصفة الاتفاق المسجَّلة',
+    'محادثتكما كاملة',
+    'صور التسليم بطابعها الزمني'
+  ];
+
+  TIMELINE = [
+    { what: 'أرسلت البلاغ', when: '21 أكتوبر', by: '', dot: 'var(--allowed)' },
+    { what: 'أُعلم الطرف الآخر', when: '21 أكتوبر', by: 'تلقائياً', dot: 'var(--allowed)' },
+    { what: 'ردّت كريمة ح.', when: '22 أكتوبر', by: 'أرفقت صور الشراء', dot: 'var(--allowed)' },
+    { what: 'قيد مراجعة فريق الثقة', when: 'الآن', by: '', dot: 'var(--conditional)' }
+  ];
+
+  EFFECTS = [
+    'يُسجَّل البلاغ في سجلّ الطرفين ويظهر أثره في «مطابقة المواصفة».',
+    'لا يُحتسب هذا النزاع في نسبة إتمامك أنت.',
+    'اتّفقتما على استبدال 6 قطع في الرحلة القادمة.'
+  ];
+
+  renderVals() {
+    const s = this.state;
+    const go = (v) => () => this.setState({ view: v });
+    const v = s.view;
+    const needsMore = v === 'more';
+
+    const rv = needsMore
+      ? { glyph: '!', title: 'نحتاج دليلاً إضافياً', body: 'أضف صورة تُظهر بطاقة المقاس على القطعة، حتى نطابقها مع المواصفة المسجَّلة.',
+          bg: 'var(--conditional-bg)', bd: 'var(--conditional-bd)', dot: 'var(--conditional)', needsMore: true }
+      : { glyph: '⏱', title: 'قيد المراجعة', body: 'فريق الثقة يراجع الأدلّة من الطرفين. سيصلك القرار مع سببه.',
+          bg: 'var(--conditional-bg)', bd: 'var(--conditional-bd)', dot: 'var(--conditional)', needsMore: false };
+
+    return {
+      headline: this.HEAD[v],
+      views: this.VIEWS.map(([id, label]) => ({
+        label, on: v === id,
+        bg: v === id ? 'var(--ink)' : 'var(--surface)',
+        fg: v === id ? 'var(--ink-on)' : 'var(--ink-2)',
+        bd: v === id ? 'var(--ink)' : 'var(--rule-strong)',
+        pick: go(id)
+      })),
+      isPick: v === 'pick', isDetail: v === 'detail', isSubmitted: v === 'submitted',
+      isReview: v === 'review' || v === 'more', isDecided: v === 'decided',
+      goDetail: go('detail'), goSubmitted: go('submitted'), goReview: go('review'),
+
+      kinds: this.KINDS.map(k => {
+        const on = s.kind === k.id;
+        return {
+          ...k, on,
+          bd: on ? 'var(--allowed)' : 'var(--rule-faint)',
+          bw: on ? 2 : 1,
+          dotBd: on ? 'var(--allowed)' : 'var(--rule-strong)',
+          dotBg: on ? 'var(--allowed)' : 'transparent',
+          check: on ? '✓' : '',
+          pick: () => this.setState({ kind: k.id })
+        };
+      }),
+
+      wants: this.WANTS.map(w => {
+        const on = s.want === w.id;
+        return {
+          label: w.label, on,
+          bd: on ? 'var(--ink)' : 'var(--rule-strong)',
+          bg: on ? 'var(--ink)' : 'var(--surface)',
+          fg: on ? 'var(--ink-on)' : 'var(--ink)',
+          pick: () => this.setState({ want: w.id })
+        };
+      }),
+
+      evidence: this.EVIDENCE,
+      attached: this.ATTACHED,
+      rv,
+      timeline: this.TIMELINE.map((t, i) => ({
+        ...t,
+        line: i < this.TIMELINE.length - 1,
+        hasBy: !!t.by,
+        fw: i === this.TIMELINE.length - 1 ? 600 : 400
+      })),
+      effects: this.EFFECTS
+    };
+  }
+}
+</script>
+</body>
+</html>

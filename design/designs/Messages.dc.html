@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./tokens.css">
+<style>
+.scrollx{overflow-x:auto;scrollbar-width:none}.scrollx::-webkit-scrollbar{display:none}
+.bub{max-width:78%;padding:10px 13px;border-radius:var(--r-lg);font-size:var(--t-body);line-height:1.65}
+.mine{background:var(--ink);color:var(--ink-on);border-end-end-radius:var(--r-xs);margin-inline-start:auto}
+.theirs{background:var(--surface);border:1px solid var(--rule);border-end-start-radius:var(--r-xs)}
+.tmpl{flex:none;height:34px;padding:0 13px;border:1px solid var(--rule-strong);border-radius:var(--r-pill);background:var(--surface);font-size:var(--t-sm);cursor:pointer;color:inherit}
+</style>
+</helmet>
+
+<div dir="rtl" lang="ar" class="tier-op" style="min-height:100vh;display:flex;justify-content:center">
+<div style="width:100%;max-width:430px;min-height:100vh;display:flex;flex-direction:column;background:var(--paper);border-inline:1px solid var(--rule)">
+
+<header style="position:sticky;top:0;z-index:20;background:var(--surface);border-bottom:1px solid var(--rule)">
+<div style="display:flex;align-items:center;gap:10px;padding:9px 12px">
+<button type="button" aria-label="رجوع" style="width:34px;height:34px;border:0;background:transparent;cursor:pointer;display:grid;place-items:center;color:inherit">
+<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 5l-7 7 7 7"/></svg>
+</button>
+<span aria-hidden="true" style="flex:none;width:36px;height:36px;border-radius:50%;background:oklch(0.92 0.03 150);display:grid;place-items:center;font-size:12px;font-weight:600;color:var(--allowed-ink)">ي ب</span>
+<div style="flex:1;min-width:0">
+<div style="display:flex;align-items:center;gap:5px">
+<span style="font-size:var(--t-h3);font-weight:500">ياسين ب.</span>
+<svg width="13" height="13" viewBox="0 0 24 24" style="flex:none" role="img" aria-label="مُتحقَّق"><circle cx="12" cy="12" r="10" fill="var(--allowed)"/><path d="M7.4 12.4l3 3 6.2-6.6" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+</div>
+<div class="num" style="font-size:var(--t-micro);color:var(--ink-2);margin-top:1px"><bdi>تاجر · سطيف · يردّ خلال ساعتين</bdi></div>
+</div>
+</div>
+
+<!-- the conversation is pinned to a deal, never free-floating -->
+<button type="button" style="width:100%;display:flex;align-items:center;gap:10px;padding:10px 14px;border:0;border-top:1px solid var(--rule-faint);background:var(--surface-2);color:inherit;text-align:start;cursor:pointer">
+<span class="img ph ph-coat" style="flex:none;width:30px;height:36px;border-radius:var(--r-xs);display:block"></span>
+<span style="flex:1;min-width:0">
+<span style="display:block;font-size:var(--t-sm);font-weight:500">معاطف نسائية شتوية</span>
+<span class="num" style="display:block;font-size:var(--t-micro);color:var(--ink-2);margin-top:2px"><bdi>18 وحدة · 4 800 – 5 200 دج · رحلة إسطنبول</bdi></span>
+</span>
+<span class="chip chip-verified" style="height:20px;font-size:var(--t-micro);flex:none">متّفق عليه</span>
+</button>
+</header>
+
+<main style="flex:1;padding:16px 14px 12px;display:flex;flex-direction:column;gap:11px">
+
+<div style="text-align:center;font-size:var(--t-micro);color:var(--ink-3)">12 أكتوبر</div>
+
+<sc-for list="{{ messages }}" as="m" hint-placeholder-count="6">
+<div style="display:flex;flex-direction:column;gap:3px;align-items:{{ m.align }}">
+
+<sc-if value="{{ m.isCard }}" hint-placeholder-val="{{ false }}">
+<div class="card" style="width:100%;padding:13px">
+<div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+<span aria-hidden="true" style="flex:none;width:22px;height:22px;border-radius:50%;background:{{ m.cardBg }};display:grid;place-items:center;font-size:11px;color:{{ m.cardFg }}">{{ m.glyph }}</span>
+<span style="flex:1;font-size:var(--t-sm);font-weight:600">{{ m.cardTitle }}</span>
+</div>
+<sc-for list="{{ m.rows }}" as="r" hint-placeholder-count="3">
+<div style="display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:7px 0;border-bottom:1px solid var(--rule-faint)">
+<span style="font-size:var(--t-sm);color:var(--ink-2)">{{ r.k }}</span>
+<span class="num" style="font-size:var(--t-sm);font-weight:500"><bdi>{{ r.v }}</bdi></span>
+</div>
+</sc-for>
+<sc-if value="{{ m.hasCta }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;gap:8px;margin-top:12px">
+<button type="button" style="flex:1;height:40px;border:0;border-radius:var(--r-sm);background:var(--allowed);color:var(--ink-on);font-size:var(--t-sm);font-weight:600;cursor:pointer">{{ m.cta1 }}</button>
+<button type="button" style="flex:none;padding:0 14px;height:40px;border:1px solid var(--rule-strong);border-radius:var(--r-sm);background:var(--surface);color:inherit;font-size:var(--t-sm);cursor:pointer">{{ m.cta2 }}</button>
+</div>
+</sc-if>
+</div>
+</sc-if>
+
+<sc-if value="{{ m.isText }}" hint-placeholder-val="{{ true }}">
+<div class="bub {{ m.cls }}">{{ m.text }}</div>
+</sc-if>
+
+<span class="num" style="font-size:9.5px;color:var(--ink-3);padding-inline:4px"><bdi>{{ m.time }}</bdi></span>
+</div>
+</sc-for>
+
+</main>
+
+<!-- structured templates before free text: fewer disputes later -->
+<div class="scrollx" style="display:flex;gap:7px;padding:0 14px 10px">
+<sc-for list="{{ templates }}" as="t" hint-placeholder-count="4">
+<button type="button" class="tmpl">{{ t }}</button>
+</sc-for>
+</div>
+
+<div style="display:flex;align-items:center;gap:9px;padding:10px 14px 15px;background:var(--surface);border-top:1px solid var(--rule)">
+<button type="button" aria-label="أرفق صورة" style="flex:none;width:42px;height:42px;border:1px solid var(--rule-strong);border-radius:var(--r-sm);background:var(--surface);display:grid;place-items:center;cursor:pointer;color:var(--ink-2)">
+<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3.5" y="5" width="17" height="14" rx="2.5"/><circle cx="9" cy="10" r="1.6"/><path d="M4 17l5-4 4 3 3-2 4 3"/></svg>
+</button>
+<input placeholder="اكتب رسالة" aria-label="رسالة" style="flex:1;min-width:0;height:42px;padding:0 14px;border:1px solid var(--rule-strong);border-radius:var(--r-pill);background:var(--surface);font-size:15px;color:inherit">
+<button type="button" aria-label="أرسل" style="flex:none;width:42px;height:42px;border:0;border-radius:50%;background:var(--allowed);display:grid;place-items:center;cursor:pointer">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M21 3L3 10.5l7 3 3 7z"/></svg>
+</button>
+</div>
+
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:430,&quot;height&quot;:1060}}">
+class Component extends DCLogic {
+  MESSAGES = [
+    { who: 'them', text: 'سلام. المعاطف اللي في لوحة الطلب، عندك منها مقاس L و XL؟', time: '09:12' },
+    { who: 'me', text: 'سلام. إي، الاثنين موجودين. راني نخطّط نشري 30 وحدة مقسّمين على المقاسات.', time: '09:20' },
+    { who: 'them', text: 'مليح. نحتاج 18 وحدة: 6 مقاس L و12 مقاس XL. الأسود والكحلي.', time: '09:24' },
+    { kind: 'agree', time: '09:31',
+      cardTitle: 'الاتفاق المقترح', glyph: '✓', tone: 'ok',
+      rows: [
+        ['الصنف', 'معاطف نسائية شتوية'],
+        ['الكمية', '18 وحدة — 6 مقاس L · 12 مقاس XL'],
+        ['نطاق السعر', '4 800 – 5 200 دج للوحدة'],
+        ['أجل التسليم', '20 أكتوبر · سطيف']
+      ],
+      cta1: 'أوافق على الاتفاق', cta2: 'عدّل' },
+    { who: 'me', text: 'واخّا. إذا تغيّر السعر خارج النطاق نعلمك قبل ما نشري، ما نشريش وندير حسابي وحدي.', time: '09:36' },
+    { kind: 'handover', time: '18 أكتوبر',
+      cardTitle: 'وصلت البضاعة — أكّد الاستلام', glyph: '↓', tone: 'cond',
+      rows: [
+        ['الكمية المسلَّمة', '18 وحدة'],
+        ['نقطة الاستلام', 'سطيف · وسط المدينة'],
+        ['رمز التأكيد', '4 7 2 9 1 6']
+      ],
+      cta1: 'استلمتُ ومطابق', cta2: 'عندي اعتراض' }
+  ];
+
+  TEMPLATES = ['أؤكّد المواصفة', 'أقترح سعراً', 'أبلغ عن تأخير', 'أطلب صوراً'];
+
+  TONE = {
+    ok: ['var(--allowed-bg)', 'var(--allowed-ink)'],
+    cond: ['var(--conditional-bg)', 'var(--conditional-ink)']
+  };
+
+  renderVals() {
+    return {
+      templates: this.TEMPLATES,
+      messages: this.MESSAGES.map(m => {
+        if (m.kind) {
+          const [cardBg, cardFg] = this.TONE[m.tone];
+          return {
+            isCard: true, isText: false, align: 'stretch',
+            cardTitle: m.cardTitle, glyph: m.glyph, cardBg, cardFg,
+            rows: m.rows.map(([k, v]) => ({ k, v })),
+            hasCta: !!m.cta1, cta1: m.cta1, cta2: m.cta2,
+            time: m.time
+          };
+        }
+        const mine = m.who === 'me';
+        return {
+          isCard: false, isText: true,
+          align: mine ? 'flex-end' : 'flex-start',
+          cls: mine ? 'mine' : 'theirs',
+          text: m.text, time: m.time
+        };
+      })
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./tokens.css">
+<style>
+.scrollx{overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none}
+.scrollx::-webkit-scrollbar{display:none}
+/* Container queries, not viewport queries: the grid must respond to the
+   surface it sits in, so the artboard renders exactly as the phone does. */
+.gridwrap{container-type:inline-size}
+.grid2{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+@container (min-width:520px){.grid2{grid-template-columns:repeat(3,1fr)}}
+@container (min-width:800px){.grid2{grid-template-columns:repeat(4,1fr)}}
+.clamp2{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.tap{cursor:pointer;transition:box-shadow .16s ease,transform .16s ease}
+.tap:hover{box-shadow:var(--e2)}
+</style>
+</helmet>
+
+<div dir="rtl" lang="ar" class="tier-public" style="min-height:100vh;display:flex;justify-content:center">
+<div style="width:100%;max-width:430px;min-height:100vh;display:flex;flex-direction:column;background:var(--paper-public);border-inline:1px solid var(--rule)">
+
+<!-- ── HEADER: search is the primary affordance, not a buried icon ── -->
+<header style="position:sticky;top:0;z-index:20;background:var(--surface);border-bottom:1px solid var(--rule)">
+<div style="display:flex;align-items:center;gap:10px;padding:12px 16px 10px">
+<span style="font-weight:600;font-size:18px;flex:none">مَعْبَر</span>
+<div style="flex:1"></div>
+<button type="button" aria-label="الرسائل" style="position:relative;width:38px;height:38px;border:1px solid var(--rule);border-radius:var(--r-sm);background:var(--surface);cursor:pointer;display:grid;place-items:center">
+<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 9 9 0 0 1-3.3-.6L3 21l1.7-5a8.2 8.2 0 0 1-.7-3.4 8.4 8.4 0 0 1 8.5-8.5 8.4 8.4 0 0 1 8.5 8.4z"/></svg>
+<span aria-hidden="true" style="position:absolute;inset-block-start:6px;inset-inline-end:6px;width:7px;height:7px;border-radius:50%;background:var(--accent)"></span>
+</button>
+</div>
+<div style="padding:0 16px 12px">
+<div style="display:flex;align-items:center;gap:9px;height:44px;padding:0 13px;border:1px solid var(--rule-strong);border-radius:var(--r);background:var(--surface-2)">
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--ink-3)" stroke-width="2" style="flex:none"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+<input value="{{ q }}" onChange="{{ onQ }}" placeholder="ابحث عن منتج، فئة، أو متجر" aria-label="بحث" style="flex:1;min-width:0;border:0;background:transparent;font-size:15px;color:inherit;outline:none">
+</div>
+</div>
+</header>
+
+<main style="flex:1;padding-bottom:78px">
+
+<!-- ── CATEGORIES: imagery-led, the commercial entry point ── -->
+<section style="padding:16px 0 4px">
+<div style="display:flex;justify-content:space-between;align-items:baseline;padding:0 16px 10px">
+<h2 style="margin:0;font-size:var(--t-h2);font-weight:500">تصفّح حسب الفئة</h2>
+</div>
+<div class="scrollx" style="display:flex;gap:10px;padding:0 16px 4px">
+<sc-for list="{{ cats }}" as="c" hint-placeholder-count="5">
+<button type="button" onClick="{{ c.pick }}" aria-pressed="{{ c.on }}" class="tap" style="flex:none;width:104px;border:1px solid {{ c.bd }};border-radius:var(--r);background:var(--surface);padding:0;overflow:hidden;text-align:start;color:inherit;box-shadow:{{ c.sh }}">
+<span class="img img-tile ph {{ c.ph }}" style="border-radius:0;display:block"></span>
+<span style="display:block;padding:8px 9px 9px">
+<span style="display:block;font-size:var(--t-sm);font-weight:{{ c.fw }}">{{ c.label }}</span>
+<span class="num" style="display:block;font-size:var(--t-micro);color:var(--ink-3);margin-top:1px"><bdi>{{ c.count }}</bdi></span>
+</span>
+</button>
+</sc-for>
+</div>
+</section>
+
+<!-- ── FILTER / SORT BAR ── -->
+<div style="position:sticky;top:96px;z-index:15;display:flex;gap:8px;padding:12px 16px;background:var(--paper-public);border-bottom:1px solid var(--rule-faint)">
+<button type="button" onClick="{{ openFilter }}" style="display:flex;align-items:center;gap:6px;height:34px;padding:0 12px;border:1px solid var(--rule-strong);border-radius:var(--r-pill);background:var(--surface);font-size:var(--t-sm);cursor:pointer;color:inherit">
+<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M6 12h12M10 18h4"/></svg>
+تصفية
+<sc-if value="{{ hasFilters }}" hint-placeholder-val="{{ true }}"><span class="num" style="display:inline-grid;place-items:center;min-width:17px;height:17px;padding:0 4px;border-radius:var(--r-pill);background:var(--ink);color:var(--ink-on);font-size:10px"><bdi>{{ filterCount }}</bdi></span></sc-if>
+</button>
+<button type="button" onClick="{{ openSort }}" style="display:flex;align-items:center;gap:6px;height:34px;padding:0 12px;border:1px solid var(--rule-strong);border-radius:var(--r-pill);background:var(--surface);font-size:var(--t-sm);cursor:pointer;color:inherit">{{ sortLabel }}
+<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+</button>
+<div style="flex:1"></div>
+<span class="num" style="align-self:center;font-size:var(--t-xs);color:var(--ink-3)"><bdi>{{ resultCount }}</bdi></span>
+</div>
+
+<!-- ── PRODUCT GRID ── -->
+<section style="padding:16px">
+<div class="gridwrap"><div class="grid2">
+<sc-for list="{{ items }}" as="p" hint-placeholder-count="6">
+<article class="card tap" style="overflow:hidden;display:flex;flex-direction:column">
+<div style="position:relative">
+<span class="img img-card ph {{ p.ph }}" style="border-radius:0;display:block"></span>
+<button type="button" onClick="{{ p.save }}" aria-label="{{ p.saveLabel }}" aria-pressed="{{ p.saved }}" style="position:absolute;inset-block-start:8px;inset-inline-end:8px;width:32px;height:32px;border:0;border-radius:50%;background:oklch(1 0 0 / 0.88);display:grid;place-items:center;cursor:pointer;box-shadow:var(--e1)">
+<svg width="16" height="16" viewBox="0 0 24 24" fill="{{ p.heartFill }}" stroke="{{ p.heartStroke }}" stroke-width="1.9"><path d="M12 20s-7-4.4-7-9.3A4.2 4.2 0 0 1 12 8a4.2 4.2 0 0 1 7 2.7c0 4.9-7 9.3-7 9.3z"/></svg>
+</button>
+<sc-if value="{{ p.hasFlag }}" hint-placeholder-val="{{ true }}">
+<span style="position:absolute;inset-block-start:8px;inset-inline-start:8px;height:21px;padding:0 8px;display:inline-flex;align-items:center;border-radius:var(--r-pill);background:{{ p.flagBg }};color:{{ p.flagFg }};font-size:var(--t-micro);font-weight:500">{{ p.flag }}</span>
+</sc-if>
+</div>
+
+<div style="padding:10px 11px 12px;display:flex;flex-direction:column;gap:7px;flex:1">
+<h3 class="clamp2" style="margin:0;font-size:var(--t-sm);font-weight:400;line-height:1.45;min-height:38px">{{ p.title }}</h3>
+
+<div style="display:flex;align-items:baseline;gap:6px">
+<span class="num" style="font-size:16px;font-weight:600;color:var(--accent-ink)"><bdi>{{ p.price }}</bdi></span>
+<span class="num" style="font-size:var(--t-micro);color:var(--ink-3)"><bdi>{{ p.unit }}</bdi></span>
+</div>
+
+<div style="display:flex;align-items:center;gap:6px;padding-top:7px;border-top:1px solid var(--rule-faint)">
+<span aria-hidden="true" style="flex:none;width:20px;height:20px;border-radius:50%;background:{{ p.avBg }};display:grid;place-items:center;font-size:9px;font-weight:600;color:{{ p.avFg }}">{{ p.initials }}</span>
+<span style="flex:1;min-width:0;font-size:var(--t-micro);color:var(--ink-2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ p.seller }}</span>
+<svg width="13" height="13" viewBox="0 0 24 24" style="flex:none" role="img" aria-label="متجر مُتحقَّق"><circle cx="12" cy="12" r="10" fill="var(--allowed)"/><path d="M7.4 12.4l3 3 6.2-6.6" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+</div>
+<div class="num" style="font-size:var(--t-micro);color:var(--ink-3)"><bdi>{{ p.trust }}</bdi></div>
+</div>
+</article>
+</sc-for>
+</div></div>
+</section>
+
+<!-- ── BOTTOM NAV — consumer ── -->
+<nav aria-label="التنقّل" style="position:fixed;inset-block-end:0;inset-inline:0;margin:0 auto;max-width:430px;display:grid;grid-template-columns:repeat(5,1fr);background:var(--surface);border-top:1px solid var(--rule);padding-block:6px 8px">
+<sc-for list="{{ nav }}" as="n" hint-placeholder-count="5">
+<button type="button" onClick="{{ n.pick }}" aria-current="{{ n.on }}" style="display:flex;flex-direction:column;align-items:center;gap:3px;border:0;background:transparent;padding:5px 0;cursor:pointer;color:{{ n.fg }}">
+<span aria-hidden="true" style="width:21px;height:21px;display:grid;place-items:center">{{ n.icon }}</span>
+<span style="font-size:var(--t-micro);font-weight:{{ n.fw }}">{{ n.label }}</span>
+</button>
+</sc-for>
+</nav>
+
+<!-- ── FILTER SHEET ── -->
+<sc-if value="{{ filterOpen }}" hint-placeholder-val="{{ false }}">
+<div role="dialog" aria-label="تصفية" style="position:fixed;inset:0;background:oklch(0.20 0.02 60 / 0.42);display:flex;align-items:flex-end;justify-content:center;z-index:40">
+<div style="width:100%;max-width:430px;background:var(--surface);border-radius:var(--r-lg) var(--r-lg) 0 0;padding:16px 16px 22px;box-shadow:var(--e2)">
+<div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:14px">
+<h3 style="margin:0;font-size:var(--t-h2);font-weight:500">تصفية</h3>
+<button type="button" onClick="{{ closeSheets }}" style="border:0;background:transparent;font-size:var(--t-sm);color:var(--ink-2);cursor:pointer">إغلاق</button>
+</div>
+<sc-for list="{{ filterGroups }}" as="g" hint-placeholder-count="3">
+<div style="padding:12px 0;border-top:1px solid var(--rule-faint)">
+<div style="font-size:var(--t-xs);color:var(--ink-3);margin-bottom:8px">{{ g.label }}</div>
+<div style="display:flex;flex-wrap:wrap;gap:7px">
+<sc-for list="{{ g.opts }}" as="o" hint-placeholder-count="4">
+<button type="button" onClick="{{ o.pick }}" aria-pressed="{{ o.on }}" style="height:33px;padding:0 12px;border:1px solid {{ o.bd }};border-radius:var(--r-pill);background:{{ o.bg }};color:{{ o.fg }};font-size:var(--t-sm);cursor:pointer">{{ o.label }}</button>
+</sc-for>
+</div>
+</div>
+</sc-for>
+<button type="button" onClick="{{ closeSheets }}" style="width:100%;height:48px;margin-top:14px;border:0;border-radius:var(--r);background:var(--ink);color:var(--ink-on);font-size:15px;font-weight:500;cursor:pointer">أظهر <bdi>{{ resultCount }}</bdi></button>
+</div>
+</div>
+</sc-if>
+
+<!-- ── SORT SHEET ── -->
+<sc-if value="{{ sortOpen }}" hint-placeholder-val="{{ false }}">
+<div role="dialog" aria-label="ترتيب" style="position:fixed;inset:0;background:oklch(0.20 0.02 60 / 0.42);display:flex;align-items:flex-end;justify-content:center;z-index:40">
+<div style="width:100%;max-width:430px;background:var(--surface);border-radius:var(--r-lg) var(--r-lg) 0 0;padding:16px 0 22px;box-shadow:var(--e2)">
+<h3 style="margin:0 16px 8px;font-size:var(--t-h2);font-weight:500">ترتيب</h3>
+<sc-for list="{{ sorts }}" as="s" hint-placeholder-count="4">
+<button type="button" onClick="{{ s.pick }}" style="width:100%;display:flex;justify-content:space-between;align-items:center;gap:12px;padding:14px 16px;border:0;border-top:1px solid var(--rule-faint);background:transparent;color:inherit;font-size:var(--t-body);text-align:start;cursor:pointer">
+<span style="font-weight:{{ s.fw }}">{{ s.label }}</span>
+<sc-if value="{{ s.on }}" hint-placeholder-val="{{ false }}"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--allowed)" stroke-width="2.4"><path d="M5 13l4.5 4.5L19 7"/></svg></sc-if>
+</button>
+</sc-for>
+</div>
+</div>
+</sc-if>
+
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:430,&quot;height&quot;:1460}}">
+class Component extends DCLogic {
+  state = { q: '', cat: 'all', sort: 'recent', saved: { p3: true }, sheet: null, filters: { wilaya: 'all', avail: 'all', origin: 'all' } };
+
+  CATS = [
+    { id: 'clothes', label: 'ألبسة',      ph: 'ph-coat',    n: 1240 },
+    { id: 'bags',    label: 'حقائب',      ph: 'ph-bag',     n: 486 },
+    { id: 'cosm',    label: 'تجميل وعطور', ph: 'ph-perfume', n: 913 },
+    { id: 'shoes',   label: 'أحذية',      ph: 'ph-shoe',    n: 702 },
+    { id: 'watches', label: 'ساعات',      ph: 'ph-watch',   n: 188 },
+    { id: 'home',    label: 'منزل',       ph: 'ph-home',    n: 355 },
+    { id: 'elec',    label: 'إلكترونيات',  ph: 'ph-elec',    n: 264 }
+  ];
+
+  // Every seller is a TRADER with a verified commercial register.
+  // A micro-importer can never appear here — Décret 25-170 art.4 exempts them
+  // from the RC, while Law 18-05 requires it of an e-supplier.
+  ITEMS = [
+    { id: 'p1', ph: 'ph-coat',    title: 'معطف نسائي شتوي — صوف مخلوط، مقاسات S–XL', price: 7400, unit: 'دج', seller: 'بوتيك نادية · قسنطينة', initials: 'ب ن', tx: 63, flag: 'وصل حديثاً', flagKind: 'new' },
+    { id: 'p2', ph: 'ph-bag',     title: 'حقيبة يد جلدية بحزام كتف', price: 5900, unit: 'دج', seller: 'دار الأناقة · وهران', initials: 'د أ', tx: 118, flag: '', flagKind: '' },
+    { id: 'p3', ph: 'ph-perfume', title: 'عطر نسائي 100 مل — شرقي', price: 4200, unit: 'دج', seller: 'بوتيك نادية · قسنطينة', initials: 'ب ن', tx: 63, flag: 'كمية محدودة', flagKind: 'low' },
+    { id: 'p4', ph: 'ph-shoe',    title: 'حذاء رياضي رجالي — جلد صناعي', price: 6300, unit: 'دج', seller: 'محل ياسين · سطيف', initials: 'م ي', tx: 241, flag: '', flagKind: '' },
+    { id: 'p5', ph: 'ph-watch',   title: 'ساعة يد رجالية — ستانلس ستيل', price: 11500, unit: 'دج', seller: 'دار الأناقة · وهران', initials: 'د أ', tx: 118, flag: '', flagKind: '' },
+    { id: 'p6', ph: 'ph-home',    title: 'طقم أواني منزلية — 12 قطعة', price: 8900, unit: 'دج', seller: 'محل ياسين · سطيف', initials: 'م ي', tx: 241, flag: 'بالطلب', flagKind: 'order' }
+  ];
+
+  SORTS = [
+    { id: 'recent', label: 'الأحدث وصولاً' },
+    { id: 'trust',  label: 'الأكثر معاملات مؤكَّدة' },
+    { id: 'low',    label: 'السعر: من الأقل' },
+    { id: 'high',   label: 'السعر: من الأعلى' }
+  ];
+
+  FILTERS = [
+    { id: 'wilaya', label: 'الولاية', opts: [['all','كل الولايات'],['alger','الجزائر'],['setif','سطيف'],['oran','وهران'],['const','قسنطينة']] },
+    { id: 'avail',  label: 'التوفّر',  opts: [['all','الكل'],['now','متوفر الآن'],['soon','يصل قريباً'],['order','بالطلب']] },
+    { id: 'origin', label: 'المصدر',   opts: [['all','الكل'],['tr','تركيا'],['ae','الإمارات'],['cn','الصين']] }
+  ];
+
+  FLAG = {
+    new:   ['var(--allowed-bg)', 'var(--allowed-ink)'],
+    low:   ['var(--conditional-bg)', 'var(--conditional-ink)'],
+    order: ['var(--neutral-bg)', 'var(--ink-2)']
+  };
+
+  AV = [['oklch(0.92 0.03 150)','var(--allowed-ink)'], ['oklch(0.93 0.03 28)','var(--accent-ink)'], ['oklch(0.92 0.03 250)','oklch(0.35 0.06 250)']];
+
+  fmt(n) { return '⁦' + String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + '⁩'; }
+
+  // Arabic counted nouns: one / two / few (3-10) / many (11+)
+  counted(n, f) {
+    const m = n % 100;
+    if (n === 1) return f.one;
+    if (n === 2) return f.two;
+    if (m >= 3 && m <= 10) return this.fmt(n) + ' ' + f.few;
+    return this.fmt(n) + ' ' + f.many;
+  }
+  TX = { one: 'معاملة واحدة مؤكَّدة', two: 'معاملتان مؤكَّدتان', few: 'معاملات مؤكَّدة', many: 'معاملة مؤكَّدة' };
+  ITEM_N = { one: 'منتج واحد', two: 'منتجان', few: 'منتجات', many: 'منتجاً' };
+
+  ICON = {
+    home:   React.createElement('svg', { width: 20, height: 20, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 1.8 }, React.createElement('path', { d: 'M4 11l8-7 8 7v8a1 1 0 0 1-1 1h-4v-6H9v6H5a1 1 0 0 1-1-1z' })),
+    shop:   React.createElement('svg', { width: 20, height: 20, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 1.8 }, React.createElement('path', { d: 'M4 8h16l-1.2 11a1 1 0 0 1-1 .9H6.2a1 1 0 0 1-1-.9z' }), React.createElement('path', { d: 'M8.5 8a3.5 3.5 0 0 1 7 0' })),
+    heart:  React.createElement('svg', { width: 20, height: 20, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 1.8 }, React.createElement('path', { d: 'M12 20s-7-4.4-7-9.3A4.2 4.2 0 0 1 12 8a4.2 4.2 0 0 1 7 2.7c0 4.9-7 9.3-7 9.3z' })),
+    msg:    React.createElement('svg', { width: 20, height: 20, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 1.8 }, React.createElement('path', { d: 'M21 11.5a8.4 8.4 0 0 1-9 8.4 9 9 0 0 1-3.3-.6L3 21l1.7-5a8.2 8.2 0 0 1-.7-3.4 8.4 8.4 0 0 1 8.5-8.5 8.4 8.4 0 0 1 8.5 8.4z' })),
+    user:   React.createElement('svg', { width: 20, height: 20, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 1.8 }, React.createElement('circle', { cx: 12, cy: 8.5, r: 3.7 }), React.createElement('path', { d: 'M4.8 20a7.4 7.4 0 0 1 14.4 0' }))
+  };
+
+  // Consumer nav is five, not six. Messages earns a slot (contacting a seller
+  // is the primary conversion action); "طلباتي" lives under حسابي because an
+  // availability request is far lower frequency than a conversation.
+  NAV = [
+    { id: 'home',  label: 'الرئيسية',  icon: 'home' },
+    { id: 'shop',  label: 'السوق',     icon: 'shop' },
+    { id: 'saved', label: 'المحفوظات', icon: 'heart' },
+    { id: 'msg',   label: 'الرسائل',   icon: 'msg' },
+    { id: 'me',    label: 'حسابي',     icon: 'user' }
+  ];
+
+  renderVals() {
+    const s = this.state;
+    const nFilters = Object.values(s.filters).filter(v => v !== 'all').length;
+    const sort = this.SORTS.find(x => x.id === s.sort);
+
+    return {
+      q: s.q, onQ: () => {},
+      resultCount: this.counted(this.ITEMS.length, this.ITEM_N),
+      hasFilters: nFilters > 0,
+      filterCount: String(nFilters),
+      sortLabel: sort.label,
+      filterOpen: s.sheet === 'filter',
+      sortOpen: s.sheet === 'sort',
+      openFilter: () => this.setState({ sheet: 'filter' }),
+      openSort: () => this.setState({ sheet: 'sort' }),
+      closeSheets: () => this.setState({ sheet: null }),
+
+      cats: this.CATS.map(c => ({
+        ...c,
+        on: s.cat === c.id,
+        fw: s.cat === c.id ? 600 : 400,
+        bd: s.cat === c.id ? 'var(--ink)' : 'var(--rule-faint)',
+        sh: s.cat === c.id ? 'var(--e2)' : 'var(--e1)',
+        count: this.fmt(c.n) + ' منتج',
+        pick: () => this.setState({ cat: c.id })
+      })),
+
+      items: this.ITEMS.map((p, i) => {
+        const isSaved = !!s.saved[p.id];
+        const [avBg, avFg] = this.AV[i % this.AV.length];
+        const [flagBg, flagFg] = p.flagKind ? this.FLAG[p.flagKind] : ['', ''];
+        return {
+          ...p,
+          price: this.fmt(p.price),
+          trust: this.counted(p.tx, this.TX),
+          saved: isSaved,
+          saveLabel: isSaved ? 'إزالة من المحفوظات' : 'احفظ المنتج',
+          heartFill: isSaved ? 'var(--accent)' : 'none',
+          heartStroke: isSaved ? 'var(--accent)' : 'var(--ink-2)',
+          hasFlag: !!p.flagKind, flagBg, flagFg,
+          avBg, avFg,
+          save: () => this.setState(st => {
+            const saved = { ...st.saved };
+            if (saved[p.id]) delete saved[p.id]; else saved[p.id] = true;
+            return { saved };
+          })
+        };
+      }),
+
+      filterGroups: this.FILTERS.map(g => ({
+        label: g.label,
+        opts: g.opts.map(([id, label]) => {
+          const on = s.filters[g.id] === id;
+          return {
+            label, on,
+            bd: on ? 'var(--ink)' : 'var(--rule-strong)',
+            bg: on ? 'var(--ink)' : 'var(--surface)',
+            fg: on ? 'var(--ink-on)' : 'var(--ink)',
+            pick: () => this.setState(st => ({ filters: { ...st.filters, [g.id]: id } }))
+          };
+        })
+      })),
+
+      sorts: this.SORTS.map(x => ({
+        ...x, on: x.id === s.sort, fw: x.id === s.sort ? 500 : 400,
+        pick: () => this.setState({ sort: x.id, sheet: null })
+      })),
+
+      nav: this.NAV.map(n => ({
+        ...n,
+        on: n.id === 'shop',
+        fg: n.id === 'shop' ? 'var(--ink)' : 'var(--ink-3)',
+        fw: n.id === 'shop' ? 600 : 400,
+        icon: this.ICON[n.icon],
+        pick: () => {}
+      }))
+    };
+  }
+}
+</script>
+</body>
+</html>

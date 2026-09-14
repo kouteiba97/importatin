@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./tokens.css">
+<style>
+.q{width:100%;display:flex;align-items:center;gap:9px;padding:9px 11px;border:0;background:transparent;color:inherit;text-align:start;cursor:pointer;border-radius:var(--r-sm);font-size:var(--t-sm)}
+.q:hover{background:oklch(0.93 0.008 80)}
+.row{width:100%;display:flex;gap:10px;padding:10px 12px;border:0;border-bottom:1px solid var(--rule-faint);background:transparent;color:inherit;text-align:start;cursor:pointer}
+.row:hover{background:var(--surface-2)}
+.fld{font-size:var(--t-xs);color:var(--ink-3);margin-bottom:3px}
+.panel{background:var(--surface);border:1px solid var(--rule);border-radius:var(--r)}
+.ph{padding:10px 12px;border-bottom:1px solid var(--rule);font-size:var(--t-sm);font-weight:500;display:flex;justify-content:space-between;align-items:baseline}
+</style>
+</helmet>
+
+<div dir="rtl" lang="ar" class="tier-admin" style="min-height:100vh">
+<div style="display:flex;min-height:100vh">
+
+<!-- ══ QUEUE RAIL ══ -->
+<aside style="flex:none;width:216px;background:var(--surface);border-inline-end:1px solid var(--rule);display:flex;flex-direction:column">
+<div style="padding:13px 14px;border-bottom:1px solid var(--rule)">
+<div style="font-weight:600;font-size:16px">مَعْبَر</div>
+<div style="font-size:var(--t-xs);color:var(--ink-3);margin-top:2px">مركز العمليات</div>
+</div>
+
+<div style="padding:11px 8px;flex:1">
+<sc-for list="{{ groups }}" as="g" hint-placeholder-count="3">
+<div style="margin-bottom:13px">
+<div style="font-size:var(--t-micro);color:var(--ink-3);padding:0 11px 6px">{{ g.label }}</div>
+<sc-for list="{{ g.items }}" as="q" hint-placeholder-count="4">
+<button type="button" onClick="{{ q.pick }}" aria-current="{{ q.on }}" class="q" style="background:{{ q.bg }};font-weight:{{ q.fw }}">
+<span aria-hidden="true" style="flex:none;width:6px;height:6px;border-radius:50%;background:{{ q.dot }}"></span>
+<span style="flex:1;min-width:0">{{ q.label }}</span>
+<span class="num" style="flex:none;font-size:var(--t-xs);color:{{ q.nFg }};font-weight:600"><bdi>{{ q.n }}</bdi></span>
+</button>
+</sc-for>
+</div>
+</sc-for>
+</div>
+
+<div style="padding:11px 14px;border-top:1px solid var(--rule);display:flex;align-items:center;gap:8px">
+<span aria-hidden="true" style="width:26px;height:26px;border-radius:50%;background:oklch(0.92 0.03 250);display:grid;place-items:center;font-size:10px;font-weight:600;color:oklch(0.35 0.06 250)">أ ب</span>
+<div style="flex:1;min-width:0">
+<div style="font-size:var(--t-xs);font-weight:500">أمين ب.</div>
+<div style="font-size:var(--t-micro);color:var(--ink-3)">الثقة والسلامة</div>
+</div>
+</div>
+</aside>
+
+<!-- ══ QUEUE LIST ══ -->
+<section style="flex:none;width:290px;background:var(--surface);border-inline-end:1px solid var(--rule);display:flex;flex-direction:column">
+<div style="padding:12px 13px;border-bottom:1px solid var(--rule)">
+<div style="display:flex;align-items:baseline;gap:8px">
+<span style="font-size:var(--t-h3);font-weight:600;flex:1">{{ queueLabel }}</span>
+<span class="num" style="font-size:var(--t-xs);color:var(--ink-3)"><bdi>{{ queueCount }}</bdi></span>
+</div>
+<div class="num" style="font-size:var(--t-micro);color:var(--ink-3);margin-top:4px"><bdi>{{ queueSla }}</bdi></div>
+</div>
+<div style="flex:1;overflow:auto">
+<sc-for list="{{ rows }}" as="r" hint-placeholder-count="5">
+<button type="button" onClick="{{ r.pick }}" aria-current="{{ r.on }}" class="row" style="background:{{ r.bg }}">
+<span aria-hidden="true" style="flex:none;width:3px;align-self:stretch;border-radius:2px;background:{{ r.risk }}"></span>
+<span style="flex:1;min-width:0">
+<span style="display:flex;align-items:baseline;gap:7px">
+<span style="flex:1;min-width:0;font-size:var(--t-sm);font-weight:{{ r.fw }};overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ r.title }}</span>
+<span class="num" style="flex:none;font-size:var(--t-micro);color:{{ r.ageFg }}"><bdi>{{ r.age }}</bdi></span>
+</span>
+<span class="ref" style="display:block;margin-top:3px">{{ r.ref }}</span>
+<span style="display:block;font-size:var(--t-micro);color:var(--ink-2);margin-top:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ r.sub }}</span>
+</span>
+</button>
+</sc-for>
+</div>
+</section>
+
+<!-- ══ EVIDENCE + DECISION ══ -->
+<main style="flex:1;min-width:0;padding:14px;display:flex;flex-direction:column;gap:12px;overflow:auto">
+
+<div style="display:flex;align-items:flex-start;gap:12px">
+<div style="flex:1;min-width:0">
+<h1 style="margin:0;font-size:var(--t-h1);font-weight:600">{{ cur.title }}</h1>
+<div style="display:flex;align-items:center;gap:9px;margin-top:5px">
+<span class="ref">{{ cur.ref }}</span>
+<span class="num" style="font-size:var(--t-xs);color:var(--ink-2)"><bdi>{{ cur.sub }}</bdi></span>
+</div>
+</div>
+<span class="chip {{ cur.riskChip }}">{{ cur.riskLabel }}</span>
+</div>
+
+<!-- evidence: everything needed to decide, in one panel -->
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+
+<div class="panel">
+<div class="ph"><span>الوثائق</span><span class="num" style="font-weight:400;color:var(--ink-3)"><bdi>{{ docCount }}</bdi></span></div>
+<div style="padding:4px 12px">
+<sc-for list="{{ docs }}" as="d" hint-placeholder-count="4">
+<div style="display:flex;align-items:center;gap:9px;padding:8px 0;border-bottom:1px solid var(--rule-faint)">
+<span aria-hidden="true" style="flex:none;width:17px;height:17px;border-radius:50%;background:{{ d.bg }};display:grid;place-items:center;font-size:10px;color:{{ d.fg }}">{{ d.glyph }}</span>
+<span style="flex:1;min-width:0;font-size:var(--t-sm)">{{ d.label }}</span>
+<span class="num" style="flex:none;font-size:var(--t-micro);color:var(--ink-3)"><bdi>{{ d.meta }}</bdi></span>
+</div>
+</sc-for>
+</div>
+</div>
+
+<div class="panel">
+<div class="ph"><span>إشارات المخاطرة</span></div>
+<div style="padding:4px 12px">
+<sc-for list="{{ signals }}" as="s" hint-placeholder-count="4">
+<div style="display:flex;align-items:center;gap:9px;padding:8px 0;border-bottom:1px solid var(--rule-faint)">
+<span aria-hidden="true" style="flex:none;width:6px;height:6px;border-radius:50%;background:{{ s.dot }}"></span>
+<span style="flex:1;min-width:0;font-size:var(--t-sm)">{{ s.label }}</span>
+<span class="num" style="flex:none;font-size:var(--t-micro);color:{{ s.fg }};font-weight:500"><bdi>{{ s.v }}</bdi></span>
+</div>
+</sc-for>
+</div>
+</div>
+
+<div class="panel">
+<div class="ph"><span>سياق المستخدم</span></div>
+<div style="padding:4px 12px">
+<sc-for list="{{ context }}" as="c" hint-placeholder-count="4">
+<div style="display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:8px 0;border-bottom:1px solid var(--rule-faint)">
+<span style="font-size:var(--t-sm);color:var(--ink-2)">{{ c.k }}</span>
+<span class="num" style="font-size:var(--t-sm);font-weight:500"><bdi>{{ c.v }}</bdi></span>
+</div>
+</sc-for>
+</div>
+</div>
+
+<div class="panel">
+<div class="ph"><span>قرارات سابقة</span></div>
+<div style="padding:4px 12px">
+<sc-for list="{{ history }}" as="h" hint-placeholder-count="3">
+<div style="padding:8px 0;border-bottom:1px solid var(--rule-faint)">
+<div style="display:flex;align-items:baseline;gap:8px">
+<span style="flex:1;min-width:0;font-size:var(--t-sm)">{{ h.what }}</span>
+<span class="num" style="flex:none;font-size:var(--t-micro);color:var(--ink-3)"><bdi>{{ h.when }}</bdi></span>
+</div>
+<div class="ref" style="margin-top:2px">{{ h.by }}</div>
+</div>
+</sc-for>
+</div>
+</div>
+</div>
+
+<!-- decision -->
+<div class="panel">
+<div class="ph"><span>القرار</span></div>
+<div style="padding:13px">
+<div style="display:flex;gap:8px;margin-bottom:13px">
+<sc-for list="{{ actions }}" as="a" hint-placeholder-count="3">
+<button type="button" onClick="{{ a.pick }}" aria-pressed="{{ a.on }}" style="height:38px;padding:0 16px;border:1px solid {{ a.bd }};border-radius:var(--r-sm);background:{{ a.bg }};color:{{ a.fg }};font-size:var(--t-sm);font-weight:500;cursor:pointer">{{ a.label }}</button>
+</sc-for>
+</div>
+
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px">
+<div>
+<div class="fld">سبب القرار — إلزامي</div>
+<select style="width:100%;height:38px;padding:0 10px;border:1px solid {{ reasonBd }};border-radius:var(--r-sm);background:var(--surface);font-size:var(--t-sm);color:inherit">
+<sc-for list="{{ reasons }}" as="r" hint-placeholder-count="4">
+<option>{{ r }}</option>
+</sc-for>
+</select>
+</div>
+<div>
+<div class="fld">ملاحظة داخلية</div>
+<input placeholder="لا تظهر للمستخدم" style="width:100%;height:38px;padding:0 10px;border:1px solid var(--rule-strong);border-radius:var(--r-sm);background:var(--surface);font-size:var(--t-sm);color:inherit">
+</div>
+</div>
+
+<div style="padding:11px 12px;background:var(--surface-2);border:1px solid var(--rule-faint);border-radius:var(--r-sm);margin-bottom:13px">
+<div class="fld">ما سيصل المستخدم</div>
+<p style="margin:0;font-size:var(--t-sm);line-height:1.65">{{ consequence }}</p>
+</div>
+
+<div style="display:flex;align-items:center;gap:12px">
+<button type="button" style="height:40px;padding:0 20px;border:0;border-radius:var(--r-sm);background:var(--ink);color:var(--ink-on);font-size:var(--t-sm);font-weight:600;cursor:pointer">سجّل القرار</button>
+<button type="button" style="height:40px;padding:0 16px;border:1px solid var(--rule-strong);border-radius:var(--r-sm);background:transparent;color:inherit;font-size:var(--t-sm);cursor:pointer">مرّر لمشرف</button>
+<span style="flex:1;font-size:var(--t-micro);color:var(--ink-3);line-height:1.5">يُسجَّل باسمك وتوقيته. التصحيح يكون بقرار جديد يشير إليه.</span>
+</div>
+</div>
+</div>
+
+</main>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1240,&quot;height&quot;:840}}">
+class Component extends DCLogic {
+  state = { q: 'ver', row: 0, action: 'approve' };
+  fmt(n) { return '⁦' + String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + '⁩'; }
+
+  // Billing sits in its OWN group. A subscription payment must never appear
+  // beside goods-related work, or the console implies Maabar settles trade.
+  GROUPS = [
+    { label: 'الثقة والسلامة', items: [
+      { id: 'ver', label: 'طلبات التحقّق', n: 14, sla: 'أقدم بند: 19 ساعة · الحدّ 24', risk: 'var(--conditional)' },
+      { id: 'risk', label: 'مخاطرة', n: 6, sla: 'أقدم بند: 3 ساعات', risk: 'var(--prohibited)' },
+      { id: 'mod', label: 'إشراف المحتوى', n: 23, sla: 'أقدم بند: 8 ساعات', risk: 'var(--conditional)' },
+      { id: 'dis', label: 'نزاعات', n: 4, sla: 'أقدم بند: 2 يوم', risk: 'var(--prohibited)' }
+    ]},
+    { label: 'الامتثال', items: [
+      { id: 'rev', label: 'أصناف تحتاج مراجعة', n: 9, sla: 'أقدم بند: يوم', risk: 'var(--conditional)' },
+      { id: 'rul', label: 'قواعد قيد النشر', n: 1, sla: 'مسودّة v7', risk: 'var(--ink-3)' }
+    ]},
+    { label: 'الفوترة', items: [
+      { id: 'bil', label: 'تأكيد اشتراكات', n: 7, sla: 'تحويلات CCP بانتظار التأكيد', risk: 'var(--ink-3)' }
+    ]}
+  ];
+
+  ROWS = {
+    ver: [
+      { ref: 'VER-26-0881', title: 'مستورد مصغّر — توثيق أول', sub: 'سفيان ب. · الجزائر', age: '19 س', risk: 'high' },
+      { ref: 'VER-26-0884', title: 'تاجر — سجل تجاري', sub: 'بوتيك نادية · قسنطينة', age: '11 س', risk: 'mid' },
+      { ref: 'VER-26-0886', title: 'تجديد رخصة عامة', sub: 'كريمة ح. · وهران', age: '6 س', risk: 'low' },
+      { ref: 'VER-26-0890', title: 'مستورد مصغّر — توثيق أول', sub: 'ر. حمادي · سطيف', age: '4 س', risk: 'low' },
+      { ref: 'VER-26-0891', title: 'تاجر — تغيير عنوان النشاط', sub: 'دار الأناقة · وهران', age: 'ساعة', risk: 'low' }
+    ]
+  };
+
+  DOCS = [
+    { label: 'بطاقة التعريف الوطنية', ok: true, meta: 'مطابقة للصورة الحيّة' },
+    { label: 'بطاقة المقاول الذاتي', ok: true, meta: 'سارية حتى 06/2027' },
+    { label: 'الرخصة العامة', ok: true, meta: 'سارية حتى 06/2027' },
+    { label: 'الانتساب إلى CASNOS', ok: false, meta: 'الصورة غير واضحة' }
+  ];
+
+  SIGNALS = [
+    { label: 'عمر الحساب', v: '5 أشهر', kind: 'mid' },
+    { label: 'حسابات من نفس الجهاز', v: '1', kind: 'ok' },
+    { label: 'بلاغات', v: 'لا شيء', kind: 'ok' },
+    { label: 'تطابق الاسم بين الوثائق', v: 'مطابق', kind: 'ok' }
+  ];
+
+  CONTEXT = [
+    { k: 'الدور المطلوب', v: 'مستورد مصغّر' },
+    { k: 'الولاية', v: 'الجزائر' },
+    { k: 'معاملات مؤكَّدة', v: '12' },
+    { k: 'نزاعات', v: 'لا شيء' }
+  ];
+
+  HISTORY = [
+    { what: 'قُبل التحقّق المستوى الأول', when: 'قبل 4 أشهر', by: 'ADM-002' },
+    { what: 'طُلبت وثيقة أوضح — CASNOS', when: 'قبل 9 أيام', by: 'ADM-014' },
+    { what: 'أُعيد تقديم الوثائق', when: 'قبل 19 ساعة', by: 'المستخدم' }
+  ];
+
+  REASONS = [
+    'الوثائق مكتملة ومتطابقة',
+    'وثيقة ناقصة أو غير مقروءة',
+    'تعارض في الاسم بين الوثائق',
+    'يحتاج مراجعة مشرف'
+  ];
+
+  ACTIONS = [
+    { id: 'approve', label: 'اقبل', tone: 'ok' },
+    { id: 'more', label: 'اطلب وثيقة', tone: 'cond' },
+    { id: 'reject', label: 'ارفض', tone: 'risk' }
+  ];
+
+  RISK = { high: 'var(--prohibited)', mid: 'var(--conditional)', low: 'var(--rule-strong)' };
+
+  renderVals() {
+    const s = this.state;
+    const all = this.GROUPS.flatMap(g => g.items);
+    const q = all.find(x => x.id === s.q) || all[0];
+    const rows = this.ROWS[s.q] || this.ROWS.ver;
+    const cur = rows[s.row] || rows[0];
+    const act = this.ACTIONS.find(a => a.id === s.action);
+
+    const CONSEQ = {
+      approve: 'يُرقّى حسابه إلى «مستورد مُتحقَّق» ويمكنه نشر رحلة واستقبال طلبات. يصله إشعار بذلك.',
+      more: 'يصله طلب بوثيقة أوضح مع سبب الطلب، ويبقى في الطابور دون أن يُعاد من البداية.',
+      reject: 'يصله الرفض مع السبب وحقّه في إعادة التقديم بعد تصحيح الوثيقة.'
+    };
+
+    return {
+      groups: this.GROUPS.map(g => ({
+        label: g.label,
+        items: g.items.map(x => ({
+          ...x, on: x.id === s.q,
+          bg: x.id === s.q ? 'oklch(0.91 0.01 80)' : 'transparent',
+          fw: x.id === s.q ? 600 : 400,
+          dot: x.risk,
+          n: this.fmt(x.n),
+          nFg: x.id === s.q ? 'var(--ink)' : 'var(--ink-2)',
+          pick: () => this.setState({ q: x.id, row: 0 })
+        }))
+      })),
+
+      queueLabel: q.label,
+      queueCount: this.fmt(q.n) + ' بنداً',
+      queueSla: q.sla,
+
+      rows: rows.map((r, i) => ({
+        ...r, on: i === s.row,
+        bg: i === s.row ? 'oklch(0.94 0.012 80)' : 'transparent',
+        fw: i === s.row ? 600 : 400,
+        risk: this.RISK[r.risk],
+        ageFg: r.risk === 'high' ? 'var(--prohibited)' : 'var(--ink-3)',
+        pick: () => this.setState({ row: i })
+      })),
+
+      cur: {
+        ...cur,
+        riskChip: cur.risk === 'high' ? 'chip-prohibited' : cur.risk === 'mid' ? 'chip-conditional' : 'chip-neutral',
+        riskLabel: cur.risk === 'high' ? 'أولوية عالية' : cur.risk === 'mid' ? 'أولوية متوسطة' : 'أولوية عادية'
+      },
+
+      docCount: this.DOCS.filter(d => d.ok).length + ' من ' + this.DOCS.length + ' مكتملة',
+      docs: this.DOCS.map(d => ({
+        label: d.label, meta: d.meta,
+        glyph: d.ok ? '✓' : '!',
+        bg: d.ok ? 'var(--allowed-bg)' : 'var(--conditional-bg)',
+        fg: d.ok ? 'var(--allowed-ink)' : 'var(--conditional-ink)'
+      })),
+
+      signals: this.SIGNALS.map(x => ({
+        label: x.label, v: x.v,
+        dot: x.kind === 'ok' ? 'var(--allowed)' : x.kind === 'mid' ? 'var(--conditional)' : 'var(--prohibited)',
+        fg: x.kind === 'ok' ? 'var(--ink-2)' : 'var(--conditional-ink)'
+      })),
+
+      context: this.CONTEXT,
+      history: this.HISTORY,
+      reasons: this.REASONS,
+
+      actions: this.ACTIONS.map(a => {
+        const on = a.id === s.action;
+        const tone = a.tone === 'ok' ? 'var(--allowed)' : a.tone === 'cond' ? 'var(--conditional-ink)' : 'var(--prohibited)';
+        return {
+          label: a.label, on,
+          bd: on ? tone : 'var(--rule-strong)',
+          bg: on ? tone : 'var(--surface)',
+          fg: on ? 'var(--ink-on)' : 'var(--ink)',
+          pick: () => this.setState({ action: a.id })
+        };
+      }),
+
+      reasonBd: 'var(--rule-strong)',
+      consequence: CONSEQ[s.action]
+    };
+  }
+}
+</script>
+</body>
+</html>

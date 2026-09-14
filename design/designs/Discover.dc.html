@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./tokens.css">
+<style>
+.scrollx{overflow-x:auto;scrollbar-width:none}
+.scrollx::-webkit-scrollbar{display:none}
+.meter{height:6px;border-radius:3px;background:var(--neutral-bg);overflow:hidden}
+.meter>i{display:block;height:100%;border-radius:3px}
+</style>
+</helmet>
+
+<div dir="rtl" lang="ar" class="tier-op" style="min-height:100vh;display:flex;justify-content:center">
+<div style="width:100%;max-width:430px;min-height:100vh;display:flex;flex-direction:column;background:var(--paper);border-inline:1px solid var(--rule)">
+
+<header style="position:sticky;top:0;z-index:20;background:var(--surface);border-bottom:1px solid var(--rule)">
+<div style="display:flex;align-items:center;gap:10px;padding:11px 16px 9px">
+<span style="font-weight:600;font-size:18px">اكتشف</span>
+<div style="flex:1"></div>
+<span class="num" style="font-size:var(--t-xs);color:var(--ink-3)"><bdi>{{ scopeNote }}</bdi></span>
+</div>
+<div style="padding:0 16px 10px">
+<div style="display:flex;align-items:center;gap:9px;height:40px;padding:0 12px;border:1px solid var(--rule-strong);border-radius:var(--r);background:var(--surface-2)">
+<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--ink-3)" stroke-width="2" style="flex:none"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+<input value="{{ q }}" onChange="{{ onQ }}" placeholder="{{ placeholder }}" aria-label="بحث" style="flex:1;min-width:0;border:0;background:transparent;font-size:var(--t-body);color:inherit;outline:none">
+</div>
+</div>
+<nav aria-label="أقسام الاكتشاف" style="display:grid;grid-template-columns:repeat(3,1fr)">
+<sc-for list="{{ tabs }}" as="t" hint-placeholder-count="3">
+<button type="button" onClick="{{ t.pick }}" aria-current="{{ t.on }}" style="height:42px;border:0;border-bottom:2px solid {{ t.bd }};background:transparent;color:{{ t.fg }};font-size:var(--t-body);font-weight:{{ t.fw }};cursor:pointer">{{ t.label }}</button>
+</sc-for>
+</nav>
+</header>
+
+<div class="scrollx" style="display:flex;gap:7px;padding:12px 16px;border-bottom:1px solid var(--rule-faint)">
+<sc-for list="{{ chips }}" as="c" hint-placeholder-count="5">
+<button type="button" onClick="{{ c.pick }}" aria-pressed="{{ c.on }}" style="flex:none;height:32px;padding:0 12px;border:1px solid {{ c.bd }};border-radius:var(--r-pill);background:{{ c.bg }};color:{{ c.fg }};font-size:var(--t-sm);cursor:pointer">{{ c.label }}</button>
+</sc-for>
+</div>
+
+<main style="flex:1;padding:14px 16px 84px;display:flex;flex-direction:column;gap:12px">
+
+<!-- ══ TRIPS ══ -->
+<sc-if value="{{ isTrips }}" hint-placeholder-val="{{ true }}">
+<div style="display:flex;flex-direction:column;gap:12px">
+<sc-for list="{{ trips }}" as="t" hint-placeholder-count="3">
+<article class="card" style="padding:14px">
+
+<div style="display:flex;align-items:flex-start;gap:11px;margin-bottom:11px">
+<span aria-hidden="true" style="flex:none;width:44px;height:44px;border-radius:var(--r-sm);background:{{ t.ccBg }};display:grid;place-items:center;font-size:var(--t-sm);font-weight:600;color:{{ t.ccFg }}">{{ t.cc }}</span>
+<div style="flex:1;min-width:0">
+<div style="display:flex;align-items:baseline;gap:8px">
+<span style="font-size:var(--t-h2);font-weight:500">{{ t.dest }}</span>
+<span class="chip {{ t.stateChip }}" style="height:20px;font-size:var(--t-micro)">{{ t.state }}</span>
+</div>
+<div class="num" style="font-size:var(--t-sm);color:var(--ink-2);margin-top:3px"><bdi>{{ t.dates }} · يصل {{ t.arrival }}</bdi></div>
+</div>
+</div>
+
+<div style="font-size:var(--t-sm);color:var(--ink-2);margin-bottom:11px">يشتري عادةً: {{ t.cats }}</div>
+
+<!-- Capacity: only what the trader legitimately needs. Value headroom is
+     the importer's private figure and is never exposed here. -->
+<div style="padding:11px 0;border-block:1px solid var(--rule-faint);display:flex;flex-direction:column;gap:9px">
+<div style="display:flex;justify-content:space-between;align-items:baseline">
+<span style="font-size:var(--t-xs);color:var(--ink-3)">السعة المتاحة المعلنة</span>
+<span class="num" style="font-size:var(--t-xs);color:var(--ink-3)"><bdi>{{ t.capNote }}</bdi></span>
+</div>
+<sc-for list="{{ t.meters }}" as="m" hint-placeholder-count="2">
+<div>
+<div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:4px">
+<span style="font-size:var(--t-xs);color:var(--ink-2)">{{ m.label }}</span>
+<span class="num" style="font-size:var(--t-xs);font-weight:500"><bdi>{{ m.text }}</bdi></span>
+</div>
+<div class="meter"><i style="width:{{ m.pct }}%;background:{{ m.fg }}"></i></div>
+</div>
+</sc-for>
+</div>
+
+<button type="button" style="width:100%;display:flex;align-items:center;gap:10px;padding:11px 0;border:0;border-bottom:1px solid var(--rule-faint);background:transparent;color:inherit;text-align:start;cursor:pointer">
+<span aria-hidden="true" style="flex:none;width:30px;height:30px;border-radius:50%;background:{{ t.avBg }};display:grid;place-items:center;font-size:11px;font-weight:600;color:{{ t.avFg }}">{{ t.initials }}</span>
+<span style="flex:1;min-width:0">
+<span style="display:flex;align-items:center;gap:5px">
+<span style="font-size:var(--t-sm);font-weight:500">{{ t.who }}</span>
+<svg width="13" height="13" viewBox="0 0 24 24" style="flex:none" role="img" aria-label="مستورد مُتحقَّق"><circle cx="12" cy="12" r="10" fill="var(--allowed)"/><path d="M7.4 12.4l3 3 6.2-6.6" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+</span>
+<span class="num" style="display:block;font-size:var(--t-micro);color:var(--ink-2);margin-top:2px"><bdi>{{ t.whoMeta }}</bdi></span>
+</span>
+<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--ink-3)" stroke-width="2" style="flex:none"><path d="M15 5l-7 7 7 7"/></svg>
+</button>
+
+<div style="display:flex;gap:8px;margin-top:12px">
+<button type="button" style="flex:1;height:42px;border:0;border-radius:var(--r-sm);background:var(--allowed);color:var(--ink-on);font-size:var(--t-sm);font-weight:500;cursor:pointer">اطلب عرضاً لهذه الرحلة</button>
+<button type="button" onClick="{{ t.follow }}" aria-pressed="{{ t.followed }}" aria-label="{{ t.followLabel }}" style="flex:none;width:42px;height:42px;border:1px solid var(--rule-strong);border-radius:var(--r-sm);background:var(--surface);display:grid;place-items:center;cursor:pointer">
+<svg width="17" height="17" viewBox="0 0 24 24" fill="{{ t.bellFill }}" stroke="{{ t.bellStroke }}" stroke-width="1.8"><path d="M6 9a6 6 0 0 1 12 0c0 5 2 6 2 6H4s2-1 2-6z"/><path d="M10.5 19.5a2 2 0 0 0 3 0" fill="none"/></svg>
+</button>
+</div>
+</article>
+</sc-for>
+
+</div>
+</sc-if>
+
+<!-- ══ IMPORTERS ══ -->
+<sc-if value="{{ isImporters }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;gap:12px">
+<sc-for list="{{ importers }}" as="im" hint-placeholder-count="3">
+<article class="card" style="padding:14px">
+<div style="display:flex;align-items:flex-start;gap:11px">
+<span aria-hidden="true" style="flex:none;width:48px;height:48px;border-radius:50%;background:{{ im.avBg }};display:grid;place-items:center;font-size:var(--t-sm);font-weight:600;color:{{ im.avFg }}">{{ im.initials }}</span>
+<div style="flex:1;min-width:0">
+<div style="display:flex;align-items:center;gap:6px">
+<span style="font-size:var(--t-h3);font-weight:500">{{ im.name }}</span>
+<svg width="14" height="14" viewBox="0 0 24 24" style="flex:none" role="img" aria-label="مُتحقَّق"><circle cx="12" cy="12" r="10" fill="var(--allowed)"/><path d="M7.4 12.4l3 3 6.2-6.6" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+</div>
+<div style="font-size:var(--t-xs);color:var(--ink-2);margin-top:3px">{{ im.level }}</div>
+<div style="display:flex;gap:5px;flex-wrap:wrap;margin-top:7px">
+<sc-for list="{{ im.cats }}" as="c" hint-placeholder-count="3">
+<span class="chip chip-neutral" style="height:20px;font-size:var(--t-micro)">{{ c }}</span>
+</sc-for>
+</div>
+</div>
+</div>
+
+<!-- Evidence, not a score. Every figure is countable. -->
+<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:1px;margin:12px 0 0;background:var(--rule);border:1px solid var(--rule);border-radius:var(--r-sm);overflow:hidden">
+<sc-for list="{{ im.stats }}" as="s" hint-placeholder-count="4">
+<div style="background:var(--surface);padding:9px 4px;text-align:center">
+<div class="num" style="font-size:15px;font-weight:600;line-height:1.25;color:{{ s.fg }}"><bdi>{{ s.v }}</bdi></div>
+<div style="font-size:9.5px;color:var(--ink-2);margin-top:2px;line-height:1.3">{{ s.k }}</div>
+</div>
+</sc-for>
+</div>
+
+<div style="display:flex;align-items:center;gap:7px;margin-top:11px;padding-top:11px;border-top:1px solid var(--rule-faint)">
+<span class="num" style="flex:1;font-size:var(--t-xs);color:var(--ink-2)"><bdi>{{ im.next }}</bdi></span>
+<button type="button" style="height:36px;padding:0 14px;border:1px solid var(--rule-strong);border-radius:var(--r-sm);background:var(--surface);color:inherit;font-size:var(--t-sm);cursor:pointer">الملف</button>
+<button type="button" style="height:36px;padding:0 14px;border:0;border-radius:var(--r-sm);background:var(--ink);color:var(--ink-on);font-size:var(--t-sm);cursor:pointer">راسل</button>
+</div>
+</article>
+</sc-for>
+
+<div style="padding:13px 14px;border:1px solid var(--rule);border-radius:var(--r);background:var(--surface-2);display:flex;gap:10px">
+<span aria-hidden="true" style="flex:none;color:var(--ink-3)">i</span>
+</div>
+</div>
+</sc-if>
+
+<!-- ══ PRODUCTS → hands off to Marketplace ══ -->
+<sc-if value="{{ isProducts }}" hint-placeholder-val="{{ false }}">
+<div style="padding:34px 16px;text-align:center">
+<p style="margin:0 0 14px;font-size:var(--t-body);color:var(--ink-2);line-height:1.7">تصفّح المنتجات المعروضة من التجّار المُتحقَّقين في السوق.</p>
+<button type="button" style="height:46px;padding:0 22px;border:0;border-radius:var(--r);background:var(--accent);color:var(--ink-on);font-size:var(--t-body);font-weight:500;cursor:pointer">افتح السوق</button>
+</div>
+</sc-if>
+
+</main>
+
+<nav aria-label="التنقّل" style="position:fixed;inset-block-end:0;inset-inline:0;margin:0 auto;max-width:430px;display:grid;grid-template-columns:repeat(6,1fr);background:var(--surface);border-top:1px solid var(--rule);padding-block:6px 8px">
+<sc-for list="{{ nav }}" as="n" hint-placeholder-count="6">
+<button type="button" aria-current="{{ n.on }}" style="display:flex;flex-direction:column;align-items:center;gap:3px;border:0;background:transparent;padding:4px 0;cursor:pointer;color:{{ n.fg }}">
+<span aria-hidden="true" style="width:20px;height:20px;display:grid;place-items:center">{{ n.icon }}</span>
+<span style="font-size:9.5px;font-weight:{{ n.fw }}">{{ n.label }}</span>
+</button>
+</sc-for>
+</nav>
+
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:430,&quot;height&quot;:1420}}">
+class Component extends DCLogic {
+  state = { tab: 'trips', chip: 'all', followed: { t2: true } };
+
+  LRI = '⁦'; PDI = '⁩';
+  ltr(s) { return this.LRI + s + this.PDI; }
+  fmt(n) { return '⁦' + String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + '⁩'; }
+
+  TABS = [
+    { id: 'trips', label: 'رحلات', ph: 'ابحث بالوجهة أو الفئة' },
+    { id: 'importers', label: 'مستوردون', ph: 'ابحث بالاسم أو التخصّص' },
+    { id: 'products', label: 'منتجات', ph: 'ابحث في السوق' }
+  ];
+
+  CHIPS = {
+    trips: [['all','الكل'],['tr','تركيا'],['ae','الإمارات'],['cn','الصين'],['soon','يغادر هذا الأسبوع'],['cap','سعة واسعة']],
+    importers: [['all','الكل'],['clothes','ألبسة'],['cosm','تجميل'],['shoes','أحذية'],['new','مُتحقَّق حديثاً']],
+    products: [['all','الكل']]
+  };
+
+  TONE = [
+    ['oklch(0.93 0.03 28)', 'var(--accent-ink)'],
+    ['oklch(0.93 0.03 250)', 'oklch(0.35 0.06 250)'],
+    ['oklch(0.92 0.03 150)', 'var(--allowed-ink)']
+  ];
+
+  // Weight and volume only. The value meter is the importer's legal cap
+  // against their own money — never shown to a counterparty.
+  TRIPS = [
+    { id: 't1', cc: 'TR', dest: 'إسطنبول', dates: '12–16 أكتوبر', arrival: '18 أكتوبر',
+      state: 'مفتوحة للطلب', stateChip: 'chip-verified', cats: 'ألبسة نسائية · حقائب · إكسسوار',
+      capNote: 'يحدّدها المستورد', mw: [38, 46], mv: [0.9, 1.2],
+      who: 'كريمة ح.', initials: 'ك ح', whoMeta: '84 معاملة مؤكَّدة · ترد خلال ساعة', tone: 2 },
+    { id: 't2', cc: 'AE', dest: 'دبي', dates: '19–23 أكتوبر', arrival: '25 أكتوبر',
+      state: 'سعة محدودة', stateChip: 'chip-conditional', cats: 'عطور · ساعات · إلكترونيات صغيرة',
+      capNote: 'يحدّدها المستورد', mw: [26, 30], mv: [0.55, 0.6],
+      who: 'سفيان ب.', initials: 'س ب', whoMeta: '12 معاملة مؤكَّدة · مستورد جديد', tone: 0 },
+    { id: 't3', cc: 'TR', dest: 'غازي عنتاب', dates: '2–7 نوفمبر', arrival: '9 نوفمبر',
+      state: 'مفتوحة للطلب', stateChip: 'chip-verified', cats: 'منسوجات منزلية · مفروشات',
+      capNote: 'يحدّدها المستورد', mw: [12, 52], mv: [0.3, 1.4],
+      who: 'ن. مرابط', initials: 'ن م', whoMeta: '46 معاملة مؤكَّدة · ترد خلال 3 ساعات', tone: 1 }
+  ];
+
+  IMPORTERS = [
+    { name: 'كريمة ح.', initials: 'ك ح', level: 'مستوردة مُتحقَّقة · وثائق سارية حتى جوان 2027',
+      cats: ['ألبسة نسائية', 'حقائب', 'إكسسوار'], tone: 2,
+      stats: [['84','معاملة مؤكَّدة',''],['97%','نسبة الإتمام','var(--allowed-ink)'],['ساعة','متوسط الردّ',''],['3 سنوات','على المنصّة','']],
+      next: 'رحلتها القادمة: إسطنبول · 12 أكتوبر' },
+    { name: 'ن. مرابط', initials: 'ن م', level: 'مستورد مُتحقَّق · وثائق سارية حتى مارس 2027',
+      cats: ['منسوجات منزلية', 'مفروشات'], tone: 1,
+      stats: [['46','معاملة مؤكَّدة',''],['92%','نسبة الإتمام',''],['3 ساعات','متوسط الردّ',''],['سنتان','على المنصّة','']],
+      next: 'رحلته القادمة: غازي عنتاب · 2 نوفمبر' },
+    { name: 'سفيان ب.', initials: 'س ب', level: 'مستورد مُتحقَّق · سجل قصير',
+      cats: ['عطور', 'ساعات'], tone: 0,
+      stats: [['12','معاملة مؤكَّدة',''],['100%','نسبة الإتمام','var(--allowed-ink)'],['ساعتان','متوسط الردّ',''],['5 أشهر','على المنصّة','var(--conditional-ink)']],
+      next: 'رحلته القادمة: دبي · 19 أكتوبر' }
+  ];
+
+  ICON = {
+    home: React.createElement('svg', { width: 19, height: 19, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 1.8 }, React.createElement('path', { d: 'M4 11l8-7 8 7v8a1 1 0 0 1-1 1h-4v-6H9v6H5a1 1 0 0 1-1-1z' })),
+    disc: React.createElement('svg', { width: 19, height: 19, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 1.8 }, React.createElement('circle', { cx: 12, cy: 12, r: 9 }), React.createElement('path', { d: 'M15.5 8.5l-2 5-5 2 2-5z' })),
+    req: React.createElement('svg', { width: 19, height: 19, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 1.8 }, React.createElement('path', { d: 'M7 4h10a1 1 0 0 1 1 1v15l-6-3-6 3V5a1 1 0 0 1 1-1z' })),
+    cmt: React.createElement('svg', { width: 19, height: 19, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 1.8 }, React.createElement('path', { d: 'M5 12.5l4.5 4.5L19 7' }), React.createElement('path', { d: 'M4 20h16' })),
+    msg: React.createElement('svg', { width: 19, height: 19, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 1.8 }, React.createElement('path', { d: 'M21 11.5a8.4 8.4 0 0 1-9 8.4 9 9 0 0 1-3.3-.6L3 21l1.7-5a8.2 8.2 0 0 1-.7-3.4 8.4 8.4 0 0 1 8.5-8.5 8.4 8.4 0 0 1 8.5 8.4z' })),
+    me: React.createElement('svg', { width: 19, height: 19, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 1.8 }, React.createElement('circle', { cx: 12, cy: 8.5, r: 3.7 }), React.createElement('path', { d: 'M4.8 20a7.4 7.4 0 0 1 14.4 0' }))
+  };
+
+  NAV = [
+    { id: 'home', label: 'الرئيسية', icon: 'home' },
+    { id: 'disc', label: 'اكتشف', icon: 'disc' },
+    { id: 'req', label: 'طلباتي', icon: 'req' },
+    { id: 'cmt', label: 'التزاماتي', icon: 'cmt' },
+    { id: 'msg', label: 'الرسائل', icon: 'msg' },
+    { id: 'me', label: 'حسابي', icon: 'me' }
+  ];
+
+  meter(label, used, cap, unit, d) {
+    const pct = Math.min(100, Math.round(used / cap * 100));
+    const fg = pct >= 85 ? 'var(--conditional)' : 'var(--allowed)';
+    const f = (x) => d ? x.toFixed(d) : this.fmt(x);
+    return { label, pct, fg, text: this.ltr(f(used) + ' / ' + f(cap) + ' ' + unit) };
+  }
+
+  renderVals() {
+    const s = this.state;
+    const tab = this.TABS.find(t => t.id === s.tab);
+    const chips = this.CHIPS[s.tab];
+
+    return {
+      q: '', onQ: () => {},
+      placeholder: tab.ph,
+      scopeNote: s.tab === 'trips' ? '9 رحلات منشورة' : s.tab === 'importers' ? '24 مستورداً مُتحقَّقاً' : '',
+      isTrips: s.tab === 'trips',
+      isImporters: s.tab === 'importers',
+      isProducts: s.tab === 'products',
+
+      tabs: this.TABS.map(t => ({
+        ...t, on: t.id === s.tab,
+        bd: t.id === s.tab ? 'var(--ink)' : 'transparent',
+        fg: t.id === s.tab ? 'var(--ink)' : 'var(--ink-3)',
+        fw: t.id === s.tab ? 600 : 400,
+        pick: () => this.setState({ tab: t.id, chip: 'all' })
+      })),
+
+      chips: chips.map(([id, label]) => ({
+        label, on: s.chip === id,
+        bd: s.chip === id ? 'var(--ink)' : 'var(--rule-strong)',
+        bg: s.chip === id ? 'var(--ink)' : 'var(--surface)',
+        fg: s.chip === id ? 'var(--ink-on)' : 'var(--ink)',
+        pick: () => this.setState({ chip: id })
+      })),
+
+      trips: this.TRIPS.map(t => {
+        const [ccBg, ccFg] = this.TONE[t.tone];
+        const [avBg, avFg] = this.TONE[t.tone];
+        const on = !!s.followed[t.id];
+        return {
+          ...t,
+          ccBg, ccFg, avBg, avFg,
+          dates: this.ltr(t.dates),
+          meters: [
+            this.meter('الوزن', t.mw[0], t.mw[1], 'كغ', 0),
+            this.meter('الحجم', t.mv[0], t.mv[1], 'م³', 2)
+          ],
+          followed: on,
+          followLabel: on ? 'إلغاء التنبيه' : 'نبّهني عند فتح السعة',
+          bellFill: on ? 'var(--conditional)' : 'none',
+          bellStroke: on ? 'var(--conditional)' : 'var(--ink-2)',
+          follow: () => this.setState(st => {
+            const f = { ...st.followed };
+            if (f[t.id]) delete f[t.id]; else f[t.id] = true;
+            return { followed: f };
+          })
+        };
+      }),
+
+      importers: this.IMPORTERS.map(im => {
+        const [avBg, avFg] = this.TONE[im.tone];
+        return {
+          ...im, avBg, avFg,
+          stats: im.stats.map(([v, k, fg]) => ({ v, k, fg: fg || 'var(--ink)' }))
+        };
+      }),
+
+      nav: this.NAV.map(n => ({
+        ...n, on: n.id === 'disc',
+        fg: n.id === 'disc' ? 'var(--ink)' : 'var(--ink-3)',
+        fw: n.id === 'disc' ? 600 : 400,
+        icon: this.ICON[n.icon]
+      }))
+    };
+  }
+}
+</script>
+</body>
+</html>

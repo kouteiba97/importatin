@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./tokens.css">
+<style>
+.sech{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px}
+.sech h2{margin:0;font-size:var(--t-h2);font-weight:500}
+.more{border:0;background:transparent;font-size:var(--t-sm);color:var(--allowed-ink);cursor:pointer;padding:0}
+</style>
+</helmet>
+
+<div dir="rtl" lang="ar" class="tier-op" style="min-height:100vh;display:flex;justify-content:center">
+<div style="width:100%;max-width:430px;min-height:100vh;display:flex;flex-direction:column;background:var(--paper);border-inline:1px solid var(--rule)">
+
+<header style="position:sticky;top:0;z-index:20;background:var(--surface);border-bottom:1px solid var(--rule)">
+<div style="display:flex;align-items:center;gap:10px;padding:11px 16px 9px">
+<span style="font-size:var(--t-h2);font-weight:600">سجلّاتي</span>
+</div>
+<nav aria-label="أقسام" style="display:grid;grid-template-columns:repeat(3,1fr)">
+<sc-for list="{{ tabs }}" as="t" hint-placeholder-count="3">
+<button type="button" onClick="{{ t.pick }}" aria-current="{{ t.on }}" style="height:42px;border:0;border-bottom:2px solid {{ t.bd }};background:transparent;color:{{ t.fg }};font-size:var(--t-body);font-weight:{{ t.fw }};cursor:pointer">{{ t.label }}</button>
+</sc-for>
+</nav>
+</header>
+
+<main style="flex:1;padding:16px 16px 30px;display:flex;flex-direction:column;gap:16px">
+
+<!-- ══════ LEDGER ══════ -->
+<sc-if value="{{ isLedger }}" hint-placeholder-val="{{ true }}">
+<div style="display:flex;flex-direction:column;gap:16px">
+
+<section class="card" style="padding:15px">
+<div class="sech"><h2>هذا الشهر</h2></div>
+<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--rule);border:1px solid var(--rule);border-radius:var(--r-sm);overflow:hidden">
+<sc-for list="{{ summary }}" as="s" hint-placeholder-count="3">
+<div style="background:var(--surface);padding:12px 7px;text-align:center">
+<div class="num" style="font-size:17px;font-weight:600;line-height:1.2"><bdi>{{ s.v }}</bdi></div>
+<div style="font-size:var(--t-micro);color:var(--ink-2);margin-top:3px">{{ s.k }}</div>
+</div>
+</sc-for>
+</div>
+</section>
+
+<section>
+<div class="sech">
+<h2>العمليات</h2>
+<button type="button" class="more">صدّر ←</button>
+</div>
+<div class="card">
+<sc-for list="{{ entries }}" as="e" hint-placeholder-count="5">
+<div style="display:flex;gap:11px;padding:12px 13px;border-bottom:1px solid var(--rule-faint)">
+<span aria-hidden="true" style="flex:none;width:3px;align-self:stretch;border-radius:2px;background:{{ e.bar }}"></span>
+<div style="flex:1;min-width:0">
+<div style="display:flex;align-items:baseline;gap:8px">
+<span style="flex:1;min-width:0;font-size:var(--t-body);font-weight:500">{{ e.what }}</span>
+<span class="num" style="flex:none;font-size:var(--t-sm);font-weight:600"><bdi>{{ e.amount }}</bdi></span>
+</div>
+<div class="num" style="font-size:var(--t-xs);color:var(--ink-2);margin-top:4px"><bdi>{{ e.meta }}</bdi></div>
+</div>
+</div>
+</sc-for>
+</div>
+</section>
+
+<section style="display:flex;gap:10px;padding:13px 14px;border:1px solid var(--rule);border-radius:var(--r);background:var(--surface-2)">
+<span aria-hidden="true" style="flex:none;color:var(--ink-3)">i</span>
+<p style="margin:0;font-size:var(--t-xs);line-height:1.65;color:var(--ink-2)">هذا دفترك المبسّط. صدّره وقدّمه لمصالح الضرائب عند الحاجة.</p>
+</section>
+
+</div>
+</sc-if>
+
+<!-- ══════ LABELS — Article 14 ══════ -->
+<sc-if value="{{ isLabels }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;gap:16px">
+
+<section>
+<div class="sech"><h2>اختر الصنف</h2></div>
+<div class="card">
+<sc-for list="{{ items }}" as="it" hint-placeholder-count="3">
+<button type="button" onClick="{{ it.pick }}" aria-pressed="{{ it.on }}" style="width:100%;display:flex;align-items:center;gap:11px;padding:12px 13px;border:0;border-bottom:1px solid var(--rule-faint);background:{{ it.bg }};text-align:start;cursor:pointer;color:inherit">
+<span aria-hidden="true" style="flex:none;width:3px;align-self:stretch;border-radius:2px;background:{{ it.bar }}"></span>
+<span class="img ph {{ it.ph }}" style="flex:none;width:38px;height:46px;border-radius:var(--r-sm);display:block"></span>
+<span style="flex:1;min-width:0">
+<span style="display:block;font-size:var(--t-body);font-weight:{{ it.fw }}">{{ it.name }}</span>
+<span class="num" style="display:block;font-size:var(--t-xs);color:var(--ink-2);margin-top:3px"><bdi>{{ it.meta }}</bdi></span>
+</span>
+</button>
+</sc-for>
+</div>
+</section>
+
+<section>
+<div class="sech"><h2>الملصق</h2></div>
+<div class="card" style="padding:15px">
+<div style="border:1.5px dashed var(--rule-strong);border-radius:var(--r-sm);padding:14px;background:var(--surface-2)">
+<sc-for list="{{ labelRows }}" as="r" hint-placeholder-count="4">
+<div style="display:grid;grid-template-columns:72px 1fr;gap:4px 10px;padding:5px 0;border-top:1px solid var(--rule-faint)">
+<span style="font-size:var(--t-micro);color:var(--ink-3);padding-top:2px">{{ r.k }}</span>
+<span style="font-size:var(--t-sm);font-weight:{{ r.fw }};line-height:1.45"><bdi>{{ r.v }}</bdi></span>
+</div>
+</sc-for>
+</div>
+<p style="margin:11px 0 0;font-size:var(--t-xs);color:var(--ink-2);line-height:1.6">يُلصق على كل وحدة أو على أصغر عبوة بيع، بالعربية.</p>
+</div>
+</section>
+
+<section>
+<div class="sech"><h2>وصل التسليم</h2></div>
+<div class="card" style="padding:4px 14px">
+<sc-for list="{{ noteRows }}" as="r" hint-placeholder-count="5">
+<div style="display:flex;justify-content:space-between;align-items:baseline;gap:14px;padding:11px 0;border-bottom:1px solid var(--rule-faint)">
+<span style="font-size:var(--t-sm);color:var(--ink-2)">{{ r.k }}</span>
+<span class="num" style="font-size:var(--t-body);font-weight:{{ r.fw }}"><bdi>{{ r.v }}</bdi></span>
+</div>
+</sc-for>
+</div>
+</section>
+
+<sc-if value="{{ missingAddr }}" hint-placeholder-val="{{ false }}">
+<div role="alert" style="display:flex;gap:10px;padding:13px 14px;background:var(--conditional-bg);border:1px solid var(--conditional-bd);border-radius:var(--r)">
+<span aria-hidden="true" style="flex:none;font-weight:600;color:var(--conditional-ink)">!</span>
+<span style="font-size:var(--t-sm);line-height:1.6">أكمل عنوانك في ملفك — الملصق لا يكتمل بدونه.</span>
+</div>
+</sc-if>
+
+<div style="display:flex;gap:9px">
+<button type="button" style="flex:1;height:50px;border:0;border-radius:var(--r);background:var(--allowed);color:var(--ink-on);font-size:15px;font-weight:600;cursor:pointer">{{ printLabel }}</button>
+<button type="button" style="flex:none;padding:0 16px;height:50px;border:1px solid var(--rule-strong);border-radius:var(--r);background:var(--surface);color:inherit;font-size:var(--t-sm);cursor:pointer">PDF</button>
+</div>
+
+</div>
+</sc-if>
+
+<!-- ══════ SUBSCRIPTION ══════ -->
+<sc-if value="{{ isCredits }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;gap:16px">
+
+<section class="card" style="padding:16px">
+<div style="display:flex;align-items:baseline;gap:9px;margin-bottom:6px">
+<span class="num" style="font-size:34px;font-weight:600;line-height:1"><bdi>{{ daysLeft }}</bdi></span>
+<span style="font-size:var(--t-body);color:var(--ink-2)">يوماً متبقّياً</span>
+</div>
+<div style="font-size:var(--t-sm);color:var(--ink-2)">{{ planName }}</div>
+<div style="height:6px;border-radius:3px;background:var(--neutral-bg);overflow:hidden;margin-top:12px"><i style="display:block;height:100%;width:{{ planPct }}%;background:var(--allowed);border-radius:3px"></i></div>
+<div class="num" style="font-size:var(--t-xs);color:var(--ink-3);margin-top:6px"><bdi>{{ planUntil }}</bdi></div>
+</section>
+
+<section>
+<div class="sech"><h2>جدّد اشتراكك</h2></div>
+<div class="card">
+<sc-for list="{{ plans }}" as="p" hint-placeholder-count="3">
+<label style="display:flex;align-items:center;gap:12px;padding:13px;border-bottom:1px solid var(--rule-faint);cursor:pointer">
+<input type="radio" name="plan" checked="{{ p.on }}" style="accent-color:var(--allowed);width:18px;height:18px;flex:none">
+<span style="flex:1;min-width:0">
+<span style="display:block;font-size:var(--t-body);font-weight:500">{{ p.label }}</span>
+<span class="num" style="display:block;font-size:var(--t-xs);color:var(--ink-2);margin-top:2px"><bdi>{{ p.note }}</bdi></span>
+</span>
+<span class="num" style="flex:none;font-size:var(--t-h3);font-weight:600"><bdi>{{ p.price }}</bdi></span>
+</label>
+</sc-for>
+</div>
+</section>
+
+<section>
+<div class="sech"><h2>طريقة الدفع</h2></div>
+<div class="card">
+<sc-for list="{{ methods }}" as="m" hint-placeholder-count="2">
+<button type="button" onClick="{{ m.pick }}" aria-pressed="{{ m.on }}" style="width:100%;display:flex;align-items:center;gap:12px;padding:13px;border:0;border-bottom:1px solid var(--rule-faint);background:{{ m.bg }};text-align:start;cursor:pointer;color:inherit">
+<span aria-hidden="true" style="flex:none;width:34px;height:34px;border-radius:var(--r-sm);background:{{ m.iconBg }};display:grid;place-items:center;font-size:var(--t-micro);font-weight:600;color:{{ m.iconFg }}">{{ m.tag }}</span>
+<span style="flex:1;min-width:0">
+<span style="display:block;font-size:var(--t-body);font-weight:{{ m.fw }}">{{ m.label }}</span>
+<span style="display:block;font-size:var(--t-xs);color:var(--ink-2);margin-top:2px">{{ m.note }}</span>
+</span>
+</button>
+</sc-for>
+</div>
+</section>
+
+<sc-if value="{{ isCcp }}" hint-placeholder-val="{{ true }}">
+<section class="card" style="padding:15px">
+<div class="sech"><h2>ارفع وصل التحويل</h2></div>
+<button type="button" style="width:100%;height:104px;border:1.5px dashed var(--rule-strong);border-radius:var(--r);background:var(--surface-2);cursor:pointer;color:var(--ink-2);font-size:var(--t-sm);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px">
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 16V6M8 10l4-4 4 4"/><path d="M4 18h16"/></svg>
+صوّر الوصل أو اختر صورة
+</button>
+<p style="margin:11px 0 0;font-size:var(--t-xs);color:var(--ink-2);line-height:1.6">يُفعَّل اشتراكك خلال يوم عمل بعد مطابقة الوصل.</p>
+</section>
+</sc-if>
+
+<button type="button" style="height:52px;border:0;border-radius:var(--r);background:var(--ink);color:var(--ink-on);font-size:16px;font-weight:600;cursor:pointer">{{ payCta }}</button>
+
+<p style="margin:0;font-size:var(--t-xs);color:var(--ink-3);line-height:1.65">هذا اشتراكك في مَعْبَر. لا علاقة له بأي مبلغ بينك وبين تاجر.</p>
+
+</div>
+</sc-if>
+
+</main>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:430,&quot;height&quot;:1320}}">
+class Component extends DCLogic {
+  state = { tab: 'ledger', item: 'coats', method: 'ccp' };
+
+  LRI = '⁦'; PDI = '⁩';
+  ltr(s) { return this.LRI + s + this.PDI; }
+  fmt(n, d = 0) {
+    const s = Number(n).toFixed(d), [i, f] = s.split('.');
+    return '⁦' + i.replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + (f ? '.' + f : '') + '⁩';
+  }
+  counted(n, f) {
+    const m = n % 100;
+    if (n === 1) return f.one;
+    if (n === 2) return f.two;
+    if (m >= 3 && m <= 10) return this.fmt(n) + ' ' + f.few;
+    return this.fmt(n) + ' ' + f.many;
+  }
+  UNIT_N = { one: 'وحدة واحدة', two: 'وحدتان', few: 'وحدات', many: 'وحدة' };
+  SHEET_N = { one: 'ورقة واحدة', two: 'ورقتان', few: 'أوراق', many: 'ورقة' };
+
+  TABS = [['ledger', 'الدفتر'], ['labels', 'الوسم'], ['credits', 'الاشتراك']];
+
+  SUMMARY = [
+    { k: 'عملية', v: '9' },
+    { k: 'قيمة الاستيراد', v: '1 240 000' },
+    { k: 'رحلتان', v: '2 من 2' }
+  ];
+
+  ENTRIES = [
+    { what: 'بيع — معاطف نسائية', amount: '+ 312 000', meta: 'ياسين ب. · 18 وحدة · 12 أكتوبر', kind: 'in' },
+    { what: 'استيراد — رحلة إسطنبول', amount: '− 560 000', meta: 'رسم جمركي 5% · 18 أكتوبر', kind: 'out' },
+    { what: 'بيع — حقائب يد', amount: '+ 178 000', meta: 'دار الأناقة · 20 وحدة · 20 أكتوبر', kind: 'in' },
+    { what: 'بيع — عطور', amount: '+ 96 000', meta: 'نادية ر. · 24 وحدة · 22 أكتوبر', kind: 'in' },
+    { what: 'اشتراك مَعْبَر', amount: '− 3 000', meta: 'شهر أكتوبر', kind: 'fee' }
+  ];
+
+  ITEMS = [
+    { id: 'coats', ph: 'ph-coat', name: 'معاطف نسائية شتوية', q: 120, w: 0.8, v: 0.004, origin: 'تركيا' },
+    { id: 'bags', ph: 'ph-bag', name: 'حقائب يد نسائية', q: 80, w: 0.6, v: 0.008, origin: 'تركيا' },
+    { id: 'perfume', ph: 'ph-perfume', name: 'عطور نسائية 100 مل', q: 60, w: 0.45, v: 0.001, origin: 'الإمارات' }
+  ];
+
+  PROFILE = { name: 'سفيان بن عمارة', address: 'حي 400 مسكن، عمارة ج، الجزائر الوسطى' };
+
+  PLANS = [
+    { id: 'm', label: 'شهر', note: 'تجديد يدوي', price: '3 000 دج' },
+    { id: 'q', label: '3 أشهر', note: 'توفير 10%', price: '8 100 دج' },
+    { id: 'y', label: 'سنة', note: 'توفير 20%', price: '28 800 دج' }
+  ];
+
+  METHODS = [
+    { id: 'ccp', tag: 'CCP', label: 'تحويل CCP أو بريدي موب', note: 'ارفع الوصل ويُفعَّل خلال يوم عمل', iconBg: 'oklch(0.93 0.03 250)', iconFg: 'oklch(0.35 0.06 250)' },
+    { id: 'cib', tag: 'CIB', label: 'بطاقة CIB أو الذهبية', note: 'تفعيل فوري', iconBg: 'oklch(0.92 0.03 150)', iconFg: 'var(--allowed-ink)' }
+  ];
+
+  renderVals() {
+    const s = this.state;
+    const it = this.ITEMS.find(x => x.id === s.item);
+    const P = this.PROFILE;
+    const sheets = Math.ceil(it.q / 24);
+
+    return {
+      tabs: this.TABS.map(([id, label]) => ({
+        label, on: s.tab === id,
+        bd: s.tab === id ? 'var(--ink)' : 'transparent',
+        fg: s.tab === id ? 'var(--ink)' : 'var(--ink-3)',
+        fw: s.tab === id ? 600 : 400,
+        pick: () => this.setState({ tab: id })
+      })),
+      isLedger: s.tab === 'ledger',
+      isLabels: s.tab === 'labels',
+      isCredits: s.tab === 'credits',
+
+      summary: this.SUMMARY,
+      entries: this.ENTRIES.map(e => ({
+        ...e,
+        bar: e.kind === 'in' ? 'var(--allowed)' : e.kind === 'out' ? 'var(--conditional)' : 'var(--rule-strong)'
+      })),
+
+      items: this.ITEMS.map(x => ({
+        ...x, on: x.id === s.item,
+        fw: x.id === s.item ? 600 : 400,
+        bg: x.id === s.item ? 'var(--allowed-bg)' : 'transparent',
+        bar: x.id === s.item ? 'var(--allowed)' : 'transparent',
+        meta: this.counted(x.q, this.UNIT_N) + ' · ' + x.origin,
+        pick: () => this.setState({ item: x.id })
+      })),
+
+      labelRows: [
+        { k: 'المستورد', v: P.name, fw: 600 },
+        { k: 'العنوان', v: P.address, fw: 400 },
+        { k: 'السلعة', v: it.name, fw: 600 },
+        { k: 'بلد المنشأ', v: it.origin, fw: 400 }
+      ],
+      noteRows: [
+        { k: 'السلعة', v: it.name, fw: 500 },
+        { k: 'الكمية', v: this.counted(it.q, this.UNIT_N), fw: 600 },
+        { k: 'الوزن', v: this.ltr(this.fmt(it.q * it.w, 1) + ' كغ'), fw: 400 },
+        { k: 'الحجم', v: this.ltr(this.fmt(it.q * it.v, 2) + ' م³'), fw: 400 },
+        { k: 'بلد المنشأ', v: it.origin, fw: 400 }
+      ],
+      missingAddr: false,
+      printLabel: 'اطبع ' + this.counted(sheets, this.SHEET_N),
+
+      daysLeft: '17',
+      planName: 'اشتراك المستورد — شهري',
+      planPct: 57,
+      planUntil: this.ltr('ينتهي في 31 أكتوبر 2026'),
+      plans: this.PLANS.map((p, i) => ({ ...p, on: i === 0 })),
+      methods: this.METHODS.map(m => ({
+        ...m, on: m.id === s.method,
+        fw: m.id === s.method ? 600 : 400,
+        bg: m.id === s.method ? 'var(--surface-2)' : 'transparent',
+        pick: () => this.setState({ method: m.id })
+      })),
+      isCcp: s.method === 'ccp',
+      payCta: s.method === 'ccp' ? 'أرسل الوصل للمراجعة' : 'ادفع 3 000 دج'
+    };
+  }
+}
+</script>
+</body>
+</html>

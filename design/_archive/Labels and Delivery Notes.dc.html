@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+html,body{margin:0;padding:0;background:oklch(0.955 0.010 80);color:oklch(0.20 0.02 60);font-family:"IBM Plex Sans Arabic",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+*{box-sizing:border-box}
+input,button,select{font-family:inherit}
+.num{font-variant-numeric:tabular-nums}
+.mono{font-family:'IBM Plex Mono',monospace}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</helmet>
+
+<div dir="rtl" lang="ar" style="min-height:100vh;display:flex;justify-content:center;background:oklch(0.955 0.010 80)">
+<div style="width:100%;max-width:430px;min-height:100vh;display:flex;flex-direction:column;background:oklch(0.955 0.010 80);border-inline:1px solid oklch(0.89 0.012 80)">
+
+<header style="display:flex;justify-content:space-between;align-items:baseline;padding:14px 16px 12px;background:#fff;border-bottom:1px solid oklch(0.88 0.012 80)">
+<div style="display:flex;align-items:baseline;gap:8px"><span style="font-weight:600;font-size:18px">مَعْبَر</span><span style="font-size:12px;color:oklch(0.46 0.02 60)">الملصقات ووصل التسليم</span></div>
+<span class="mono" style="font-size:11px;color:oklch(0.46 0.02 60)"><bdi>{{ tripRef }}</bdi></span>
+</header>
+
+<div style="padding:14px 16px 0">
+<div style="display:flex;gap:10px;align-items:flex-start;padding:12px 14px;background:oklch(0.96 0.03 150);border:1px solid oklch(0.86 0.05 150);border-radius:8px">
+<span aria-hidden="true" style="flex:none;width:22px;height:22px;border-radius:50%;background:oklch(0.42 0.07 150);color:#fff;display:grid;place-items:center;font-size:13px">§</span>
+<div style="font-size:13px;line-height:1.65">
+<strong style="font-weight:500">الوسم إلزامي.</strong> المادة 14 من المرسوم 25-170 تفرض ملصقاً على كل سلعة ووصل تسليم مبسّطاً.
+<button type="button" onClick="{{ openCite }}" style="border:0;background:transparent;padding:0;color:oklch(0.36 0.07 150);font:inherit;font-size:13px;text-decoration:underline;cursor:pointer">اقرأ النص</button>
+</div>
+</div>
+</div>
+
+<main style="flex:1;padding:16px;display:flex;flex-direction:column;gap:16px">
+
+<section>
+<div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px">
+<h2 style="margin:0;font-size:15px;font-weight:500">الصنف</h2>
+<span style="font-size:12px;color:oklch(0.46 0.02 60)">من قائمة الشراء</span>
+</div>
+<div style="background:#fff;border:1px solid oklch(0.88 0.012 80);border-radius:8px;overflow:hidden">
+<sc-for list="{{ items }}" as="it" hint-placeholder-count="3">
+<button type="button" onClick="{{ it.pick }}" aria-pressed="{{ it.on }}" style="width:100%;display:flex;align-items:center;gap:12px;padding:13px 14px;border:0;border-bottom:1px solid oklch(0.93 0.012 80);background:{{ it.bg }};text-align:start;cursor:pointer;color:inherit">
+<span aria-hidden="true" style="flex:none;width:3px;align-self:stretch;background:{{ it.bar }};border-radius:2px"></span>
+<span style="flex:1;min-width:0">
+<span style="display:block;font-size:15px;font-weight:{{ it.fw }}">{{ it.name }}</span>
+<span class="num" style="display:block;font-size:12px;color:oklch(0.46 0.02 60);margin-top:2px"><bdi>{{ it.qty }} وحدة · {{ it.weight }} كغ · {{ it.origin }}</bdi></span>
+</span>
+<span class="mono num" style="flex:none;font-size:11px;color:oklch(0.46 0.02 60)">{{ it.no }}</span>
+</button>
+</sc-for>
+</div>
+</section>
+
+<section>
+<h2 style="margin:0 0 8px;font-size:15px;font-weight:500">معاينة الملصق</h2>
+<div style="background:#fff;border:1px solid oklch(0.88 0.012 80);border-radius:8px;padding:16px">
+
+<div style="border:1.5px dashed oklch(0.70 0.015 70);border-radius:4px;padding:14px 14px 12px;background:oklch(0.995 0.004 80)">
+<div class="mono" style="font-size:9px;letter-spacing:0;color:oklch(0.52 0.02 60);margin-bottom:8px"><bdi>{{ labelRef }}</bdi></div>
+<sc-for list="{{ labelRows }}" as="r" hint-placeholder-count="4">
+<div style="display:grid;grid-template-columns:76px 1fr;gap:4px 10px;padding:4px 0;border-top:1px solid oklch(0.92 0.012 80)">
+<span style="font-size:10px;color:oklch(0.50 0.02 60);padding-top:2px">{{ r.k }}</span>
+<span style="font-size:13px;font-weight:{{ r.fw }};line-height:1.45"><bdi>{{ r.v }}</bdi></span>
+</div>
+</sc-for>
+</div>
+
+<p style="margin:10px 0 0;font-size:11.5px;line-height:1.6;color:oklch(0.46 0.02 60)">الملصق بالعربية إلزامي. يُلصق على كل وحدة أو على أصغر عبوة بيع.</p>
+</div>
+</section>
+
+<section>
+<div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px">
+<h2 style="margin:0;font-size:15px;font-weight:500">وصل التسليم المبسّط</h2>
+<span class="mono num" style="font-size:11px;color:oklch(0.46 0.02 60)"><bdi>{{ noteRef }}</bdi></span>
+</div>
+<div style="background:#fff;border:1px solid oklch(0.88 0.012 80);border-radius:8px;padding:14px">
+<sc-for list="{{ noteRows }}" as="r" hint-placeholder-count="6">
+<div style="display:flex;justify-content:space-between;align-items:baseline;gap:14px;padding:9px 0;border-bottom:1px solid oklch(0.94 0.012 80)">
+<span style="font-size:13px;color:oklch(0.46 0.02 60);flex:none">{{ r.k }}</span>
+<span class="num" style="font-size:15px;font-weight:{{ r.fw }};text-align:end;line-height:1.4"><bdi>{{ r.v }}</bdi></span>
+</div>
+</sc-for>
+</div>
+</section>
+
+<section>
+<h2 style="margin:0 0 8px;font-size:15px;font-weight:500">الطباعة</h2>
+<div style="background:#fff;border:1px solid oklch(0.88 0.012 80);border-radius:8px;padding:6px 14px">
+<sc-for list="{{ sheets }}" as="s" hint-placeholder-count="3">
+<label style="display:flex;align-items:center;gap:12px;padding:11px 0;border-bottom:1px solid oklch(0.94 0.012 80);cursor:pointer">
+<input type="radio" name="sheet" checked="{{ s.on }}" onChange="{{ s.pick }}" style="accent-color:oklch(0.42 0.07 150);width:18px;height:18px;flex:none">
+<span style="flex:1">
+<span style="display:block;font-size:14px">{{ s.label }}</span>
+<span class="num" style="display:block;font-size:12px;color:oklch(0.46 0.02 60);margin-top:1px"><bdi>{{ s.hint }}</bdi></span>
+</span>
+<span class="mono num" style="font-size:12px;color:oklch(0.46 0.02 60)">{{ s.pages }}</span>
+</label>
+</sc-for>
+</div>
+</section>
+
+<sc-if value="{{ missing }}" hint-placeholder-val="{{ false }}">
+<div role="alert" style="display:flex;gap:10px;padding:12px 14px;background:oklch(0.96 0.05 85);border:1px solid oklch(0.84 0.09 85);border-radius:8px;font-size:13px;line-height:1.6">
+<span aria-hidden="true" style="flex:none;font-weight:600;color:oklch(0.50 0.12 70)">!</span>
+<span>عنوانك غير مكتمل في ملفك. المادة 14 تشترط ذكر العنوان على الملصق. <button type="button" onClick="{{ fixAddr }}" style="border:0;background:transparent;padding:0;color:oklch(0.42 0.10 60);font:inherit;font-size:13px;text-decoration:underline;cursor:pointer">أكمِله الآن</button></span>
+</div>
+</sc-if>
+
+</main>
+
+<div style="position:sticky;bottom:0;padding:12px 16px 16px;background:#fff;border-top:1px solid oklch(0.88 0.012 80);display:flex;flex-direction:column;gap:8px">
+<button type="button" onClick="{{ print }}" disabled="{{ missing }}" style="height:52px;border:0;border-radius:8px;background:{{ ctaBg }};color:#fff;font-size:16px;font-weight:500;cursor:pointer;opacity:{{ ctaOpacity }}">{{ ctaLabel }}</button>
+<button type="button" onClick="{{ pdf }}" style="height:44px;border:1px solid oklch(0.80 0.015 70);border-radius:8px;background:transparent;color:inherit;font-size:14px;cursor:pointer">حفظ PDF للأرشيف</button>
+</div>
+
+<sc-if value="{{ citeOpen }}" hint-placeholder-val="{{ false }}">
+<div role="dialog" aria-label="نص المادة" style="position:fixed;inset:0;background:oklch(0.20 0.02 60 / 0.45);display:flex;align-items:flex-end;justify-content:center">
+<div style="width:100%;max-width:430px;background:#fff;border-radius:14px 14px 0 0;padding:18px 16px 22px">
+<div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px">
+<h3 style="margin:0;font-size:16px;font-weight:500">المادة 14 — المرسوم التنفيذي 25-170</h3>
+<button type="button" onClick="{{ closeCite }}" style="border:0;background:transparent;font-size:14px;color:oklch(0.46 0.02 60);cursor:pointer">إغلاق</button>
+</div>
+<p style="margin:0 0 12px;font-size:14px;line-height:1.75">يلتزم المستورد المصغّر بضمان تعريف سلعه بواسطة ملصقات ملائمة ووصولات تسليم مبسّطة. ويجب أن تتضمّن هذه الملصقات الاسم واللقب وعنوان المستورد المصغّر، وتسمية السلعة، وبلد المنشأ و/أو المصدر. ويتضمّن وصل التسليم، حسب الحالة، الكمية و/أو الوزن و/أو الحجم.</p>
+<div style="display:flex;justify-content:space-between;align-items:baseline;padding-top:10px;border-top:1px solid oklch(0.90 0.012 80);font-size:12px;color:oklch(0.46 0.02 60)">
+<span><bdi>ج.ر. عدد 40 · 29 جوان 2025</bdi></span>
+<span>آخر تحديث: <bdi>{{ effective }}</bdi></span>
+</div>
+</div>
+</div>
+</sc-if>
+
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:430,&quot;height&quot;:1180}}">
+class Component extends DCLogic {
+  state = { sel: 'coats', sheet: 'a4-24', cite: false };
+
+  PROFILE = { first: 'سفيان', last: 'بن عمارة', address: 'حي 400 مسكن، عمارة ج، الجزائر الوسطى، الجزائر', complete: true };
+  TRIP = { ref: 'TRP-26-0412', effective: '29 جوان 2025' };
+
+  ITEMS = [
+    { id: 'coats', no: '02', name: 'معاطف نسائية شتوية', qty: 120, w: 0.8, v: 0.004, origin: 'تركيا' },
+    { id: 'bags',  no: '01', name: 'حقائب يد نسائية',     qty: 80,  w: 0.1, v: 0.00375, origin: 'تركيا' },
+    { id: 'perfume', no: '04', name: 'عطور نسائية 100 مل', qty: 60, w: 0.45, v: 0.001, origin: 'الإمارات' }
+  ];
+
+  SHEETS = [
+    { id: 'a4-24', label: 'A4 — 24 ملصقاً', unit: 24 },
+    { id: 'a4-12', label: 'A4 — 12 ملصقاً', unit: 12 },
+    { id: 'roll',  label: 'رول حراري 58 مم', unit: 1 }
+  ];
+
+  SHEET_N = { one: 'ورقة واحدة', two: 'ورقتان', few: 'أوراق', many: 'ورقة' };
+  LABEL_N = { one: 'ملصق واحد', two: 'ملصقان', few: 'ملصقات', many: 'ملصقاً' };
+  CTA_PRINT = 'اطبع';
+  CTA_FIX = 'أكمل عنوانك أولاً';
+
+  OLIVE = 'oklch(0.42 0.07 150)';
+  // Arabic plural categories: one - two - few (3..10) - many (11+).
+  // A counted noun changes form; never append a bare plural to a number.
+  plural(n, f) {
+    const m = n % 100;
+    if (n === 1) return f.one;
+    if (n === 2) return f.two;
+    if (m >= 3 && m <= 10) return f.few;
+    return f.many;
+  }
+  counted(n, f) {
+    const w = this.plural(n, f);
+    return (n === 1 || n === 2) ? w : this.fmt(n) + ' ' + w;
+  }
+
+  fmt(n, d = 0) {
+    const s = Number(n).toFixed(d), [i, f] = s.split('.');
+    return i.replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + (f ? '.' + f : '');
+  }
+
+  renderVals() {
+    const { sel, sheet, cite } = this.state;
+    const it = this.ITEMS.find(x => x.id === sel);
+    const P = this.PROFILE;
+    const missing = !P.complete;
+    const sh = this.SHEETS.find(s => s.id === sheet);
+    const pages = sh.unit === 1 ? it.qty : Math.ceil(it.qty / sh.unit);
+
+    return {
+      tripRef: this.TRIP.ref,
+      effective: this.TRIP.effective,
+      missing,
+      citeOpen: cite,
+      openCite: () => this.setState({ cite: true }),
+      closeCite: () => this.setState({ cite: false }),
+      fixAddr: () => {},
+      print: () => {},
+      pdf: () => {},
+
+      items: this.ITEMS.map(x => ({
+        ...x,
+        on: x.id === sel,
+        fw: x.id === sel ? 500 : 400,
+        bg: x.id === sel ? 'oklch(0.97 0.02 150)' : '#fff',
+        bar: x.id === sel ? this.OLIVE : 'transparent',
+        qty: this.fmt(x.qty),
+        weight: this.fmt(x.qty * x.w, 1),
+        pick: () => this.setState({ sel: x.id })
+      })),
+
+      labelRef: 'LBL-' + this.TRIP.ref.slice(4) + '-' + it.no,
+      labelRows: [
+        { k: 'المستورد', v: P.first + ' ' + P.last, fw: 500 },
+        { k: 'العنوان', v: P.address, fw: 400 },
+        { k: 'السلعة', v: it.name, fw: 500 },
+        { k: 'بلد المنشأ', v: it.origin, fw: 400 }
+      ],
+
+      noteRef: 'BL-' + this.TRIP.ref.slice(4) + '-' + it.no,
+      noteRows: [
+        { k: 'السلعة', v: it.name, fw: 500 },
+        { k: 'الكمية', v: this.fmt(it.qty) + ' وحدة', fw: 500 },
+        { k: 'الوزن الإجمالي', v: this.fmt(it.qty * it.w, 1) + ' كغ', fw: 400 },
+        { k: 'الحجم الإجمالي', v: this.fmt(it.qty * it.v, 2) + ' م³', fw: 400 },
+        { k: 'بلد المنشأ', v: it.origin, fw: 400 },
+        { k: 'الرحلة', v: this.TRIP.ref, fw: 400 }
+      ],
+
+      sheets: this.SHEETS.map(s => {
+        const p = s.unit === 1 ? it.qty : Math.ceil(it.qty / s.unit);
+        return {
+          ...s, on: s.id === sheet,
+          hint: s.unit === 1 ? 'ملصق واحد لكل وحدة' : this.fmt(s.unit) + ' ملصقاً في الورقة',
+          pages: this.counted(p, s.unit === 1 ? this.LABEL_N : this.SHEET_N),
+          pick: () => this.setState({ sheet: s.id })
+        };
+      }),
+
+      ctaLabel: missing ? this.CTA_FIX : this.CTA_PRINT + ' ' + this.counted(pages, sh.unit === 1 ? this.LABEL_N : this.SHEET_N),
+      ctaBg: missing ? 'oklch(0.62 0.01 70)' : this.OLIVE,
+      ctaOpacity: missing ? 0.55 : 1
+    };
+  }
+}
+</script>
+</body>
+</html>

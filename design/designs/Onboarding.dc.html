@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./tokens.css">
+<style>
+.fld{display:block;font-size:var(--t-sm);color:var(--ink-2);margin-bottom:7px}
+.inp{width:100%;height:52px;padding:0 15px;border:1px solid var(--rule-strong);border-radius:var(--r);background:var(--surface);font-size:16px;color:inherit}
+.otp{width:46px;height:56px;text-align:center;font-size:22px;font-weight:600;border:1px solid var(--rule-strong);border-radius:var(--r-sm);background:var(--surface);color:inherit}
+.cta{width:100%;height:52px;border:0;border-radius:var(--r);background:var(--ink);color:var(--ink-on);font-size:16px;font-weight:600;cursor:pointer}
+.ghost{width:100%;height:48px;border:1px solid var(--rule-strong);border-radius:var(--r);background:transparent;color:inherit;font-size:15px;cursor:pointer}
+</style>
+</helmet>
+
+<div dir="rtl" lang="ar" class="tier-public" style="min-height:100vh;display:flex;justify-content:center">
+<div style="width:100%;max-width:430px;min-height:100vh;display:flex;flex-direction:column;background:var(--paper-public);border-inline:1px solid var(--rule)">
+
+<header style="display:flex;align-items:center;gap:10px;padding:12px 14px;background:var(--surface);border-bottom:1px solid var(--rule)">
+<sc-if value="{{ canBack }}" hint-placeholder-val="{{ true }}">
+<button type="button" onClick="{{ back }}" aria-label="رجوع" style="width:34px;height:34px;border:0;background:transparent;cursor:pointer;display:grid;place-items:center;color:inherit">
+<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 5l-7 7 7 7"/></svg>
+</button>
+</sc-if>
+<span style="flex:1;font-weight:600;font-size:17px">مَعْبَر</span>
+<span class="num" style="font-size:var(--t-xs);color:var(--ink-3)"><bdi>{{ stepLabel }}</bdi></span>
+</header>
+
+<sc-if value="{{ showBar }}" hint-placeholder-val="{{ true }}">
+<div style="height:3px;background:var(--neutral-bg)"><i style="display:block;height:100%;width:{{ progress }}%;background:var(--allowed);transition:width .2s ease"></i></div>
+</sc-if>
+
+<main style="flex:1;padding:26px 18px 20px;display:flex;flex-direction:column;gap:20px">
+
+<!-- ══ 1 · PHONE ══ -->
+<sc-if value="{{ isPhone }}" hint-placeholder-val="{{ true }}">
+<div style="display:flex;flex-direction:column;gap:20px">
+<div>
+<h1 style="margin:0 0 8px;font-size:26px;font-weight:600;line-height:1.3">أهلاً بك في مَعْبَر</h1>
+<p style="margin:0;font-size:var(--t-body);line-height:1.7;color:var(--ink-2)">رقم هاتفك يكفي للبدء. تحتاج وثائق لاحقاً فقط إذا أردت الاستيراد أو البيع.</p>
+</div>
+<div>
+<label class="fld" for="ph">رقم الهاتف</label>
+<div style="display:flex;gap:8px">
+<span class="num" style="flex:none;display:grid;place-items:center;width:72px;height:52px;border:1px solid var(--rule-strong);border-radius:var(--r);background:var(--surface-2);font-size:15px"><bdi>+213</bdi></span>
+<input id="ph" class="inp num" inputMode="tel" placeholder="5 55 12 34 56" style="flex:1;min-width:0">
+</div>
+</div>
+<button type="button" onClick="{{ next }}" class="cta">أرسل رمز التأكيد</button>
+<div style="display:flex;align-items:center;gap:12px">
+<span style="flex:1;height:1px;background:var(--rule)"></span>
+<span style="font-size:var(--t-xs);color:var(--ink-3)">أو</span>
+<span style="flex:1;height:1px;background:var(--rule)"></span>
+</div>
+<button type="button" class="ghost">تصفّح السوق بلا حساب</button>
+<p style="margin:0;font-size:var(--t-xs);color:var(--ink-3);line-height:1.7">بالمتابعة أنت توافق على شروط الاستعمال وسياسة الخصوصية.</p>
+</div>
+</sc-if>
+
+<!-- ══ 2 · OTP ══ -->
+<sc-if value="{{ isOtp }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;gap:20px">
+<div>
+<h1 style="margin:0 0 8px;font-size:24px;font-weight:600">أدخل الرمز</h1>
+<p class="num" style="margin:0;font-size:var(--t-body);color:var(--ink-2)"><bdi>أرسلنا رمزاً إلى +213 5 55 12 34 56</bdi></p>
+</div>
+<div style="display:flex;gap:9px;justify-content:space-between" dir="ltr">
+<sc-for list="{{ otpCells }}" as="c" hint-placeholder-count="6">
+<input class="otp num" inputMode="numeric" maxLength="1" value="{{ c.v }}" style="border-color:{{ c.bd }}">
+</sc-for>
+</div>
+<button type="button" onClick="{{ next }}" class="cta">تأكيد</button>
+<button type="button" style="border:0;background:transparent;font-size:var(--t-sm);color:var(--ink-2);cursor:pointer">لم يصلني الرمز — أعد الإرسال <span class="num"><bdi>(0:42)</bdi></span></button>
+</div>
+</sc-if>
+
+<!-- ══ 3 · PROFILE ══ -->
+<sc-if value="{{ isProfile }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;gap:18px">
+<div>
+<h1 style="margin:0 0 8px;font-size:24px;font-weight:600">عرّفنا بك</h1>
+<p style="margin:0;font-size:var(--t-body);color:var(--ink-2)">اسمك يظهر للطرف الآخر عند التواصل.</p>
+</div>
+<div><label class="fld" for="nm">الاسم واللقب</label><input id="nm" class="inp" placeholder="سفيان بن عمارة"></div>
+<div><label class="fld" for="wl">الولاية</label>
+<select id="wl" class="inp"><option>الجزائر</option><option>سطيف</option><option>وهران</option><option>قسنطينة</option></select>
+</div>
+<div>
+<span class="fld">لغة الواجهة</span>
+<div style="display:flex;gap:8px">
+<sc-for list="{{ langs }}" as="l" hint-placeholder-count="3">
+<button type="button" onClick="{{ l.pick }}" aria-pressed="{{ l.on }}" style="flex:1;height:46px;border:1px solid {{ l.bd }};border-radius:var(--r);background:{{ l.bg }};color:{{ l.fg }};font-size:var(--t-body);font-weight:500;cursor:pointer">{{ l.label }}</button>
+</sc-for>
+</div>
+</div>
+<button type="button" onClick="{{ next }}" class="cta">متابعة</button>
+</div>
+</sc-if>
+
+<!-- ══ 4 · CAPABILITY — one identity, several contexts ══ -->
+<sc-if value="{{ isRole }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;gap:18px">
+<div>
+<h1 style="margin:0 0 8px;font-size:24px;font-weight:600">واش تحبّ تدير؟</h1>
+<p style="margin:0;font-size:var(--t-body);line-height:1.7;color:var(--ink-2)">اختر ما ينطبق عليك الآن. حسابك واحد ويمكنك إضافة أي دور لاحقاً.</p>
+</div>
+
+<div style="display:flex;flex-direction:column;gap:11px">
+<sc-for list="{{ roles }}" as="r" hint-placeholder-count="3">
+<button type="button" onClick="{{ r.pick }}" aria-pressed="{{ r.on }}" class="card" style="padding:15px;display:flex;gap:13px;align-items:flex-start;text-align:start;cursor:pointer;color:inherit;border-color:{{ r.bd }};border-width:{{ r.bw }}px">
+<span aria-hidden="true" style="flex:none;width:38px;height:38px;border-radius:var(--r-sm);background:{{ r.iconBg }};display:grid;place-items:center;color:{{ r.iconFg }}">{{ r.icon }}</span>
+<span style="flex:1;min-width:0">
+<span style="display:block;font-size:var(--t-h3);font-weight:600">{{ r.title }}</span>
+<span style="display:block;font-size:var(--t-sm);color:var(--ink-2);line-height:1.6;margin-top:4px">{{ r.body }}</span>
+<span style="display:flex;align-items:center;gap:6px;margin-top:8px">
+<span class="chip {{ r.reqChip }}" style="height:20px;font-size:var(--t-micro)">{{ r.req }}</span>
+</span>
+</span>
+<span aria-hidden="true" style="flex:none;width:21px;height:21px;border-radius:50%;border:2px solid {{ r.dotBd }};background:{{ r.dotBg }};display:grid;place-items:center;color:#fff;font-size:11px">{{ r.check }}</span>
+</button>
+</sc-for>
+</div>
+
+<button type="button" onClick="{{ next }}" class="cta">متابعة</button>
+</div>
+</sc-if>
+
+<!-- ══ 5 · DONE ══ -->
+<sc-if value="{{ isDone }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;gap:20px;padding-top:12px">
+<div style="text-align:center">
+<span aria-hidden="true" style="display:inline-grid;place-items:center;width:64px;height:64px;border-radius:50%;background:var(--allowed-bg);color:var(--allowed-ink);font-size:30px;margin-bottom:14px">✓</span>
+<h1 style="margin:0 0 8px;font-size:24px;font-weight:600">حسابك جاهز</h1>
+<p style="margin:0;font-size:var(--t-body);line-height:1.7;color:var(--ink-2)">تقدر تتصفّح وتحفظ وتراسل من دابا. التحقّق مطلوب فقط للأدوار اللي تحتاجه.</p>
+</div>
+
+<div class="card" style="padding:4px 15px">
+<sc-for list="{{ unlocked }}" as="u" hint-placeholder-count="4">
+<div style="display:flex;align-items:center;gap:10px;padding:12px 0;border-bottom:1px solid var(--rule-faint)">
+<span aria-hidden="true" style="flex:none;width:19px;height:19px;border-radius:50%;background:{{ u.bg }};display:grid;place-items:center;font-size:10px;color:{{ u.fg }}">{{ u.glyph }}</span>
+<span style="flex:1;min-width:0;font-size:var(--t-sm)">{{ u.label }}</span>
+<span style="flex:none;font-size:var(--t-micro);color:var(--ink-3)">{{ u.note }}</span>
+</div>
+</sc-for>
+</div>
+
+<div style="display:flex;flex-direction:column;gap:9px">
+<button type="button" class="cta" style="background:var(--allowed)">ابدأ التحقّق كمستورد</button>
+<button type="button" class="ghost">لاحقاً — خذني للرئيسية</button>
+</div>
+</div>
+</sc-if>
+
+</main>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:430,&quot;height&quot;:900}}">
+class Component extends DCLogic {
+  state = { step: 3, lang: 'ar', roles: { importer: true } };
+
+  STEPS = ['phone', 'otp', 'profile', 'role', 'done'];
+
+  ICON = {
+    imp: React.createElement('svg', { width: 19, height: 19, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 1.9 }, React.createElement('path', { d: 'M3 15l18-7-7 18-2.5-8z' })),
+    tra: React.createElement('svg', { width: 19, height: 19, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 1.9 }, React.createElement('path', { d: 'M4 8h16l-1.2 11a1 1 0 0 1-1 .9H6.2a1 1 0 0 1-1-.9z' }), React.createElement('path', { d: 'M8.5 8a3.5 3.5 0 0 1 7 0' })),
+    con: React.createElement('svg', { width: 19, height: 19, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 1.9 }, React.createElement('circle', { cx: 12, cy: 8.5, r: 3.7 }), React.createElement('path', { d: 'M4.8 20a7.4 7.4 0 0 1 14.4 0' }))
+  };
+
+  // One identity, several operating contexts. Never separate accounts.
+  ROLES = [
+    { id: 'importer', icon: 'imp', title: 'أستورد', iconBg: 'oklch(0.92 0.03 150)', iconFg: 'var(--allowed-ink)',
+      body: 'عندي بطاقة المقاول الذاتي ونسافر نجيب سلعة نبيعها.',
+      req: 'يحتاج بطاقة ANAE ورخصة عامة', reqChip: 'chip-conditional' },
+    { id: 'trader', icon: 'tra', title: 'أشتري وأبيع', iconBg: 'oklch(0.93 0.03 28)', iconFg: 'var(--accent-ink)',
+      body: 'عندي محل أو نشاط تجاري ونحتاج سلعة من الخارج.',
+      req: 'يحتاج سجل تجاري', reqChip: 'chip-conditional' },
+    { id: 'consumer', icon: 'con', title: 'نشري لنفسي', iconBg: 'oklch(0.93 0.03 250)', iconFg: 'oklch(0.35 0.06 250)',
+      body: 'نبحث على منتجات عند تجّار موثوقين.',
+      req: 'بلا وثائق', reqChip: 'chip-verified' }
+  ];
+
+  UNLOCKED = [
+    { label: 'تصفّح السوق والبحث', ok: true, note: 'الآن' },
+    { label: 'حفظ المنتجات والمتاجر', ok: true, note: 'الآن' },
+    { label: 'مراسلة التجّار', ok: true, note: 'الآن' },
+    { label: 'نشر رحلة واستقبال طلبات', ok: false, note: 'بعد التحقّق' }
+  ];
+
+  renderVals() {
+    const s = this.state, step = this.STEPS[s.step];
+    const labels = { phone: '', otp: 'خطوة 2 من 4', profile: 'خطوة 3 من 4', role: 'خطوة 4 من 4', done: '' };
+
+    return {
+      isPhone: step === 'phone', isOtp: step === 'otp', isProfile: step === 'profile',
+      isRole: step === 'role', isDone: step === 'done',
+      canBack: s.step > 0 && step !== 'done',
+      showBar: step !== 'done',
+      stepLabel: labels[step],
+      progress: Math.round((s.step + 1) / this.STEPS.length * 100),
+      back: () => this.setState(x => ({ step: Math.max(0, x.step - 1) })),
+      next: () => this.setState(x => ({ step: Math.min(this.STEPS.length - 1, x.step + 1) })),
+
+      otpCells: ['4', '7', '2', '9', '', ''].map(v => ({ v, bd: v ? 'var(--ink)' : 'var(--rule-strong)' })),
+
+      langs: [['ar', 'العربية'], ['fr', 'Français'], ['en', 'English']].map(([id, label]) => ({
+        label, on: s.lang === id,
+        bd: s.lang === id ? 'var(--ink)' : 'var(--rule-strong)',
+        bg: s.lang === id ? 'var(--ink)' : 'var(--surface)',
+        fg: s.lang === id ? 'var(--ink-on)' : 'var(--ink)',
+        pick: () => this.setState({ lang: id })
+      })),
+
+      roles: this.ROLES.map(r => {
+        const on = !!s.roles[r.id];
+        return {
+          ...r, on,
+          icon: this.ICON[r.icon],
+          bd: on ? 'var(--allowed)' : 'var(--rule-faint)',
+          bw: on ? 2 : 1,
+          dotBd: on ? 'var(--allowed)' : 'var(--rule-strong)',
+          dotBg: on ? 'var(--allowed)' : 'transparent',
+          check: on ? '✓' : '',
+          pick: () => this.setState(x => {
+            const roles = { ...x.roles };
+            if (roles[r.id]) delete roles[r.id]; else roles[r.id] = true;
+            return { roles };
+          })
+        };
+      }),
+
+      unlocked: this.UNLOCKED.map(u => ({
+        label: u.label, note: u.note,
+        glyph: u.ok ? '✓' : '·',
+        bg: u.ok ? 'var(--allowed-bg)' : 'var(--neutral-bg)',
+        fg: u.ok ? 'var(--allowed-ink)' : 'var(--ink-3)'
+      }))
+    };
+  }
+}
+</script>
+</body>
+</html>

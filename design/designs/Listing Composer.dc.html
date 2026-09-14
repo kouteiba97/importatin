@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./tokens.css">
+<style>
+.fld{display:block;font-size:var(--t-sm);color:var(--ink-2);margin-bottom:7px}
+.inp{width:100%;height:48px;padding:0 14px;border:1px solid var(--rule-strong);border-radius:var(--r);background:var(--surface);font-size:15px;color:inherit}
+.ta{width:100%;min-height:86px;padding:12px 14px;border:1px solid var(--rule-strong);border-radius:var(--r);background:var(--surface);font-size:15px;color:inherit;line-height:1.65;resize:vertical}
+.cta{width:100%;height:52px;border:0;border-radius:var(--r);background:var(--ink);color:var(--ink-on);font-size:16px;font-weight:600;cursor:pointer}
+.scrollx{overflow-x:auto;scrollbar-width:none}.scrollx::-webkit-scrollbar{display:none}
+.sw{flex:none;height:27px;padding:0 10px;border:1px solid var(--rule-strong);border-radius:var(--r-pill);background:var(--surface);font-size:var(--t-micro);cursor:pointer;color:inherit}
+</style>
+</helmet>
+
+<div dir="rtl" lang="ar" class="tier-op" style="min-height:100vh;display:flex;justify-content:center">
+<div style="width:100%;max-width:430px;min-height:100vh;display:flex;flex-direction:column;background:var(--paper);border-inline:1px solid var(--rule)">
+
+<header style="display:flex;align-items:center;gap:10px;padding:11px 14px;background:var(--surface);border-bottom:1px solid var(--rule)">
+<button type="button" aria-label="رجوع" style="width:34px;height:34px;border:0;background:transparent;cursor:pointer;display:grid;place-items:center;color:inherit">
+<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 5l-7 7 7 7"/></svg>
+</button>
+<span style="flex:1;font-size:var(--t-h3);font-weight:500">{{ headline }}</span>
+</header>
+
+<div class="scrollx" style="display:flex;gap:6px;padding:9px 14px;background:var(--surface-2);border-bottom:1px solid var(--rule-faint)">
+<sc-for list="{{ views }}" as="v" hint-placeholder-count="4">
+<button type="button" onClick="{{ v.pick }}" aria-pressed="{{ v.on }}" class="sw" style="background:{{ v.bg }};color:{{ v.fg }};border-color:{{ v.bd }}">{{ v.label }}</button>
+</sc-for>
+</div>
+
+<main style="flex:1;padding:18px 16px 26px;display:flex;flex-direction:column;gap:17px">
+
+<!-- ══ BLOCKED — importer cannot publish to consumers ══ -->
+<sc-if value="{{ isBlocked }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;gap:16px;padding-top:10px">
+<div style="display:flex;gap:12px;padding:15px;border:1px solid var(--conditional-bd);border-radius:var(--r);background:var(--conditional-bg)">
+<span aria-hidden="true" style="flex:none;width:32px;height:32px;border-radius:50%;background:var(--conditional);color:#fff;display:grid;place-items:center;font-size:15px;font-weight:600">!</span>
+<div style="flex:1;min-width:0">
+<div style="font-size:var(--t-h3);font-weight:600;margin-bottom:5px">هذه الميزة للتجّار</div>
+<p style="margin:0;font-size:var(--t-sm);line-height:1.7;color:var(--ink-2)">العرض للجمهور في السوق يحتاج سجلاً تجارياً. صفة المستورد المصغّر وحدها لا تكفي.</p>
+</div>
+</div>
+<div class="card" style="padding:15px">
+<div style="font-size:var(--t-sm);font-weight:600;margin-bottom:10px">ما تقدر تديره بصفتك مستورداً</div>
+<sc-for list="{{ canDo }}" as="c" hint-placeholder-count="3">
+<div style="display:flex;align-items:center;gap:9px;padding:7px 0">
+<span aria-hidden="true" style="flex:none;width:17px;height:17px;border-radius:50%;background:var(--allowed-bg);display:grid;place-items:center;font-size:9px;color:var(--allowed-ink)">✓</span>
+<span style="flex:1;font-size:var(--t-sm)">{{ c }}</span>
+</div>
+</sc-for>
+</div>
+<button type="button" class="cta" style="background:var(--allowed)">أضف صفة تاجر</button>
+<button type="button" style="width:100%;height:48px;border:1px solid var(--rule-strong);border-radius:var(--r);background:transparent;color:inherit;font-size:15px;cursor:pointer">ارجع للوحة الطلب</button>
+</div>
+</sc-if>
+
+<!-- ══ COMPOSE ══ -->
+<sc-if value="{{ isCompose }}" hint-placeholder-val="{{ true }}">
+<div style="display:flex;flex-direction:column;gap:17px">
+
+<div>
+<span class="fld">الصور</span>
+<div class="scrollx" style="display:flex;gap:9px">
+<button type="button" style="flex:none;width:92px;height:116px;border:1.5px dashed var(--rule-strong);border-radius:var(--r-sm);background:var(--surface-2);cursor:pointer;color:var(--ink-2);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;font-size:var(--t-micro)">
+<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 8h3l1.5-2h7L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="3.4"/></svg>
+أضف صورة
+</button>
+<sc-for list="{{ photos }}" as="p" hint-placeholder-count="2">
+<div style="flex:none;width:92px;height:116px;position:relative">
+<span class="img ph {{ p.ph }}" style="width:100%;height:100%;border-radius:var(--r-sm);display:block"></span>
+<sc-if value="{{ p.first }}" hint-placeholder-val="{{ false }}">
+<span style="position:absolute;inset-block-end:6px;inset-inline-start:6px;height:19px;padding:0 7px;display:inline-flex;align-items:center;border-radius:var(--r-pill);background:var(--ink);color:var(--ink-on);font-size:9.5px">الغلاف</span>
+</sc-if>
+<button type="button" aria-label="احذف" style="position:absolute;inset-block-start:5px;inset-inline-end:5px;width:21px;height:21px;border:0;border-radius:50%;background:oklch(1 0 0 / 0.9);cursor:pointer;font-size:10px;color:var(--ink-2)">✕</button>
+</div>
+</sc-for>
+</div>
+<p style="margin:9px 0 0;font-size:var(--t-xs);color:var(--ink-3);line-height:1.65">صوّر القطعة الفعلية بضوء طبيعي. الصور تمرّ على المراجعة قبل الظهور.</p>
+</div>
+
+<div><label class="fld" for="ti">اسم المنتج</label><input id="ti" class="inp" value="معطف نسائي شتوي — صوف مخلوط"></div>
+
+<div><span class="fld">الفئة</span>
+<div class="scrollx" style="display:flex;gap:7px">
+<sc-for list="{{ cats }}" as="c" hint-placeholder-count="5">
+<button type="button" onClick="{{ c.pick }}" aria-pressed="{{ c.on }}" style="flex:none;height:38px;padding:0 14px;border:1px solid {{ c.bd }};border-radius:var(--r-pill);background:{{ c.bg }};color:{{ c.fg }};font-size:var(--t-sm);cursor:pointer">{{ c.label }}</button>
+</sc-for>
+</div>
+</div>
+
+<div><label class="fld" for="ds">الوصف</label>
+<textarea id="ds" class="ta">قصّة مستقيمة، بطانة داخلية، جيبان جانبيان وأزرار معدنية.</textarea></div>
+
+<div style="display:flex;gap:11px">
+<div style="flex:1"><label class="fld" for="pr">السعر للوحدة</label><input id="pr" class="inp num" inputMode="numeric" value="7 400"></div>
+<div style="flex:1"><label class="fld" for="qt">الكمية</label><input id="qt" class="inp num" inputMode="numeric" value="14"></div>
+</div>
+
+<div>
+<span class="fld">التفاصيل</span>
+<div class="card" style="padding:4px 14px">
+<sc-for list="{{ attrs }}" as="a" hint-placeholder-count="3">
+<div style="display:flex;justify-content:space-between;align-items:center;gap:12px;padding:11px 0;border-bottom:1px solid var(--rule-faint)">
+<span style="font-size:var(--t-sm);color:var(--ink-2)">{{ a.k }}</span>
+<span style="display:flex;align-items:center;gap:7px">
+<span class="num" style="font-size:var(--t-sm);font-weight:500"><bdi>{{ a.v }}</bdi></span>
+<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--ink-3)" stroke-width="2"><path d="M15 5l-7 7 7 7"/></svg>
+</span>
+</div>
+</sc-for>
+</div>
+</div>
+
+<div>
+<span class="fld">المصدر</span>
+<div class="card" style="padding:13px;display:flex;align-items:center;gap:11px">
+<span aria-hidden="true" style="flex:none;width:32px;height:32px;border-radius:50%;background:oklch(0.92 0.03 150);display:grid;place-items:center;font-size:10px;font-weight:600;color:var(--allowed-ink)">ك ح</span>
+<div style="flex:1;min-width:0">
+<div style="font-size:var(--t-sm);font-weight:500">من رحلة كريمة ح. — إسطنبول</div>
+<div class="num" style="font-size:var(--t-micro);color:var(--ink-2);margin-top:2px"><bdi>اشتريتَ 18 وحدة · وصلت 18 أكتوبر</bdi></div>
+</div>
+</div>
+<p style="margin:9px 0 0;font-size:var(--t-xs);color:var(--ink-3);line-height:1.65">يظهر للمشتري «المصدر: تركيا» فقط. لا يُعرض اسم المستورد ولا سعر شرائك.</p>
+</div>
+
+<div>
+<span class="fld">التسليم</span>
+<div style="display:flex;flex-wrap:wrap;gap:7px">
+<sc-for list="{{ delivery }}" as="d" hint-placeholder-count="3">
+<button type="button" onClick="{{ d.pick }}" aria-pressed="{{ d.on }}" style="height:38px;padding:0 13px;border:1px solid {{ d.bd }};border-radius:var(--r-pill);background:{{ d.bg }};color:{{ d.fg }};font-size:var(--t-sm);cursor:pointer;display:flex;align-items:center;gap:6px">
+<sc-if value="{{ d.on }}" hint-placeholder-val="{{ false }}"><span aria-hidden="true" style="font-size:10px">✓</span></sc-if>
+{{ d.label }}
+</button>
+</sc-for>
+</div>
+</div>
+
+<button type="button" onClick="{{ goReview }}" class="cta">معاينة ونشر</button>
+</div>
+</sc-if>
+
+<!-- ══ REVIEW ══ -->
+<sc-if value="{{ isReview }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;gap:16px">
+<h1 style="margin:0;font-size:22px;font-weight:600">هكذا يراه المشتري</h1>
+
+<div class="tier-public" style="padding:14px;border-radius:var(--r);background:var(--paper-public)">
+<article class="card" style="width:170px;overflow:hidden;box-shadow:var(--e1)">
+<span class="img img-card ph ph-coat" style="border-radius:0;display:block"></span>
+<div style="padding:10px 11px 12px;display:flex;flex-direction:column;gap:6px">
+<span style="font-size:var(--t-sm);line-height:1.45">معطف نسائي شتوي — صوف مخلوط</span>
+<span class="num" style="font-size:16px;font-weight:600;color:var(--accent-ink)"><bdi>7 400 دج</bdi></span>
+<span style="display:flex;align-items:center;gap:5px;padding-top:6px;border-top:1px solid var(--rule-faint)">
+<span style="flex:1;font-size:var(--t-micro);color:var(--ink-2)">بوتيك نادية</span>
+<svg width="12" height="12" viewBox="0 0 24 24" style="flex:none" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="var(--allowed)"/><path d="M7.4 12.4l3 3 6.2-6.6" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+</span>
+</div>
+</article>
+</div>
+
+<div class="card" style="padding:4px 14px">
+<sc-for list="{{ checks }}" as="c" hint-placeholder-count="4">
+<div style="display:flex;align-items:center;gap:10px;padding:11px 0;border-bottom:1px solid var(--rule-faint)">
+<span aria-hidden="true" style="flex:none;width:18px;height:18px;border-radius:50%;background:{{ c.bg }};display:grid;place-items:center;font-size:10px;color:{{ c.fg }}">{{ c.glyph }}</span>
+<span style="flex:1;min-width:0;font-size:var(--t-sm);color:{{ c.tone }}">{{ c.label }}</span>
+</div>
+</sc-for>
+</div>
+
+<button type="button" onClick="{{ goDone }}" class="cta" style="background:var(--allowed)">انشر في السوق</button>
+<button type="button" style="width:100%;height:48px;border:1px solid var(--rule-strong);border-radius:var(--r);background:transparent;color:inherit;font-size:15px;cursor:pointer">احفظ كمسوّدة</button>
+</div>
+</sc-if>
+
+<!-- ══ PENDING MODERATION ══ -->
+<sc-if value="{{ isDone }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;gap:17px;padding-top:14px">
+<div style="text-align:center">
+<span aria-hidden="true" style="display:inline-grid;place-items:center;width:58px;height:58px;border-radius:50%;background:var(--conditional-bg);color:var(--conditional-ink);font-size:24px;margin-bottom:13px">⏱</span>
+<h1 style="margin:0 0 8px;font-size:22px;font-weight:600">قيد المراجعة</h1>
+<p style="margin:0;font-size:var(--t-body);line-height:1.7;color:var(--ink-2)">الصور والوصف يمرّان على مراجعة سريعة قبل الظهور للجمهور. عادةً خلال ساعات.</p>
+</div>
+<div class="card" style="padding:4px 14px">
+<sc-for list="{{ after }}" as="a" hint-placeholder-count="3">
+<div style="display:flex;align-items:center;gap:10px;padding:11px 0;border-bottom:1px solid var(--rule-faint)">
+<span aria-hidden="true" style="flex:none;width:6px;height:6px;border-radius:50%;background:var(--ink-3)"></span>
+<span style="flex:1;font-size:var(--t-sm);color:var(--ink-2)">{{ a }}</span>
+</div>
+</sc-for>
+</div>
+<button type="button" class="cta">أضف منتجاً آخر</button>
+</div>
+</sc-if>
+
+</main>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:430,&quot;height&quot;:1240}}">
+class Component extends DCLogic {
+  state = { view: 'compose', cat: 'clothes', del: { shop: true, wilaya: true } };
+
+  VIEWS = [['compose','إنشاء'],['review','معاينة'],['done','قيد المراجعة'],['blocked','بلا صلاحية']];
+  HEAD = { compose: 'منتج جديد', review: 'معاينة', done: 'منتج جديد', blocked: 'منتج جديد' };
+
+  CATS = [['clothes','ألبسة'],['bags','حقائب'],['shoes','أحذية'],['cosm','تجميل'],['watch','ساعات']];
+
+  PHOTOS = [{ ph: 'ph-coat', first: true }, { ph: 'ph-coat', first: false }];
+
+  ATTRS = [
+    { k: 'المقاسات', v: '⁦S · M · L · XL⁩' },
+    { k: 'الألوان', v: 'أسود · بيج · كحلي' },
+    { k: 'الخامة', v: 'صوف مخلوط ⁦60%⁩' }
+  ];
+
+  DELIVERY = [['shop','استلام من المحل'],['wilaya','توصيل داخل الولاية'],['out','شحن خارج الولاية']];
+
+  CHECKS = [
+    ['صورتان مرفوعتان — الحدّ الأدنى واحدة', true],
+    ['السعر والكمية محدّدان', true],
+    ['المقاسات والألوان مذكورة', true],
+    ['لم تُذكر بيانات المستورد — جيّد', true]
+  ];
+
+  CAN_DO = [
+    'نشر رحلة واستقبال طلبات التجّار',
+    'عرض ما تجلبه في لوحة الطلب للتجّار',
+    'بيع البضاعة لتاجر يعرضها بدوره للجمهور'
+  ];
+
+  AFTER = [
+    'سيصلك إشعار عند الموافقة أو عند طلب تعديل.',
+    'تقدر تعدّل المنتج أو تخفيه في أي وقت.',
+    'المنتج يظهر تلقائياً في ملف متجرك بعد الموافقة.'
+  ];
+
+  renderVals() {
+    const s = this.state;
+    const go = (v) => () => this.setState({ view: v });
+    const v = s.view;
+
+    return {
+      headline: this.HEAD[v],
+      views: this.VIEWS.map(([id, label]) => ({
+        label, on: v === id,
+        bg: v === id ? 'var(--ink)' : 'var(--surface)',
+        fg: v === id ? 'var(--ink-on)' : 'var(--ink-2)',
+        bd: v === id ? 'var(--ink)' : 'var(--rule-strong)',
+        pick: go(id)
+      })),
+      isCompose: v === 'compose', isReview: v === 'review',
+      isDone: v === 'done', isBlocked: v === 'blocked',
+      goReview: go('review'), goDone: go('done'),
+
+      photos: this.PHOTOS,
+      cats: this.CATS.map(([id, label]) => ({
+        label, on: s.cat === id,
+        bd: s.cat === id ? 'var(--ink)' : 'var(--rule-strong)',
+        bg: s.cat === id ? 'var(--ink)' : 'var(--surface)',
+        fg: s.cat === id ? 'var(--ink-on)' : 'var(--ink)',
+        pick: () => this.setState({ cat: id })
+      })),
+      attrs: this.ATTRS,
+      delivery: this.DELIVERY.map(([id, label]) => {
+        const on = !!s.del[id];
+        return {
+          label, on,
+          bd: on ? 'var(--allowed)' : 'var(--rule-strong)',
+          bg: on ? 'var(--allowed-bg)' : 'var(--surface)',
+          fg: on ? 'var(--allowed-ink)' : 'var(--ink)',
+          pick: () => this.setState(x => {
+            const del = { ...x.del };
+            if (del[id]) delete del[id]; else del[id] = true;
+            return { del };
+          })
+        };
+      }),
+      checks: this.CHECKS.map(([label, ok]) => ({
+        label,
+        glyph: ok ? '✓' : '!',
+        bg: ok ? 'var(--allowed-bg)' : 'var(--conditional-bg)',
+        fg: ok ? 'var(--allowed-ink)' : 'var(--conditional-ink)',
+        tone: ok ? 'var(--ink-2)' : 'var(--ink)'
+      })),
+      canDo: this.CAN_DO,
+      after: this.AFTER
+    };
+  }
+}
+</script>
+</body>
+</html>

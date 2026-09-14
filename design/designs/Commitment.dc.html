@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./tokens.css">
+<style>
+.scrollx{overflow-x:auto;scrollbar-width:none}.scrollx::-webkit-scrollbar{display:none}
+.sw{flex:none;height:27px;padding:0 10px;border:1px solid var(--rule-strong);border-radius:var(--r-pill);background:var(--surface);font-size:var(--t-micro);cursor:pointer;color:inherit}
+</style>
+</helmet>
+
+<div dir="rtl" lang="ar" class="tier-op" style="min-height:100vh;display:flex;justify-content:center">
+<div style="width:100%;max-width:430px;min-height:100vh;display:flex;flex-direction:column;background:var(--paper);border-inline:1px solid var(--rule)">
+
+<header style="display:flex;align-items:center;gap:10px;padding:11px 14px;background:var(--surface);border-bottom:1px solid var(--rule)">
+<button type="button" aria-label="رجوع" style="width:34px;height:34px;border:0;background:transparent;cursor:pointer;display:grid;place-items:center;color:inherit">
+<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 5l-7 7 7 7"/></svg>
+</button>
+<span style="flex:1;font-size:var(--t-h3);font-weight:500">الاتفاق</span>
+<span class="ref">CMT-26-0331</span>
+</header>
+
+<div class="scrollx" style="display:flex;gap:6px;padding:9px 14px;background:var(--surface-2);border-bottom:1px solid var(--rule-faint)">
+<sc-for list="{{ switcher }}" as="s" hint-placeholder-count="8">
+<button type="button" onClick="{{ s.pick }}" aria-pressed="{{ s.on }}" class="sw" style="background:{{ s.bg }};color:{{ s.fg }};border-color:{{ s.bd }}">{{ s.label }}</button>
+</sc-for>
+</div>
+
+<main style="flex:1;padding:16px 16px 92px;display:flex;flex-direction:column;gap:15px">
+
+<!-- ══ STATUS BANNER ══ -->
+<section style="display:flex;gap:12px;padding:15px;border:1px solid {{ st.bd }};border-radius:var(--r);background:{{ st.bg }}">
+<span aria-hidden="true" style="flex:none;width:34px;height:34px;border-radius:50%;background:{{ st.dot }};color:#fff;display:grid;place-items:center;font-size:15px;font-weight:600">{{ st.glyph }}</span>
+<div style="flex:1;min-width:0">
+<div style="font-size:var(--t-h3);font-weight:600;margin-bottom:4px">{{ st.title }}</div>
+<p style="margin:0;font-size:var(--t-sm);line-height:1.7;color:var(--ink-2)">{{ st.body }}</p>
+</div>
+</section>
+
+<!-- ══ LIFECYCLE ══ -->
+<section class="card" style="padding:15px">
+<div style="font-size:var(--t-xs);color:var(--ink-3);margin-bottom:13px">مسار الاتفاق</div>
+<div style="display:flex;flex-direction:column;gap:0">
+<sc-for list="{{ stages }}" as="g" hint-placeholder-count="7">
+<div style="display:flex;gap:12px">
+<div style="flex:none;display:flex;flex-direction:column;align-items:center;width:20px">
+<span aria-hidden="true" style="width:15px;height:15px;border-radius:50%;background:{{ g.dotBg }};border:2px solid {{ g.dotBd }};display:grid;place-items:center;font-size:8px;color:#fff">{{ g.glyph }}</span>
+<sc-if value="{{ g.line }}" hint-placeholder-val="{{ true }}">
+<span aria-hidden="true" style="flex:1;width:2px;background:{{ g.lineFg }};min-height:22px"></span>
+</sc-if>
+</div>
+<div style="flex:1;min-width:0;padding-block-end:14px">
+<div style="display:flex;align-items:baseline;gap:8px">
+<span style="flex:1;min-width:0;font-size:var(--t-sm);font-weight:{{ g.fw }};color:{{ g.fg }}">{{ g.label }}</span>
+<span class="num" style="flex:none;font-size:var(--t-micro);color:var(--ink-3)"><bdi>{{ g.when }}</bdi></span>
+</div>
+<sc-if value="{{ g.hasNote }}" hint-placeholder-val="{{ false }}">
+<div style="font-size:var(--t-micro);color:var(--ink-2);margin-top:3px;line-height:1.5">{{ g.note }}</div>
+</sc-if>
+</div>
+</div>
+</sc-for>
+</div>
+</section>
+
+<!-- ══ TERMS ══ -->
+<section class="card" style="padding:4px 15px">
+<sc-for list="{{ terms }}" as="t" hint-placeholder-count="6">
+<div style="display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:12px 0;border-bottom:1px solid var(--rule-faint)">
+<span style="font-size:var(--t-sm);color:var(--ink-2);flex:none">{{ t.k }}</span>
+<span class="num" style="font-size:var(--t-sm);font-weight:{{ t.fw }};text-align:end"><bdi>{{ t.v }}</bdi></span>
+</div>
+</sc-for>
+</section>
+
+<!-- ══ COUNTERPARTY ══ -->
+<section class="card" style="padding:13px;display:flex;align-items:center;gap:11px">
+<span aria-hidden="true" style="flex:none;width:40px;height:40px;border-radius:50%;background:oklch(0.92 0.03 150);display:grid;place-items:center;font-size:11px;font-weight:600;color:var(--allowed-ink)">ك ح</span>
+<div style="flex:1;min-width:0">
+<div style="display:flex;align-items:center;gap:6px">
+<span style="font-size:var(--t-body);font-weight:500">كريمة ح.</span>
+<svg width="13" height="13" viewBox="0 0 24 24" style="flex:none" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="var(--allowed)"/><path d="M7.4 12.4l3 3 6.2-6.6" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+</div>
+<div class="num" style="font-size:var(--t-micro);color:var(--ink-2);margin-top:2px"><bdi>مستوردة مُتحقَّقة · 84 معاملة مؤكَّدة</bdi></div>
+</div>
+<button type="button" style="flex:none;height:34px;padding:0 13px;border:1px solid var(--rule-strong);border-radius:var(--r-sm);background:var(--surface);color:inherit;font-size:var(--t-sm);cursor:pointer">راسل</button>
+</section>
+
+<!-- ══ DEPOSIT — declared, never held ══ -->
+<sc-if value="{{ hasDeposit }}" hint-placeholder-val="{{ true }}">
+<section class="card" style="padding:14px">
+<div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:9px">
+<span style="font-size:var(--t-sm);font-weight:600">العربون</span>
+<span class="num" style="font-size:var(--t-h3);font-weight:600"><bdi>40 000 دج</bdi></span>
+</div>
+<div style="display:flex;align-items:center;gap:7px;margin-bottom:10px">
+<span class="chip chip-verified" style="height:20px;font-size:var(--t-micro)">صرّح به الطرفان</span>
+<span class="num" style="font-size:var(--t-micro);color:var(--ink-3)"><bdi>12 أكتوبر</bdi></span>
+</div>
+<p style="margin:0;font-size:var(--t-xs);line-height:1.7;color:var(--ink-2)">مبلغ متّفق عليه بينكما ومسجَّل للتوثيق. مَعْبَر لا تستلمه ولا تحتفظ به ولا تضمنه ولا تردّه.</p>
+</section>
+</sc-if>
+
+</main>
+
+<div style="position:fixed;inset-block-end:0;inset-inline:0;margin:0 auto;max-width:430px;display:flex;gap:9px;padding:11px 16px 15px;background:var(--surface);border-top:1px solid var(--rule)">
+<button type="button" style="flex:1;height:50px;border:0;border-radius:var(--r);background:{{ st.ctaBg }};color:{{ st.ctaFg }};font-size:15px;font-weight:600;cursor:pointer">{{ st.cta }}</button>
+<sc-if value="{{ st.hasAlt }}" hint-placeholder-val="{{ true }}">
+<button type="button" style="flex:none;padding:0 15px;height:50px;border:1px solid var(--rule-strong);border-radius:var(--r);background:var(--surface);color:inherit;font-size:var(--t-sm);cursor:pointer">{{ st.alt }}</button>
+</sc-if>
+</div>
+
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:430,&quot;height&quot;:1240}}">
+class Component extends DCLogic {
+  state = { at: 4 };
+
+  // One vocabulary, used everywhere. No state exists that the user
+  // cannot see a reason for.
+  FLOW = [
+    { id: 'proposed', label: 'اقتُرح الاتفاق', when: '9 أكتوبر' },
+    { id: 'accepted', label: 'وافق الطرفان', when: '9 أكتوبر' },
+    { id: 'secured', label: 'صُرّح بالعربون', when: '12 أكتوبر', note: 'صرّح به الطرفان — المنصّة لا تستلمه' },
+    { id: 'buying', label: 'الشراء في الخارج', when: '13 أكتوبر' },
+    { id: 'transit', label: 'في الطريق والجمركة', when: '17 أكتوبر' },
+    { id: 'handover', label: 'التسليم', when: '20 أكتوبر' },
+    { id: 'done', label: 'مكتمل ومؤكَّد', when: '' }
+  ];
+
+  SWITCH = [
+    ['accepted', 'موافق'], ['secured', 'عربون'], ['transit', 'في الطريق'],
+    ['handover', 'تسليم'], ['done', 'مكتمل'], ['disputed', 'نزاع'],
+    ['cancelled', 'ملغى'], ['expired', 'منتهٍ']
+  ];
+
+  ST = {
+    accepted: { glyph: '✓', title: 'وافق الطرفان', body: 'الاتفاق قائم. الخطوة التالية أن تتّفقا على العربون إن أردتما.',
+      tone: 'ok', cta: 'صرّح بالعربون', alt: 'راسل', dep: false },
+    secured: { glyph: '✓', title: 'العربون مُصرَّح به', body: 'كلاكما سجّل المبلغ. الشراء يبدأ عند سفر المستوردة.',
+      tone: 'ok', cta: 'تتبّع الرحلة', alt: 'راسل', dep: true },
+    transit: { glyph: '→', title: 'البضاعة في الطريق', body: 'وصلت إلى الجمركة. سنعلمك فور الإفراج عنها.',
+      tone: 'cond', cta: 'تتبّع الرحلة', alt: 'راسل', dep: true },
+    handover: { glyph: '↓', title: 'جاهزة للاستلام', body: 'حدّدا نقطة وموعد التسليم. أكّد الاستلام بعد المعاينة.',
+      tone: 'cond', cta: 'أكّد الاستلام', alt: 'اعترض', dep: true },
+    done: { glyph: '✓', title: 'الاتفاق مكتمل', body: 'أكّد الطرفان التسليم والمطابقة. تقدر دابا تترك مراجعة.',
+      tone: 'ok', cta: 'اترك مراجعة', alt: '', dep: true },
+    disputed: { glyph: '!', title: 'في نزاع', body: 'فُتح بلاغ عدم مطابقة. الاتفاق موقوف حتى صدور القرار.',
+      tone: 'risk', cta: 'تابع البلاغ', alt: 'راسل', dep: true },
+    cancelled: { glyph: '✕', title: 'أُلغي الاتفاق', body: 'ألغته المستوردة قبل الشراء بسبب عدم توفّر المواصفة. لم يُخصم شيء.',
+      tone: 'neutral', cta: 'ابحث عن بديل', alt: '', dep: false },
+    expired: { glyph: '⏱', title: 'انتهت صلاحية العرض', body: 'لم يُقبل الاتفاق قبل 14 أكتوبر. تقدر تطلب تجديده.',
+      tone: 'neutral', cta: 'اطلب تجديداً', alt: '', dep: false }
+  };
+
+  TONE = {
+    ok: ['var(--allowed-bg)', 'var(--allowed-bd)', 'var(--allowed)'],
+    cond: ['var(--conditional-bg)', 'var(--conditional-bd)', 'var(--conditional)'],
+    risk: ['var(--prohibited-bg)', 'var(--prohibited-bd)', 'var(--prohibited)'],
+    neutral: ['var(--neutral-bg)', 'var(--neutral-bd)', 'var(--ink-3)']
+  };
+
+  TERMS = [
+    { k: 'السلعة', v: 'معاطف نسائية شتوية', fw: 600 },
+    { k: 'المواصفة', v: 'صوف مخلوط ⁦60%⁩ · ⁦M · L · XL⁩', fw: 400 },
+    { k: 'الكمية', v: '⁦18⁩ وحدة', fw: 600 },
+    { k: 'نطاق السعر', v: '⁦4 800 – 5 200⁩ دج للوحدة', fw: 600 },
+    { k: 'الاستلام', v: 'سطيف · ⁦20 أكتوبر⁩', fw: 400 },
+    { k: 'الرحلة', v: 'إسطنبول · تصل ⁦18 أكتوبر⁩', fw: 400 }
+  ];
+
+  renderVals() {
+    const s = this.state;
+    const key = this.SWITCH[s.at][0];
+    const st = this.ST[key];
+    const [bg, bd, dot] = this.TONE[st.tone];
+
+    // how far along the flow the current state sits
+    const idx = { accepted: 1, secured: 2, transit: 4, handover: 5, done: 6, disputed: 5, cancelled: 2, expired: 0 }[key];
+    const halted = key === 'disputed' || key === 'cancelled' || key === 'expired';
+
+    return {
+      switcher: this.SWITCH.map(([id, label], i) => ({
+        label, on: i === s.at,
+        bg: i === s.at ? 'var(--ink)' : 'var(--surface)',
+        fg: i === s.at ? 'var(--ink-on)' : 'var(--ink-2)',
+        bd: i === s.at ? 'var(--ink)' : 'var(--rule-strong)',
+        pick: () => this.setState({ at: i })
+      })),
+
+      st: {
+        ...st, bg, bd, dot,
+        ctaBg: st.tone === 'risk' ? 'var(--prohibited)' : st.tone === 'neutral' ? 'var(--ink)' : 'var(--allowed)',
+        ctaFg: 'var(--ink-on)',
+        hasAlt: !!st.alt
+      },
+
+      hasDeposit: st.dep,
+
+      stages: this.FLOW.map((g, i) => {
+        const done = i <= idx;
+        const current = i === idx;
+        return {
+          label: g.label,
+          when: g.when,
+          hasNote: !!g.note && done,
+          note: g.note,
+          line: i < this.FLOW.length - 1,
+          lineFg: i < idx ? 'var(--allowed)' : 'var(--rule)',
+          dotBg: halted && current ? dot : done ? 'var(--allowed)' : 'var(--surface)',
+          dotBd: halted && current ? dot : done ? 'var(--allowed)' : 'var(--rule-strong)',
+          glyph: done && !(halted && current) ? '✓' : halted && current ? '!' : '',
+          fw: current ? 600 : 400,
+          fg: done ? 'var(--ink)' : 'var(--ink-3)'
+        };
+      }),
+
+      terms: this.TERMS
+    };
+  }
+}
+</script>
+</body>
+</html>

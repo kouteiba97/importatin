@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+html,body{margin:0;padding:0;background:oklch(0.975 0.008 80);color:oklch(0.22 0.02 60);font-family:"IBM Plex Sans Arabic",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+*{box-sizing:border-box}
+a{color:oklch(0.42 0.07 150)}a:hover{color:oklch(0.32 0.07 150)}
+button{font-family:inherit}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</helmet>
+<div dir="rtl" lang="ar" style="min-height:100vh;display:flex;justify-content:center;background:oklch(0.975 0.008 80)">
+<div style="width:100%;max-width:430px;min-height:100vh;display:flex;flex-direction:column;border-inline:1px solid oklch(0.9 0.012 80)">
+
+<header style="display:flex;justify-content:space-between;align-items:center;padding:10px 16px;border-bottom:1px solid oklch(0.88 0.012 80)">
+<div style="display:flex;align-items:center;gap:8px"><span style="font-weight:600;font-size:17px">مَعْبَر</span><span style="font-size:13px;color:oklch(0.48 0.02 60)">حسابي</span></div>
+<a href="./Importer App.dc.html" style="font-size:13px;text-decoration:none">→ الرحلة</a>
+</header>
+
+<nav aria-label="أقسام" style="display:grid;grid-template-columns:repeat(3,1fr);border-bottom:1px solid oklch(0.88 0.012 80)">
+<sc-for list="{{ tabs }}" as="t" hint-placeholder-count="3">
+<button type="button" onClick="{{ t.pick }}" aria-current="{{ t.on }}" style="height:46px;border:0;border-bottom:2px solid {{ t.bd }};background:transparent;color:{{ t.fg }};font-size:14px;font-weight:{{ t.fw }};cursor:pointer">{{ t.label }}</button>
+</sc-for>
+</nav>
+
+<main style="flex:1;padding:18px 16px 32px">
+
+<sc-if value="{{ tabLadder }}" hint-placeholder-val="{{ true }}">
+<div style="display:flex;flex-direction:column;gap:20px">
+<div>
+<h1 style="margin:0 0 6px;font-size:24px;font-weight:500;line-height:1.4">سلّم الثقة</h1>
+<p style="margin:0;font-size:14px;line-height:1.7;color:oklch(0.48 0.02 60)">لا نطلب وثيقة إلا عند الفعل الذي يحتاجها، ونقول لك بالضبط ماذا يفتح. ما لا يفتح شيئاً، لا نطلبه.</p>
+</div>
+
+<div style="display:flex;flex-direction:column;gap:6px;padding:14px;background:oklch(0.95 0.01 80);border-radius:8px">
+<div style="font-size:12px;color:oklch(0.48 0.02 60)">مستواك الحالي</div>
+<div style="display:flex;align-items:baseline;gap:10px"><span style="font-size:22px;font-weight:500">{{ curLabel }}</span><span style="font-family:'IBM Plex Mono',monospace;font-size:13px;color:oklch(0.48 0.02 60)"><bdi>{{ curKey }}</bdi></span></div>
+<div style="font-size:13px;line-height:1.6;color:oklch(0.35 0.02 60)">{{ curNote }}</div>
+</div>
+
+<ol style="margin:0;padding:0;list-style:none;display:flex;flex-direction:column">
+<sc-for list="{{ levels }}" as="l" hint-placeholder-count="5">
+<li style="border-top:1px solid oklch(0.88 0.012 80);padding:14px 0;display:flex;flex-direction:column;gap:9px">
+<div style="display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:baseline">
+<span aria-hidden="true" style="width:22px;height:22px;border-radius:50%;background:{{ l.bg }};color:{{ l.fg }};border:1.5px solid {{ l.bd }};display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;flex:none">{{ l.glyph }}</span>
+<span><span style="display:block;font-size:16px;font-weight:500;line-height:1.4">{{ l.label }}</span><span style="display:block;font-family:'IBM Plex Mono',monospace;font-size:11px;color:oklch(0.48 0.02 60);margin-top:2px"><bdi>{{ l.key }}</bdi></span></span>
+<span style="font-size:12px;color:{{ l.fg }};white-space:nowrap">{{ l.state }}</span>
+</div>
+<div style="display:grid;grid-template-columns:auto 1fr;gap:6px 12px;font-size:13px;line-height:1.65">
+<span style="color:oklch(0.48 0.02 60)">يتطلّب</span><span>{{ l.req }}</span>
+<span style="color:oklch(0.48 0.02 60)">يفتح لك</span><span>{{ l.unlock }}</span>
+</div>
+<sc-if value="{{ l.isNext }}" hint-placeholder-val="{{ false }}">
+<button type="button" onClick="{{ l.start }}" style="height:48px;border:0;border-radius:6px;background:oklch(0.42 0.07 150);color:#fff;font-size:15px;font-weight:500;cursor:pointer">{{ l.cta }}</button>
+</sc-if>
+</li>
+</sc-for>
+</ol>
+
+<sc-if value="{{ uploadOpen }}" hint-placeholder-val="{{ false }}">
+<section style="border:1px solid oklch(0.85 0.012 80);border-radius:8px;padding:16px;display:flex;flex-direction:column;gap:14px;background:#fff">
+<div style="display:flex;justify-content:space-between;align-items:baseline">
+<span style="font-size:12px;color:oklch(0.48 0.02 60);font-variant-numeric:tabular-nums">وثيقة <bdi>{{ upNo }}</bdi> من <bdi>{{ upTotal }}</bdi></span>
+<button type="button" onClick="{{ upClose }}" style="height:36px;padding:0 8px;border:0;background:transparent;color:oklch(0.48 0.02 60);font-size:13px;cursor:pointer">لاحقاً</button>
+</div>
+<div><h2 style="margin:0 0 5px;font-size:19px;font-weight:500;line-height:1.4">{{ upTitle }}</h2><p style="margin:0;font-size:13px;line-height:1.7;color:oklch(0.48 0.02 60)"><span style="color:oklch(0.35 0.02 60);font-weight:500">لماذا نطلبها: </span>{{ upWhy }}</p></div>
+<div style="border:1px dashed oklch(0.78 0.015 70);border-radius:8px;padding:22px 16px;display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center">
+<span aria-hidden="true" style="width:34px;height:26px;border:1.5px solid oklch(0.48 0.02 60);border-radius:4px;display:block"></span>
+<span style="font-size:14px;line-height:1.6">صوّرها بالهاتف — نضغطها على جهازك قبل الرفع</span>
+<span style="font-size:12px;color:oklch(0.48 0.02 60);line-height:1.6">{{ upTip }}</span>
+</div>
+<div style="display:flex;gap:8px"><button type="button" onClick="{{ upNext }}" style="flex:1;height:50px;border:0;border-radius:6px;background:oklch(0.42 0.07 150);color:#fff;font-size:15px;font-weight:500;cursor:pointer">افتح الكاميرا</button><button type="button" onClick="{{ upNext }}" style="height:50px;padding:0 16px;border:1px solid oklch(0.82 0.012 80);border-radius:6px;background:transparent;font-size:15px;cursor:pointer;color:inherit">من الملفات</button></div>
+<p style="margin:0;font-size:11px;line-height:1.65;color:oklch(0.48 0.02 60);border-top:1px solid oklch(0.9 0.012 80);padding-top:10px">تُخزَّن داخل الجزائر ولا تُرسل إلى أي جهة خارجها (القانون 25-11). تُستعمل للتحقّق فقط ولا تظهر لأي مستخدم آخر. يمكنك حذفها بحذف الحساب.</p>
+</section>
+</sc-if>
+
+<p style="margin:0;font-size:12px;line-height:1.7;color:oklch(0.48 0.02 60);border-inline-start:2px solid oklch(0.82 0.012 80);padding-inline-start:10px">تحقّقت المنصّة من الوثائق المقدَّمة. هذا ليس اعتماداً حكومياً.</p>
+</div>
+</sc-if>
+
+<sc-if value="{{ tabVault }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;gap:18px">
+<div>
+<h1 style="margin:0 0 6px;font-size:24px;font-weight:500;line-height:1.4">خزانة الوثائق</h1>
+<p style="margin:0;font-size:14px;line-height:1.7;color:oklch(0.48 0.02 60)">نتابع تواريخ الانتهاء بدلاً عنك. التجديد له مدّة — ننبّهك قبلها بما يكفي.</p>
+</div>
+<ul style="margin:0;padding:0;list-style:none;display:flex;flex-direction:column">
+<sc-for list="{{ docs }}" as="d" hint-placeholder-count="4">
+<li style="border-top:1px solid oklch(0.88 0.012 80);padding:14px 0;display:flex;flex-direction:column;gap:9px">
+<div style="display:grid;grid-template-columns:1fr auto;gap:4px 12px;align-items:baseline">
+<span style="font-size:16px;font-weight:500;line-height:1.4">{{ d.name }}</span>
+<span style="font-size:13px;color:{{ d.fg }};white-space:nowrap;display:flex;align-items:center;gap:5px"><span aria-hidden="true" style="width:16px;height:16px;border-radius:50%;background:{{ d.bg }};display:inline-flex;align-items:center;justify-content:center;font-size:10px;font-weight:600">{{ d.glyph }}</span>{{ d.state }}</span>
+<span style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:oklch(0.48 0.02 60)"><bdi>{{ d.ref }}</bdi></span>
+<span style="font-size:12px;color:oklch(0.48 0.02 60);white-space:nowrap;text-align:end;font-variant-numeric:tabular-nums"><bdi>{{ d.expiry }}</bdi></span>
+</div>
+<sc-if value="{{ d.hasBar }}" hint-placeholder-val="{{ true }}">
+<div aria-hidden="true" style="height:5px;background:oklch(0.9 0.012 80);border-radius:3px;overflow:hidden"><span style="display:block;height:100%;width:{{ d.pct }}%;background:{{ d.fg }};transition:width 180ms"></span></div>
+</sc-if>
+<div style="font-size:12px;line-height:1.65;color:oklch(0.48 0.02 60)">{{ d.note }}</div>
+<sc-if value="{{ d.hasAction }}" hint-placeholder-val="{{ false }}">
+<button type="button" style="height:46px;border:1px solid {{ d.fg }};border-radius:6px;background:transparent;color:{{ d.fg }};font-size:14px;font-weight:500;cursor:pointer">{{ d.action }}</button>
+</sc-if>
+</li>
+</sc-for>
+</ul>
+<p style="margin:0;font-size:12px;line-height:1.7;color:oklch(0.48 0.02 60);border-top:1px solid oklch(0.88 0.012 80);padding-top:12px">الرخصة العامة شخصية وغير قابلة للتنازل (المادتان 11–12). إعارتها أو استعمالها لفائدة الغير سبب مباشر لشطب البطاقة (المادة 15).</p>
+</div>
+</sc-if>
+
+<sc-if value="{{ tabIndex }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;gap:20px">
+<section style="display:flex;flex-direction:column;gap:4px">
+<div style="font-size:13px;color:oklch(0.48 0.02 60)">سجلّك</div>
+<div style="display:flex;align-items:baseline;gap:10px"><span style="font-size:52px;font-weight:500;font-variant-numeric:tabular-nums;line-height:1.05"><bdi>{{ txCount }}</bdi></span><span style="font-size:17px">معاملة مؤكَّدة</span></div>
+<div style="font-size:13px;color:oklch(0.48 0.02 60);line-height:1.6">منذ مارس 2025 · آخرها قبل 6 أيام · <bdi>0</bdi> نزاع مفتوح</div>
+<div style="display:flex;align-items:baseline;gap:8px;margin-top:8px;padding-top:10px;border-top:1px solid oklch(0.88 0.012 80)">
+<span style="font-size:13px;color:oklch(0.48 0.02 60)">مؤشّر الموثوقية</span>
+<span style="font-size:20px;font-weight:500;font-variant-numeric:tabular-nums"><bdi>{{ score }}</bdi></span>
+<span style="font-size:13px;color:oklch(0.48 0.02 60)">/ 100</span>
+</div>
+<p style="margin:6px 0 0;font-size:12px;line-height:1.65;color:oklch(0.48 0.02 60)">عدد المعاملات أصدق من أي رقم مركّب. لا يُعرض المؤشّر لمن هم دون <bdi>5</bdi> معاملات مؤكَّدة — يُعرض بدله «مستورد جديد — بلا سجل بعد».</p>
+</section>
+
+<section style="display:flex;flex-direction:column;gap:10px">
+<div style="display:flex;justify-content:space-between;align-items:baseline"><h2 style="margin:0;font-size:15px;font-weight:500">من أين جاء الرقم</h2><a href="#" style="font-size:12px;text-decoration:none">طريقة الحساب ←</a></div>
+<ul style="margin:0;padding:0;list-style:none;display:flex;flex-direction:column">
+<sc-for list="{{ components }}" as="c" hint-placeholder-count="6">
+<li style="border-top:1px solid oklch(0.9 0.012 80);padding:11px 0;display:grid;grid-template-columns:1fr auto;gap:5px 12px;align-items:baseline">
+<span style="font-size:14px">{{ c.k }} <span style="font-size:11px;color:oklch(0.48 0.02 60);font-variant-numeric:tabular-nums"><bdi>{{ c.w }}%</bdi></span></span>
+<span style="font-size:15px;font-weight:500;font-variant-numeric:tabular-nums;color:{{ c.fg }};white-space:nowrap"><bdi>{{ c.v }}</bdi></span>
+<span aria-hidden="true" style="grid-column:1/-1;height:5px;background:oklch(0.91 0.012 80);border-radius:3px;overflow:hidden"><span style="display:block;height:100%;width:{{ c.pct }}%;background:{{ c.fg }}"></span></span>
+<span style="grid-column:1/-1;font-size:12px;color:oklch(0.48 0.02 60);line-height:1.55">{{ c.note }}</span>
+</li>
+</sc-for>
+</ul>
+</section>
+
+<section style="display:flex;flex-direction:column;gap:10px">
+<h2 style="margin:0;font-size:15px;font-weight:500">المراجعات</h2>
+<ul style="margin:0;padding:0;list-style:none;display:flex;flex-direction:column">
+<sc-for list="{{ reviews }}" as="r" hint-placeholder-count="2">
+<li style="border-top:1px solid oklch(0.9 0.012 80);padding:12px 0;display:flex;flex-direction:column;gap:7px">
+<div style="display:flex;justify-content:space-between;align-items:baseline;gap:10px"><span style="font-size:14px;font-weight:500"><bdi>{{ r.who }}</bdi></span><span style="font-size:12px;color:{{ r.fg }};white-space:nowrap">{{ r.verdict }}</span></div>
+<p style="margin:0;font-size:14px;line-height:1.65">{{ r.text }}</p>
+<div style="border-inline-start:2px solid oklch(0.85 0.012 80);padding-inline-start:10px;font-size:13px;line-height:1.65;color:oklch(0.35 0.02 60)"><span style="color:oklch(0.48 0.02 60);font-size:12px;display:block;margin-bottom:2px">ردّك — يُعرض دائماً مع المراجعة</span>{{ r.reply }}</div>
+</li>
+</sc-for>
+</ul>
+</section>
+
+<section style="border:1px solid oklch(0.85 0.012 80);border-radius:8px;padding:16px;display:flex;flex-direction:column;gap:12px;background:#fff">
+<div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font-size:15px;font-weight:500">شهادة سجل</span><span style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:oklch(0.48 0.02 60)"><bdi>REC-26-0871</bdi></span></div>
+<div style="display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:center">
+<span aria-hidden="true" style="width:72px;height:72px;border:1px solid oklch(0.85 0.012 80);border-radius:4px;background:repeating-conic-gradient(oklch(0.22 0.02 60) 0% 25%, #fff 0% 50%) 0 0/12px 12px;flex:none"></span>
+<span style="font-size:13px;line-height:1.7;color:oklch(0.48 0.02 60)">ملف PDF يحمل عدد معاملاتك المؤكَّدة ومستوى تحقّقك ورمز تحقّق. أعطِه لمن يطلب دليلاً — بنك، مورّد محلي، شريك.</span>
+</div>
+<button type="button" style="height:48px;border:1px solid oklch(0.42 0.07 150);border-radius:6px;background:transparent;color:oklch(0.42 0.07 150);font-size:15px;font-weight:500;cursor:pointer">صدّر الشهادة (PDF)</button>
+<p style="margin:0;font-size:11px;line-height:1.65;color:oklch(0.48 0.02 60)">الشهادة تعكس سجلّك داخل مَعْبَر فقط. ليست اعتماداً حكومياً ولا ضماناً لأي معاملة قادمة.</p>
+</section>
+</div>
+</sc-if>
+
+</main>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:430,&quot;height&quot;:900}}">
+class Component extends DCLogic {
+  state = { tab: 'ladder', upload: null };
+  OLIVE = 'oklch(0.42 0.07 150)'; CLAY = 'oklch(0.5 0.14 35)'; OCHRE = 'oklch(0.55 0.12 70)'; INK = 'oklch(0.22 0.02 60)'; MUTED = 'oklch(0.48 0.02 60)';
+  TABS = [{ id: 'ladder', label: 'سلّم الثقة' }, { id: 'vault', label: 'الوثائق' }, { id: 'index', label: 'سجلّي' }];
+  LEVELS = [
+    { key: 'L0', label: 'مُسجَّل', req: 'رقم هاتف جزائري (رمز تحقّق) + بريد إلكتروني', unlock: 'التصفّح · محرّك المطابقة · ملخّص الطلب' },
+    { key: 'L1', label: 'هوية مؤكَّدة', req: 'بطاقة التعريف الوطنية + صورة حيّة للمطابقة', unlock: 'الرسائل · نشر طلب · ملف عام' },
+    { key: 'L2-I', label: 'مستورد مُتحقَّق', req: 'بطاقة ANAE بنشاط الاستيراد المصغّر + الرخصة العامة + NIF + CASNOS', unlock: 'نشر الرحلات · الظهور في المطابقة · استقبال الالتزامات', cta: 'ابدأ التحقّق — 4 وثائق، واحدة تلو الأخرى' },
+    { key: 'L2-T', label: 'تاجر مُتحقَّق', req: 'السجل التجاري + NIF/NIS + عنوان النشاط', unlock: 'الطلبات الخاصة · مؤشّر الأسعار · الالتزام بعربون مُصرَّح', cta: 'فعّل دور التاجر' },
+    { key: 'L3', label: 'سجل مُثبَت', req: 'معاملات مؤكَّدة تتجاوز الحدّ المعتمَد · لا نزاعات مفتوحة', unlock: 'شارة السجل · أولوية في الترتيب · حدود أعلى' }];
+  UPLOADS = [
+    { title: 'بطاقة المقاول الذاتي (ANAE)', why: 'نتأكّد أن نشاط «الاستيراد المصغّر» مُدرَج فعلاً في بطاقتك. بدون ذلك لا يُسمح لك بنشر رحلة، ونفضّل أن تعرف الآن لا في المطار.', tip: 'صوّر الوجه الذي يظهر فيه رقم البطاقة والنشاط — أفقياً، بإضاءة كافية.' },
+    { title: 'الرخصة العامة', why: 'صالحة 12 شهراً وغير قابلة للتنازل. نستعملها لتنبيهك قبل انتهائها بمدّة تكفي لتجديدها (5 أيام عمل).', tip: 'تأكّد أن تاريخ الإصدار وتاريخ الانتهاء واضحان في الصورة.' },
+    { title: 'رقم التعريف الجبائي (NIF)', why: 'مطلوب لإصدار سندات التسليم ودفترك المحاسبي. لا نستعمله لأي غرض جبائي ولا نشاركه مع أي إدارة.', tip: 'يكفي تصوير الشهادة أو إدخال الرقم يدوياً.' },
+    { title: 'الانتساب إلى CASNOS', why: 'شرط في ملف التحقّق. نتأكّد فقط من وجود الانتساب — لا نطّلع على مبالغ ولا على وضعيتك المالية.', tip: 'شهادة الانتساب أو آخر وصل كافيان.' }];
+  DOCS = [
+    { name: 'بطاقة المقاول الذاتي (ANAE)', ref: 'ANAE-16-2025-4471', state: 'سارية', glyph: '✓', kind: 'ok', expiry: 'دون تاريخ انتهاء', note: 'النشاط المُدرَج: الاستيراد المصغّر للسلع المعدّة لإعادة البيع بحالتها.', pct: 100, hasBar: false },
+    { name: 'الرخصة العامة', ref: 'AUT-2025-11-0932', state: 'تنتهي قريباً', glyph: '!', kind: 'warn', expiry: 'بعد 34 يوماً', note: 'صالحة 12 شهراً (المادتان 11–12). التجديد يستغرق 5 أيام عمل — ابدأ قبل رحلتك القادمة.', pct: 28, hasBar: true, action: 'ابدأ التجديد الآن' },
+    { name: 'رقم التعريف الجبائي (NIF)', ref: 'NIF-198 2617 4409', state: 'مُتحقَّق', glyph: '✓', kind: 'ok', expiry: '—', note: 'يُستعمل في سندات التسليم والدفتر المحاسبي فقط.', pct: 100, hasBar: false },
+    { name: 'الانتساب إلى CASNOS', ref: 'CAS-2025-0071', state: 'قيد المراجعة', glyph: '…', kind: 'pending', expiry: 'منذ 19 ساعة', note: 'المراجعة اليدوية تستغرق عادة أقل من 48 ساعة. رحلاتك القائمة غير متأثّرة.', pct: 45, hasBar: true },
+    { name: 'وثيقة مرفوضة — بطاقة التعريف', ref: 'DOC-2025-0066', state: 'مرفوضة', glyph: '✕', kind: 'bad', expiry: 'قبل 6 أيام', note: 'سبب الرفض: الصورة غير واضحة وتاريخ الانتهاء مقطوع. أعد التصوير أفقياً وبإضاءة كافية — لن نطلب منك شيئاً جديداً.', pct: 0, hasBar: false, action: 'أعد الرفع' }];
+  COMPONENTS = [
+    { k: 'انضباط التسليم', w: 30, v: '96%', pct: 96, note: '45 من 47 تسليماً في الموعد المعلن.' },
+    { k: 'مطابقة المواصفة', w: 20, v: '92%', pct: 92, note: 'اعتراضان على المواصفة خلال 12 شهراً، أحدهما سُوِّي.' },
+    { k: 'ثبات السعر', w: 20, v: '100%', pct: 100, note: 'لم يخرج أي سعر نهائي عن النطاق المعلن مسبقاً.' },
+    { k: 'سرعة الاستجابة', w: 10, v: '4 س', pct: 72, note: 'وسيط زمن الردّ الأول على طلب توريد.' },
+    { k: 'الوضعية التنظيمية', w: 10, v: 'سليمة', pct: 100, note: 'وثائق سارية، لا إجراءات مفتوحة.' },
+    { k: 'العمق (حجم وقيمة)', w: 10, v: 'متوسط', pct: 58, note: 'يُحتسب بتناقص زمني — النشاط القديم يزن أقل.' }];
+  REVIEWS = [
+    { who: 'ياسين ب. · سطيف', verdict: 'مطابق', fg: 'oklch(0.42 0.07 150)', text: 'الكمية مطابقة والسعر بقي داخل النطاق المتّفق عليه. التسليم تأخّر يوماً واحداً مع إخطار مسبق.', reply: 'شكراً. التأخير كان بسبب تعطّل في الجمارك أخطرت به فور علمي.' },
+    { who: 'سمير ع. · وهران', verdict: 'اعتراض على المواصفة', fg: 'oklch(0.5 0.14 35)', text: 'لون الدفعة مختلف عن الصور المرسلة. أخذت البضاعة لكن بسعر أقل.', reply: 'الصور كانت للدفعة الأولى وأبلغت بتغيّر اللون قبل التسليم بيومين. قبلنا خصماً بالتراضي، والرسائل موثّقة في الملف.' }];
+  renderVals() {
+    const { tab, upload } = this.state, cur = 1;
+    const kind = { ok: [this.OLIVE, 'oklch(0.93 0.035 150)'], warn: [this.OCHRE, 'oklch(0.95 0.045 85)'], bad: [this.CLAY, 'oklch(0.94 0.035 35)'], pending: [this.MUTED, 'oklch(0.92 0.012 80)'] };
+    const up = upload !== null ? this.UPLOADS[upload] : null;
+    return {
+      tabs: this.TABS.map(t => ({ ...t, on: tab === t.id, bd: tab === t.id ? this.INK : 'transparent', fg: tab === t.id ? this.INK : this.MUTED, fw: tab === t.id ? 500 : 400, pick: () => this.setState({ tab: t.id }) })),
+      tabLadder: tab === 'ladder', tabVault: tab === 'vault', tabIndex: tab === 'index',
+      curLabel: this.LEVELS[cur].label, curKey: this.LEVELS[cur].key, curNote: 'تستطيع المراسلة ونشر الطلبات. لنشر رحلة والظهور في المطابقة تحتاج المستوى L2-I.',
+      levels: this.LEVELS.map((l, i) => ({ ...l, isNext: i === cur + 1, glyph: i <= cur ? '✓' : i === cur + 1 ? '←' : '·',
+        state: i < cur ? 'مكتمل' : i === cur ? 'مستواك' : i === cur + 1 ? 'التالي' : 'لاحقاً',
+        fg: i <= cur ? this.OLIVE : i === cur + 1 ? this.INK : this.MUTED, bg: i <= cur ? 'oklch(0.93 0.035 150)' : 'transparent', bd: i <= cur ? this.OLIVE : 'oklch(0.85 0.012 80)',
+        start: () => this.setState({ upload: 0 }) })),
+      uploadOpen: !!up, upNo: (upload || 0) + 1, upTotal: this.UPLOADS.length, upTitle: up ? up.title : '', upWhy: up ? up.why : '', upTip: up ? up.tip : '',
+      upNext: () => this.setState(s => ({ upload: s.upload + 1 < this.UPLOADS.length ? s.upload + 1 : null, tab: s.upload + 1 < this.UPLOADS.length ? 'ladder' : 'vault' })),
+      upClose: () => this.setState({ upload: null }),
+      docs: this.DOCS.map(d => ({ ...d, fg: kind[d.kind][0], bg: kind[d.kind][1], hasAction: !!d.action })),
+      txCount: 47, score: 91, components: this.COMPONENTS.map(c => ({ ...c, fg: c.pct >= 90 ? this.OLIVE : c.pct >= 70 ? this.INK : this.OCHRE })), reviews: this.REVIEWS
+    };
+  }
+}
+</script>
+</body>
+</html>

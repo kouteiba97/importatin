@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./tokens.css">
+<style>
+.gridwrap{container-type:inline-size}
+.grid2{display:grid;grid-template-columns:repeat(2,1fr);gap:13px}
+@container (min-width:520px){.grid2{grid-template-columns:repeat(3,1fr)}}
+.clamp2{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.scrollx{overflow-x:auto;scrollbar-width:none}.scrollx::-webkit-scrollbar{display:none}
+</style>
+</helmet>
+
+<div dir="rtl" lang="ar" class="tier-public" style="min-height:100vh;display:flex;justify-content:center">
+<div style="width:100%;max-width:430px;min-height:100vh;display:flex;flex-direction:column;background:var(--paper-public);border-inline:1px solid var(--rule)">
+
+<header style="position:sticky;top:0;z-index:20;background:var(--surface);border-bottom:1px solid var(--rule)">
+<div style="padding:12px 16px 9px"><span style="font-size:var(--t-h2);font-weight:600">المحفوظات</span></div>
+<nav aria-label="النوع" style="display:grid;grid-template-columns:repeat(3,1fr)">
+<sc-for list="{{ tabs }}" as="t" hint-placeholder-count="3">
+<button type="button" onClick="{{ t.pick }}" aria-current="{{ t.on }}" style="height:41px;border:0;border-bottom:2px solid {{ t.bd }};background:transparent;color:{{ t.fg }};font-size:var(--t-sm);font-weight:{{ t.fw }};cursor:pointer;display:flex;align-items:center;justify-content:center;gap:5px">
+{{ t.label }}<span class="num" style="font-size:var(--t-micro);color:var(--ink-3)"><bdi>{{ t.n }}</bdi></span>
+</button>
+</sc-for>
+</nav>
+</header>
+
+<main style="flex:1;padding:15px 16px 26px">
+
+<!-- ══ PRODUCTS ══ -->
+<sc-if value="{{ isProd }}" hint-placeholder-val="{{ true }}">
+<div class="gridwrap"><div class="grid2">
+<sc-for list="{{ products }}" as="p" hint-placeholder-count="4">
+<article class="card" style="overflow:hidden;display:flex;flex-direction:column;opacity:{{ p.op }}">
+<div style="position:relative">
+<span class="img img-card ph {{ p.ph }}" style="border-radius:0;display:block"></span>
+<button type="button" aria-label="إزالة من المحفوظات" style="position:absolute;inset-block-start:8px;inset-inline-end:8px;width:31px;height:31px;border:0;border-radius:50%;background:oklch(1 0 0 / 0.9);display:grid;place-items:center;cursor:pointer;box-shadow:var(--e1)">
+<svg width="15" height="15" viewBox="0 0 24 24" fill="var(--accent)" stroke="var(--accent)" stroke-width="1.9"><path d="M12 20s-7-4.4-7-9.3A4.2 4.2 0 0 1 12 8a4.2 4.2 0 0 1 7 2.7c0 4.9-7 9.3-7 9.3z"/></svg>
+</button>
+<sc-if value="{{ p.gone }}" hint-placeholder-val="{{ false }}">
+<span style="position:absolute;inset:0;background:oklch(1 0 0 / 0.62);display:grid;place-items:center">
+<span class="chip chip-neutral" style="background:var(--surface)">{{ p.goneLabel }}</span>
+</span>
+</sc-if>
+</div>
+<div style="padding:10px 11px 12px;display:flex;flex-direction:column;gap:6px;flex:1">
+<h3 class="clamp2" style="margin:0;font-size:var(--t-sm);font-weight:400;line-height:1.45;min-height:37px">{{ p.title }}</h3>
+<div style="display:flex;align-items:baseline;gap:6px">
+<span class="num" style="font-size:16px;font-weight:600;color:{{ p.priceFg }}"><bdi>{{ p.price }} دج</bdi></span>
+<sc-if value="{{ p.dropped }}" hint-placeholder-val="{{ false }}">
+<span class="num" style="font-size:var(--t-micro);color:var(--ink-3);text-decoration:line-through"><bdi>{{ p.was }}</bdi></span>
+</sc-if>
+</div>
+<sc-if value="{{ p.hasNote }}" hint-placeholder-val="{{ false }}">
+<div style="font-size:var(--t-micro);color:{{ p.noteFg }};line-height:1.5">{{ p.note }}</div>
+</sc-if>
+<div style="font-size:var(--t-micro);color:var(--ink-2);padding-top:6px;border-top:1px solid var(--rule-faint);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ p.seller }}</div>
+</div>
+</article>
+</sc-for>
+</div></div>
+</sc-if>
+
+<!-- ══ SELLERS / IMPORTERS ══ -->
+<sc-if value="{{ isPeople }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;gap:11px">
+<sc-for list="{{ people }}" as="p" hint-placeholder-count="3">
+<article class="card" style="padding:13px;display:flex;align-items:center;gap:12px">
+<span aria-hidden="true" style="flex:none;width:44px;height:44px;border-radius:50%;background:{{ p.avBg }};display:grid;place-items:center;font-size:12px;font-weight:600;color:{{ p.avFg }}">{{ p.initials }}</span>
+<div style="flex:1;min-width:0">
+<div style="display:flex;align-items:center;gap:6px">
+<span style="font-size:var(--t-h3);font-weight:500">{{ p.name }}</span>
+<svg width="13" height="13" viewBox="0 0 24 24" style="flex:none" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="var(--allowed)"/><path d="M7.4 12.4l3 3 6.2-6.6" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+</div>
+<div class="num" style="font-size:var(--t-xs);color:var(--ink-2);margin-top:3px"><bdi>{{ p.meta }}</bdi></div>
+<sc-if value="{{ p.hasNews }}" hint-placeholder-val="{{ false }}">
+<div style="display:inline-flex;align-items:center;gap:5px;margin-top:6px;padding:3px 8px;border-radius:var(--r-pill);background:var(--allowed-bg);color:var(--allowed-ink);font-size:var(--t-micro);font-weight:500">{{ p.news }}</div>
+</sc-if>
+</div>
+<button type="button" aria-label="إزالة" style="flex:none;width:32px;height:32px;border:0;background:transparent;cursor:pointer;display:grid;place-items:center">
+<svg width="17" height="17" viewBox="0 0 24 24" fill="var(--accent)" stroke="var(--accent)" stroke-width="1.9"><path d="M12 20s-7-4.4-7-9.3A4.2 4.2 0 0 1 12 8a4.2 4.2 0 0 1 7 2.7c0 4.9-7 9.3-7 9.3z"/></svg>
+</button>
+</article>
+</sc-for>
+</div>
+</sc-if>
+
+<!-- ══ TRIPS ══ -->
+<sc-if value="{{ isTrips }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;gap:11px">
+<sc-for list="{{ trips }}" as="t" hint-placeholder-count="3">
+<article class="card" style="padding:13px;display:flex;align-items:center;gap:12px;opacity:{{ t.op }}">
+<span aria-hidden="true" style="flex:none;width:42px;height:42px;border-radius:var(--r-sm);background:{{ t.bg }};display:grid;place-items:center;font-size:var(--t-xs);font-weight:600;color:{{ t.fg }}">{{ t.cc }}</span>
+<div style="flex:1;min-width:0">
+<div style="display:flex;align-items:baseline;gap:7px">
+<span style="font-size:var(--t-h3);font-weight:500">{{ t.dest }}</span>
+<span class="num" style="font-size:var(--t-xs);color:var(--ink-3)"><bdi>{{ t.dates }}</bdi></span>
+</div>
+<div class="num" style="font-size:var(--t-xs);color:var(--ink-2);margin-top:3px"><bdi>{{ t.who }}</bdi></div>
+<div style="margin-top:6px"><span class="chip {{ t.chip }}" style="height:19px;font-size:var(--t-micro)">{{ t.state }}</span></div>
+</div>
+<sc-if value="{{ t.expired }}" hint-placeholder-val="{{ false }}">
+<button type="button" style="flex:none;height:32px;padding:0 12px;border:1px solid var(--rule-strong);border-radius:var(--r-sm);background:var(--surface);color:inherit;font-size:var(--t-sm);cursor:pointer">أزل</button>
+</sc-if>
+</article>
+</sc-for>
+</div>
+</sc-if>
+
+<!-- ══ EMPTY ══ -->
+<sc-if value="{{ isEmpty }}" hint-placeholder-val="{{ false }}">
+<div style="padding:44px 16px;text-align:center">
+<span aria-hidden="true" style="display:inline-grid;place-items:center;width:58px;height:58px;border-radius:50%;background:var(--neutral-bg);color:var(--ink-3);margin-bottom:15px">
+<svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 20s-7-4.4-7-9.3A4.2 4.2 0 0 1 12 8a4.2 4.2 0 0 1 7 2.7c0 4.9-7 9.3-7 9.3z"/></svg>
+</span>
+<h2 style="margin:0 0 8px;font-size:var(--t-h2);font-weight:600">ما عندك والو محفوظ</h2>
+<p style="margin:0 0 18px;font-size:var(--t-body);line-height:1.7;color:var(--ink-2)">اضغط القلب على أي منتج أو متجر باش ترجع له بسهولة، ونعلمك إذا تغيّر سعره أو خلص.</p>
+<button type="button" style="height:48px;padding:0 22px;border:0;border-radius:var(--r);background:var(--accent);color:var(--ink-on);font-size:15px;font-weight:600;cursor:pointer">تصفّح السوق</button>
+</div>
+</sc-if>
+
+</main>
+
+<div class="scrollx" style="display:flex;gap:6px;padding:9px 14px;background:var(--surface-2);border-top:1px solid var(--rule-faint)">
+<sc-for list="{{ views }}" as="v" hint-placeholder-count="2">
+<button type="button" onClick="{{ v.pick }}" aria-pressed="{{ v.on }}" style="flex:none;height:27px;padding:0 10px;border:1px solid {{ v.bd }};border-radius:var(--r-pill);background:{{ v.bg }};color:{{ v.fg }};font-size:var(--t-micro);cursor:pointer">{{ v.label }}</button>
+</sc-for>
+</div>
+
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:430,&quot;height&quot;:900}}">
+class Component extends DCLogic {
+  state = { tab: 'prod', view: 'full' };
+
+  fmt(n) { return '⁦' + String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + '⁩'; }
+
+  TABS = [['prod', 'منتجات', 4], ['people', 'متاجر', 3], ['trip', 'رحلات', 2]];
+
+  // Retention primitives, not a social feed: save, and be told when
+  // something you saved changes.
+  PRODUCTS = [
+    { ph: 'ph-coat', title: 'معطف نسائي شتوي — صوف مخلوط', price: 6900, was: 7400, seller: 'بوتيك نادية',
+      dropped: true, note: 'نزل السعر 500 دج', kind: 'good' },
+    { ph: 'ph-bag', title: 'حقيبة يد جلدية بحزام كتف', price: 5900, seller: 'دار الأناقة' },
+    { ph: 'ph-perfume', title: 'عطر نسائي 100 مل — شرقي', price: 4200, seller: 'بوتيك نادية',
+      note: 'بقيت 3 وحدات', kind: 'warn' },
+    { ph: 'ph-shoe', title: 'حذاء رياضي رجالي', price: 6300, seller: 'محل ياسين',
+      gone: true, goneLabel: 'لم يعد متوفراً' }
+  ];
+
+  PEOPLE = [
+    { name: 'بوتيك نادية', initials: 'ب ن', meta: 'قسنطينة · 63 معاملة مؤكَّدة', tone: 0, news: 'أضافت 4 منتجات' },
+    { name: 'كريمة ح.', initials: 'ك ح', meta: 'مستوردة · 84 معاملة مؤكَّدة', tone: 2, news: 'رحلة جديدة إلى إسطنبول' },
+    { name: 'محل ياسين', initials: 'م ي', meta: 'سطيف · 241 معاملة مؤكَّدة', tone: 1 }
+  ];
+
+  TRIPS = [
+    { cc: 'TR', dest: 'إسطنبول', dates: '12 – 16 أكتوبر', who: 'كريمة ح.', state: 'مفتوحة للطلب', chip: 'chip-verified', tone: 2 },
+    { cc: 'AE', dest: 'دبي', dates: '2 – 6 سبتمبر', who: 'سفيان ب.', state: 'انتهت', chip: 'chip-neutral', tone: 0, expired: true }
+  ];
+
+  TONE = [
+    ['oklch(0.93 0.03 28)', 'var(--accent-ink)'],
+    ['oklch(0.93 0.03 250)', 'oklch(0.35 0.06 250)'],
+    ['oklch(0.92 0.03 150)', 'var(--allowed-ink)']
+  ];
+
+  renderVals() {
+    const s = this.state, empty = s.view === 'empty';
+
+    return {
+      tabs: this.TABS.map(([id, label, n]) => ({
+        label, n: this.fmt(empty ? 0 : n), on: s.tab === id,
+        bd: s.tab === id ? 'var(--ink)' : 'transparent',
+        fg: s.tab === id ? 'var(--ink)' : 'var(--ink-3)',
+        fw: s.tab === id ? 600 : 400,
+        pick: () => this.setState({ tab: id })
+      })),
+
+      views: [['full', 'فيه محفوظات'], ['empty', 'فارغ']].map(([id, label]) => ({
+        label, on: s.view === id,
+        bd: s.view === id ? 'var(--ink)' : 'var(--rule-strong)',
+        bg: s.view === id ? 'var(--ink)' : 'var(--surface)',
+        fg: s.view === id ? 'var(--ink-on)' : 'var(--ink-2)',
+        pick: () => this.setState({ view: id })
+      })),
+
+      isEmpty: empty,
+      isProd: !empty && s.tab === 'prod',
+      isPeople: !empty && s.tab === 'people',
+      isTrips: !empty && s.tab === 'trip',
+
+      products: this.PRODUCTS.map(p => ({
+        ...p,
+        price: this.fmt(p.price),
+        was: p.was ? this.fmt(p.was) + ' دج' : '',
+        op: p.gone ? 0.75 : 1,
+        priceFg: p.gone ? 'var(--ink-3)' : p.dropped ? 'var(--allowed-ink)' : 'var(--accent-ink)',
+        hasNote: !!p.note,
+        noteFg: p.kind === 'good' ? 'var(--allowed-ink)' : 'var(--conditional-ink)',
+        dropped: !!p.dropped, gone: !!p.gone
+      })),
+
+      people: this.PEOPLE.map(p => {
+        const [avBg, avFg] = this.TONE[p.tone];
+        return { ...p, avBg, avFg, hasNews: !!p.news };
+      }),
+
+      trips: this.TRIPS.map(t => {
+        const [bg, fg] = this.TONE[t.tone];
+        return { ...t, bg, fg, op: t.expired ? 0.7 : 1, expired: !!t.expired };
+      })
+    };
+  }
+}
+</script>
+</body>
+</html>

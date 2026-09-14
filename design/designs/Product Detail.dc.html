@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./tokens.css">
+<style>
+.scrollx{overflow-x:auto;scrollbar-width:none}
+.scrollx::-webkit-scrollbar{display:none}
+.disc{width:100%;display:flex;align-items:center;gap:10px;padding:14px 0;border:0;border-top:1px solid var(--rule-faint);background:transparent;color:inherit;text-align:start;cursor:pointer;font-size:var(--t-body)}
+</style>
+</helmet>
+
+<div dir="rtl" lang="ar" class="tier-public" style="min-height:100vh;display:flex;justify-content:center">
+<div style="width:100%;max-width:430px;min-height:100vh;display:flex;flex-direction:column;background:var(--paper-public);border-inline:1px solid var(--rule)">
+
+<header style="position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--surface);border-bottom:1px solid var(--rule)">
+<button type="button" aria-label="رجوع" style="width:36px;height:36px;border:0;border-radius:var(--r-sm);background:transparent;cursor:pointer;display:grid;place-items:center;color:inherit">
+<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 5l-7 7 7 7"/></svg>
+</button>
+<div style="flex:1"></div>
+<button type="button" onClick="{{ save }}" aria-pressed="{{ saved }}" aria-label="{{ saveLabel }}" style="width:36px;height:36px;border:0;background:transparent;cursor:pointer;display:grid;place-items:center">
+<svg width="19" height="19" viewBox="0 0 24 24" fill="{{ heartFill }}" stroke="{{ heartStroke }}" stroke-width="1.9"><path d="M12 20s-7-4.4-7-9.3A4.2 4.2 0 0 1 12 8a4.2 4.2 0 0 1 7 2.7c0 4.9-7 9.3-7 9.3z"/></svg>
+</button>
+<button type="button" aria-label="مشاركة" style="width:36px;height:36px;border:0;background:transparent;cursor:pointer;display:grid;place-items:center;color:inherit">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="6" cy="12" r="2.4"/><circle cx="17" cy="6" r="2.4"/><circle cx="17" cy="18" r="2.4"/><path d="M8.2 10.9l6.6-3.6M8.2 13.1l6.6 3.6"/></svg>
+</button>
+</header>
+
+<main style="flex:1;padding-bottom:86px">
+
+<!-- ── 1. WHAT IS IT ── -->
+<div style="padding:14px 16px 0">
+<span class="img img-hero ph {{ ph }}" style="display:block;border:1px solid var(--rule-faint)"></span>
+<div class="scrollx" style="display:flex;gap:8px;padding:10px 0 0">
+<sc-for list="{{ thumbs }}" as="t" hint-placeholder-count="4">
+<span class="img img-thumb ph {{ t.ph }}" style="flex:none;width:56px;border:1.5px solid {{ t.bd }};display:block"></span>
+</sc-for>
+</div>
+</div>
+
+<section style="padding:16px">
+<h1 style="margin:0 0 8px;font-size:var(--t-h1);font-weight:500;line-height:1.4">{{ title }}</h1>
+
+<div style="display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;margin-bottom:10px">
+<span class="num" style="font-size:26px;font-weight:600;color:var(--accent-ink)"><bdi>{{ price }} دج</bdi></span>
+<span class="num" style="font-size:var(--t-sm);color:var(--ink-3)"><bdi>{{ perUnit }}</bdi></span>
+</div>
+
+<div style="display:flex;gap:7px;flex-wrap:wrap">
+<span class="chip {{ availChip }}">{{ availLabel }}</span>
+<span class="chip chip-neutral"><bdi>{{ origin }}</bdi></span>
+<span class="chip chip-neutral"><bdi>{{ updated }}</bdi></span>
+</div>
+</section>
+
+<!-- ── 2 + 3. WHO SELLS IT, ARE THEY TRUSTWORTHY ── -->
+<section style="margin:0 16px 16px">
+<button type="button" class="card" style="width:100%;display:flex;align-items:center;gap:12px;padding:13px;text-align:start;cursor:pointer;color:inherit">
+<span aria-hidden="true" style="flex:none;width:44px;height:44px;border-radius:50%;background:oklch(0.93 0.03 28);display:grid;place-items:center;font-size:14px;font-weight:600;color:var(--accent-ink)">{{ initials }}</span>
+<span style="flex:1;min-width:0">
+<span style="display:flex;align-items:center;gap:5px">
+<span style="font-size:var(--t-h3);font-weight:500">{{ seller }}</span>
+<svg width="14" height="14" viewBox="0 0 24 24" style="flex:none" role="img" aria-label="متجر مُتحقَّق"><circle cx="12" cy="12" r="10" fill="var(--allowed)"/><path d="M7.4 12.4l3 3 6.2-6.6" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+</span>
+<span class="num" style="display:block;font-size:var(--t-xs);color:var(--ink-2);margin-top:3px"><bdi>{{ sellerMeta }}</bdi></span>
+</span>
+<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--ink-3)" stroke-width="2" style="flex:none"><path d="M15 5l-7 7 7 7"/></svg>
+</button>
+
+<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1px;margin-top:10px;background:var(--rule);border:1px solid var(--rule);border-radius:var(--r);overflow:hidden">
+<sc-for list="{{ trustStats }}" as="s" hint-placeholder-count="3">
+<div style="background:var(--surface);padding:11px 8px;text-align:center">
+<div class="num" style="font-size:17px;font-weight:600;line-height:1.2"><bdi>{{ s.v }}</bdi></div>
+<div style="font-size:var(--t-micro);color:var(--ink-2);margin-top:3px">{{ s.k }}</div>
+</div>
+</sc-for>
+</div>
+</section>
+
+<!-- ── 4 + 5. SPECS — structured metadata, rules not cards ── -->
+<section style="margin:0 16px 16px;padding:2px 14px 6px;background:var(--surface);border:1px solid var(--rule);border-radius:var(--r)">
+<sc-for list="{{ specs }}" as="s" hint-placeholder-count="6">
+<div style="display:flex;justify-content:space-between;align-items:baseline;gap:14px;padding:11px 0;border-bottom:1px solid var(--rule-faint)">
+<span style="font-size:var(--t-sm);color:var(--ink-2);flex:none">{{ s.k }}</span>
+<span class="num" style="font-size:var(--t-body);text-align:end"><bdi>{{ s.v }}</bdi></span>
+</div>
+</sc-for>
+<p style="margin:12px 0 10px;font-size:var(--t-body);line-height:1.7;color:var(--ink)">{{ desc }}</p>
+</section>
+
+<!-- ── 6. REVIEWS ── -->
+<section style="margin:0 16px 16px">
+<div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:9px">
+<h2 style="margin:0;font-size:var(--t-h2);font-weight:500">آراء المشترين</h2>
+<button type="button" style="border:0;background:transparent;font-size:var(--t-sm);color:var(--allowed-ink);cursor:pointer">الكل ←</button>
+</div>
+<div class="card" style="padding:13px">
+<sc-for list="{{ reviews }}" as="r" hint-placeholder-count="2">
+<div style="padding:9px 0;border-bottom:1px solid var(--rule-faint)">
+<div style="display:flex;align-items:center;gap:8px;margin-bottom:5px">
+<span style="font-size:var(--t-sm);font-weight:500">{{ r.name }}</span>
+<span class="chip chip-verified" style="height:19px;font-size:var(--t-micro)">شراء مؤكَّد</span>
+<span class="num" style="margin-inline-start:auto;font-size:var(--t-micro);color:var(--ink-3)"><bdi>{{ r.when }}</bdi></span>
+</div>
+<p style="margin:0;font-size:var(--t-sm);line-height:1.65;color:var(--ink-2)">{{ r.text }}</p>
+</div>
+</sc-for>
+</div>
+</section>
+
+<!-- ── 7. RESTRICTIONS — progressive disclosure, deliberately BELOW commerce ── -->
+<section style="margin:0 16px 20px;padding:0 14px;background:var(--surface);border:1px solid var(--rule);border-radius:var(--r)">
+<sc-for list="{{ discs }}" as="d" hint-placeholder-count="3">
+<div>
+<button type="button" onClick="{{ d.toggle }}" aria-expanded="{{ d.open }}" class="disc" style="border-top-color:{{ d.bt }}">
+<span aria-hidden="true" style="flex:none;width:22px;height:22px;border-radius:50%;background:{{ d.iconBg }};display:grid;place-items:center;font-size:11px;font-weight:600;color:{{ d.iconFg }}">{{ d.glyph }}</span>
+<span style="flex:1">{{ d.label }}</span>
+<span style="font-size:var(--t-xs);color:var(--ink-3)">{{ d.hint }}</span>
+<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--ink-3)" stroke-width="2" style="flex:none;transform:rotate({{ d.rot }}deg);transition:transform .16s ease"><path d="M6 9l6 6 6-6"/></svg>
+</button>
+<sc-if value="{{ d.open }}" hint-placeholder-val="{{ false }}">
+<div style="padding:0 0 14px 32px;padding-inline:32px 0">
+<p style="margin:0 0 8px;font-size:var(--t-sm);line-height:1.7;color:var(--ink-2)">{{ d.body }}</p>
+<sc-if value="{{ d.hasCite }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;justify-content:space-between;align-items:baseline;gap:10px;padding:9px 11px;background:var(--surface-2);border:1px solid var(--rule-faint);border-radius:var(--r-sm)">
+<span class="ref">{{ d.cite }}</span>
+<a href="#" style="font-size:var(--t-xs)">{{ d.citeLink }}</a>
+</div>
+</sc-if>
+</div>
+</sc-if>
+</div>
+</sc-for>
+</section>
+
+<!-- ── SIMILAR ── -->
+<section style="padding:0 0 20px">
+<h2 style="margin:0 16px 10px;font-size:var(--t-h2);font-weight:500">منتجات مشابهة</h2>
+<div class="scrollx" style="display:flex;gap:12px;padding:0 16px 6px">
+<sc-for list="{{ similar }}" as="p" hint-placeholder-count="3">
+<article class="card" style="flex:none;width:132px;overflow:hidden;cursor:pointer">
+<span class="img img-card ph {{ p.ph }}" style="border-radius:0;display:block"></span>
+<span style="display:block;padding:9px 10px 11px">
+<span style="display:block;font-size:var(--t-xs);line-height:1.45;height:33px;overflow:hidden">{{ p.title }}</span>
+<span class="num" style="display:block;font-size:var(--t-sm);font-weight:600;color:var(--accent-ink);margin-top:5px"><bdi>{{ p.price }} دج</bdi></span>
+</span>
+</article>
+</sc-for>
+</div>
+</section>
+
+</main>
+
+<!-- ── STICKY ACTION BAR — contact is the conversion, not "buy" ── -->
+<div style="position:fixed;inset-block-end:0;inset-inline:0;margin:0 auto;max-width:430px;display:flex;gap:9px;padding:11px 16px 15px;background:var(--surface);border-top:1px solid var(--rule);box-shadow:0 -2px 12px oklch(0.20 0.02 60 / 0.05)">
+<button type="button" onClick="{{ save }}" aria-label="{{ saveLabel }}" style="flex:none;width:50px;height:50px;border:1px solid var(--rule-strong);border-radius:var(--r);background:var(--surface);display:grid;place-items:center;cursor:pointer">
+<svg width="20" height="20" viewBox="0 0 24 24" fill="{{ heartFill }}" stroke="{{ heartStroke }}" stroke-width="1.9"><path d="M12 20s-7-4.4-7-9.3A4.2 4.2 0 0 1 12 8a4.2 4.2 0 0 1 7 2.7c0 4.9-7 9.3-7 9.3z"/></svg>
+</button>
+<button type="button" style="flex:1;height:50px;border:0;border-radius:var(--r);background:var(--accent);color:var(--ink-on);font-size:16px;font-weight:500;cursor:pointer">راسل البائع</button>
+<button type="button" style="flex:none;padding:0 16px;height:50px;border:1px solid var(--rule-strong);border-radius:var(--r);background:var(--surface);color:inherit;font-size:var(--t-sm);cursor:pointer">اسأل عن التوفّر</button>
+</div>
+
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:430,&quot;height&quot;:1900}}">
+class Component extends DCLogic {
+  state = { saved: false, open: null };
+
+  fmt(n) { return '⁦' + String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + '⁩'; }
+
+  P = {
+    ph: 'ph-coat',
+    title: 'معطف نسائي شتوي — صوف مخلوط',
+    price: 7400,
+    perUnit: 'للقطعة · الكمية 1–5',
+    origin: 'المصدر: تركيا',
+    updated: 'حُدّث قبل يومين',
+    seller: 'بوتيك نادية',
+    initials: 'ب ن',
+    sellerMeta: 'قسنطينة · تاجر مُتحقَّق · سجل تجاري مُتحقَّق منه',
+    desc: 'معطف بقصّة مستقيمة، بطانة داخلية، جيبان جانبيان وأزرار معدنية. المقاسات المتوفّرة ⁦S · M · L · XL⁩. الصور للقطعة الفعلية كما وصلت.'
+  };
+
+  // Mixed-direction discipline.
+  // U+2066 LRI … U+2069 PDI isolates a left-to-right run inside Arabic text.
+  // Without it: "60%" renders as "%60", and "S · M · L · XL" reverses to
+  // "XL · L · M · S" — both caught in RTL review.
+  LRI = '⁦'; PDI = '⁩';
+  ltr(s) { return this.LRI + s + this.PDI; }
+
+  get SPECS() {
+    return [
+      { k: 'الفئة', v: 'ألبسة نسائية · معاطف' },
+      { k: 'المقاسات', v: this.ltr('S · M · L · XL') },
+      { k: 'الألوان', v: 'أسود · بيج · كحلي' },
+      { k: 'الخامة', v: 'صوف مخلوط ' + this.ltr('60%') },
+      { k: 'الكمية المتاحة', v: '14 قطعة' },
+      { k: 'التسليم', v: 'استلام من المحل · توصيل داخل الولاية' }
+    ];
+  }
+
+  TRUST = [
+    { k: 'معاملة مؤكَّدة', v: '63' },
+    { k: 'نسبة الردّ', v: '94%' },
+    { k: 'على المنصّة', v: 'سنة و4 أشهر' }
+  ];
+
+  REVIEWS = [
+    { name: 'سمية ل.', when: 'قبل 9 أيام', text: 'المقاس مطابق للوصف والخامة ثقيلة كما في الصور. التسليم تمّ في المحل بلا تأخير.' },
+    { name: 'ر. بوزيد', when: 'قبل 3 أسابيع', text: 'اللون الكحلي أغمق قليلاً ممّا ظهر في الصورة، لكن الجودة ممتازة والبائعة ردّت بسرعة.' }
+  ];
+
+  DISCS = [
+    { id: 'ret', glyph: '↩', label: 'الإرجاع والاستبدال', hint: 'سياسة البائع', kind: 'n',
+      body: 'الاستبدال خلال 48 ساعة عند وجود عيب أو اختلاف في المقاس، من المحل مباشرةً. السياسة يحدّدها البائع لا مَعْبَر، والاتفاق يتمّ بينك وبينه.' },
+    { id: 'pay', glyph: '⇄', label: 'الدفع', hint: 'بينك وبين البائع', kind: 'n',
+      body: 'الدفع يتمّ مباشرةً مع البائع بالطريقة التي تتّفقان عليها. مَعْبَر لا تستلم المبلغ ولا تحتفظ به ولا تضمنه ولا تردّه، وليست طرفاً في البيع.' },
+    { id: 'reg', glyph: '§', label: 'معلومات تنظيمية', hint: 'مسموح', kind: 'a',
+      body: 'هذا الصنف ضمن المسموح به في نشاط الاستيراد المصغّر. السلعة دخلت عبر مستورد مصغّر حائز على البطاقة والرخصة العامة، وتُباع لك من تاجر مقيّد في السجل التجاري.',
+      cite: 'المرسوم 25-170 · المادة 9', citeLink: 'الجريدة الرسمية' }
+  ];
+
+  SIMILAR = [
+    { ph: 'ph-coat',    title: 'معطف نسائي — جلد صناعي', price: 8900 },
+    { ph: 'ph-bag',     title: 'حقيبة كتف مبطّنة',        price: 4600 },
+    { ph: 'ph-perfume', title: 'عطر نسائي 50 مل',        price: 2900 }
+  ];
+
+  renderVals() {
+    const s = this.state;
+    const P = this.P;
+    return {
+      ...P,
+      price: this.fmt(P.price),
+      saved: s.saved,
+      saveLabel: s.saved ? 'إزالة من المحفوظات' : 'احفظ المنتج',
+      heartFill: s.saved ? 'var(--accent)' : 'none',
+      heartStroke: s.saved ? 'var(--accent)' : 'var(--ink-2)',
+      save: () => this.setState(st => ({ saved: !st.saved })),
+
+      availChip: 'chip-verified',
+      availLabel: 'متوفر الآن · 14 قطعة',
+
+      thumbs: ['ph-coat', 'ph-coat', 'ph-bag', 'ph-coat'].map((ph, i) => ({
+        ph, bd: i === 0 ? 'var(--ink)' : 'var(--rule)'
+      })),
+
+      trustStats: this.TRUST.map(t => ({ ...t })),
+      specs: this.SPECS,
+      reviews: this.REVIEWS,
+      similar: this.SIMILAR.map(x => ({ ...x, price: this.fmt(x.price) })),
+
+      discs: this.DISCS.map((d, i) => {
+        const open = s.open === d.id;
+        const a = d.kind === 'a';
+        return {
+          ...d, open, rot: open ? 180 : 0,
+          bt: i === 0 ? 'transparent' : 'var(--rule-faint)',
+          iconBg: a ? 'var(--allowed-bg)' : 'var(--neutral-bg)',
+          iconFg: a ? 'var(--allowed-ink)' : 'var(--ink-2)',
+          hasCite: !!d.cite,
+          toggle: () => this.setState(st => ({ open: st.open === d.id ? null : d.id }))
+        };
+      })
+    };
+  }
+}
+</script>
+</body>
+</html>

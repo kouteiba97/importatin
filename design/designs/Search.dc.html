@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./tokens.css">
+<style>
+.gridwrap{container-type:inline-size}
+.grid2{display:grid;grid-template-columns:repeat(2,1fr);gap:13px}
+@container (min-width:520px){.grid2{grid-template-columns:repeat(3,1fr)}}
+.clamp2{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.scrollx{overflow-x:auto;scrollbar-width:none}.scrollx::-webkit-scrollbar{display:none}
+.sk{background:var(--neutral-bg);border-radius:var(--r-xs);animation:p 1.2s ease-in-out infinite}
+@keyframes p{0%,100%{opacity:.55}50%{opacity:1}}
+</style>
+</helmet>
+
+<div dir="rtl" lang="ar" class="tier-public" style="min-height:100vh;display:flex;justify-content:center">
+<div style="width:100%;max-width:430px;min-height:100vh;display:flex;flex-direction:column;background:var(--paper-public);border-inline:1px solid var(--rule)">
+
+<header style="position:sticky;top:0;z-index:20;background:var(--surface);border-bottom:1px solid var(--rule)">
+<div style="display:flex;align-items:center;gap:9px;padding:10px 12px">
+<button type="button" aria-label="رجوع" style="flex:none;width:34px;height:34px;border:0;background:transparent;cursor:pointer;display:grid;place-items:center;color:inherit">
+<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 5l-7 7 7 7"/></svg>
+</button>
+<div style="flex:1;display:flex;align-items:center;gap:9px;height:42px;padding:0 13px;border:1px solid var(--rule-strong);border-radius:var(--r);background:var(--surface-2)">
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--ink-3)" stroke-width="2" style="flex:none"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+<input value="{{ q }}" onChange="{{ onQ }}" aria-label="بحث" placeholder="ابحث" style="flex:1;min-width:0;border:0;background:transparent;font-size:15px;color:inherit;outline:none">
+<sc-if value="{{ hasQ }}" hint-placeholder-val="{{ true }}">
+<button type="button" onClick="{{ clear }}" aria-label="امسح" style="flex:none;width:20px;height:20px;border:0;border-radius:50%;background:var(--neutral-bd);color:var(--ink-2);cursor:pointer;font-size:11px;display:grid;place-items:center">✕</button>
+</sc-if>
+</div>
+</div>
+
+<!-- scoped tabs: one giant result list would be unusable -->
+<nav aria-label="نطاق البحث" style="display:grid;grid-template-columns:repeat(4,1fr)">
+<sc-for list="{{ scopes }}" as="s" hint-placeholder-count="4">
+<button type="button" onClick="{{ s.pick }}" aria-current="{{ s.on }}" style="height:40px;border:0;border-bottom:2px solid {{ s.bd }};background:transparent;color:{{ s.fg }};font-size:var(--t-sm);font-weight:{{ s.fw }};cursor:pointer;display:flex;align-items:center;justify-content:center;gap:5px">
+{{ s.label }}
+<sc-if value="{{ s.hasN }}" hint-placeholder-val="{{ true }}"><span class="num" style="font-size:var(--t-micro);color:var(--ink-3)"><bdi>{{ s.n }}</bdi></span></sc-if>
+</button>
+</sc-for>
+</nav>
+</header>
+
+<sc-if value="{{ showFilters }}" hint-placeholder-val="{{ true }}">
+<div class="scrollx" style="display:flex;gap:7px;padding:11px 14px;border-bottom:1px solid var(--rule-faint)">
+<sc-for list="{{ chips }}" as="c" hint-placeholder-count="5">
+<button type="button" onClick="{{ c.pick }}" aria-pressed="{{ c.on }}" style="flex:none;height:32px;padding:0 12px;border:1px solid {{ c.bd }};border-radius:var(--r-pill);background:{{ c.bg }};color:{{ c.fg }};font-size:var(--t-sm);cursor:pointer">{{ c.label }}</button>
+</sc-for>
+</div>
+</sc-if>
+
+<main style="flex:1;padding:14px 16px 26px">
+
+<!-- ══ LOADING ══ -->
+<sc-if value="{{ isLoading }}" hint-placeholder-val="{{ false }}">
+<div class="gridwrap"><div class="grid2">
+<sc-for list="{{ skeletons }}" as="k" hint-placeholder-count="4">
+<div class="card" style="overflow:hidden">
+<div class="sk" style="aspect-ratio:4/5;border-radius:0"></div>
+<div style="padding:10px 11px 12px;display:flex;flex-direction:column;gap:7px">
+<div class="sk" style="height:12px;width:90%"></div>
+<div class="sk" style="height:12px;width:60%"></div>
+<div class="sk" style="height:15px;width:45%"></div>
+</div>
+</div>
+</sc-for>
+</div></div>
+</sc-if>
+
+<!-- ══ RESULTS — PRODUCTS ══ -->
+<sc-if value="{{ isProducts }}" hint-placeholder-val="{{ true }}">
+<div>
+<div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:12px">
+<span class="num" style="font-size:var(--t-sm);color:var(--ink-2)"><bdi>{{ resultLine }}</bdi></span>
+<button type="button" style="border:0;background:transparent;font-size:var(--t-sm);color:var(--allowed-ink);cursor:pointer;display:flex;align-items:center;gap:5px">الأحدث
+<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+</button>
+</div>
+<div class="gridwrap"><div class="grid2">
+<sc-for list="{{ products }}" as="p" hint-placeholder-count="4">
+<article class="card" style="overflow:hidden;cursor:pointer;display:flex;flex-direction:column">
+<span class="img img-card ph {{ p.ph }}" style="border-radius:0;display:block"></span>
+<div style="padding:10px 11px 12px;display:flex;flex-direction:column;gap:6px;flex:1">
+<h3 class="clamp2" style="margin:0;font-size:var(--t-sm);font-weight:400;line-height:1.45;min-height:37px">{{ p.title }}</h3>
+<div class="num" style="font-size:16px;font-weight:600;color:var(--accent-ink)"><bdi>{{ p.price }} دج</bdi></div>
+<div style="display:flex;align-items:center;gap:5px;padding-top:6px;border-top:1px solid var(--rule-faint)">
+<span style="flex:1;min-width:0;font-size:var(--t-micro);color:var(--ink-2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ p.seller }}</span>
+<svg width="12" height="12" viewBox="0 0 24 24" style="flex:none" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="var(--allowed)"/><path d="M7.4 12.4l3 3 6.2-6.6" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+</div>
+</div>
+</article>
+</sc-for>
+</div></div>
+</div>
+</sc-if>
+
+<!-- ══ RESULTS — PEOPLE (traders / importers) ══ -->
+<sc-if value="{{ isPeople }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;gap:11px">
+<sc-for list="{{ people }}" as="p" hint-placeholder-count="4">
+<article class="card" style="padding:13px;display:flex;align-items:center;gap:12px;cursor:pointer">
+<span aria-hidden="true" style="flex:none;width:44px;height:44px;border-radius:50%;background:{{ p.avBg }};display:grid;place-items:center;font-size:12px;font-weight:600;color:{{ p.avFg }}">{{ p.initials }}</span>
+<div style="flex:1;min-width:0">
+<div style="display:flex;align-items:center;gap:6px">
+<span style="font-size:var(--t-h3);font-weight:500">{{ p.name }}</span>
+<svg width="13" height="13" viewBox="0 0 24 24" style="flex:none" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="var(--allowed)"/><path d="M7.4 12.4l3 3 6.2-6.6" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+</div>
+<div style="font-size:var(--t-xs);color:var(--ink-2);margin-top:3px">{{ p.kind }}</div>
+<div class="num" style="font-size:var(--t-micro);color:var(--ink-3);margin-top:3px"><bdi>{{ p.meta }}</bdi></div>
+</div>
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--ink-3)" stroke-width="2" style="flex:none"><path d="M15 5l-7 7 7 7"/></svg>
+</article>
+</sc-for>
+</div>
+</sc-if>
+
+<!-- ══ RESULTS — TRIPS ══ -->
+<sc-if value="{{ isTrips }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;gap:11px">
+<sc-for list="{{ trips }}" as="t" hint-placeholder-count="3">
+<article class="card" style="padding:13px;display:flex;align-items:center;gap:12px;cursor:pointer">
+<span aria-hidden="true" style="flex:none;width:42px;height:42px;border-radius:var(--r-sm);background:{{ t.bg }};display:grid;place-items:center;font-size:var(--t-xs);font-weight:600;color:{{ t.fg }}">{{ t.cc }}</span>
+<div style="flex:1;min-width:0">
+<div style="display:flex;align-items:baseline;gap:7px">
+<span style="font-size:var(--t-h3);font-weight:500">{{ t.dest }}</span>
+<span class="num" style="font-size:var(--t-xs);color:var(--ink-3)"><bdi>{{ t.dates }}</bdi></span>
+</div>
+<div style="font-size:var(--t-xs);color:var(--ink-2);margin-top:3px">{{ t.cats }}</div>
+<div style="display:flex;align-items:center;gap:6px;margin-top:5px">
+<span class="chip {{ t.chip }}" style="height:19px;font-size:var(--t-micro)">{{ t.cap }}</span>
+<span class="num" style="font-size:var(--t-micro);color:var(--ink-3)"><bdi>{{ t.who }}</bdi></span>
+</div>
+</div>
+</article>
+</sc-for>
+</div>
+</sc-if>
+
+<!-- ══ NO RESULTS ══ -->
+<sc-if value="{{ isEmpty }}" hint-placeholder-val="{{ false }}">
+<div style="padding:40px 10px;text-align:center">
+<span aria-hidden="true" style="display:inline-grid;place-items:center;width:56px;height:56px;border-radius:50%;background:var(--neutral-bg);color:var(--ink-3);margin-bottom:14px">
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+</span>
+<h2 style="margin:0 0 8px;font-size:var(--t-h2);font-weight:600">ما لقينا والو على «{{ q }}»</h2>
+<p style="margin:0 0 18px;font-size:var(--t-body);line-height:1.7;color:var(--ink-2)">جرّب كلمة أعمّ، أو انشر طلب توريد وخلّي المستوردين يجيبوه لك.</p>
+<div style="display:flex;flex-wrap:wrap;gap:7px;justify-content:center;margin-bottom:20px">
+<sc-for list="{{ suggestions }}" as="s" hint-placeholder-count="3">
+<button type="button" style="height:34px;padding:0 13px;border:1px solid var(--rule-strong);border-radius:var(--r-pill);background:var(--surface);font-size:var(--t-sm);cursor:pointer;color:inherit">{{ s }}</button>
+</sc-for>
+</div>
+<button type="button" style="height:48px;padding:0 22px;border:0;border-radius:var(--r);background:var(--accent);color:var(--ink-on);font-size:15px;font-weight:600;cursor:pointer">انشر طلب توريد</button>
+</div>
+</sc-if>
+
+<!-- ══ ERROR ══ -->
+<sc-if value="{{ isError }}" hint-placeholder-val="{{ false }}">
+<div style="padding:40px 10px;text-align:center">
+<span aria-hidden="true" style="display:inline-grid;place-items:center;width:56px;height:56px;border-radius:50%;background:var(--prohibited-bg);color:var(--prohibited-ink);font-size:24px;margin-bottom:14px">!</span>
+<h2 style="margin:0 0 8px;font-size:var(--t-h2);font-weight:600">ما قدرناش نكمّل البحث</h2>
+<p style="margin:0 0 18px;font-size:var(--t-body);line-height:1.7;color:var(--ink-2)">الاتصال انقطع. بحثك محفوظ — عاود المحاولة.</p>
+<button type="button" style="height:48px;padding:0 22px;border:0;border-radius:var(--r);background:var(--ink);color:var(--ink-on);font-size:15px;font-weight:600;cursor:pointer">أعد المحاولة</button>
+</div>
+</sc-if>
+
+<!-- ══ OFFLINE ══ -->
+<sc-if value="{{ isOffline }}" hint-placeholder-val="{{ false }}">
+<div>
+<div style="display:flex;align-items:center;gap:9px;padding:11px 13px;background:var(--neutral-bg);border:1px solid var(--neutral-bd);border-radius:var(--r);margin-bottom:14px">
+<span aria-hidden="true" style="flex:none;width:8px;height:8px;border-radius:50%;background:var(--conditional)"></span>
+<span style="flex:1;font-size:var(--t-sm);line-height:1.6">غير متصل — هذي آخر نتائج محفوظة على جهازك.</span>
+</div>
+<div class="gridwrap"><div class="grid2">
+<sc-for list="{{ products }}" as="p" hint-placeholder-count="2">
+<article class="card" style="overflow:hidden;opacity:.72">
+<span class="img img-card ph {{ p.ph }}" style="border-radius:0;display:block"></span>
+<div style="padding:10px 11px 12px">
+<h3 class="clamp2" style="margin:0;font-size:var(--t-sm);line-height:1.45;min-height:37px">{{ p.title }}</h3>
+<div class="num" style="font-size:16px;font-weight:600;margin-top:6px"><bdi>{{ p.price }} دج</bdi></div>
+</div>
+</article>
+</sc-for>
+</div></div>
+</div>
+</sc-if>
+
+</main>
+
+<!-- state switcher for review -->
+<div class="scrollx" style="display:flex;gap:6px;padding:9px 14px;background:var(--surface-2);border-top:1px solid var(--rule-faint)">
+<sc-for list="{{ states }}" as="s" hint-placeholder-count="5">
+<button type="button" onClick="{{ s.pick }}" aria-pressed="{{ s.on }}" style="flex:none;height:27px;padding:0 10px;border:1px solid {{ s.bd }};border-radius:var(--r-pill);background:{{ s.bg }};color:{{ s.fg }};font-size:var(--t-micro);cursor:pointer">{{ s.label }}</button>
+</sc-for>
+</div>
+
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:430,&quot;height&quot;:960}}">
+class Component extends DCLogic {
+  state = { scope: 'prod', view: 'results', chip: 'all' };
+
+  fmt(n) { return '⁦' + String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + '⁩'; }
+
+  SCOPES = [['prod', 'منتجات', 128], ['trader', 'متاجر', 14], ['imp', 'مستوردون', 9], ['trip', 'رحلات', 4]];
+  STATES = [['results', 'نتائج'], ['loading', 'تحميل'], ['empty', 'بلا نتائج'], ['error', 'خطأ'], ['offline', 'بلا اتصال']];
+  CHIPS = [['all','الكل'],['now','متوفر الآن'],['setif','سطيف'],['alger','الجزائر'],['tr','من تركيا']];
+
+  PRODUCTS = [
+    { ph: 'ph-coat', title: 'معطف نسائي شتوي — صوف مخلوط', price: 7400, seller: 'بوتيك نادية' },
+    { ph: 'ph-coat', title: 'معطف نسائي — جلد صناعي', price: 8900, seller: 'دار الأناقة' },
+    { ph: 'ph-coat', title: 'معطف قصير بقبّة فرو', price: 6200, seller: 'محل ياسين' },
+    { ph: 'ph-bag', title: 'حقيبة يد بحزام كتف', price: 5900, seller: 'دار الأناقة' }
+  ];
+
+  PEOPLE = [
+    { name: 'بوتيك نادية', initials: 'ب ن', kind: 'تاجرة مُتحقَّقة · قسنطينة', meta: '63 معاملة مؤكَّدة · ترد خلال ساعتين', tone: 0 },
+    { name: 'دار الأناقة', initials: 'د أ', kind: 'تاجر مُتحقَّق · وهران', meta: '118 معاملة مؤكَّدة · ترد خلال ساعة', tone: 1 },
+    { name: 'محل ياسين', initials: 'م ي', kind: 'تاجر مُتحقَّق · سطيف', meta: '241 معاملة مؤكَّدة', tone: 2 }
+  ];
+
+  TRIPS = [
+    { cc: 'TR', dest: 'إسطنبول', dates: '12 – 16 أكتوبر', cats: 'ألبسة · حقائب', cap: 'سعة متاحة', chip: 'chip-verified', who: 'كريمة ح. · 84 معاملة', tone: 2 },
+    { cc: 'AE', dest: 'دبي', dates: '19 – 23 أكتوبر', cats: 'عطور · ساعات', cap: 'سعة محدودة', chip: 'chip-conditional', who: 'سفيان ب. · 12 معاملة', tone: 0 }
+  ];
+
+  SUGGESTIONS = ['معاطف', 'ألبسة نسائية', 'شتوي'];
+  TONE = [
+    ['oklch(0.93 0.03 28)', 'var(--accent-ink)'],
+    ['oklch(0.93 0.03 250)', 'oklch(0.35 0.06 250)'],
+    ['oklch(0.92 0.03 150)', 'var(--allowed-ink)']
+  ];
+
+  renderVals() {
+    const s = this.state;
+    const scope = s.scope, view = s.view;
+    const q = view === 'empty' ? 'معطف جلد أحمر مقاس 48' : 'معاطف نسائية';
+    const showResults = view === 'results';
+
+    return {
+      q, hasQ: true, onQ: () => {}, clear: () => {},
+      showFilters: showResults && scope === 'prod',
+
+      scopes: this.SCOPES.map(([id, label, n]) => ({
+        label, on: scope === id, hasN: showResults,
+        n: this.fmt(n),
+        bd: scope === id ? 'var(--ink)' : 'transparent',
+        fg: scope === id ? 'var(--ink)' : 'var(--ink-3)',
+        fw: scope === id ? 600 : 400,
+        pick: () => this.setState({ scope: id })
+      })),
+
+      chips: this.CHIPS.map(([id, label]) => ({
+        label, on: s.chip === id,
+        bd: s.chip === id ? 'var(--ink)' : 'var(--rule-strong)',
+        bg: s.chip === id ? 'var(--ink)' : 'var(--surface)',
+        fg: s.chip === id ? 'var(--ink-on)' : 'var(--ink)',
+        pick: () => this.setState({ chip: id })
+      })),
+
+      states: this.STATES.map(([id, label]) => ({
+        label, on: view === id,
+        bd: view === id ? 'var(--ink)' : 'var(--rule-strong)',
+        bg: view === id ? 'var(--ink)' : 'var(--surface)',
+        fg: view === id ? 'var(--ink-on)' : 'var(--ink-2)',
+        pick: () => this.setState({ view: id })
+      })),
+
+      isLoading: view === 'loading',
+      isEmpty: view === 'empty',
+      isError: view === 'error',
+      isOffline: view === 'offline',
+      isProducts: showResults && scope === 'prod',
+      isPeople: showResults && (scope === 'trader' || scope === 'imp'),
+      isTrips: showResults && scope === 'trip',
+
+      skeletons: [1, 2, 3, 4],
+      resultLine: this.fmt(128) + ' منتجاً',
+      products: this.PRODUCTS.map(p => ({ ...p, price: this.fmt(p.price) })),
+      people: this.PEOPLE.map(p => {
+        const [avBg, avFg] = this.TONE[p.tone];
+        return { ...p, avBg, avFg };
+      }),
+      trips: this.TRIPS.map(t => {
+        const [bg, fg] = this.TONE[t.tone];
+        return { ...t, bg, fg };
+      }),
+      suggestions: this.SUGGESTIONS
+    };
+  }
+}
+</script>
+</body>
+</html>

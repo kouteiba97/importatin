@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./tokens.css">
+<style>
+.cta{width:100%;height:50px;border:0;border-radius:var(--r);background:var(--ink);color:var(--ink-on);font-size:15px;font-weight:600;cursor:pointer}
+.ghost{width:100%;height:46px;border:1px solid var(--rule-strong);border-radius:var(--r);background:transparent;color:inherit;font-size:14px;cursor:pointer}
+.sw{flex:none;height:28px;padding:0 10px;border:1px solid var(--rule-strong);border-radius:var(--r-pill);background:var(--surface);font-size:var(--t-micro);cursor:pointer;color:inherit}
+.scrollx{overflow-x:auto;scrollbar-width:none}.scrollx::-webkit-scrollbar{display:none}
+</style>
+</helmet>
+
+<div dir="rtl" lang="ar" class="tier-op" style="min-height:100vh;display:flex;justify-content:center">
+<div style="width:100%;max-width:430px;min-height:100vh;display:flex;flex-direction:column;background:var(--paper);border-inline:1px solid var(--rule)">
+
+<header style="background:var(--surface);border-bottom:1px solid var(--rule)">
+<div style="display:flex;align-items:center;gap:10px;padding:11px 14px 9px">
+<button type="button" aria-label="رجوع" style="width:34px;height:34px;border:0;background:transparent;cursor:pointer;display:grid;place-items:center;color:inherit">
+<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 5l-7 7 7 7"/></svg>
+</button>
+<span style="flex:1;font-size:var(--t-h3);font-weight:500">التحقّق</span>
+</div>
+<!-- Two document sets, one journey. The trader path unlocks consumer-facing
+     listings; the importer path never does. -->
+<nav aria-label="الدور" style="display:grid;grid-template-columns:repeat(2,1fr)">
+<sc-for list="{{ roles }}" as="r" hint-placeholder-count="2">
+<button type="button" onClick="{{ r.pick }}" aria-current="{{ r.on }}" style="height:40px;border:0;border-bottom:2px solid {{ r.bd }};background:transparent;color:{{ r.fg }};font-size:var(--t-sm);font-weight:{{ r.fw }};cursor:pointer">{{ r.label }}</button>
+</sc-for>
+</nav>
+</header>
+
+<!-- state switcher: lets the client walk every state of the document journey -->
+<div class="scrollx" style="display:flex;gap:6px;padding:9px 14px;background:var(--surface-2);border-bottom:1px solid var(--rule-faint)">
+<sc-for list="{{ views }}" as="v" hint-placeholder-count="7">
+<button type="button" onClick="{{ v.pick }}" aria-pressed="{{ v.on }}" class="sw" style="background:{{ v.bg }};color:{{ v.fg }};border-color:{{ v.bd }}">{{ v.label }}</button>
+</sc-for>
+</div>
+
+<main style="flex:1;padding:16px 16px 26px;display:flex;flex-direction:column;gap:16px">
+
+<!-- ══════ LADDER ══════ -->
+<sc-if value="{{ isLadder }}" hint-placeholder-val="{{ true }}">
+<div style="display:flex;flex-direction:column;gap:16px">
+
+<section class="card" style="padding:16px">
+<div style="display:flex;align-items:center;gap:11px;margin-bottom:13px">
+<span aria-hidden="true" style="flex:none;width:44px;height:44px;border-radius:50%;background:var(--allowed-bg);display:grid;place-items:center;color:var(--allowed-ink);font-size:18px;font-weight:600">2</span>
+<div style="flex:1;min-width:0">
+<div style="font-size:var(--t-h3);font-weight:600">هوية مؤكَّدة</div>
+<div style="font-size:var(--t-xs);color:var(--ink-2);margin-top:2px">مستواك الحالي</div>
+</div>
+</div>
+<div style="height:6px;border-radius:3px;background:var(--neutral-bg);overflow:hidden"><i style="display:block;height:100%;width:50%;background:var(--allowed);border-radius:3px"></i></div>
+<div style="font-size:var(--t-xs);color:var(--ink-2);margin-top:8px">خطوة واحدة تفصلك عن نشر رحلة.</div>
+</section>
+
+<section>
+<div style="font-size:var(--t-h2);font-weight:500;margin-bottom:10px">المستويات</div>
+<div style="display:flex;flex-direction:column;gap:10px">
+<sc-for list="{{ levels }}" as="l" hint-placeholder-count="4">
+<div class="card" style="padding:14px;border-color:{{ l.bd }};border-width:{{ l.bw }}px">
+<div style="display:flex;align-items:center;gap:10px;margin-bottom:{{ l.gap }}px">
+<span aria-hidden="true" style="flex:none;width:26px;height:26px;border-radius:50%;background:{{ l.dotBg }};border:2px solid {{ l.dotBd }};display:grid;place-items:center;font-size:11px;font-weight:600;color:{{ l.dotFg }}">{{ l.glyph }}</span>
+<span style="flex:1;min-width:0;font-size:var(--t-h3);font-weight:{{ l.fw }}">{{ l.title }}</span>
+<span class="chip {{ l.chip }}" style="height:20px;font-size:var(--t-micro);flex:none">{{ l.state }}</span>
+</div>
+<sc-if value="{{ l.expanded }}" hint-placeholder-val="{{ true }}">
+<div style="padding-inline-start:36px">
+<div style="font-size:var(--t-xs);color:var(--ink-3);margin-bottom:6px">المطلوب</div>
+<sc-for list="{{ l.needs }}" as="n" hint-placeholder-count="3">
+<div style="display:flex;align-items:center;gap:8px;padding:5px 0">
+<span aria-hidden="true" style="flex:none;width:16px;height:16px;border-radius:50%;background:{{ n.bg }};display:grid;place-items:center;font-size:9px;color:{{ n.fg }}">{{ n.glyph }}</span>
+<span style="flex:1;min-width:0;font-size:var(--t-sm);color:{{ n.tone }}">{{ n.label }}</span>
+</div>
+</sc-for>
+<div style="font-size:var(--t-xs);color:var(--ink-3);margin:11px 0 6px">يفتح لك</div>
+<sc-for list="{{ l.unlocks }}" as="u" hint-placeholder-count="2">
+<div style="font-size:var(--t-sm);color:var(--ink-2);padding:3px 0">• {{ u }}</div>
+</sc-for>
+<sc-if value="{{ l.hasCta }}" hint-placeholder-val="{{ false }}">
+<button type="button" onClick="{{ goDoc }}" style="height:42px;padding:0 18px;margin-top:13px;border:0;border-radius:var(--r-sm);background:var(--allowed);color:var(--ink-on);font-size:var(--t-sm);font-weight:600;cursor:pointer">{{ l.cta }}</button>
+</sc-if>
+</div>
+</sc-if>
+</div>
+</sc-for>
+</div>
+</section>
+
+<section style="display:flex;gap:10px;padding:13px 14px;border:1px solid var(--rule);border-radius:var(--r);background:var(--surface-2)">
+<span aria-hidden="true" style="flex:none;color:var(--ink-3)">i</span>
+<p style="margin:0;font-size:var(--t-xs);line-height:1.7;color:var(--ink-2)">مَعْبَر تتحقّق من وثائقك ومن صلاحيتها. <strong style="font-weight:500">لا تمنحك المنصّة حقّ الاستيراد</strong> — هذا الحق تحصل عليه من الجهات الرسمية، ونحن نتأكّد فقط أنك تملكه.</p>
+</section>
+
+</div>
+</sc-if>
+
+<!-- ══════ DOCUMENT REQUIREMENT ══════ -->
+<sc-if value="{{ isNeed }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;gap:18px">
+<div>
+<h1 style="margin:0 0 8px;font-size:23px;font-weight:600">{{ docTitle }}</h1>
+<p style="margin:0;font-size:var(--t-body);line-height:1.7;color:var(--ink-2)">{{ docLede }}</p>
+</div>
+
+<div class="card" style="padding:15px">
+<div style="font-size:var(--t-sm);font-weight:600;margin-bottom:9px">لماذا نطلبها</div>
+<p style="margin:0 0 13px;font-size:var(--t-sm);line-height:1.7;color:var(--ink-2)">{{ docWhy }}</p>
+<div style="font-size:var(--t-sm);font-weight:600;margin-bottom:9px">شروط الصورة</div>
+<sc-for list="{{ tips }}" as="t" hint-placeholder-count="4">
+<div style="display:flex;align-items:center;gap:8px;padding:4px 0">
+<span aria-hidden="true" style="flex:none;width:15px;height:15px;border-radius:50%;background:var(--allowed-bg);display:grid;place-items:center;font-size:9px;color:var(--allowed-ink)">✓</span>
+<span style="font-size:var(--t-sm);color:var(--ink-2)">{{ t }}</span>
+</div>
+</sc-for>
+</div>
+
+<div style="display:flex;flex-direction:column;gap:9px">
+<button type="button" onClick="{{ goCapture }}" class="cta" style="background:var(--allowed);display:flex;align-items:center;justify-content:center;gap:9px">
+<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8"><path d="M4 8h3l1.5-2h7L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="3.4"/></svg>
+صوّر الوثيقة
+</button>
+<button type="button" class="ghost">اختر صورة من الجهاز</button>
+</div>
+
+<p style="margin:0;font-size:var(--t-xs);color:var(--ink-3);line-height:1.7">وثائقك تُحفظ داخل الجزائر ولا تظهر لأي مستخدم آخر. تُستعمل للتحقّق فقط.</p>
+</div>
+</sc-if>
+
+<!-- ══════ PREVIEW / RETAKE ══════ -->
+<sc-if value="{{ isPreview }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;gap:16px">
+<h1 style="margin:0;font-size:22px;font-weight:600">تأكّد من الصورة</h1>
+<div style="aspect-ratio:1.45;border-radius:var(--r);background:linear-gradient(135deg, oklch(0.88 0.015 80), oklch(0.82 0.02 75));border:1px solid var(--rule);display:grid;place-items:center">
+<span style="font-size:var(--t-sm);color:var(--ink-2)">صورة الوثيقة</span>
+</div>
+<div class="card" style="padding:4px 14px">
+<sc-for list="{{ checks }}" as="c" hint-placeholder-count="3">
+<div style="display:flex;align-items:center;gap:9px;padding:10px 0;border-bottom:1px solid var(--rule-faint)">
+<span aria-hidden="true" style="flex:none;width:17px;height:17px;border-radius:50%;background:{{ c.bg }};display:grid;place-items:center;font-size:10px;color:{{ c.fg }}">{{ c.glyph }}</span>
+<span style="flex:1;min-width:0;font-size:var(--t-sm)">{{ c.label }}</span>
+</div>
+</sc-for>
+</div>
+<div style="display:flex;gap:9px">
+<button type="button" onClick="{{ goUploading }}" class="cta" style="flex:1;background:var(--allowed)">أرسل للمراجعة</button>
+<button type="button" onClick="{{ goCapture }}" style="flex:none;padding:0 18px;height:50px;border:1px solid var(--rule-strong);border-radius:var(--r);background:var(--surface);color:inherit;font-size:14px;cursor:pointer">أعد التصوير</button>
+</div>
+</div>
+</sc-if>
+
+<!-- ══════ UPLOADING ══════ -->
+<sc-if value="{{ isUploading }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;gap:16px;padding-top:28px;text-align:center">
+<div>
+<div style="font-size:20px;font-weight:600;margin-bottom:8px">جارٍ الإرسال</div>
+<p class="num" style="margin:0;font-size:var(--t-sm);color:var(--ink-2)"><bdi>1.2 من 2.4 ميغا</bdi></p>
+</div>
+<div style="height:7px;border-radius:4px;background:var(--neutral-bg);overflow:hidden"><i style="display:block;height:100%;width:52%;background:var(--allowed);border-radius:4px"></i></div>
+<p style="margin:0;font-size:var(--t-xs);color:var(--ink-3);line-height:1.7">إذا انقطع الاتصال سنُكمل الإرسال تلقائياً عند عودته. تقدر تغلق الشاشة.</p>
+<button type="button" class="ghost">ألغِ</button>
+</div>
+</sc-if>
+
+<!-- ══════ UNDER REVIEW ══════ -->
+<sc-if value="{{ isReview }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;gap:18px;padding-top:16px">
+<div style="text-align:center">
+<span aria-hidden="true" style="display:inline-grid;place-items:center;width:58px;height:58px;border-radius:50%;background:var(--conditional-bg);color:var(--conditional-ink);font-size:24px;margin-bottom:13px">⏱</span>
+<h1 style="margin:0 0 8px;font-size:22px;font-weight:600">وثائقك قيد المراجعة</h1>
+<p style="margin:0;font-size:var(--t-body);line-height:1.7;color:var(--ink-2)">عادةً خلال يوم عمل. سيصلك إشعار فور صدور القرار.</p>
+</div>
+<div class="card" style="padding:4px 14px">
+<sc-for list="{{ submitted }}" as="d" hint-placeholder-count="4">
+<div style="display:flex;align-items:center;gap:10px;padding:11px 0;border-bottom:1px solid var(--rule-faint)">
+<span aria-hidden="true" style="flex:none;width:18px;height:18px;border-radius:50%;background:{{ d.bg }};display:grid;place-items:center;font-size:10px;color:{{ d.fg }}">{{ d.glyph }}</span>
+<span style="flex:1;min-width:0;font-size:var(--t-sm)">{{ d.label }}</span>
+<span style="flex:none;font-size:var(--t-micro);color:var(--ink-3)">{{ d.state }}</span>
+</div>
+</sc-for>
+</div>
+<button type="button" class="ghost">ما الذي يمكنني فعله الآن؟</button>
+</div>
+</sc-if>
+
+<!-- ══════ NEEDS CORRECTION ══════ -->
+<sc-if value="{{ isFix }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;gap:16px">
+<div style="display:flex;gap:12px;padding:15px;border:1px solid var(--conditional-bd);border-radius:var(--r);background:var(--conditional-bg)">
+<span aria-hidden="true" style="flex:none;width:30px;height:30px;border-radius:50%;background:var(--conditional);color:#fff;display:grid;place-items:center;font-size:15px;font-weight:600">!</span>
+<div style="flex:1;min-width:0">
+<div style="font-size:var(--t-h3);font-weight:600;margin-bottom:5px">نحتاج صورة أوضح</div>
+<p style="margin:0;font-size:var(--t-sm);line-height:1.7;color:var(--ink-2)">حسابك لم يُرفض. نحتاج فقط تصحيح وثيقة واحدة وتكمل من حيث توقّفت.</p>
+</div>
+</div>
+
+<div class="card" style="padding:15px">
+<div style="font-size:var(--t-sm);font-weight:600;margin-bottom:10px">ما المشكلة</div>
+<sc-for list="{{ problems }}" as="p" hint-placeholder-count="2">
+<div style="display:flex;gap:9px;padding:7px 0">
+<span aria-hidden="true" style="flex:none;width:6px;height:6px;border-radius:50%;background:var(--conditional);margin-block-start:7px"></span>
+<span style="flex:1;font-size:var(--t-sm);line-height:1.65;color:var(--ink-2)">{{ p }}</span>
+</div>
+</sc-for>
+<div style="font-size:var(--t-sm);font-weight:600;margin:13px 0 10px">ما عليك فعله</div>
+<sc-for list="{{ fixes }}" as="f" hint-placeholder-count="2">
+<div style="display:flex;gap:9px;padding:7px 0">
+<span aria-hidden="true" style="flex:none;width:17px;height:17px;border-radius:50%;background:var(--allowed-bg);display:grid;place-items:center;font-size:9px;color:var(--allowed-ink);margin-block-start:1px">✓</span>
+<span style="flex:1;font-size:var(--t-sm);line-height:1.65">{{ f }}</span>
+</div>
+</sc-for>
+</div>
+
+<button type="button" onClick="{{ goCapture }}" class="cta" style="background:var(--allowed)">صوّر الوثيقة من جديد</button>
+<button type="button" class="ghost">تواصل مع الدعم</button>
+</div>
+</sc-if>
+
+<!-- ══════ APPROVED ══════ -->
+<sc-if value="{{ isDone }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;gap:18px;padding-top:16px">
+<div style="text-align:center">
+<span aria-hidden="true" style="display:inline-grid;place-items:center;width:62px;height:62px;border-radius:50%;background:var(--allowed-bg);color:var(--allowed-ink);font-size:28px;margin-bottom:13px">✓</span>
+<h1 style="margin:0 0 8px;font-size:23px;font-weight:600">صرت مستورداً مُتحقَّقاً</h1>
+<p style="margin:0;font-size:var(--t-body);line-height:1.7;color:var(--ink-2)">تقدر دابا تنشر رحلة وتستقبل طلبات التجّار.</p>
+</div>
+<div class="card" style="padding:4px 15px">
+<sc-for list="{{ newUnlocks }}" as="u" hint-placeholder-count="4">
+<div style="display:flex;align-items:center;gap:10px;padding:12px 0;border-bottom:1px solid var(--rule-faint)">
+<span aria-hidden="true" style="flex:none;width:18px;height:18px;border-radius:50%;background:var(--allowed-bg);display:grid;place-items:center;font-size:10px;color:var(--allowed-ink)">✓</span>
+<span style="flex:1;min-width:0;font-size:var(--t-sm)">{{ u }}</span>
+</div>
+</sc-for>
+</div>
+<div style="display:flex;gap:9px">
+<button type="button" class="cta" style="flex:1;background:var(--allowed)">أنشئ رحلتك الأولى</button>
+<button type="button" style="flex:none;padding:0 18px;height:50px;border:1px solid var(--rule-strong);border-radius:var(--r);background:var(--surface);color:inherit;font-size:14px;cursor:pointer">لاحقاً</button>
+</div>
+<p style="margin:0;font-size:var(--t-xs);color:var(--ink-3);line-height:1.7">رخصتك سارية حتى جوان 2027. سننبّهك قبل شهر من انتهائها.</p>
+</div>
+</sc-if>
+
+<!-- ══════ EXPIRED ══════ -->
+<sc-if value="{{ isExpired }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;gap:16px">
+<div style="display:flex;gap:12px;padding:15px;border:1px solid var(--prohibited-bd);border-radius:var(--r);background:var(--prohibited-bg)">
+<span aria-hidden="true" style="flex:none;width:30px;height:30px;border-radius:50%;background:var(--prohibited);color:#fff;display:grid;place-items:center;font-size:15px;font-weight:600">!</span>
+<div style="flex:1;min-width:0">
+<div style="font-size:var(--t-h3);font-weight:600;margin-bottom:5px">انتهت صلاحية رخصتك</div>
+<p class="num" style="margin:0;font-size:var(--t-sm);line-height:1.7;color:var(--ink-2)"><bdi>انتهت في 30 جوان 2026. رحلاتك متوقّفة حتى التجديد.</bdi></p>
+</div>
+</div>
+<div class="card" style="padding:4px 14px">
+<sc-for list="{{ frozen }}" as="f" hint-placeholder-count="3">
+<div style="display:flex;align-items:center;gap:10px;padding:11px 0;border-bottom:1px solid var(--rule-faint)">
+<span aria-hidden="true" style="flex:none;width:17px;height:17px;border-radius:50%;background:{{ f.bg }};display:grid;place-items:center;font-size:10px;color:{{ f.fg }}">{{ f.glyph }}</span>
+<span style="flex:1;min-width:0;font-size:var(--t-sm);color:{{ f.tone }}">{{ f.label }}</span>
+</div>
+</sc-for>
+</div>
+<button type="button" onClick="{{ goNeed }}" class="cta">ارفع الرخصة الجديدة</button>
+</div>
+</sc-if>
+
+</main>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:430,&quot;height&quot;:1180}}">
+class Component extends DCLogic {
+  state = { view: 'ladder', role: 'importer' };
+
+  ROLES = [['importer', 'مستورد'], ['trader', 'تاجر']];
+
+  // The trader ladder ends in the one capability the importer can never have:
+  // publishing a consumer-facing listing. That boundary is the whole legal model.
+  TRADER_LEVELS = [
+    { id: 1, title: 'حساب مسجَّل', state: 'مكتمل', kind: 'done',
+      needs: [['رقم هاتف مؤكَّد', true]],
+      unlocks: ['تصفّح السوق والبحث', 'الحفظ والمراسلة'] },
+    { id: 2, title: 'هوية مؤكَّدة', state: 'مكتمل', kind: 'done',
+      needs: [['بطاقة التعريف الوطنية', true], ['صورة حيّة مطابقة', true]],
+      unlocks: ['نشر طلب توريد', 'التواصل مع المستوردين'] },
+    { id: 3, title: 'تاجر مُتحقَّق', state: 'ناقص', kind: 'now',
+      needs: [['السجل التجاري', false], ['الرقم الجبائي', true], ['عنوان النشاط', true]],
+      unlocks: ['عرض منتجات للجمهور في السوق', 'ملف متجر عام', 'الالتزام بعربون'],
+      cta: 'ارفع السجل التجاري' },
+    { id: 4, title: 'سجل مُثبَت', state: 'لاحقاً', kind: 'later',
+      needs: [['10 معاملات مؤكَّدة', false], ['بلا نزاع مفتوح', true]],
+      unlocks: ['شارة السجل', 'أولوية في نتائج البحث'] }
+  ];
+
+  TRADER_DOC = {
+    title: 'السجل التجاري',
+    lede: 'المستخرج الذي يثبت قيدك في السجل التجاري ويسمح لك بالبيع للجمهور.',
+    why: 'لأن العرض للمستهلك يتطلّب صفة تاجر مقيَّد. بدونه يمكنك الشراء والتواصل، لكن لا يمكنك نشر منتج في السوق.'
+  };
+
+  IMPORTER_DOC = {
+    title: 'الرخصة العامة',
+    lede: 'الوثيقة التي تسلّمها وزارة التجارة الخارجية وتسمح لك بممارسة الاستيراد المصغّر.',
+    why: 'حتى يرى التاجر أنك مؤهّل فعلاً قبل أن يلتزم معك، ولتنبيهك قبل انتهاء صلاحيتها.'
+  };
+
+  VIEWS = [
+    ['ladder', 'السلّم'], ['need', 'الوثيقة'], ['preview', 'المعاينة'],
+    ['uploading', 'الإرسال'], ['review', 'قيد المراجعة'], ['fix', 'تصحيح'],
+    ['done', 'مقبول'], ['expired', 'منتهية']
+  ];
+
+  LEVELS = [
+    { id: 1, title: 'حساب مسجَّل', state: 'مكتمل', kind: 'done',
+      needs: [['رقم هاتف مؤكَّد', true]],
+      unlocks: ['تصفّح السوق والبحث', 'الحفظ والمراسلة'] },
+    { id: 2, title: 'هوية مؤكَّدة', state: 'مكتمل', kind: 'done',
+      needs: [['بطاقة التعريف الوطنية', true], ['صورة حيّة مطابقة', true]],
+      unlocks: ['ملف عام', 'نشر طلب توريد'] },
+    { id: 3, title: 'مستورد مُتحقَّق', state: 'ناقص', kind: 'now',
+      needs: [['بطاقة المقاول الذاتي — استيراد مصغّر', true], ['الرخصة العامة', false], ['الرقم الجبائي', true], ['الانتساب إلى CASNOS', true]],
+      unlocks: ['نشر رحلة', 'الظهور في المطابقة', 'استقبال التزامات'],
+      cta: 'أكمل الوثيقة الناقصة' },
+    { id: 4, title: 'سجل مُثبَت', state: 'لاحقاً', kind: 'later',
+      needs: [['10 معاملات مؤكَّدة', false], ['بلا نزاع مفتوح', true]],
+      unlocks: ['شارة السجل', 'أولوية في الترتيب'] }
+  ];
+
+  TIPS = ['الوثيقة كاملة داخل الإطار', 'النص واضح وغير منعكس', 'بلا ظلّ يغطّي المعلومات', 'الصورة ملوّنة لا بالأبيض والأسود'];
+
+  CHECKS = [
+    ['الوثيقة كاملة في الصورة', true],
+    ['النص مقروء', true],
+    ['الإضاءة كافية', false]
+  ];
+
+  SUBMITTED = [
+    ['بطاقة التعريف الوطنية', 'مقبولة', true],
+    ['بطاقة المقاول الذاتي', 'مقبولة', true],
+    ['الرخصة العامة', 'قيد المراجعة', null],
+    ['الانتساب إلى CASNOS', 'مقبولة', true]
+  ];
+
+  PROBLEMS = [
+    'الزاوية السفلية من الوثيقة خارج الصورة، وتاريخ الانتهاء غير ظاهر.',
+    'انعكاس ضوء على الختم يمنع قراءته.'
+  ];
+
+  FIXES = [
+    'ضع الوثيقة على سطح مستوٍ وصوّر من فوقها مباشرة.',
+    'ابتعد عن الضوء المباشر أو أطفئ الفلاش.'
+  ];
+
+  NEW_UNLOCKS = ['نشر رحلة واستقبال طلبات', 'الظهور في نتائج المطابقة', 'رؤية لوحة الطلب كاملة', 'الدفتر المبسّط ومولّد الوسم'];
+
+  FROZEN = [
+    ['نشر رحلة جديدة', false],
+    ['استقبال طلبات جديدة', false],
+    ['إكمال الالتزامات القائمة', true]
+  ];
+
+  renderVals() {
+    const v = this.state.view;
+    const go = (x) => () => this.setState({ view: x });
+    const isTrader = this.state.role === 'trader';
+    const LV = isTrader ? this.TRADER_LEVELS : this.LEVELS;
+    const DOC = isTrader ? this.TRADER_DOC : this.IMPORTER_DOC;
+
+    return {
+      roles: this.ROLES.map(([id, label]) => ({
+        label, on: this.state.role === id,
+        bd: this.state.role === id ? 'var(--ink)' : 'transparent',
+        fg: this.state.role === id ? 'var(--ink)' : 'var(--ink-3)',
+        fw: this.state.role === id ? 600 : 400,
+        pick: () => this.setState({ role: id })
+      })),
+      docTitle: DOC.title, docLede: DOC.lede, docWhy: DOC.why,
+
+      views: this.VIEWS.map(([id, label]) => ({
+        label, on: v === id,
+        bg: v === id ? 'var(--ink)' : 'var(--surface)',
+        fg: v === id ? 'var(--ink-on)' : 'var(--ink-2)',
+        bd: v === id ? 'var(--ink)' : 'var(--rule-strong)',
+        pick: go(id)
+      })),
+
+      isLadder: v === 'ladder', isNeed: v === 'need', isPreview: v === 'preview',
+      isUploading: v === 'uploading', isReview: v === 'review', isFix: v === 'fix',
+      isDone: v === 'done', isExpired: v === 'expired',
+
+      goDoc: go('need'), goNeed: go('need'), goCapture: go('preview'), goUploading: go('uploading'),
+
+      levels: LV.map(l => {
+        const done = l.kind === 'done', now = l.kind === 'now';
+        return {
+          title: l.title, state: l.state,
+          expanded: now,
+          gap: now ? 12 : 0,
+          fw: now ? 600 : 500,
+          bd: now ? 'var(--allowed)' : 'var(--rule)',
+          bw: now ? 2 : 1,
+          dotBg: done ? 'var(--allowed)' : 'var(--surface)',
+          dotBd: done ? 'var(--allowed)' : now ? 'var(--allowed)' : 'var(--rule-strong)',
+          dotFg: done ? '#fff' : 'var(--ink-2)',
+          glyph: done ? '✓' : String(l.id),
+          chip: done ? 'chip-verified' : now ? 'chip-conditional' : 'chip-neutral',
+          needs: l.needs.map(([label, ok]) => ({
+            label,
+            glyph: ok ? '✓' : '·',
+            bg: ok ? 'var(--allowed-bg)' : 'var(--conditional-bg)',
+            fg: ok ? 'var(--allowed-ink)' : 'var(--conditional-ink)',
+            tone: ok ? 'var(--ink-2)' : 'var(--ink)'
+          })),
+          unlocks: l.unlocks,
+          hasCta: !!l.cta, cta: l.cta
+        };
+      }),
+
+      tips: this.TIPS,
+      checks: this.CHECKS.map(([label, ok]) => ({
+        label,
+        glyph: ok ? '✓' : '!',
+        bg: ok ? 'var(--allowed-bg)' : 'var(--conditional-bg)',
+        fg: ok ? 'var(--allowed-ink)' : 'var(--conditional-ink)'
+      })),
+      submitted: this.SUBMITTED.map(([label, state, ok]) => ({
+        label, state,
+        glyph: ok === true ? '✓' : '⏱',
+        bg: ok === true ? 'var(--allowed-bg)' : 'var(--conditional-bg)',
+        fg: ok === true ? 'var(--allowed-ink)' : 'var(--conditional-ink)'
+      })),
+      problems: this.PROBLEMS,
+      fixes: this.FIXES,
+      newUnlocks: this.NEW_UNLOCKS,
+      frozen: this.FROZEN.map(([label, ok]) => ({
+        label,
+        glyph: ok ? '✓' : '✕',
+        bg: ok ? 'var(--allowed-bg)' : 'var(--prohibited-bg)',
+        fg: ok ? 'var(--allowed-ink)' : 'var(--prohibited-ink)',
+        tone: ok ? 'var(--ink-2)' : 'var(--ink)'
+      }))
+    };
+  }
+}
+</script>
+</body>
+</html>

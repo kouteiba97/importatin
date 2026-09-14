@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./tokens.css">
+<style>
+.gridwrap{container-type:inline-size}
+.grid2{display:grid;grid-template-columns:repeat(2,1fr);gap:13px}
+@container (min-width:520px){.grid2{grid-template-columns:repeat(3,1fr)}}
+.clamp2{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.scrollx{overflow-x:auto;scrollbar-width:none}.scrollx::-webkit-scrollbar{display:none}
+</style>
+</helmet>
+
+<div dir="rtl" lang="ar" class="tier-public" style="min-height:100vh;display:flex;justify-content:center">
+<div style="width:100%;max-width:430px;min-height:100vh;display:flex;flex-direction:column;background:var(--paper-public);border-inline:1px solid var(--rule)">
+
+<header style="position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--surface);border-bottom:1px solid var(--rule)">
+<button type="button" aria-label="رجوع" style="width:36px;height:36px;border:0;background:transparent;cursor:pointer;display:grid;place-items:center;color:inherit">
+<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 5l-7 7 7 7"/></svg>
+</button>
+<span style="flex:1;font-size:var(--t-h3);font-weight:500">{{ name }}</span>
+<button type="button" onClick="{{ save }}" aria-pressed="{{ saved }}" aria-label="{{ saveLabel }}" style="width:36px;height:36px;border:0;background:transparent;cursor:pointer;display:grid;place-items:center">
+<svg width="19" height="19" viewBox="0 0 24 24" fill="{{ heartFill }}" stroke="{{ heartStroke }}" stroke-width="1.9"><path d="M12 20s-7-4.4-7-9.3A4.2 4.2 0 0 1 12 8a4.2 4.2 0 0 1 7 2.7c0 4.9-7 9.3-7 9.3z"/></svg>
+</button>
+</header>
+
+<main style="flex:1;padding-bottom:86px">
+
+<!-- ══ IDENTITY ══ -->
+<section style="padding:18px 16px 16px;background:var(--surface);border-bottom:1px solid var(--rule)">
+<div style="display:flex;align-items:flex-start;gap:13px">
+<span aria-hidden="true" style="flex:none;width:64px;height:64px;border-radius:var(--r-lg);background:oklch(0.93 0.03 28);display:grid;place-items:center;font-size:19px;font-weight:600;color:var(--accent-ink)">{{ initials }}</span>
+<div style="flex:1;min-width:0;padding-block-start:2px">
+<div style="display:flex;align-items:center;gap:7px">
+<h1 style="margin:0;font-size:22px;font-weight:600">{{ name }}</h1>
+<svg width="17" height="17" viewBox="0 0 24 24" style="flex:none" role="img" aria-label="متجر مُتحقَّق"><circle cx="12" cy="12" r="10" fill="var(--allowed)"/><path d="M7.4 12.4l3 3 6.2-6.6" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+</div>
+<div style="font-size:var(--t-sm);color:var(--ink-2);margin-top:4px">{{ kind }}</div>
+<div class="num" style="font-size:var(--t-xs);color:var(--ink-3);margin-top:3px"><bdi>{{ since }}</bdi></div>
+</div>
+</div>
+
+<p style="margin:14px 0 0;font-size:var(--t-body);line-height:1.7;color:var(--ink-2)">{{ bio }}</p>
+
+<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:12px">
+<sc-for list="{{ cats }}" as="c" hint-placeholder-count="4">
+<span class="chip chip-neutral">{{ c }}</span>
+</sc-for>
+</div>
+</section>
+
+<!-- ══ TRUST — evidence, countable ══ -->
+<section style="padding:16px">
+<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--rule);border:1px solid var(--rule);border-radius:var(--r);overflow:hidden">
+<sc-for list="{{ stats }}" as="s" hint-placeholder-count="3">
+<div style="background:var(--surface);padding:13px 7px;text-align:center">
+<div class="num" style="font-size:19px;font-weight:600;line-height:1.2;color:{{ s.fg }}"><bdi>{{ s.v }}</bdi></div>
+<div style="font-size:var(--t-micro);color:var(--ink-2);margin-top:3px;line-height:1.3">{{ s.k }}</div>
+</div>
+</sc-for>
+</div>
+
+<div class="card" style="margin-top:12px;padding:4px 14px">
+<sc-for list="{{ verified }}" as="v" hint-placeholder-count="3">
+<div style="display:flex;align-items:center;gap:10px;padding:11px 0;border-bottom:1px solid var(--rule-faint)">
+<svg width="16" height="16" viewBox="0 0 24 24" style="flex:none" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="var(--allowed)"/><path d="M7.4 12.4l3 3 6.2-6.6" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<span style="flex:1;min-width:0;font-size:var(--t-sm)">{{ v }}</span>
+</div>
+</sc-for>
+<p style="margin:10px 0;font-size:var(--t-xs);color:var(--ink-3);line-height:1.6">تحقّق من الوثائق — ليس اعتماداً حكومياً.</p>
+</div>
+</section>
+
+<!-- ══ LISTINGS ══ -->
+<section style="padding:0 16px 20px">
+<div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:11px">
+<h2 style="margin:0;font-size:var(--t-h2);font-weight:500">المعروض حالياً</h2>
+<span class="num" style="font-size:var(--t-xs);color:var(--ink-3)"><bdi>{{ listingCount }}</bdi></span>
+</div>
+<div class="gridwrap"><div class="grid2">
+<sc-for list="{{ products }}" as="p" hint-placeholder-count="4">
+<article class="card" style="overflow:hidden;cursor:pointer;display:flex;flex-direction:column">
+<div style="position:relative">
+<span class="img img-card ph {{ p.ph }}" style="border-radius:0;display:block"></span>
+<sc-if value="{{ p.hasFlag }}" hint-placeholder-val="{{ false }}">
+<span style="position:absolute;inset-block-start:8px;inset-inline-start:8px;height:21px;padding:0 8px;display:inline-flex;align-items:center;border-radius:var(--r-pill);background:{{ p.flagBg }};color:{{ p.flagFg }};font-size:var(--t-micro);font-weight:500">{{ p.flag }}</span>
+</sc-if>
+</div>
+<div style="padding:10px 11px 12px;display:flex;flex-direction:column;gap:6px;flex:1">
+<h3 class="clamp2" style="margin:0;font-size:var(--t-sm);font-weight:400;line-height:1.45;min-height:37px">{{ p.title }}</h3>
+<div style="display:flex;align-items:baseline;gap:5px">
+<span class="num" style="font-size:16px;font-weight:600;color:var(--accent-ink)"><bdi>{{ p.price }}</bdi></span>
+<span class="num" style="font-size:var(--t-micro);color:var(--ink-3)"><bdi>دج</bdi></span>
+</div>
+</div>
+</article>
+</sc-for>
+</div></div>
+</section>
+
+<!-- ══ REVIEWS ══ -->
+<section style="padding:0 16px 22px">
+<div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:11px">
+<h2 style="margin:0;font-size:var(--t-h2);font-weight:500">آراء المشترين</h2>
+<span class="num" style="font-size:var(--t-xs);color:var(--ink-3)"><bdi>{{ reviewCount }}</bdi></span>
+</div>
+<div class="card" style="padding:14px">
+<sc-for list="{{ reviews }}" as="r" hint-placeholder-count="2">
+<div style="padding:10px 0;border-bottom:1px solid var(--rule-faint)">
+<div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+<span style="font-size:var(--t-sm);font-weight:500">{{ r.by }}</span>
+<span class="chip chip-verified" style="height:19px;font-size:var(--t-micro)">شراء مؤكَّد</span>
+<span class="num" style="margin-inline-start:auto;font-size:var(--t-micro);color:var(--ink-3)"><bdi>{{ r.when }}</bdi></span>
+</div>
+<p style="margin:0;font-size:var(--t-sm);line-height:1.7;color:var(--ink-2)">{{ r.text }}</p>
+<sc-if value="{{ r.hasReply }}" hint-placeholder-val="{{ false }}">
+<div style="margin-top:9px;padding:10px 12px;background:var(--surface-2);border-radius:var(--r-sm);border-inline-start:2px solid var(--rule-strong)">
+<div style="font-size:var(--t-micro);color:var(--ink-3);margin-bottom:4px">ردّ {{ name }}</div>
+<p style="margin:0;font-size:var(--t-sm);line-height:1.65;color:var(--ink-2)">{{ r.reply }}</p>
+</div>
+</sc-if>
+</div>
+</sc-for>
+</div>
+</section>
+
+</main>
+
+<div style="position:fixed;inset-block-end:0;inset-inline:0;margin:0 auto;max-width:430px;display:flex;gap:9px;padding:11px 16px 15px;background:var(--surface);border-top:1px solid var(--rule)">
+<button type="button" style="flex:1;height:50px;border:0;border-radius:var(--r);background:var(--accent);color:var(--ink-on);font-size:16px;font-weight:500;cursor:pointer">راسل المتجر</button>
+<button type="button" style="flex:none;padding:0 16px;height:50px;border:1px solid var(--rule-strong);border-radius:var(--r);background:var(--surface);color:inherit;font-size:var(--t-sm);cursor:pointer">اسأل عن توفّر</button>
+</div>
+
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:430,&quot;height&quot;:1560}}">
+class Component extends DCLogic {
+  state = { saved: false };
+  LRI = '⁦'; PDI = '⁩';
+  ltr(s) { return this.LRI + s + this.PDI; }
+  fmt(n) { return '⁦' + String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + '⁩'; }
+  counted(n, f) {
+    const m = n % 100;
+    if (n === 1) return f.one;
+    if (n === 2) return f.two;
+    if (m >= 3 && m <= 10) return this.fmt(n) + ' ' + f.few;
+    return this.fmt(n) + ' ' + f.many;
+  }
+  PROD_N = { one: 'منتج واحد', two: 'منتجان', few: 'منتجات', many: 'منتجاً' };
+  REV_N = { one: 'مراجعة واحدة', two: 'مراجعتان', few: 'مراجعات', many: 'مراجعة' };
+
+  // The public storefront always belongs to a TRADER with a verified
+  // commercial register. A micro-importer never appears here.
+  S = {
+    name: 'بوتيك نادية', initials: 'ب ن',
+    kind: 'تاجرة مُتحقَّقة · قسنطينة',
+    since: 'على مَعْبَر منذ ماي 2025',
+    bio: 'ألبسة وإكسسوارات نسائية مستوردة، دفعات صغيرة ومتجدّدة. الاستلام من المحل أو توصيل داخل الولاية.'
+  };
+
+  CATS = ['ألبسة نسائية', 'حقائب', 'عطور', 'إكسسوار'];
+
+  STATS = [
+    { k: 'معاملة مؤكَّدة', v: '63', fg: 'var(--ink)' },
+    { k: 'نسبة الردّ', v: '94%', fg: 'var(--allowed-ink)' },
+    { k: 'متوسط الردّ', v: 'ساعتان', fg: 'var(--ink)' }
+  ];
+
+  VERIFIED = [
+    'السجل التجاري مُتحقَّق منه',
+    'الهوية مُتحقَّق منها',
+    'عنوان النشاط مُؤكَّد'
+  ];
+
+  PRODUCTS = [
+    { ph: 'ph-coat', title: 'معطف نسائي شتوي — صوف مخلوط', price: 7400, flag: 'وصل حديثاً', flagKind: 'new' },
+    { ph: 'ph-perfume', title: 'عطر نسائي 100 مل — شرقي', price: 4200, flag: 'كمية محدودة', flagKind: 'low' },
+    { ph: 'ph-bag', title: 'حقيبة يد بحزام كتف', price: 5900, flag: '', flagKind: '' },
+    { ph: 'ph-coat', title: 'معطف نسائي — جلد صناعي', price: 8900, flag: '', flagKind: '' }
+  ];
+
+  FLAG = {
+    new: ['var(--allowed-bg)', 'var(--allowed-ink)'],
+    low: ['var(--conditional-bg)', 'var(--conditional-ink)']
+  };
+
+  REVIEWS = [
+    { by: 'سمية ل.', when: 'قبل 9 أيام',
+      text: 'المقاس مطابق للوصف والخامة ثقيلة كما في الصور. التسليم في المحل بلا تأخير.', reply: '' },
+    { by: 'ر. بوزيد', when: 'قبل 3 أسابيع',
+      text: 'اللون الكحلي أغمق قليلاً ممّا ظهر في الصورة.',
+      reply: 'صحيح، الإضاءة في الصورة فتّحت اللون. بدّلت الصور بأخرى بضوء طبيعي.' }
+  ];
+
+  renderVals() {
+    const saved = this.state.saved;
+    return {
+      ...this.S,
+      since: this.ltr(this.S.since),
+      saved,
+      saveLabel: saved ? 'إزالة من المحفوظات' : 'احفظ المتجر',
+      heartFill: saved ? 'var(--accent)' : 'none',
+      heartStroke: saved ? 'var(--accent)' : 'var(--ink-2)',
+      save: () => this.setState(s => ({ saved: !s.saved })),
+
+      cats: this.CATS,
+      stats: this.STATS,
+      verified: this.VERIFIED,
+
+      listingCount: this.counted(this.PRODUCTS.length, this.PROD_N),
+      products: this.PRODUCTS.map(p => {
+        const [flagBg, flagFg] = p.flagKind ? this.FLAG[p.flagKind] : ['', ''];
+        return { ...p, price: this.fmt(p.price), hasFlag: !!p.flagKind, flagBg, flagFg };
+      }),
+
+      reviewCount: this.counted(38, this.REV_N),
+      reviews: this.REVIEWS.map(r => ({ ...r, hasReply: !!r.reply }))
+    };
+  }
+}
+</script>
+</body>
+</html>

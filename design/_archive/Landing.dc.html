@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+html,body{margin:0;padding:0;background:oklch(0.975 0.008 80);color:oklch(0.22 0.02 60);font-family:"IBM Plex Sans Arabic",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+*{box-sizing:border-box}
+a{color:oklch(0.42 0.07 150)}a:hover{color:oklch(0.32 0.07 150)}
+button{font-family:inherit}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</helmet>
+<div ref="{{ rootRef }}" dir="rtl" lang="ar" style="min-height:100vh;display:flex;justify-content:center;background:oklch(0.975 0.008 80)">
+<div style="width:100%;max-width:430px;min-height:100vh;display:flex;flex-direction:column;border-inline:1px solid oklch(0.9 0.012 80)">
+
+<header style="display:flex;justify-content:space-between;align-items:center;padding:12px 16px;border-bottom:1px solid oklch(0.88 0.012 80)">
+<span style="font-weight:600;font-size:18px">مَعْبَر</span>
+<div style="display:flex;gap:6px" role="group" aria-label="اللغة">
+<sc-for list="{{ langs }}" as="l" hint-placeholder-count="3">
+<button type="button" onClick="{{ l.pick }}" aria-pressed="{{ l.on }}" style="height:34px;min-width:44px;padding:0 10px;border:1px solid {{ l.bd }};border-radius:6px;background:{{ l.bg }};color:{{ l.fg }};font-size:13px;cursor:pointer">{{ l.label }}</button>
+</sc-for>
+</div>
+</header>
+
+<main style="flex:1">
+<section style="padding:28px 16px 24px;display:flex;flex-direction:column;gap:16px;border-bottom:1px solid oklch(0.88 0.012 80)">
+<span style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:oklch(0.48 0.02 60)"><bdi>{{ kicker }}</bdi></span>
+<h1 style="margin:0;font-size:32px;font-weight:500;line-height:1.35;text-wrap:pretty">{{ h1 }}</h1>
+<p style="margin:0;font-size:16px;line-height:1.75;color:oklch(0.35 0.02 60);text-wrap:pretty">{{ sub }}</p>
+<div style="display:flex;flex-direction:column;gap:10px">
+<a href="./Compliance Checker.dc.html" style="height:52px;display:flex;align-items:center;justify-content:center;border-radius:8px;background:oklch(0.42 0.07 150);color:#fff;text-decoration:none;font-size:16px;font-weight:500">{{ cta1 }}</a>
+<a href="./Demand Board.dc.html" style="height:52px;display:flex;align-items:center;justify-content:center;border:1px solid oklch(0.42 0.07 150);border-radius:8px;color:oklch(0.42 0.07 150);text-decoration:none;font-size:16px;font-weight:500">{{ cta2 }}</a>
+</div>
+<p style="margin:0;font-size:13px;line-height:1.65;color:oklch(0.48 0.02 60)">{{ noAccount }}</p>
+</section>
+
+<section style="padding:22px 16px;border-bottom:1px solid oklch(0.88 0.012 80);display:flex;flex-direction:column;gap:14px">
+<h2 style="margin:0;font-size:13px;font-weight:400;color:oklch(0.48 0.02 60)">{{ fearsTitle }}</h2>
+<ul style="margin:0;padding:0;list-style:none;display:flex;flex-direction:column">
+<sc-for list="{{ fears }}" as="f" hint-placeholder-count="3">
+<li style="display:grid;grid-template-columns:auto 1fr;gap:12px;padding:12px 0;border-bottom:1px solid oklch(0.9 0.012 80);align-items:start">
+<span style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:oklch(0.48 0.02 60);padding-top:3px"><bdi>{{ f.n }}</bdi></span>
+<span><span style="display:block;font-size:15px;line-height:1.55;font-weight:500">{{ f.q }}</span><span style="display:block;font-size:14px;line-height:1.6;color:oklch(0.48 0.02 60);margin-top:3px">{{ f.a }}</span></span>
+</li>
+</sc-for>
+</ul>
+</section>
+
+<section style="padding:22px 16px;border-bottom:1px solid oklch(0.88 0.012 80);display:flex;flex-direction:column;gap:14px">
+<h2 style="margin:0;font-size:18px;font-weight:500">{{ howTitle }}</h2>
+<ol style="margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:2px">
+<sc-for list="{{ steps }}" as="s" hint-placeholder-count="4">
+<li style="display:grid;grid-template-columns:auto 1fr;gap:12px;padding:11px 0;border-bottom:1px solid oklch(0.9 0.012 80)">
+<span style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:oklch(0.42 0.07 150);padding-top:3px"><bdi>{{ s.n }}</bdi></span>
+<span style="font-size:15px;line-height:1.6">{{ s.t }}</span>
+</li>
+</sc-for>
+</ol>
+</section>
+
+<section style="padding:22px 16px;border-bottom:1px solid oklch(0.88 0.012 80);display:flex;flex-direction:column;gap:12px">
+<h2 style="margin:0;font-size:18px;font-weight:500">{{ notTitle }}</h2>
+<ul style="margin:0;padding:0;list-style:none;display:flex;flex-wrap:wrap;gap:8px">
+<sc-for list="{{ nots }}" as="n" hint-placeholder-count="5">
+<li style="display:flex;align-items:center;gap:6px;padding:7px 11px;border:1px solid oklch(0.85 0.012 80);border-radius:16px;font-size:13px;color:oklch(0.35 0.02 60)"><span aria-hidden="true" style="color:oklch(0.5 0.14 35);font-weight:600">✕</span>{{ n.t }}</li>
+</sc-for>
+</ul>
+<p style="margin:0;font-size:13px;line-height:1.7;color:oklch(0.48 0.02 60)">{{ notNote }}</p>
+</section>
+
+<section style="padding:22px 16px 32px;display:flex;flex-direction:column;gap:12px">
+<h2 style="margin:0;font-size:18px;font-weight:500">{{ privTitle }}</h2>
+<dl style="margin:0;display:flex;flex-direction:column;border-top:1px solid oklch(0.88 0.012 80)">
+<sc-for list="{{ privacy }}" as="p" hint-placeholder-count="4">
+<div style="display:grid;grid-template-columns:auto 1fr;gap:12px;padding:11px 0;border-bottom:1px solid oklch(0.88 0.012 80);align-items:baseline">
+<dt style="font-size:13px;color:{{ p.fg }};font-weight:500;white-space:nowrap">{{ p.k }}</dt>
+<dd style="margin:0;font-size:14px;line-height:1.6">{{ p.v }}</dd>
+</div>
+</sc-for>
+</dl>
+</section>
+</main>
+
+<footer style="padding:14px 16px 22px;font-size:11px;line-height:1.7;color:oklch(0.48 0.02 60);border-top:1px solid oklch(0.88 0.012 80)">{{ footer }}</footer>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:430,&quot;height&quot;:900}}">
+class Component extends DCLogic {
+  state = { lang: 'ar' };
+  L = {
+    ar: { dir: 'rtl', label: 'ع', kicker: 'الاستيراد المصغّر · المرسوم 25-170', h1: 'اعرف واش يطلبو التجار — قبل ما تشري.',
+      sub: 'تسافر بمالك أنت، وترجع ببضاعة تُباع أو تجمّد رأس مالك شهوراً. مَعْبَر يريك الطلب المُتحقَّق في السوق المحلي قبل أن تدفع، ويحسب لك ما تبقّى من حدّك القانوني.',
+      cta1: 'افحص سلعة الآن — بلا حساب', cta2: 'شاهد الطلب المُتحقَّق', noAccount: 'لا نطلب هويتك لتجربة الأداة. لا نسأل عن مورّدك ولا عن سعر شرائك — لا الآن ولا لاحقاً.',
+      fearsTitle: 'ثلاثة أسئلة تسبق كل رحلة', fears: [
+        { n: '01', q: 'واش نشري؟', a: 'طلب مُجمَّع من تجّار مُتحقَّقين، مفصول إلى: التزام بعربون مُصرَّح، واهتمام بلا عربون.' },
+        { n: '02', q: 'واش راه مسموح؟', a: 'حكم فوري مع المادة ورابط الجريدة الرسمية وتاريخ آخر تحديث.' },
+        { n: '03', q: 'شحال باقي لي؟', a: 'القيمة والوزن والحجم وتنقّلات الشهر — محسوبة، لا مكتوبة بيدك.' }],
+      howTitle: 'كيف يشتغل', steps: [
+        { n: '01', t: 'افحص السلعة وتأكّد أنها ضمن المسموح.' }, { n: '02', t: 'أنشئ رحلة: الوجهة، التواريخ، سعة حقائبك.' },
+        { n: '03', t: 'تصفّح الطلب المُجمَّع وابنِ قائمة شراء تحت ثلاثة عدّادات حيّة.' }, { n: '04', t: 'حوّل الالتزامات إلى تسليم موثّق، وسجّلها في دفترك.' }],
+      notTitle: 'ما لا نفعله — بنيةً لا سياسةً', nots: [{ t: 'لا صرف عملة' }, { t: 'لا دفع ولا حجز أموال' }, { t: 'لا شراء بالوكالة' }, { t: 'لا دليل مورّدين' }, { t: 'لا تصريح جمركي' }, { t: 'لا واجهة بيع للمستهلك' }],
+      notNote: 'مَعْبَر منصّة خاصة. لا تُصدر ترخيصاً ولا اعتماداً ولا شهادة مطابقة، وليست طرفاً في أي اتفاق بينك وبين التاجر. النشاط شخصي وغير قابل للتنازل (المادتان 3 و12).',
+      privTitle: 'ما نطلبه وما لا نطلبه', privacy: [
+        { k: 'نطلب', v: 'رقم هاتف جزائري، وبطاقة ANAE عند نشر رحلة.', fg: 'oklch(0.42 0.07 150)' },
+        { k: 'لا نطلب', v: 'اسم مورّدك في إسطنبول أو دبي أو قوانغتشو.', fg: 'oklch(0.5 0.14 35)' },
+        { k: 'لا نطلب', v: 'سعر شرائك ولا هامش ربحك. تقدير القيمة يبقى على جهازك.', fg: 'oklch(0.5 0.14 35)' },
+        { k: 'لا نرسل', v: 'أي بيانات شخصية خارج الجزائر (القانون 25-11).', fg: 'oklch(0.5 0.14 35)' }],
+      footer: 'مَعْبَر · منصّة معلومات تجارية خاصة. المعلومات المعروضة استرشادية والقرار النهائي يعود لمصالح الجمارك. التصريح المسبق يتمّ حصراً على anae.dz.' },
+    fr: { dir: 'ltr', label: 'FR', kicker: 'Import de faible valeur · Décret 25-170', h1: 'Sachez ce que le marché demande — avant d\u2019acheter.',
+      sub: 'Vous voyagez avec votre propre argent et revenez avec une marchandise qui se vend, ou qui immobilise votre capital pendant des mois. Maabar vous montre la demande locale vérifiée avant l\u2019achat et calcule ce qu\u2019il vous reste de votre plafond légal.',
+      cta1: 'Vérifier un produit — sans compte', cta2: 'Voir la demande vérifiée', noAccount: 'Aucune identité requise pour essayer l\u2019outil. Nous ne demandons ni votre fournisseur ni votre prix d\u2019achat — jamais.',
+      fearsTitle: 'Trois questions avant chaque voyage', fears: [
+        { n: '01', q: 'Qu\u2019est-ce que j\u2019achète ?', a: 'Demande agrégée de commerçants vérifiés, séparée en engagement avec acompte déclaré et intérêt sans acompte.' },
+        { n: '02', q: 'Est-ce autorisé ?', a: 'Verdict immédiat avec l\u2019article, le lien au Journal officiel et la date de mise à jour.' },
+        { n: '03', q: 'Combien me reste-t-il ?', a: 'Valeur, poids, volume et voyages du mois — calculés, jamais saisis.' }],
+      howTitle: 'Comment ça marche', steps: [
+        { n: '01', t: 'Vérifiez que le produit est autorisé.' }, { n: '02', t: 'Créez un voyage : destination, dates, capacité.' },
+        { n: '03', t: 'Parcourez la demande agrégée et composez une liste d\u2019achat sous trois compteurs en direct.' }, { n: '04', t: 'Transformez les engagements en remises documentées, inscrites à votre registre.' }],
+      notTitle: 'Ce que nous ne faisons pas — par architecture', nots: [{ t: 'Aucun change' }, { t: 'Aucun paiement ni séquestre' }, { t: 'Aucun achat par procuration' }, { t: 'Aucun annuaire de fournisseurs' }, { t: 'Aucune déclaration douanière' }, { t: 'Aucune vitrine grand public' }],
+      notNote: 'Maabar est une plateforme privée. Elle ne délivre ni autorisation, ni agrément, ni certificat, et n\u2019est partie à aucun accord entre vous et le commerçant. L\u2019activité est personnelle et incessible (art. 3 et 12).',
+      privTitle: 'Ce que nous demandons, et ce que nous ne demandons pas', privacy: [
+        { k: 'Demandé', v: 'Un numéro algérien, et la carte ANAE au moment de publier un voyage.', fg: 'oklch(0.42 0.07 150)' },
+        { k: 'Jamais', v: 'L\u2019identité de votre fournisseur à Istanbul, Dubaï ou Guangzhou.', fg: 'oklch(0.5 0.14 35)' },
+        { k: 'Jamais', v: 'Votre prix d\u2019achat ni votre marge. L\u2019estimation reste sur votre appareil.', fg: 'oklch(0.5 0.14 35)' },
+        { k: 'Jamais', v: 'Aucune donnée personnelle hors d\u2019Algérie (loi 25-11).', fg: 'oklch(0.5 0.14 35)' }],
+      footer: 'Maabar · plateforme privée d\u2019information commerciale. Information indicative ; la décision finale appartient aux services des douanes. La pré-déclaration se fait exclusivement sur anae.dz.' },
+    en: { dir: 'ltr', label: 'EN', kicker: 'Low-value import · Decree 25-170', h1: 'Know what the market wants — before you buy.',
+      sub: 'You travel with your own hard currency and come back with stock that either sells or freezes your capital for months. Maabar shows you verified local demand before you pay, and computes what is left of your legal cap.',
+      cta1: 'Check a product — no account', cta2: 'See verified demand', noAccount: 'No identity needed to try the tool. We never ask for your supplier or your purchase price — not now, not later.',
+      fearsTitle: 'Three questions before every trip', fears: [
+        { n: '01', q: 'What do I buy?', a: 'Aggregated demand from verified traders, split into deposit-declared commitment and interest without deposit.' },
+        { n: '02', q: 'Is it allowed?', a: 'Instant verdict with the article, the Journal Officiel link, and the last-updated date.' },
+        { n: '03', q: 'How much headroom is left?', a: 'Value, weight, volume and monthly trips — computed, never typed.' }],
+      howTitle: 'How it works', steps: [
+        { n: '01', t: 'Check the product is within what is allowed.' }, { n: '02', t: 'Create a trip: destination, dates, luggage capacity.' },
+        { n: '03', t: 'Browse aggregated demand and build a buy list under three live meters.' }, { n: '04', t: 'Turn commitments into documented handovers, recorded in your ledger.' }],
+      notTitle: 'What we do not do — by architecture', nots: [{ t: 'No currency exchange' }, { t: 'No payments or escrow' }, { t: 'No buying on your behalf' }, { t: 'No supplier directory' }, { t: 'No customs filing' }, { t: 'No consumer storefront' }],
+      notNote: 'Maabar is a private platform. It issues no authorization, approval, or certificate, and is not a party to any agreement between you and the trader. The activity is personal and non-transferable (art. 3 and 12).',
+      privTitle: 'What we ask, and what we never ask', privacy: [
+        { k: 'Asked', v: 'An Algerian phone number, and the ANAE card when you publish a trip.', fg: 'oklch(0.42 0.07 150)' },
+        { k: 'Never', v: 'Your supplier in Istanbul, Dubai, or Guangzhou.', fg: 'oklch(0.5 0.14 35)' },
+        { k: 'Never', v: 'Your purchase price or margin. The value estimate stays on your device.', fg: 'oklch(0.5 0.14 35)' },
+        { k: 'Never', v: 'Any personal data sent outside Algeria (Law 25-11).', fg: 'oklch(0.5 0.14 35)' }],
+      footer: 'Maabar · private trade-information platform. Information is indicative; the final decision rests with customs. Pre-declaration happens exclusively on anae.dz.' }
+  };
+  root = React.createRef();
+  componentDidMount() { this._apply(); }
+  componentDidUpdate() { this._apply(); }
+  _apply() { const el = this.root.current; if (el) { el.setAttribute('dir', this.L[this.state.lang].dir); el.setAttribute('lang', this.state.lang); } }
+  renderVals() {
+    const lang = this.state.lang, t = this.L[lang];
+    return { ...t, rootRef: this.root, langs: Object.keys(this.L).map(k => ({ label: this.L[k].label, on: k === lang, bd: k === lang ? 'oklch(0.22 0.02 60)' : 'oklch(0.82 0.012 80)', bg: k === lang ? 'oklch(0.22 0.02 60)' : 'transparent', fg: k === lang ? '#fff' : 'oklch(0.48 0.02 60)', pick: () => this.setState({ lang: k }) })) };
+  }
+}
+</script>
+</body>
+</html>

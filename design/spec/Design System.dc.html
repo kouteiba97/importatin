@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+html,body{margin:0;padding:0;background:oklch(0.945 0.008 80);color:oklch(0.22 0.02 60);font-family:"IBM Plex Sans Arabic",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+*{box-sizing:border-box}
+a{color:oklch(0.42 0.07 150)}a:hover{color:oklch(0.32 0.07 150)}
+button{font-family:inherit}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</helmet>
+<div dir="rtl" lang="ar" style="min-height:100vh;background:oklch(0.945 0.008 80)">
+<div style="max-width:1200px;margin:0 auto;padding:26px 20px 52px;display:flex;flex-direction:column;gap:26px">
+
+<header style="display:flex;justify-content:space-between;align-items:flex-start;gap:20px;flex-wrap:wrap;border-bottom:1px solid oklch(0.86 0.012 80);padding-bottom:18px">
+<div style="min-width:0">
+<div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:oklch(0.48 0.02 60)"><bdi>DS · v1 · «الدفتر المختوم»</bdi></div>
+<h1 style="margin:4px 0 6px;font-size:27px;font-weight:500;line-height:1.35">الاتجاه البصري ومفردات المكوّنات</h1>
+<p style="margin:0;font-size:14px;line-height:1.75;color:oklch(0.48 0.02 60);max-width:80ch">مأخوذ من الدفتر التجاري المرقّم الذي يفرضه المرسوم نفسه، ومن بيانات الشحن وسندات التسليم: خطوط فاصلة بدل الظلال، أرقام مرجعية ظاهرة، أرقام جدولية، ولون مشبع محجوز للحالة وحدها. لا أختام ولا شعارات رسمية ولا ما يوحي بصفة حكومية — ذلك ممنوع قانوناً وأخلاقياً.</p>
+</div>
+<a href="./Index.dc.html" style="font-size:13px;text-decoration:none;white-space:nowrap">→ خريطة النظام</a>
+</header>
+
+<section style="display:flex;flex-direction:column;gap:12px">
+<h2 style="margin:0;font-size:17px;font-weight:500">اللون — الحبر أولاً، والإشباع للحالة</h2>
+<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:10px">
+<sc-for list="{{ colors }}" as="c" hint-placeholder-count="8">
+<div style="border:1px solid oklch(0.88 0.012 80);border-radius:8px;overflow:hidden;background:#fff">
+<div style="height:64px;background:{{ c.v }};border-bottom:1px solid oklch(0.9 0.012 80)"></div>
+<div style="padding:9px 10px;display:flex;flex-direction:column;gap:3px">
+<span style="font-size:13px;font-weight:500">{{ c.name }}</span>
+<span style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:oklch(0.48 0.02 60);overflow-wrap:anywhere"><bdi>{{ c.v }}</bdi></span>
+<span style="font-size:11px;line-height:1.55;color:oklch(0.48 0.02 60)">{{ c.use }}</span>
+</div>
+</div>
+</sc-for>
+</div>
+<p style="margin:0;font-size:12px;line-height:1.75;color:oklch(0.48 0.02 60)">لا يُشفَّر أي معنى باللون وحده. كل حالة = لون + رمز + نصّ. أدنى تباين مقاس للنصّ 4.5:1 وللعناوين الكبيرة 3:1، والخلفية رملية دافئة لا رمادية باردة.</p>
+</section>
+
+<section style="display:flex;flex-direction:column;gap:12px">
+<h2 style="margin:0;font-size:17px;font-weight:500">الحرف — عائلة واحدة تحمل العربية واللاتينية</h2>
+<div style="background:#fff;border:1px solid oklch(0.88 0.012 80);border-radius:8px;padding:16px;display:flex;flex-direction:column;gap:14px">
+<sc-for list="{{ typeScale }}" as="t" hint-placeholder-count="6">
+<div style="display:grid;grid-template-columns:minmax(0,1fr) auto;gap:14px;align-items:baseline;padding-bottom:11px;border-bottom:1px solid oklch(0.93 0.012 80)">
+<span style="font-size:{{ t.px }}px;font-weight:{{ t.w }};line-height:{{ t.lh }};color:{{ t.fg }};font-family:{{ t.ff }};font-variant-numeric:tabular-nums">{{ t.sample }}</span>
+<span style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:oklch(0.48 0.02 60);white-space:nowrap;text-align:end"><bdi>{{ t.spec }}</bdi></span>
+</div>
+</sc-for>
+</div>
+<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px">
+<sc-for list="{{ typeRules }}" as="r" hint-placeholder-count="5">
+<div style="display:grid;grid-template-columns:auto 1fr;gap:9px;padding:11px 12px;background:#fff;border:1px solid oklch(0.89 0.012 80);border-radius:8px;align-items:start">
+<span aria-hidden="true" style="width:17px;height:17px;border-radius:50%;background:{{ r.bg }};color:{{ r.fg }};display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:600;margin-top:2px;flex:none">{{ r.glyph }}</span>
+<span style="font-size:13px;line-height:1.65">{{ r.t }}</span>
+</div>
+</sc-for>
+</div>
+</section>
+
+<section style="display:flex;flex-direction:column;gap:12px">
+<h2 style="margin:0;font-size:17px;font-weight:500">الأرقام — العمود الفقري للمنتج</h2>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px">
+<div style="background:#fff;border:1px solid oklch(0.88 0.012 80);border-radius:8px;padding:15px;display:flex;flex-direction:column;gap:10px">
+<span style="font-size:12px;color:oklch(0.48 0.02 60)">أرقام جدولية · محاذاة الخانات</span>
+<table style="width:100%;border-collapse:collapse;font-size:14px;font-variant-numeric:tabular-nums">
+<sc-for list="{{ figures }}" as="f" hint-placeholder-count="4">
+<tr><td style="padding:7px 0;border-bottom:1px solid oklch(0.93 0.012 80)">{{ f.k }}</td><td style="padding:7px 0;border-bottom:1px solid oklch(0.93 0.012 80);text-align:end;white-space:nowrap;font-weight:500"><bdi>{{ f.v }}</bdi></td></tr>
+</sc-for>
+</table>
+<span style="font-size:11px;line-height:1.65;color:oklch(0.48 0.02 60)">فاصل الآلاف مسافة، والرمز بعد الرقم في العربية: <bdi>1 800 000 دج</bdi>. أرقام 0–9 لا ٠–٩ — هذا هو الاستعمال اليومي والرسمي في الجزائر.</span>
+</div>
+<div style="background:#fff;border:1px solid oklch(0.88 0.012 80);border-radius:8px;padding:15px;display:flex;flex-direction:column;gap:12px">
+<span style="font-size:12px;color:oklch(0.48 0.02 60)">عدّاد السعة · المكوّن التوقيعي</span>
+<sc-for list="{{ meters }}" as="m" hint-placeholder-count="3">
+<div style="display:flex;flex-direction:column;gap:5px">
+<div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font-size:13px">{{ m.label }}</span><span style="font-size:15px;font-weight:500;font-variant-numeric:tabular-nums;color:{{ m.fg }}"><bdi>{{ m.v }}</bdi></span></div>
+<div aria-hidden="true" style="height:6px;background:oklch(0.91 0.012 80);border-radius:3px;overflow:hidden"><span style="display:block;height:100%;width:{{ m.pct }}%;background:{{ m.fg }};transition:width 180ms ease-out"></span></div>
+<span style="font-size:11px;color:oklch(0.48 0.02 60)">{{ m.note }}</span>
+</div>
+</sc-for>
+</div>
+<div style="background:#fff;border:1px solid oklch(0.88 0.012 80);border-radius:8px;padding:15px;display:flex;flex-direction:column;gap:10px">
+<span style="font-size:12px;color:oklch(0.48 0.02 60)">نطاق سعري · لا رقم واحد كاذب الدقّة</span>
+<div style="display:flex;flex-direction:column;gap:5px">
+<div style="display:flex;justify-content:space-between;font-size:13px"><span>معاطف نسائية · سطيف</span><span style="font-variant-numeric:tabular-nums;font-weight:500"><bdi>4 800 – 5 400 دج</bdi></span></div>
+<div aria-hidden="true" style="position:relative;height:8px;background:oklch(0.92 0.012 80);border-radius:4px"><span style="position:absolute;inset-block:0;inset-inline-start:36%;width:24%;background:oklch(0.35 0.02 60);border-radius:4px"></span></div>
+<div style="display:flex;justify-content:space-between;font-size:11px;color:oklch(0.48 0.02 60);font-variant-numeric:tabular-nums"><span><bdi>3 000</bdi></span><span>مدى الفئة</span><span><bdi>8 000</bdi></span></div>
+</div>
+<span style="font-size:11px;line-height:1.65;color:oklch(0.48 0.02 60)">كل رقم مركّب يُفتح على مكوّناته بلمسة. الرقم الذي لا يقود إلى فعل يُحذف من الشاشة.</span>
+</div>
+</div>
+</section>
+
+<section style="display:flex;flex-direction:column;gap:12px">
+<h2 style="margin:0;font-size:17px;font-weight:500">مفردات الثقة</h2>
+<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:12px">
+<div style="background:#fff;border:1px solid oklch(0.88 0.012 80);border-radius:8px;padding:15px;display:flex;flex-direction:column;gap:10px">
+<span style="font-size:12px;color:oklch(0.48 0.02 60)">شارة تحقّق — لا تأتي وحدها أبداً</span>
+<span style="display:flex;align-items:center;gap:7px"><span aria-hidden="true" style="width:18px;height:18px;border-radius:50%;background:oklch(0.93 0.035 150);color:oklch(0.42 0.07 150);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600">✓</span><span style="font-size:14px;color:oklch(0.42 0.07 150)">مستورد مُتحقَّق · L2-I</span></span>
+<span style="font-size:11px;line-height:1.7;color:oklch(0.48 0.02 60);border-inline-start:2px solid oklch(0.85 0.012 80);padding-inline-start:9px">تحقّقت المنصّة من الوثائق المقدَّمة. هذا ليس اعتماداً حكومياً.</span>
+</div>
+<div style="background:#fff;border:1px solid oklch(0.88 0.012 80);border-radius:8px;padding:15px;display:flex;flex-direction:column;gap:8px">
+<span style="font-size:12px;color:oklch(0.48 0.02 60)">السجل قبل الدرجة</span>
+<span style="display:flex;align-items:baseline;gap:7px"><span style="font-size:32px;font-weight:500;font-variant-numeric:tabular-nums;line-height:1.1"><bdi>47</bdi></span><span style="font-size:14px">معاملة مؤكَّدة</span></span>
+<span style="font-size:13px;color:oklch(0.48 0.02 60)">المؤشّر <bdi style="font-variant-numeric:tabular-nums">91</bdi> / 100</span>
+<span style="font-size:11px;line-height:1.65;color:oklch(0.48 0.02 60)">في سوق منخفض الثقة «47 معاملة مؤكَّدة» أصدق من «4.8★». الدرجة لا تُعرض دون 5 معاملات.</span>
+</div>
+<div style="background:#fff;border:1px solid oklch(0.88 0.012 80);border-radius:8px;padding:15px;display:flex;flex-direction:column;gap:8px">
+<span style="font-size:12px;color:oklch(0.48 0.02 60)">سطر التنويه — على كل جواب تنظيمي</span>
+<span style="font-size:13px;line-height:1.7;border-inline-start:2px solid oklch(0.82 0.012 80);padding-inline-start:9px;color:oklch(0.35 0.02 60)">معلومة استرشادية — القرار النهائي يعود لمصالح الجمارك.</span>
+<span style="font-size:11px;line-height:1.65;color:oklch(0.48 0.02 60)">ويرافقه دائماً: المادة · رابط الجريدة الرسمية · تاريخ آخر تحديث · الخطوة التالية.</span>
+</div>
+<div style="background:#fff;border:1px solid oklch(0.88 0.012 80);border-radius:8px;padding:15px;display:flex;flex-direction:column;gap:9px">
+<span style="font-size:12px;color:oklch(0.48 0.02 60)">ألفاظ ممنوعة في كل النصوص</span>
+<span style="display:flex;flex-wrap:wrap;gap:6px">
+<sc-for list="{{ banned }}" as="b" hint-placeholder-count="5">
+<span style="display:flex;align-items:center;gap:5px;font-size:12px;color:oklch(0.35 0.02 60);border:1px solid oklch(0.86 0.035 35);border-radius:13px;padding:4px 9px"><span aria-hidden="true" style="color:oklch(0.5 0.14 35);font-weight:600">✕</span>{{ b.t }}</span>
+</sc-for>
+</span>
+<span style="font-size:11px;line-height:1.65;color:oklch(0.48 0.02 60)">قائمة مراجعة محتوى تسري على نصوص المنصّة ونصوص المستخدمين معاً — استعمالها يجعل المنصّة طرفاً في العقد.</span>
+</div>
+</div>
+</section>
+
+<section style="display:flex;flex-direction:column;gap:12px">
+<h2 style="margin:0;font-size:17px;font-weight:500">المكوّنات والأفعال</h2>
+<div style="background:#fff;border:1px solid oklch(0.88 0.012 80);border-radius:8px;padding:16px;display:flex;flex-direction:column;gap:14px">
+<div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center">
+<button type="button" style="height:48px;padding:0 20px;border:0;border-radius:6px;background:oklch(0.42 0.07 150);color:#fff;font-size:15px;font-weight:500;cursor:pointer">فعل أساسي</button>
+<button type="button" style="height:48px;padding:0 18px;border:1px solid oklch(0.42 0.07 150);border-radius:6px;background:transparent;color:oklch(0.42 0.07 150);font-size:15px;font-weight:500;cursor:pointer">فعل ثانوي</button>
+<button type="button" style="height:48px;padding:0 18px;border:1px solid oklch(0.82 0.012 80);border-radius:6px;background:transparent;color:inherit;font-size:15px;cursor:pointer">محايد</button>
+<button type="button" style="height:48px;padding:0 18px;border:1px solid oklch(0.5 0.14 35);border-radius:6px;background:transparent;color:oklch(0.5 0.14 35);font-size:15px;font-weight:500;cursor:pointer">فعل هادم</button>
+<button type="button" disabled="{{ true }}" style="height:48px;padding:0 18px;border:0;border-radius:6px;background:oklch(0.42 0.07 150);color:#fff;font-size:15px;font-weight:500;opacity:.45;cursor:not-allowed">مقفل — يحتاج L2-I</button>
+</div>
+<div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;border-top:1px solid oklch(0.93 0.012 80);padding-top:13px">
+<sc-for list="{{ chips }}" as="c" hint-placeholder-count="5">
+<span style="display:flex;align-items:center;gap:6px;height:30px;padding:0 11px;border:1px solid {{ c.bd }};border-radius:15px;font-size:12px;color:{{ c.fg }};background:{{ c.bg }}"><span aria-hidden="true" style="font-weight:600">{{ c.glyph }}</span>{{ c.t }}</span>
+</sc-for>
+</div>
+<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px;border-top:1px solid oklch(0.93 0.012 80);padding-top:13px">
+<sc-for list="{{ inventory }}" as="i" hint-placeholder-count="9">
+<div style="display:grid;grid-template-columns:auto 1fr;gap:9px;font-size:13px;line-height:1.6;align-items:baseline"><span style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:oklch(0.48 0.02 60)"><bdi>{{ i.n }}</bdi></span><span>{{ i.t }}</span></div>
+</sc-for>
+</div>
+</div>
+<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:10px">
+<sc-for list="{{ rules }}" as="r" hint-placeholder-count="6">
+<div style="padding:12px 13px;background:#fff;border:1px solid oklch(0.89 0.012 80);border-radius:8px;display:flex;flex-direction:column;gap:4px">
+<span style="font-size:13px;font-weight:500;line-height:1.45">{{ r.t }}</span>
+<span style="font-size:12px;line-height:1.65;color:oklch(0.48 0.02 60)">{{ r.note }}</span>
+</div>
+</sc-for>
+</div>
+</section>
+
+<footer style="font-size:12px;line-height:1.8;color:oklch(0.48 0.02 60);border-top:1px solid oklch(0.86 0.012 80);padding-top:16px">
+ممنوع صراحةً في هذا النظام: التدرّجات الكبيرة · الزجاجية · الرسوم ثلاثية الأبعاد · الوضع الليلي كإعداد افتراضي · الأيقونات المزخرفة · أي عنصر يشبه ختماً أو شعاراً أو صفة رسمية · أي حركة زخرفية. الحركة وظيفية فقط، ≤200 مللي ثانية، وتحترم <bdi>prefers-reduced-motion</bdi>.
+</footer>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1200,&quot;height&quot;:900}}">
+class Component extends DCLogic {
+  OLIVE = 'oklch(0.42 0.07 150)'; CLAY = 'oklch(0.5 0.14 35)'; OCHRE = 'oklch(0.55 0.12 70)'; INK = 'oklch(0.22 0.02 60)'; MUTED = 'oklch(0.48 0.02 60)';
+  renderVals() {
+    const AR = '"IBM Plex Sans Arabic", sans-serif', MO = '"IBM Plex Mono", monospace';
+    return {
+      colors: [
+        { name: 'ورق', v: 'oklch(0.975 0.008 80)', use: 'الخلفية الأساسية — رملية دافئة لا رمادية' },
+        { name: 'ورق ثانٍ', v: 'oklch(0.95 0.01 80)', use: 'كتل الشرح ومساحات القرار' },
+        { name: 'خطّ فاصل', v: 'oklch(0.88 0.012 80)', use: 'البنية كلها: خطوط بدل ظلال وصناديق' },
+        { name: 'حبر', v: 'oklch(0.22 0.02 60)', use: 'النصّ الأساسي والأرقام' },
+        { name: 'حبر خافت', v: 'oklch(0.48 0.02 60)', use: 'التسميات والشرح — 7.0:1 على الورق' },
+        { name: 'زيتوني عميق', v: 'oklch(0.42 0.07 150)', use: 'الفعل الأساسي · مسموح · مُلتزَم' },
+        { name: 'مغرة', v: 'oklch(0.55 0.12 70)', use: 'مشروط · قارب الحدّ · ينتهي قريباً' },
+        { name: 'طين', v: 'oklch(0.5 0.14 35)', use: 'غير مسموح · موقوف · متنازَع عليه' }],
+      typeScale: [
+        { sample: 'اعرف واش يطلبو التجار', px: 30, w: 500, lh: 1.35, fg: this.INK, ff: AR, spec: '30 / 1.35 / 500' },
+        { sample: 'مقترح الشراء — مبني على طلب مُتحقَّق', px: 20, w: 500, lh: 1.4, fg: this.INK, ff: AR, spec: '20 / 1.40 / 500' },
+        { sample: 'نصّ الجسم: الأسطر العربية أعلى بـ10–15% من اللاتينية لأن الحركات تحتاج فراغاً.', px: 15, w: 400, lh: 1.7, fg: this.INK, ff: AR, spec: '15 / 1.70 / 400' },
+        { sample: 'تسمية ثانوية · شرح · تنويه', px: 12, w: 400, lh: 1.6, fg: this.MUTED, ff: AR, spec: '12 / 1.60 / 400' },
+        { sample: '1 800 000 دج · 46 كغ · 1.20 م³', px: 19, w: 500, lh: 1.3, fg: this.INK, ff: AR, spec: 'tabular-nums' },
+        { sample: 'TRP-26-0412 · CMT-26-0331', px: 13, w: 400, lh: 1.4, fg: this.MUTED, ff: MO, spec: 'Mono — المراجع فقط' }],
+      typeRules: [
+        { t: 'عائلة واحدة تحمل العربية واللاتينية — لا ثلاث عائلات. وزن الخطّ قرار أداء قبل أن يكون قرار ذوق.', kind: 'g' },
+        { t: 'العربية تبدو أثقل بصرياً: استعمل درجة وزن أخفّ من نظيرتها اللاتينية لتحصل على ثقل متساوٍ.', kind: 'g' },
+        { t: 'ممنوع letter-spacing على العربية — يكسر وصل الحروف ويدمّر القراءة.', kind: 'r' },
+        { t: 'ممنوع text-transform: uppercase — بلا معنى في العربية.', kind: 'r' },
+        { t: 'الخطوط مجزّأة WOFF2 مع preload — الخطّ العربي ثقيل، وسرعة الفتح إشارة ثقة هنا.', kind: 'g' }]
+        .map(r => ({ ...r, fg: r.kind === 'r' ? this.CLAY : this.OLIVE, bg: r.kind === 'r' ? 'oklch(0.94 0.035 35)' : 'oklch(0.93 0.035 150)', glyph: r.kind === 'r' ? '✕' : '✓' })),
+      figures: [{ k: 'الحدّ القانوني للرحلة', v: '1 800 000 دج' }, { k: 'المستهلك', v: '1 310 000 دج' }, { k: 'المتبقي', v: '490 000 دج' }, { k: 'الرسوم 5%', v: '65 500 دج' }],
+      meters: [
+        { label: 'القيمة', v: '490 000 دج', pct: 27, fg: this.INK, note: 'الحدّ القانوني · المادة 2' },
+        { label: 'الوزن', v: '7 كغ', pct: 15, fg: this.OCHRE, note: 'حدّك أنت · سماح الطيران' },
+        { label: 'الحجم', v: '0.24 م³', pct: 20, fg: this.INK, note: 'حدّك أنت · حقائبك' }],
+      banned: [{ t: 'مضمون' }, { t: 'معتمَد من الدولة' }, { t: '100% آمن' }, { t: 'حماية المشتري' }, { t: 'نستورد نيابةً عنك' }, { t: 'سعر الصرف' }],
+      chips: [
+        { t: 'مسموح', glyph: '✓', fg: this.OLIVE, bd: 'oklch(0.86 0.03 150)', bg: 'oklch(0.96 0.02 150)' },
+        { t: 'مشروط', glyph: '!', fg: 'oklch(0.45 0.1 70)', bd: 'oklch(0.87 0.04 85)', bg: 'oklch(0.97 0.025 85)' },
+        { t: 'غير مسموح', glyph: '✕', fg: this.CLAY, bd: 'oklch(0.86 0.035 35)', bg: 'oklch(0.97 0.02 35)' },
+        { t: 'مُلتزَم بعربون مُصرَّح', glyph: '✓', fg: this.OLIVE, bd: 'oklch(0.86 0.03 150)', bg: 'oklch(0.96 0.02 150)' },
+        { t: 'مُشار إليه بلا عربون', glyph: '·', fg: this.MUTED, bd: 'oklch(0.88 0.012 80)', bg: 'transparent' }],
+      inventory: [
+        { n: '01', t: 'ترويسة دفتر — مرجع + حالة' }, { n: '02', t: 'عدّاد سعة' }, { n: '03', t: 'كتلة حكم + سطر مادة' },
+        { n: '04', t: 'سطر تنويه' }, { n: '05', t: 'شارة تحقّق' }, { n: '06', t: 'صفّ طلب (مُلتزَم/مُشار)' },
+        { n: '07', t: 'نطاق سعري' }, { n: '08', t: 'شريحة ثقة + ورقة تفكيك' }, { n: '09', t: 'مُعدِّل كمية 44px' },
+        { n: '10', t: 'شريط فعل ملتصق' }, { n: '11', t: 'شريط انقطاع الاتصال' }, { n: '12', t: 'قالب رسالة منظّم' },
+        { n: '13', t: 'خطّ زمني/مسار RTL' }, { n: '14', t: 'صفّ قائمة عمل إدارية' }, { n: '15', t: 'جدول ينقلب إلى بطاقات' }],
+      rules: [
+        { t: 'فعل أساسي واحد لكل شاشة', note: 'في المنطقة السفلية، ضمن مدى الإبهام، بارتفاع لا يقلّ عن 48px.' },
+        { t: 'مساحات اللمس ≥ 44px', note: 'بما فيها أزرار الزيادة والنقصان — تُستعمل واقفاً في سوق مزدحم.' },
+        { t: 'كثافة عالية في أسطح العمل', note: 'ومنخفضة في مسارات القرار: الشراء، الالتزام، التسليم، القرار الإداري.' },
+        { t: 'خصائص منطقية فقط', note: 'margin-inline-start · padding-inline-end · inset-inline · text-align: start. ممنوع left/right في التخطيط.' },
+        { t: 'بلا عرض ثابت لأي عنصر نصّي', note: 'الفرنسية أطول بـ15–25%، والعربية أعلى سطراً. الأزرار والشرائح والعناوين تتمدّد.' },
+        { t: 'الجداول تصبح بطاقات تحت 480px', note: 'ولا يتحرّك الجسم أفقياً أبداً، بدءاً من 320px.' },
+        { t: 'كل رقم قابل للتفكيك', note: 'لمسة تفتح ورقة سفلية بمكوّناته ومصدره وتاريخ تحديثه.' },
+        { t: 'الحركة وظيفية', note: 'تعبئة العدّادات 180ms، ظهور الأوراق 160ms، ولا شيء غير ذلك.' }]
+    };
+  }
+}
+</script>
+</body>
+</html>

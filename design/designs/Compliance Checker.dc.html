@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./tokens.css">
+<style>
+.disc{width:100%;display:flex;align-items:center;gap:10px;padding:13px 15px;border:0;border-top:1px solid var(--rule-faint);background:transparent;color:inherit;text-align:start;cursor:pointer;font-size:var(--t-body)}
+.chipbtn{height:34px;padding:0 13px;border:1px solid var(--rule-strong);border-radius:var(--r-pill);background:var(--surface);font-size:var(--t-sm);cursor:pointer;color:inherit;flex:none}
+.scrollx{overflow-x:auto;scrollbar-width:none}.scrollx::-webkit-scrollbar{display:none}
+</style>
+</helmet>
+
+<div ref="{{ rootRef }}" dir="rtl" lang="ar" class="tier-comply" style="min-height:100vh;display:flex;justify-content:center">
+<div style="width:100%;max-width:430px;min-height:100vh;display:flex;flex-direction:column;background:var(--paper);border-inline:1px solid var(--rule)">
+
+<header style="display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px 16px;background:var(--surface);border-bottom:1px solid var(--rule)">
+<span style="font-weight:600;font-size:18px">{{ brand }}</span>
+<div role="group" aria-label="{{ langLabel }}" style="display:flex;border:1px solid var(--rule-strong);border-radius:var(--r-sm);overflow:hidden">
+<sc-for list="{{ langs }}" as="l" hint-placeholder-count="3">
+<button type="button" onClick="{{ l.pick }}" aria-pressed="{{ l.on }}" style="height:28px;padding:0 11px;border:0;background:{{ l.bg }};color:{{ l.fg }};font-size:var(--t-xs);font-weight:500;cursor:pointer">{{ l.label }}</button>
+</sc-for>
+</div>
+</header>
+
+<main style="flex:1;padding:20px 16px 28px;display:flex;flex-direction:column;gap:18px">
+
+<div>
+<h1 style="margin:0 0 7px;font-size:var(--t-h1);font-weight:600;line-height:1.32">{{ title }}</h1>
+<p style="margin:0;font-size:var(--t-body);color:var(--ink-2);line-height:1.6">{{ subtitle }}</p>
+</div>
+
+<form onSubmit="{{ submit }}" style="display:flex;flex-direction:column;gap:10px">
+<div style="display:flex;gap:8px">
+<input value="{{ query }}" onChange="{{ onQuery }}" placeholder="{{ placeholder }}" aria-label="{{ fieldLabel }}" style="flex:1;min-width:0;height:50px;padding:0 15px;border:1px solid var(--rule-strong);border-radius:var(--r);background:var(--surface);font-size:16px;color:inherit;outline-offset:2px">
+<button type="submit" style="height:50px;padding:0 19px;border:0;border-radius:var(--r);background:var(--ink);color:var(--ink-on);font-size:15px;font-weight:500;cursor:pointer;flex:none;white-space:nowrap">{{ cta }}</button>
+</div>
+<div class="scrollx" style="display:flex;gap:7px;padding-bottom:2px">
+<sc-for list="{{ quick }}" as="q" hint-placeholder-count="4">
+<button type="button" class="chipbtn">{{ q }}</button>
+</sc-for>
+</div>
+</form>
+
+<!-- ══ LEVEL 1 — the verdict, alone and unmissable ══ -->
+<section aria-live="polite" class="card" style="overflow:hidden">
+<div style="padding:18px 16px;background:{{ vBg }};border-bottom:1px solid {{ vBd }}">
+<div style="display:flex;align-items:center;gap:12px">
+<span aria-hidden="true" style="flex:none;width:38px;height:38px;border-radius:50%;background:{{ vFg }};color:#fff;display:grid;place-items:center;font-size:19px;font-weight:600">{{ vGlyph }}</span>
+<div style="flex:1;min-width:0">
+<div style="font-size:21px;font-weight:600;color:{{ vFg }};line-height:1.25">{{ vLabel }}</div>
+<div style="font-size:var(--t-sm);color:var(--ink-2);margin-top:3px"><bdi>{{ subject }}</bdi></div>
+</div>
+</div>
+</div>
+
+<!-- ══ LEVEL 2 — why. Visible, short, plain. ══ -->
+<div style="padding:15px 16px">
+<p style="margin:0;font-size:var(--t-body);line-height:1.7">{{ reason }}</p>
+</div>
+
+<!-- ══ LEVEL 5 — what to do. Also visible: it is actionable. ══ -->
+<div style="padding:0 16px 15px">
+<div style="font-size:var(--t-xs);color:var(--ink-3);margin-bottom:8px">{{ nextLabel }}</div>
+<sc-for list="{{ steps }}" as="s" hint-placeholder-count="2">
+<div style="display:flex;gap:10px;align-items:flex-start;padding:4px 0">
+<span aria-hidden="true" style="flex:none;width:17px;height:17px;border-radius:50%;background:var(--neutral-bg);color:var(--ink-2);display:grid;place-items:center;font-size:10px;margin-block-start:3px">{{ s.n }}</span>
+<span style="font-size:var(--t-sm);line-height:1.65">{{ s.t }}</span>
+</div>
+</sc-for>
+</div>
+
+<!-- ══ LEVELS 3 + 4 — legal basis and source, folded away ══ -->
+<sc-for list="{{ discs }}" as="d" hint-placeholder-count="2">
+<div>
+<button type="button" onClick="{{ d.toggle }}" aria-expanded="{{ d.open }}" class="disc">
+<span style="flex:1">{{ d.label }}</span>
+<span style="flex:none;font-size:var(--t-xs);color:var(--ink-3)">{{ d.hint }}</span>
+<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--ink-3)" stroke-width="2" style="flex:none;transform:rotate({{ d.rot }}deg);transition:transform .16s ease"><path d="M6 9l6 6 6-6"/></svg>
+</button>
+<sc-if value="{{ d.open }}" hint-placeholder-val="{{ false }}">
+<div style="padding:0 16px 14px">
+<p style="margin:0 0 10px;font-size:var(--t-sm);line-height:1.75;color:var(--ink-2)">{{ d.body }}</p>
+<sc-if value="{{ d.hasLink }}" hint-placeholder-val="{{ false }}">
+<a href="#" style="font-size:var(--t-sm);font-weight:500">{{ d.link }}</a>
+</sc-if>
+</div>
+</sc-if>
+</div>
+</sc-for>
+</section>
+
+<button type="button" onClick="{{ share }}" style="height:50px;border:1px solid var(--rule-strong);border-radius:var(--r);background:var(--surface);color:inherit;font-size:15px;font-weight:500;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:9px">
+<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="6" cy="12" r="2.4"/><circle cx="17" cy="6" r="2.4"/><circle cx="17" cy="18" r="2.4"/><path d="M8.2 10.9l6.6-3.6M8.2 13.1l6.6 3.6"/></svg>
+{{ shareCta }}
+</button>
+
+<p style="margin:0;font-size:var(--t-xs);line-height:1.65;color:var(--ink-3)">{{ disclaimer }}</p>
+
+</main>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:430,&quot;height&quot;:1020}}">
+class Component extends DCLogic {
+  state = { lang: 'ar', open: null };
+  root = React.createRef();
+  componentDidMount() { this._apply(); }
+  componentDidUpdate() { this._apply(); }
+  _apply() {
+    const el = this.root.current;
+    if (el) { el.setAttribute('dir', this.L[this.state.lang].dir); el.setAttribute('lang', this.state.lang); }
+  }
+
+  L = {
+    ar: {
+      label: 'ع', dir: 'rtl', brand: 'مَعْبَر', langLabel: 'اللغة',
+      title: 'هل يمكنني استيراد هذا؟',
+      subtitle: 'اكتب اسم السلعة وتعرف الجواب فوراً.',
+      placeholder: 'مثال: عطور نسائية 100 مل',
+      fieldLabel: 'السلعة', cta: 'افحص',
+      quick: ['ألبسة', 'عطور', 'أحذية', 'حقائب', 'ساعات'],
+      subject: 'عطور نسائية 100 مل · من تركيا',
+      vLabel: 'مسموح بشرط',
+      reason: 'يمكنك استيرادها، لكن يجب أن يتبقّى أكثر من نصف مدة الصلاحية عند دخول البضاعة.',
+      nextLabel: 'ما عليك فعله',
+      steps: ['تحقّق من تاريخَي الإنتاج والانتهاء على العبوة قبل الشراء.', 'احتفظ بفاتورة الشراء.'],
+      discs: [
+        { id: 'law', label: 'الأساس القانوني', hint: 'المادة 6',
+          body: 'المرسوم التنفيذي 25-170 يشترط أن تكون مدة الصلاحية المتبقية عند تاريخ الاستيراد أكثر من نصف المدة الإجمالية للاستهلاك.' },
+        { id: 'src', label: 'المصدر وتاريخ التحديث', hint: '29 جوان 2025',
+          body: 'الجريدة الرسمية للجمهورية الجزائرية، العدد 40، الصادرة في 29 جوان 2025.', link: 'افتح النص الرسمي' }
+      ],
+      shareCta: 'شارك النتيجة',
+      disclaimer: 'معلومة استرشادية. القرار النهائي عند الدخول يعود لمصالح الجمارك.'
+    },
+    fr: {
+      label: 'FR', dir: 'ltr', brand: 'Maabar', langLabel: 'Langue',
+      title: 'Puis-je importer ceci ?',
+      subtitle: 'Saisissez la marchandise, obtenez la réponse immédiatement.',
+      placeholder: 'Ex. : parfums femme 100 ml',
+      fieldLabel: 'Marchandise', cta: 'Vérifier',
+      quick: ['Vêtements', 'Parfums', 'Chaussures', 'Sacs', 'Montres'],
+      subject: 'Parfums femme 100 ml · de Turquie',
+      vLabel: 'Autorisé sous condition',
+      reason: "Vous pouvez l'importer, à condition qu'il reste plus de la moitié de la durée de validité à l'entrée de la marchandise.",
+      nextLabel: 'Ce que vous devez faire',
+      steps: ["Vérifiez les dates de fabrication et de péremption sur l'emballage avant l'achat.", "Conservez la facture d'achat."],
+      discs: [
+        { id: 'law', label: 'Base légale', hint: 'Art. 6',
+          body: "Le décret exécutif 25-170 exige que la durée de validité restante à la date d'importation dépasse la moitié de la durée globale de consommation." },
+        { id: 'src', label: 'Source et mise à jour', hint: '29 juin 2025',
+          body: "Journal officiel de la République algérienne, n° 40 du 29 juin 2025.", link: 'Ouvrir le texte officiel' }
+      ],
+      shareCta: 'Partager le résultat',
+      disclaimer: "Information indicative. La décision finale à l'entrée appartient aux services des douanes."
+    },
+    en: {
+      label: 'EN', dir: 'ltr', brand: 'Maabar', langLabel: 'Language',
+      title: 'Can I import this?',
+      subtitle: 'Type the goods, get the answer straight away.',
+      placeholder: 'e.g. women’s perfume 100 ml',
+      fieldLabel: 'Goods', cta: 'Check',
+      quick: ['Clothing', 'Fragrance', 'Shoes', 'Bags', 'Watches'],
+      subject: 'Women’s perfume 100 ml · from Turkey',
+      vLabel: 'Allowed with a condition',
+      reason: 'You can import it, provided more than half of the shelf life remains when the goods enter.',
+      nextLabel: 'What to do',
+      steps: ['Check the production and expiry dates on the packaging before buying.', 'Keep the purchase invoice.'],
+      discs: [
+        { id: 'law', label: 'Legal basis', hint: 'Art. 6',
+          body: 'Executive decree 25-170 requires the shelf life remaining on the import date to exceed half of the product’s total consumption period.' },
+        { id: 'src', label: 'Source and last update', hint: '29 June 2025',
+          body: 'Official Journal of the Algerian Republic, no. 40 of 29 June 2025.', link: 'Open the official text' }
+      ],
+      shareCta: 'Share the result',
+      disclaimer: 'Indicative guidance. The final decision on entry rests with customs.'
+    }
+  };
+
+  renderVals() {
+    const lang = this.state.lang, t = this.L[lang], open = this.state.open;
+    return {
+      ...t,
+      rootRef: this.root,
+      query: '', onQuery: () => {}, submit: () => {}, share: () => {},
+      vGlyph: '!',
+      vFg: 'var(--conditional-ink)',
+      vBg: 'var(--conditional-bg)',
+      vBd: 'var(--conditional-bd)',
+      steps: t.steps.map((s, i) => ({ n: String(i + 1), t: s })),
+      discs: t.discs.map(d => ({
+        ...d,
+        open: open === d.id,
+        rot: open === d.id ? 180 : 0,
+        hasLink: !!d.link,
+        toggle: () => this.setState(s => ({ open: s.open === d.id ? null : d.id }))
+      })),
+      langs: Object.keys(this.L).map(k => ({
+        label: this.L[k].label, on: k === lang,
+        bg: k === lang ? 'var(--ink)' : 'var(--surface)',
+        fg: k === lang ? 'var(--ink-on)' : 'var(--ink-2)',
+        pick: () => this.setState({ lang: k })
+      }))
+    };
+  }
+}
+</script>
+</body>
+</html>

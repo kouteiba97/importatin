@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+html,body{margin:0;padding:0;background:oklch(0.945 0.008 80);color:oklch(0.22 0.02 60);font-family:"IBM Plex Sans Arabic",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+*{box-sizing:border-box}
+a{color:oklch(0.42 0.07 150)}a:hover{color:oklch(0.32 0.07 150)}
+button{font-family:inherit}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</helmet>
+<div dir="rtl" lang="ar" style="min-height:100vh;background:oklch(0.945 0.008 80)">
+<div style="max-width:1200px;margin:0 auto;padding:26px 20px 52px;display:flex;flex-direction:column;gap:26px">
+
+<header style="display:flex;justify-content:space-between;align-items:flex-start;gap:20px;flex-wrap:wrap;border-bottom:1px solid oklch(0.86 0.012 80);padding-bottom:18px">
+<div style="min-width:0">
+<div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:oklch(0.48 0.02 60)"><bdi>TAXONOMY · ENTITLEMENTS</bdi></div>
+<h1 style="margin:4px 0 6px;font-size:27px;font-weight:500;line-height:1.35">الشجرة التي يتعلّق بها كل شيء</h1>
+<p style="margin:0;font-size:14px;line-height:1.75;color:oklch(0.48 0.02 60);max-width:80ch">تجميع الطلب، ونطاقات الأسعار، ومطابقة الرحلات، وأحكام المطابقة — كلّها تُحسب على الفئة. فئة فضفاضة تُنتج طلباً لا يُصدَّق ونطاق سعر بلا معنى، وفئة مفرطة التفصيل تُفتّت السيولة حتى تختفي. لذلك: ثلاثة مستويات لا أكثر، وسمات إلزامية قليلة لكل ورقة.</p>
+</div>
+<a href="./Index.dc.html" style="font-size:13px;text-decoration:none;white-space:nowrap">→ خريطة النظام</a>
+</header>
+
+<section style="display:flex;flex-direction:column;gap:12px">
+<h2 style="margin:0;font-size:17px;font-weight:500">الشجرة — ثلاثة مستويات</h2>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:12px;align-items:start">
+<div style="background:#fff;border:1px solid oklch(0.88 0.012 80);border-radius:8px;padding:14px;display:flex;flex-direction:column;gap:2px">
+<sc-for list="{{ tree }}" as="t" hint-placeholder-count="10">
+<button type="button" onClick="{{ t.pick }}" aria-current="{{ t.on }}" style="display:grid;grid-template-columns:1fr auto;gap:3px 10px;padding-block:8px;padding-inline:{{ t.padStart }} 10px;border:0;border-radius:5px;background:{{ t.bg }};cursor:pointer;text-align:start;color:inherit;align-items:baseline">
+<span style="font-size:{{ t.fs }}px;font-weight:{{ t.fw }};line-height:1.45;color:{{ t.fg }}">{{ t.name }}</span>
+<span style="font-size:11px;color:oklch(0.48 0.02 60);font-variant-numeric:tabular-nums;white-space:nowrap"><bdi>{{ t.meta }}</bdi></span>
+</button>
+</sc-for>
+<div style="margin-top:8px;padding-top:9px;border-top:1px solid oklch(0.93 0.012 80);font-size:11px;line-height:1.7;color:oklch(0.48 0.02 60)">الحدّ الأدنى للسيولة: لا يُعرض نطاق سعري لورقة × ولاية دون <bdi>5</bdi> معاملات مؤكَّدة في 90 يوماً — تُرفَع القراءة عندها إلى المستوى الأعلى بدل اختراع رقم.</div>
+</div>
+
+<div style="display:flex;flex-direction:column;gap:12px">
+<div style="background:#fff;border:1px solid oklch(0.88 0.012 80);border-radius:8px;padding:15px;display:flex;flex-direction:column;gap:11px">
+<div style="display:flex;justify-content:space-between;align-items:baseline;gap:10px"><span style="font-size:16px;font-weight:500">{{ leafName }}</span><span style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:oklch(0.48 0.02 60)"><bdi>{{ leafCode }}</bdi></span></div>
+<div style="display:flex;flex-direction:column;gap:7px">
+<span style="font-size:12px;color:oklch(0.48 0.02 60)">السمات الإلزامية في طلب التوريد</span>
+<sc-for list="{{ attrs }}" as="a" hint-placeholder-count="5">
+<span style="display:grid;grid-template-columns:1fr auto;gap:4px 10px;padding-bottom:7px;border-bottom:1px solid oklch(0.93 0.012 80);align-items:baseline">
+<span style="font-size:13px;line-height:1.5">{{ a.k }}</span>
+<span style="font-size:11px;color:{{ a.fg }};white-space:nowrap">{{ a.req }}</span>
+<span style="grid-column:1/-1;font-size:11px;color:oklch(0.48 0.02 60);line-height:1.55"><bdi>{{ a.v }}</bdi></span>
+</span>
+</sc-for>
+</div>
+<span style="font-size:11px;line-height:1.7;color:oklch(0.48 0.02 60)">السمات هي ما يمنع نزاع المطابقة لاحقاً. كل سمة إلزامية هنا ظهرت في اعتراض حقيقي من قبل — لا نضيف حقلاً بلا سبب موثّق.</span>
+</div>
+
+<div style="background:#fff;border:1px solid oklch(0.88 0.012 80);border-radius:8px;padding:15px;display:flex;flex-direction:column;gap:10px">
+<span style="font-size:12px;color:oklch(0.48 0.02 60)">ما الذي يتعلّق بهذه الورقة</span>
+<sc-for list="{{ bindings }}" as="b" hint-placeholder-count="4">
+<span style="display:grid;grid-template-columns:auto 1fr;gap:9px;align-items:start;padding-bottom:8px;border-bottom:1px solid oklch(0.93 0.012 80)">
+<span aria-hidden="true" style="width:17px;height:17px;border-radius:50%;background:{{ b.bg }};color:{{ b.fg }};display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:600;margin-top:2px;flex:none">{{ b.glyph }}</span>
+<span><span style="display:block;font-size:13px;font-weight:500;line-height:1.45">{{ b.t }}</span><span style="display:block;font-size:11px;line-height:1.6;color:oklch(0.48 0.02 60);margin-top:2px">{{ b.note }}</span></span>
+</span>
+</sc-for>
+</div>
+</div>
+</div>
+</section>
+
+<section style="display:flex;flex-direction:column;gap:12px">
+<h2 style="margin:0;font-size:17px;font-weight:500">حوكمة الشجرة</h2>
+<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:10px">
+<sc-for list="{{ governance }}" as="g" hint-placeholder-count="5">
+<div style="padding:13px;background:#fff;border:1px solid oklch(0.89 0.012 80);border-radius:8px;display:flex;flex-direction:column;gap:4px">
+<span style="font-size:13px;font-weight:500;line-height:1.45">{{ g.t }}</span>
+<span style="font-size:12px;line-height:1.7;color:oklch(0.48 0.02 60)">{{ g.note }}</span>
+</div>
+</sc-for>
+</div>
+</section>
+
+<section style="display:flex;flex-direction:column;gap:12px">
+<h2 style="margin:0;font-size:17px;font-weight:500">الصلاحيات — ما يفتحه المستوى، وما يستهلكه الرصيد</h2>
+<p style="margin:0;font-size:13px;line-height:1.7;color:oklch(0.48 0.02 60);max-width:82ch">المستوى يفتح <em style="font-style:normal;font-weight:500">الأهلية</em>، والرصيد يدفع ثمن <em style="font-style:normal;font-weight:500">الاستعمال</em>. لا يُغلق الوصول بسبب الرصيد أبداً — تُغلق الأفعال المكلِّفة وحدها، ويبقى الفحص والحاسبات والدفتر والتسليم مفتوحة دائماً.</p>
+<div style="background:#fff;border:1px solid oklch(0.88 0.012 80);border-radius:8px;overflow:auto">
+<table style="width:100%;border-collapse:collapse;font-size:13px;min-width:660px">
+<thead><tr style="font-size:11px;color:oklch(0.48 0.02 60);background:oklch(0.96 0.008 80)">
+<th scope="col" style="text-align:start;padding:9px 12px;font-weight:400;border-bottom:1px solid oklch(0.9 0.012 80)">الفعل</th>
+<sc-for list="{{ levels }}" as="l" hint-placeholder-count="5"><th scope="col" style="text-align:center;padding:9px 10px;font-weight:400;border-bottom:1px solid oklch(0.9 0.012 80);white-space:nowrap"><bdi>{{ l.k }}</bdi></th></sc-for>
+<th scope="col" style="text-align:end;padding:9px 12px;font-weight:400;border-bottom:1px solid oklch(0.9 0.012 80);white-space:nowrap">الرصيد</th>
+</tr></thead>
+<tbody>
+<sc-for list="{{ matrix }}" as="m" hint-placeholder-count="9">
+<tr>
+<td style="padding:9px 12px;border-bottom:1px solid oklch(0.93 0.012 80);line-height:1.5">{{ m.action }}</td>
+<sc-for list="{{ m.cells }}" as="c" hint-placeholder-count="5">
+<td style="padding:8px 10px;border-bottom:1px solid oklch(0.93 0.012 80);text-align:center"><span title="{{ c.title }}" style="display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:50%;background:{{ c.bg }};color:{{ c.fg }};font-size:11px;font-weight:600">{{ c.glyph }}</span></td>
+</sc-for>
+<td style="padding:9px 12px;border-bottom:1px solid oklch(0.93 0.012 80);text-align:end;white-space:nowrap;font-variant-numeric:tabular-nums;color:{{ m.costFg }}"><bdi>{{ m.cost }}</bdi></td>
+</tr>
+</sc-for>
+</tbody>
+</table>
+</div>
+<div style="display:flex;flex-wrap:wrap;gap:14px;font-size:12px;color:oklch(0.48 0.02 60)">
+<span style="display:flex;align-items:center;gap:6px"><span aria-hidden="true" style="width:18px;height:18px;border-radius:50%;background:oklch(0.93 0.035 150);color:oklch(0.42 0.07 150);display:inline-flex;align-items:center;justify-content:center;font-size:10px;font-weight:600">✓</span>متاح</span>
+<span style="display:flex;align-items:center;gap:6px"><span aria-hidden="true" style="width:18px;height:18px;border-radius:50%;background:oklch(0.95 0.045 85);color:oklch(0.5 0.12 70);display:inline-flex;align-items:center;justify-content:center;font-size:10px;font-weight:600">!</span>متاح بحدّ أدنى أو بقيود</span>
+<span style="display:flex;align-items:center;gap:6px"><span aria-hidden="true" style="width:18px;height:18px;border-radius:50%;background:oklch(0.92 0.012 80);color:oklch(0.48 0.02 60);display:inline-flex;align-items:center;justify-content:center;font-size:10px;font-weight:600">·</span>مقفل — يُطلب عند الفعل مع بيان ما يفتحه</span>
+</div>
+</section>
+
+<section style="display:flex;flex-direction:column;gap:12px">
+<h2 style="margin:0;font-size:17px;font-weight:500">بوّابة عند الفعل — لا جدار عند الباب</h2>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px">
+<div style="background:oklch(0.975 0.008 80);border:1px solid oklch(0.87 0.012 80);border-radius:10px;padding:15px;display:flex;flex-direction:column;gap:11px">
+<span style="font-size:12px;color:oklch(0.48 0.02 60)">هكذا تُطلب الترقية — لحظة الحاجة، بلا تخويف</span>
+<div style="display:flex;flex-direction:column;gap:6px">
+<span style="font-size:17px;font-weight:500;line-height:1.45">لنشر هذه الرحلة نحتاج وثيقتين</span>
+<span style="font-size:13px;line-height:1.7;color:oklch(0.48 0.02 60)">رحلتك محفوظة كما هي. الوثيقتان تفتحان: الظهور في المطابقة، واستقبال الالتزامات بعربون مُصرَّح.</span>
+</div>
+<div style="display:flex;flex-direction:column;gap:6px">
+<sc-for list="{{ gateDocs }}" as="d" hint-placeholder-count="2">
+<span style="display:grid;grid-template-columns:auto 1fr auto;gap:9px;align-items:center;padding:9px 10px;border:1px solid oklch(0.9 0.012 80);border-radius:6px;background:#fff">
+<span aria-hidden="true" style="width:17px;height:17px;border-radius:50%;background:{{ d.bg }};color:{{ d.fg }};display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:600">{{ d.glyph }}</span>
+<span style="font-size:13px;line-height:1.45">{{ d.t }}</span>
+<span style="font-size:11px;color:{{ d.fg }};white-space:nowrap">{{ d.state }}</span>
+</span>
+</sc-for>
+</div>
+<button type="button" style="height:48px;border:0;border-radius:6px;background:oklch(0.42 0.07 150);color:#fff;font-size:15px;font-weight:500;cursor:pointer">ارفع الرخصة العامة</button>
+<button type="button" style="height:44px;border:1px solid oklch(0.84 0.012 80);border-radius:6px;background:transparent;color:inherit;font-size:14px;cursor:pointer">أكمل لاحقاً — احفظ الرحلة كمخطَّطة</button>
+<span style="font-size:11px;line-height:1.7;color:oklch(0.48 0.02 60);border-top:1px solid oklch(0.9 0.012 80);padding-top:9px">وثيقة واحدة في كل مرّة، مع سبب الطلب. لا نطلب خمس وثائق دفعة واحدة ولا نطلب ما لا يفتح شيئاً.</span>
+</div>
+<div style="display:flex;flex-direction:column;gap:10px">
+<sc-for list="{{ gateRules }}" as="g" hint-placeholder-count="4">
+<div style="padding:13px;background:#fff;border:1px solid oklch(0.89 0.012 80);border-radius:8px;display:flex;flex-direction:column;gap:4px">
+<span style="font-size:13px;font-weight:500;line-height:1.45">{{ g.t }}</span>
+<span style="font-size:12px;line-height:1.7;color:oklch(0.48 0.02 60)">{{ g.note }}</span>
+</div>
+</sc-for>
+</div>
+</div>
+</section>
+
+<footer style="font-size:12px;line-height:1.8;color:oklch(0.48 0.02 60);border-top:1px solid oklch(0.86 0.012 80);padding-top:16px">
+الشجرة وحدود السيولة وأثمان الأفعال كلّها معاملات في قاعدة البيانات بتاريخ سريان، تُدار من مركز العمليات بلا نشر شيفرة — مثلها مثل الأرقام التنظيمية. توسّعٌ إلى نشاط آخر من قانون 22-23 أو إلى سوق مغاربي يعني إضافة فروع وقواعد، لا إعادة بناء الواجهات.
+</footer>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1200,&quot;height&quot;:900}}">
+class Component extends DCLogic {
+  state = { leaf: 'coats' };
+  OLIVE = 'oklch(0.42 0.07 150)'; CLAY = 'oklch(0.5 0.14 35)'; OCHRE = 'oklch(0.55 0.12 70)'; INK = 'oklch(0.22 0.02 60)'; MUTED = 'oklch(0.48 0.02 60)';
+  TREE = [
+    { id: 'g1', level: 0, name: 'ملابس', meta: '6 فروع · 412 طلباً' },
+    { id: 'f1', level: 1, name: 'ملابس نسائية', meta: '184 طلباً' },
+    { id: 'coats', level: 2, name: 'معاطف شتوية', meta: '95 مُلتزَم · 340 مُشار' },
+    { id: 'dress', level: 2, name: 'فساتين', meta: '22 مُلتزَم · 96 مُشار' },
+    { id: 'f2', level: 1, name: 'ملابس رجالية', meta: '131 طلباً' },
+    { id: 'shirts', level: 2, name: 'قمصان قطنية', meta: '40 مُلتزَم · 120 مُشار' },
+    { id: 'g2', level: 0, name: 'إكسسوارات وحقائب', meta: '3 فروع · 218 طلباً' },
+    { id: 'bags', level: 2, name: 'حقائب يد نسائية', meta: '80 مُلتزَم · 160 مُشار' },
+    { id: 'g3', level: 0, name: 'مستحضرات تجميل وعطور', meta: '4 فروع · 174 طلباً · مشروط' },
+    { id: 'perfume', level: 2, name: 'عطور 100 مل', meta: '62 مُلتزَم · 180 مُشار' }];
+  LEAVES = {
+    coats: { name: 'معاطف نسائية شتوية', code: 'CAT-01-04-021',
+      attrs: [{ k: 'نوع القماش وتركيبته', v: 'صوف مخلوط · قطن · اصطناعي', req: 'إلزامي' }, { k: 'مدى المقاسات', v: 'S – XL', req: 'إلزامي' }, { k: 'الألوان وعددها', v: '3 ألوان داكنة', req: 'إلزامي' }, { k: 'الوزن التقديري للوحدة', v: '0.80 كغ', req: 'محسوب' }, { k: 'بلد المنشأ', v: 'تركيا', req: 'إلزامي — المادة 14' }, { k: 'البطانة / التفصيل', v: 'اختياري', req: 'اختياري' }],
+      bindings: [
+        { t: 'تجميع الطلب', note: 'الطلبات تُجمَّع على هذه الورقة × الولاية. فوقها يذوب المعنى، وتحتها تتفتّت السيولة.', kind: 'g' },
+        { t: 'نطاق السعر المرجعي', note: '4 800 – 5 400 دج في سطيف · من 34 معاملة مؤكَّدة في 90 يوماً.', kind: 'g' },
+        { t: 'حكم المطابقة', note: 'مسموح · المادة 2 — إعادة بيع بالحالة الأصلية، ضمن الحدّ القيمي للرحلة.', kind: 'g' },
+        { t: 'مطابقة الرحلات', note: 'تُعرض على المستوردين الذين تشمل رحلاتهم هذا الفرع والولايات المستهدفة.', kind: 'g' }] },
+    perfume: { name: 'عطور نسائية 100 مل', code: 'CAT-03-02-007',
+      attrs: [{ k: 'الحجم', v: '100 مل', req: 'إلزامي' }, { k: 'تاريخ الإنتاج والصلاحية الكاملة', v: '36 شهراً', req: 'إلزامي — المادة 6' }, { k: 'المتبقي عند الدخول', v: 'أكثر من 50%', req: 'شرط قبول' }, { k: 'التغليف الأصلي', v: 'مختوم', req: 'إلزامي' }, { k: 'بلد المنشأ', v: 'الإمارات', req: 'إلزامي — المادة 14' }],
+      bindings: [
+        { t: 'حكم المطابقة', note: 'مشروط · المادة 6 — يُرفض عند الدخول إذا قلّ المتبقي عن الحدّ.', kind: 'w' },
+        { t: 'حاسبة الصلاحية', note: 'الورقة تحمل مدّة الصلاحية النمطية فتُملأ الحاسبة تلقائياً.', kind: 'g' },
+        { t: 'محرّك المخاطرة', note: 'فئة مرتفعة البلاغات — عيّنة إلزامية من الصور قبل التسليم.', kind: 'w' },
+        { t: 'نطاق السعر المرجعي', note: '2 800 – 4 200 دج · وهران والجزائر فقط؛ باقي الولايات بيانات غير كافية.', kind: 'g' }] },
+    shirts: { name: 'قمصان قطنية رجالية', code: 'CAT-01-07-013',
+      attrs: [{ k: 'نسبة القطن', v: '100% · مخلوط', req: 'إلزامي' }, { k: 'مدى المقاسات', v: 'M – XXL', req: 'إلزامي' }, { k: 'نوع الياقة', v: 'كلاسيكية · إيطالية', req: 'إلزامي' }, { k: 'الوزن التقديري للوحدة', v: '0.25 كغ', req: 'محسوب' }, { k: 'بلد المنشأ', v: 'تركيا', req: 'إلزامي — المادة 14' }],
+      bindings: [
+        { t: 'تجميع الطلب', note: '40 وحدة مُلتزَمة و120 مُشاراً إليها · سطيف والجزائر.', kind: 'g' },
+        { t: 'نطاق السعر المرجعي', note: '1 700 – 2 500 دج في سطيف · من 34 معاملة مؤكَّدة.', kind: 'g' },
+        { t: 'حكم المطابقة', note: 'مسموح · المادة 2.', kind: 'g' },
+        { t: 'مطابقة الرحلات', note: '3 مستوردين مُتحقَّقين تشمل رحلاتهم هذا الفرع هذا الشهر.', kind: 'g' }] },
+    bags: { name: 'حقائب يد نسائية', code: 'CAT-02-01-004',
+      attrs: [{ k: 'المادة', v: 'جلد صناعي · قماش', req: 'إلزامي' }, { k: 'المقاس التقريبي', v: 'وسط · كبير', req: 'إلزامي' }, { k: 'عدد الألوان', v: '4', req: 'إلزامي' }, { k: 'الوزن التقديري للوحدة', v: '0.10 كغ', req: 'محسوب' }, { k: 'بلد المنشأ', v: 'تركيا', req: 'إلزامي — المادة 14' }],
+      bindings: [
+        { t: 'تجميع الطلب', note: '80 وحدة مُلتزَمة من 6 تجّار · الجزائر والبليدة وتيزي وزو.', kind: 'g' },
+        { t: 'نطاق السعر المرجعي', note: '6 500 – 9 000 دج · مدى الفئة 4 000 – 12 000.', kind: 'g' },
+        { t: 'حكم المطابقة', note: 'مسموح · المادة 2 — انتبه للعلامات المقلّدة (بلاغات محتوى).', kind: 'w' },
+        { t: 'كثافة الوزن', note: 'خفيفة الوزن وكبيرة الحجم — تضغط عدّاد الحجم لا الوزن.', kind: 'g' }] },
+    dress: { name: 'فساتين', code: 'CAT-01-04-009',
+      attrs: [{ k: 'نوع القماش', v: 'قطن · شيفون · مخلوط', req: 'إلزامي' }, { k: 'مدى المقاسات', v: 'S – XL', req: 'إلزامي' }, { k: 'المناسبة', v: 'يومي · سهرة', req: 'إلزامي' }, { k: 'الوزن التقديري للوحدة', v: '0.35 كغ', req: 'محسوب' }, { k: 'بلد المنشأ', v: 'تركيا', req: 'إلزامي — المادة 14' }],
+      bindings: [
+        { t: 'تجميع الطلب', note: '22 مُلتزَماً و96 مُشاراً — سيولة متوسطة.', kind: 'w' },
+        { t: 'نطاق السعر المرجعي', note: 'يُعرض على مستوى الفرع لا الورقة: بيانات الولاية غير كافية.', kind: 'w' },
+        { t: 'حكم المطابقة', note: 'مسموح · المادة 2.', kind: 'g' },
+        { t: 'موسمية', note: 'الطلب يتضاعف قبل الأعياد — يظهر كتنبيه في لوحة الطلب لا كتنبؤ.', kind: 'g' }] }
+  };
+  GOV = [
+    { t: 'ثلاثة مستويات فقط', note: 'مجموعة ← فرع ← ورقة. الطلب والسعر يُحسبان على الورقة، وتُرفع القراءة إلى الفرع عند نقص البيانات.' },
+    { t: 'الورقة تُضاف ببيّنة', note: 'تُقترح تلقائياً حين يتكرّر وصف حرّ بعينه في طلبات كثيرة، ثم يعتمدها فريق المحتوى بسبب مُرمَّز.' },
+    { t: 'لا حذف — دمج فقط', note: 'الورقة المهجورة تُدمج في أقرب ورقة مع إعادة ربط تاريخية، حتى لا ينهار سجل الأسعار.' },
+    { t: 'لا علامات تجارية كفئات', note: '«Zara» ليست فئة بل سمة. الفئة تصف السلعة، لا مصدرها — وهذا يحمي حياد المنصّة أيضاً.' },
+    { t: 'الفئة لا تكشف المورّد', note: 'التصنيف لا يتضمّن أي حقل عن سوق الشراء أو المورّد. الحقل غير موجود في النموذج أصلاً.' }];
+  LEVELS = [{ k: 'L0' }, { k: 'L1' }, { k: 'L2-I' }, { k: 'L2-T' }, { k: 'L3' }];
+  MATRIX = [
+    { action: 'فحص المطابقة والحاسبات والقواعد', c: ['y', 'y', 'y', 'y', 'y'], cost: 'مجاناً', free: true },
+    { action: 'تصفّح ملخّص الطلب المُجمَّع', c: ['y', 'y', 'y', 'y', 'y'], cost: 'مجاناً', free: true },
+    { action: 'الرسائل · نشر طلب توريد · ملف عام', c: ['n', 'y', 'y', 'y', 'y'], cost: 'مجاناً', free: true },
+    { action: 'نشر رحلة والظهور في المطابقة', c: ['n', 'n', 'y', 'n', 'y'], cost: '5 وحدات' },
+    { action: 'استقبال التزام بعربون مُصرَّح', c: ['n', 'n', 'y', 'y', 'y'], cost: 'مجاناً', free: true },
+    { action: 'فتح ملف تاجر مُتحقَّق', c: ['n', 'n', 'y', 'n', 'y'], cost: '2 وحدتان' },
+    { action: 'مؤشّر الأسعار التفصيلي', c: ['n', 'n', 'p', 'y', 'y'], cost: 'مجاناً', free: true },
+    { action: 'الطلبات الخاصة (بدعوة)', c: ['n', 'n', 'n', 'y', 'y'], cost: 'مجاناً', free: true },
+    { action: 'ظهور مميّز في المطابقة (7 أيام)', c: ['n', 'n', 'p', 'p', 'y'], cost: '8 وحدات' },
+    { action: 'الدفتر · الوسم · سندات التسليم', c: ['n', 'n', 'y', 'y', 'y'], cost: 'مجاناً', free: true },
+    { action: 'شهادة سجل قابلة للتصدير', c: ['n', 'n', 'p', 'p', 'y'], cost: 'مجاناً', free: true },
+    { action: 'حدود أعلى وأولوية في الترتيب', c: ['n', 'n', 'n', 'n', 'y'], cost: 'بالسجل' }];
+  GATE_DOCS = [{ t: 'بطاقة ANAE — نشاط الاستيراد المصغّر', state: 'مُتحقَّقة', kind: 'g' }, { t: 'الرخصة العامة سارية', state: 'مطلوبة', kind: 'w' }];
+  GATE_RULES = [
+    { t: 'البوّابة على الفعل لا على الوصول', note: 'جدار تحقّق عند التسجيل يقتل التحويل في سوق يخشى المراقبة أصلاً. الفحص والحاسبات تعمل بلا حساب إلى الأبد.' },
+    { t: 'كل طلب وثيقة يقول لماذا وماذا يفتح', note: 'صيغة ثابتة: «لماذا نطلبها» + «ماذا تفتح لك». بلا هذين السطرين لا يُعرض الطلب.' },
+    { t: 'العمل لا يضيع عند البوّابة', note: 'الرحلة تُحفظ مخطَّطة والطلب يُحفظ مسودّة. الترقية تكمل ما بدأه المستخدم، لا تعيده إلى الصفر.' },
+    { t: 'الرصيد لا يقفل الوصول', note: 'نفاد الرصيد يوقف الأفعال المكلِّفة فقط. الدفتر والرسائل والتسليم والاعتراض تعمل دائماً — لأنها التزامات قائمة تجاه طرف آخر.' }];
+  renderVals() {
+    const leafId = this.state.leaf, L = this.LEAVES[leafId] || this.LEAVES.coats;
+    const K = { g: [this.OLIVE, 'oklch(0.93 0.035 150)', '✓'], w: [this.OCHRE, 'oklch(0.95 0.045 85)', '!'], n: [this.MUTED, 'oklch(0.92 0.012 80)', '·'] };
+    const cell = { y: ['✓', this.OLIVE, 'oklch(0.93 0.035 150)', 'متاح'], p: ['!', 'oklch(0.5 0.12 70)', 'oklch(0.95 0.045 85)', 'متاح بحدّ أدنى أو بقيود'], n: ['·', this.MUTED, 'oklch(0.92 0.012 80)', 'مقفل — يُطلب عند الفعل'] };
+    return {
+      tree: this.TREE.map(t => ({ ...t, on: t.id === leafId, fs: t.level === 0 ? 15 : 14, fw: t.level === 0 ? 500 : t.id === leafId ? 500 : 400,
+        fg: t.level === 0 ? this.INK : t.level === 1 ? this.INK : this.INK, bg: t.id === leafId ? 'oklch(0.93 0.012 80)' : 'transparent',
+        padStart: (10 + t.level * 16) + 'px', padEnd: '10px', pick: () => this.LEAVES[t.id] && this.setState({ leaf: t.id }) })),
+      leafName: L.name, leafCode: L.code,
+      attrs: L.attrs.map(a => ({ ...a, fg: a.req === 'اختياري' ? this.MUTED : a.req === 'محسوب' ? this.OLIVE : this.INK })),
+      bindings: L.bindings.map(b => ({ ...b, fg: K[b.kind][0], bg: K[b.kind][1], glyph: K[b.kind][2] })),
+      governance: this.GOV, levels: this.LEVELS,
+      matrix: this.MATRIX.map(m => ({ ...m, costFg: m.free ? this.OLIVE : this.INK, cells: m.c.map(c => ({ glyph: cell[c][0], fg: cell[c][1], bg: cell[c][2], title: cell[c][3] })) })),
+      gateDocs: this.GATE_DOCS.map(d => ({ ...d, fg: K[d.kind][0], bg: K[d.kind][1], glyph: K[d.kind][2] })),
+      gateRules: this.GATE_RULES
+    };
+  }
+}
+</script>
+</body>
+</html>

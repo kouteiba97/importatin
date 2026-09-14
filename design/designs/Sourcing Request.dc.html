@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./tokens.css">
+<style>
+.fld{display:block;font-size:var(--t-sm);color:var(--ink-2);margin-bottom:7px}
+.inp{width:100%;height:48px;padding:0 14px;border:1px solid var(--rule-strong);border-radius:var(--r);background:var(--surface);font-size:15px;color:inherit}
+.ta{width:100%;min-height:86px;padding:12px 14px;border:1px solid var(--rule-strong);border-radius:var(--r);background:var(--surface);font-size:15px;color:inherit;line-height:1.65;resize:vertical}
+.cta{width:100%;height:52px;border:0;border-radius:var(--r);background:var(--ink);color:var(--ink-on);font-size:16px;font-weight:600;cursor:pointer}
+.sw{flex:none;height:28px;padding:0 11px;border:1px solid var(--rule-strong);border-radius:var(--r-pill);background:var(--surface);font-size:var(--t-micro);cursor:pointer;color:inherit}
+.scrollx{overflow-x:auto;scrollbar-width:none}.scrollx::-webkit-scrollbar{display:none}
+</style>
+</helmet>
+
+<div dir="rtl" lang="ar" class="tier-op" style="min-height:100vh;display:flex;justify-content:center">
+<div style="width:100%;max-width:430px;min-height:100vh;display:flex;flex-direction:column;background:var(--paper);border-inline:1px solid var(--rule)">
+
+<header style="display:flex;align-items:center;gap:10px;padding:11px 14px;background:var(--surface);border-bottom:1px solid var(--rule)">
+<button type="button" aria-label="رجوع" style="width:34px;height:34px;border:0;background:transparent;cursor:pointer;display:grid;place-items:center;color:inherit">
+<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 5l-7 7 7 7"/></svg>
+</button>
+<span style="flex:1;font-size:var(--t-h3);font-weight:500">{{ headline }}</span>
+</header>
+
+<div class="scrollx" style="display:flex;gap:6px;padding:9px 14px;background:var(--surface-2);border-bottom:1px solid var(--rule-faint)">
+<sc-for list="{{ views }}" as="v" hint-placeholder-count="5">
+<button type="button" onClick="{{ v.pick }}" aria-pressed="{{ v.on }}" class="sw" style="background:{{ v.bg }};color:{{ v.fg }};border-color:{{ v.bd }}">{{ v.label }}</button>
+</sc-for>
+</div>
+
+<main style="flex:1;padding:16px 16px 28px;display:flex;flex-direction:column;gap:16px">
+
+<!-- ══════ COMPOSE ══════ -->
+<sc-if value="{{ isCompose }}" hint-placeholder-val="{{ true }}">
+<div style="display:flex;flex-direction:column;gap:17px">
+
+<div>
+<h1 style="margin:0 0 7px;font-size:23px;font-weight:600">ما الذي تبحث عنه؟</h1>
+<p style="margin:0;font-size:var(--t-body);line-height:1.7;color:var(--ink-2)">كلّما دقّت المواصفة، قلّ الخلاف عند التسليم.</p>
+</div>
+
+<div><span class="fld">الفئة</span>
+<div class="scrollx" style="display:flex;gap:7px">
+<sc-for list="{{ cats }}" as="c" hint-placeholder-count="5">
+<button type="button" onClick="{{ c.pick }}" aria-pressed="{{ c.on }}" style="flex:none;height:38px;padding:0 14px;border:1px solid {{ c.bd }};border-radius:var(--r-pill);background:{{ c.bg }};color:{{ c.fg }};font-size:var(--t-sm);cursor:pointer">{{ c.label }}</button>
+</sc-for>
+</div>
+</div>
+
+<div><label class="fld" for="nm">اسم السلعة</label>
+<input id="nm" class="inp" value="قمصان قطنية رجالية"></div>
+
+<div><label class="fld" for="sp">المواصفة</label>
+<textarea id="sp" class="ta" placeholder="القماش، المقاسات، الألوان، أي تفصيل يهمّك">قطن 100%. المقاسات ⁦M · L · XL⁩. الألوان: أبيض، أزرق فاتح، رمادي. أكمام طويلة.</textarea>
+<div style="display:flex;gap:7px;margin-top:8px">
+<sc-for list="{{ specHints }}" as="h" hint-placeholder-count="3">
+<button type="button" class="sw">+ {{ h }}</button>
+</sc-for>
+</div>
+</div>
+
+<div style="display:flex;gap:11px">
+<div style="flex:1"><label class="fld" for="qt">الكمية</label>
+<input id="qt" class="inp num" inputMode="numeric" value="120"></div>
+<div style="flex:1"><label class="fld" for="dl">الأجل</label>
+<select id="dl" class="inp"><option>خلال شهر</option><option>خلال أسبوعين</option><option>مرن</option></select></div>
+</div>
+
+<div>
+<span class="fld">النطاق السعري المستهدف — للوحدة</span>
+<div style="display:flex;align-items:center;gap:9px">
+<input class="inp num" inputMode="numeric" value="1 800" style="flex:1">
+<span style="flex:none;color:var(--ink-3)">—</span>
+<input class="inp num" inputMode="numeric" value="2 400" style="flex:1">
+<span class="num" style="flex:none;font-size:var(--t-sm);color:var(--ink-2)"><bdi>دج</bdi></span>
+</div>
+<p style="margin:8px 0 0;font-size:var(--t-xs);color:var(--ink-3);line-height:1.65">يُعرض كنطاق، لا كرقم واحد. سقفك الأعلى لا يظهر قبل أن يقترح المستورد.</p>
+</div>
+
+<div><label class="fld" for="wl">ولاية الاستلام</label>
+<select id="wl" class="inp"><option>سطيف</option><option>الجزائر</option><option>وهران</option></select></div>
+
+<div>
+<span class="fld">من يرى هذا الطلب</span>
+<div style="display:flex;flex-direction:column;gap:9px">
+<sc-for list="{{ visibility }}" as="v" hint-placeholder-count="2">
+<button type="button" onClick="{{ v.pick }}" aria-pressed="{{ v.on }}" class="card" style="padding:13px;display:flex;gap:11px;align-items:flex-start;text-align:start;cursor:pointer;color:inherit;border-color:{{ v.bd }};border-width:{{ v.bw }}px">
+<span aria-hidden="true" style="flex:none;width:19px;height:19px;border-radius:50%;border:2px solid {{ v.dotBd }};background:{{ v.dotBg }};display:grid;place-items:center;color:#fff;font-size:10px;margin-block-start:1px">{{ v.check }}</span>
+<span style="flex:1;min-width:0">
+<span style="display:block;font-size:var(--t-body);font-weight:500">{{ v.title }}</span>
+<span style="display:block;font-size:var(--t-sm);color:var(--ink-2);line-height:1.6;margin-top:3px">{{ v.body }}</span>
+</span>
+</button>
+</sc-for>
+</div>
+</div>
+
+<button type="button" onClick="{{ goSent }}" class="cta">انشر الطلب</button>
+<p style="margin:0;font-size:var(--t-xs);color:var(--ink-3);line-height:1.7">النشر يفتح محادثات مع مستوردين مُتحقَّقين. لا ينشأ أي اتفاق إلا بموافقتك الصريحة في خطوة لاحقة.</p>
+
+</div>
+</sc-if>
+
+<!-- ══════ PUBLISHED / WAITING ══════ -->
+<sc-if value="{{ isSent }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;gap:16px">
+<div class="card" style="padding:15px">
+<div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
+<span class="chip chip-verified">منشور</span>
+<span class="num" style="margin-inline-start:auto;font-size:var(--t-xs);color:var(--ink-3)"><bdi>منذ 3 ساعات</bdi></span>
+</div>
+<h2 style="margin:0 0 9px;font-size:var(--t-h2);font-weight:600">قمصان قطنية رجالية</h2>
+<sc-for list="{{ summary }}" as="s" hint-placeholder-count="4">
+<div style="display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:9px 0;border-bottom:1px solid var(--rule-faint)">
+<span style="font-size:var(--t-sm);color:var(--ink-2)">{{ s.k }}</span>
+<span class="num" style="font-size:var(--t-sm);font-weight:500"><bdi>{{ s.v }}</bdi></span>
+</div>
+</sc-for>
+</div>
+
+<div class="card" style="padding:15px;text-align:center">
+<div class="num" style="font-size:32px;font-weight:600;line-height:1"><bdi>7</bdi></div>
+<div style="font-size:var(--t-sm);color:var(--ink-2);margin-top:5px">مستوردين مُتحقَّقين طابقوا طلبك</div>
+<div style="font-size:var(--t-xs);color:var(--ink-3);margin-top:8px">عادةً تصل أول العروض خلال يوم.</div>
+</div>
+
+<div style="display:flex;gap:9px">
+<button type="button" onClick="{{ goOffers }}" class="cta" style="flex:1;background:var(--allowed)">شاهد العروض</button>
+<button type="button" style="flex:none;padding:0 16px;height:52px;border:1px solid var(--rule-strong);border-radius:var(--r);background:var(--surface);color:inherit;font-size:14px;cursor:pointer">عدّل</button>
+</div>
+</div>
+</sc-if>
+
+<!-- ══════ OFFERS / COMPARE ══════ -->
+<sc-if value="{{ isOffers }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;gap:13px">
+<div style="display:flex;align-items:baseline;gap:8px">
+<span style="flex:1;font-size:var(--t-h2);font-weight:500">العروض</span>
+<span class="num" style="font-size:var(--t-xs);color:var(--ink-3)"><bdi>مرتّبة بالسجل</bdi></span>
+</div>
+
+<sc-for list="{{ offers }}" as="o" hint-placeholder-count="3">
+<article class="card" style="padding:14px">
+<div style="display:flex;align-items:flex-start;gap:11px;margin-bottom:12px">
+<span aria-hidden="true" style="flex:none;width:42px;height:42px;border-radius:50%;background:{{ o.avBg }};display:grid;place-items:center;font-size:12px;font-weight:600;color:{{ o.avFg }}">{{ o.initials }}</span>
+<div style="flex:1;min-width:0">
+<div style="display:flex;align-items:center;gap:6px">
+<span style="font-size:var(--t-h3);font-weight:600">{{ o.name }}</span>
+<svg width="14" height="14" viewBox="0 0 24 24" style="flex:none" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="var(--allowed)"/><path d="M7.4 12.4l3 3 6.2-6.6" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+</div>
+<div class="num" style="font-size:var(--t-xs);color:var(--ink-2);margin-top:3px"><bdi>{{ o.record }}</bdi></div>
+</div>
+</div>
+
+<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--rule);border:1px solid var(--rule);border-radius:var(--r-sm);overflow:hidden;margin-bottom:12px">
+<sc-for list="{{ o.cells }}" as="c" hint-placeholder-count="3">
+<div style="background:var(--surface);padding:10px 5px;text-align:center">
+<div class="num" style="font-size:var(--t-h3);font-weight:600;line-height:1.2;color:{{ c.fg }}"><bdi>{{ c.v }}</bdi></div>
+<div style="font-size:9.5px;color:var(--ink-2);margin-top:3px">{{ c.k }}</div>
+</div>
+</sc-for>
+</div>
+
+<p style="margin:0 0 12px;font-size:var(--t-sm);line-height:1.7;color:var(--ink-2)">{{ o.note }}</p>
+
+<div style="display:flex;gap:8px">
+<button type="button" onClick="{{ goAgree }}" style="flex:1;height:42px;border:0;border-radius:var(--r-sm);background:{{ o.ctaBg }};color:{{ o.ctaFg }};font-size:var(--t-sm);font-weight:600;cursor:pointer">{{ o.cta }}</button>
+<button type="button" style="flex:none;padding:0 14px;height:42px;border:1px solid var(--rule-strong);border-radius:var(--r-sm);background:var(--surface);color:inherit;font-size:var(--t-sm);cursor:pointer">راسل</button>
+</div>
+</article>
+</sc-for>
+</div>
+</sc-if>
+
+<!-- ══════ AGREEMENT ══════ -->
+<sc-if value="{{ isAgree }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;gap:16px">
+<div>
+<h1 style="margin:0 0 7px;font-size:22px;font-weight:600">راجع الاتفاق</h1>
+<p style="margin:0;font-size:var(--t-body);line-height:1.7;color:var(--ink-2)">هذا توثيق لما اتّفقتما عليه. يصير ملزماً بينكما عند موافقة الطرفين.</p>
+</div>
+
+<div class="card" style="padding:15px">
+<div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
+<span aria-hidden="true" style="flex:none;width:34px;height:34px;border-radius:50%;background:oklch(0.92 0.03 150);display:grid;place-items:center;font-size:11px;font-weight:600;color:var(--allowed-ink)">ك ح</span>
+<div style="flex:1;min-width:0">
+<div style="font-size:var(--t-sm);font-weight:600">كريمة ح.</div>
+<div class="num" style="font-size:var(--t-micro);color:var(--ink-2);margin-top:1px"><bdi>رحلة إسطنبول · تصل 18 أكتوبر</bdi></div>
+</div>
+</div>
+<sc-for list="{{ terms }}" as="t" hint-placeholder-count="6">
+<div style="display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:10px 0;border-bottom:1px solid var(--rule-faint)">
+<span style="font-size:var(--t-sm);color:var(--ink-2);flex:none">{{ t.k }}</span>
+<span class="num" style="font-size:var(--t-sm);font-weight:{{ t.fw }};text-align:end"><bdi>{{ t.v }}</bdi></span>
+</div>
+</sc-for>
+</div>
+
+<div class="card" style="padding:15px">
+<div style="font-size:var(--t-sm);font-weight:600;margin-bottom:10px">إن تغيّر السعر</div>
+<p style="margin:0;font-size:var(--t-sm);line-height:1.75;color:var(--ink-2)">إذا خرج السعر النهائي عن النطاق المتّفق عليه، يُعلمك المستورد قبل الشراء ولك أن تقبل أو تنسحب بلا التزام.</p>
+</div>
+
+<div style="display:flex;gap:10px;padding:13px 14px;border:1px solid var(--rule);border-radius:var(--r);background:var(--surface-2)">
+<span aria-hidden="true" style="flex:none;color:var(--ink-3)">i</span>
+<p style="margin:0;font-size:var(--t-xs);line-height:1.7;color:var(--ink-2)">أي مبلغ بينكما يُصرَّح به من الطرفين للتوثيق فقط. مَعْبَر لا تستلمه ولا تحتفظ به ولا تضمنه ولا تردّه.</p>
+</div>
+
+<button type="button" class="cta" style="background:var(--allowed)">أوافق على الاتفاق</button>
+<button type="button" style="width:100%;height:48px;border:1px solid var(--rule-strong);border-radius:var(--r);background:transparent;color:inherit;font-size:15px;cursor:pointer">اقترح تعديلاً</button>
+</div>
+</sc-if>
+
+</main>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:430,&quot;height&quot;:1480}}">
+class Component extends DCLogic {
+  state = { view: 'compose', cat: 'clothes', vis: 'open' };
+
+  VIEWS = [['compose', 'إنشاء'], ['sent', 'منشور'], ['offers', 'العروض'], ['agree', 'الاتفاق']];
+  HEAD = { compose: 'طلب توريد جديد', sent: 'طلبك', offers: 'العروض', agree: 'الاتفاق' };
+
+  CATS = [['clothes', 'ألبسة'], ['bags', 'حقائب'], ['shoes', 'أحذية'], ['cosm', 'تجميل'], ['home', 'منزل']];
+  SPEC_HINTS = ['المقاسات', 'الألوان', 'الخامة'];
+
+  VIS = [
+    { id: 'open', title: 'كل المستوردين المُتحقَّقين', body: 'أوسع وصول وأسرع عروض.' },
+    { id: 'picked', title: 'من أختارهم فقط', body: 'ترسله لمستوردين تعاملت معهم من قبل.' }
+  ];
+
+  SUMMARY = [
+    { k: 'الكمية', v: '120 وحدة' },
+    { k: 'النطاق المستهدف', v: '1 800 – 2 400 دج' },
+    { k: 'الأجل', v: 'خلال شهر' },
+    { k: 'الاستلام', v: 'سطيف' }
+  ];
+
+  OFFERS = [
+    { name: 'كريمة ح.', initials: 'ك ح', tone: 0,
+      record: '84 معاملة مؤكَّدة · 97% إتمام',
+      cells: [['2 100 دج', 'السعر المقترح', 'var(--ink)'], ['18 أكتوبر', 'تاريخ الوصول', 'var(--ink)'], ['120', 'الكمية', 'var(--allowed-ink)']],
+      note: 'تغطّي الكمية كاملة ضمن رحلة إسطنبول. اقترحت سعراً داخل نطاقك.',
+      cta: 'اقبل هذا العرض', best: true },
+    { name: 'ن. مرابط', initials: 'ن م', tone: 1,
+      record: '46 معاملة مؤكَّدة · 92% إتمام',
+      cells: [['1 950 دج', 'السعر المقترح', 'var(--allowed-ink)'], ['9 نوفمبر', 'تاريخ الوصول', 'var(--conditional-ink)'], ['80', 'الكمية', 'var(--conditional-ink)']],
+      note: 'سعر أقلّ لكن الكمية جزئية والوصول بعد أجلك بأسبوعين.',
+      cta: 'ناقش التفاصيل', best: false },
+    { name: 'سفيان ب.', initials: 'س ب', tone: 2,
+      record: '12 معاملة مؤكَّدة · مستورد جديد',
+      cells: [['2 250 دج', 'السعر المقترح', 'var(--ink)'], ['25 أكتوبر', 'تاريخ الوصول', 'var(--ink)'], ['120', 'الكمية', 'var(--allowed-ink)']],
+      note: 'يغطّي الكمية والأجل، لكن سجلّه قصير — اطلب صور عيّنة قبل الالتزام.',
+      cta: 'ناقش التفاصيل', best: false }
+  ];
+
+  TERMS = [
+    { k: 'السلعة', v: 'قمصان قطنية رجالية', fw: 600 },
+    { k: 'المواصفة', v: 'قطن 100% · ⁦M · L · XL⁩', fw: 400 },
+    { k: 'الكمية', v: '120 وحدة', fw: 600 },
+    { k: 'نطاق السعر', v: '2 100 دج ± 8%', fw: 600 },
+    { k: 'صلاحية النطاق', v: 'حتى 14 أكتوبر', fw: 400 },
+    { k: 'الاستلام', v: 'سطيف · 20 أكتوبر', fw: 400 }
+  ];
+
+  TONE = [
+    ['oklch(0.92 0.03 150)', 'var(--allowed-ink)'],
+    ['oklch(0.93 0.03 250)', 'oklch(0.35 0.06 250)'],
+    ['oklch(0.93 0.03 28)', 'var(--accent-ink)']
+  ];
+
+  renderVals() {
+    const s = this.state;
+    const go = (v) => () => this.setState({ view: v });
+
+    return {
+      headline: this.HEAD[s.view],
+      views: this.VIEWS.map(([id, label]) => ({
+        label, on: s.view === id,
+        bg: s.view === id ? 'var(--ink)' : 'var(--surface)',
+        fg: s.view === id ? 'var(--ink-on)' : 'var(--ink-2)',
+        bd: s.view === id ? 'var(--ink)' : 'var(--rule-strong)',
+        pick: go(id)
+      })),
+      isCompose: s.view === 'compose', isSent: s.view === 'sent',
+      isOffers: s.view === 'offers', isAgree: s.view === 'agree',
+      goSent: go('sent'), goOffers: go('offers'), goAgree: go('agree'),
+
+      cats: this.CATS.map(([id, label]) => ({
+        label, on: s.cat === id,
+        bd: s.cat === id ? 'var(--ink)' : 'var(--rule-strong)',
+        bg: s.cat === id ? 'var(--ink)' : 'var(--surface)',
+        fg: s.cat === id ? 'var(--ink-on)' : 'var(--ink)',
+        pick: () => this.setState({ cat: id })
+      })),
+      specHints: this.SPEC_HINTS,
+
+      visibility: this.VIS.map(v => {
+        const on = s.vis === v.id;
+        return {
+          ...v, on,
+          bd: on ? 'var(--allowed)' : 'var(--rule-faint)',
+          bw: on ? 2 : 1,
+          dotBd: on ? 'var(--allowed)' : 'var(--rule-strong)',
+          dotBg: on ? 'var(--allowed)' : 'transparent',
+          check: on ? '✓' : '',
+          pick: () => this.setState({ vis: v.id })
+        };
+      }),
+
+      summary: this.SUMMARY,
+
+      offers: this.OFFERS.map(o => {
+        const [avBg, avFg] = this.TONE[o.tone];
+        return {
+          ...o, avBg, avFg,
+          cells: o.cells.map(([v, k, fg]) => ({ v, k, fg })),
+          ctaBg: o.best ? 'var(--allowed)' : 'var(--surface)',
+          ctaFg: o.best ? 'var(--ink-on)' : 'var(--ink)'
+        };
+      }),
+
+      terms: this.TERMS
+    };
+  }
+}
+</script>
+</body>
+</html>

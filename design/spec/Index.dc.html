@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+html,body{margin:0;padding:0;background:oklch(0.965 0.008 80);color:oklch(0.22 0.02 60);font-family:"IBM Plex Sans Arabic",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+*{box-sizing:border-box}
+a{color:oklch(0.42 0.07 150)}a:hover{color:oklch(0.32 0.07 150)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</helmet>
+<div dir="rtl" lang="ar" style="min-height:100vh;background:oklch(0.965 0.008 80)">
+<div style="max-width:1100px;margin:0 auto;padding:28px 20px 56px;display:flex;flex-direction:column;gap:26px">
+
+<header style="display:flex;flex-direction:column;gap:8px;border-bottom:1px solid oklch(0.88 0.012 80);padding-bottom:18px">
+<div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:oklch(0.48 0.02 60)"><bdi>MAABAR · DESIGN v1 · AR-first · RTL</bdi></div>
+<h1 style="margin:0;font-size:30px;font-weight:500;line-height:1.3">مَعْبَر — خريطة النظام</h1>
+<p style="margin:0;font-size:15px;line-height:1.75;color:oklch(0.48 0.02 60);max-width:80ch">شبكة ذكاء الطلب وسعة الاستيراد للتجارة المصغّرة في الجزائر. المنصّة تبيع قراراً، لا بضاعة: تعرض طلباً محلياً مُتحقَّقاً قبل الشراء، وتحسب الهامش القانوني، وتبني سجلّ ثقة قابلاً للنقل. لا دفع، لا صرف، لا وكالة، لا جمركة.</p>
+<p style="margin:4px 0 0;font-size:19px;line-height:1.6">«اعرف واش يطلبو التجار — قبل ما تشري.»</p>
+</header>
+
+<sc-for list="{{ groups }}" as="g" hint-placeholder-count="4">
+<section style="display:flex;flex-direction:column;gap:12px">
+<div style="display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap">
+<h2 style="margin:0;font-size:17px;font-weight:500">{{ g.title }}</h2>
+<span style="font-size:12px;color:oklch(0.48 0.02 60)">{{ g.phase }}</span>
+</div>
+<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:12px">
+<sc-for list="{{ g.items }}" as="i" hint-placeholder-count="3">
+<a href="{{ i.href }}" style="display:flex;flex-direction:column;gap:8px;padding:15px;border:1px solid oklch(0.88 0.012 80);border-radius:8px;background:#fff;text-decoration:none;color:inherit">
+<span style="display:flex;justify-content:space-between;align-items:baseline;gap:10px"><span style="font-size:16px;font-weight:500;line-height:1.4">{{ i.name }}</span><span style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:oklch(0.48 0.02 60);white-space:nowrap"><bdi>{{ i.code }}</bdi></span></span>
+<span style="font-size:13px;line-height:1.65;color:oklch(0.48 0.02 60)">{{ i.note }}</span>
+<span style="display:flex;flex-wrap:wrap;gap:5px;margin-top:2px">
+<sc-for list="{{ i.screens }}" as="s" hint-placeholder-count="3">
+<span style="font-size:11px;color:oklch(0.35 0.02 60);border:1px solid oklch(0.9 0.012 80);border-radius:10px;padding:3px 8px">{{ s.t }}</span>
+</sc-for>
+</span>
+</a>
+</sc-for>
+</div>
+</section>
+</sc-for>
+
+<section style="display:flex;flex-direction:column;gap:12px;border-top:1px solid oklch(0.88 0.012 80);padding-top:20px">
+<h2 style="margin:0;font-size:17px;font-weight:500">القواعد التي يقوم عليها التصميم</h2>
+<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:10px">
+<sc-for list="{{ laws }}" as="l" hint-placeholder-count="6">
+<div style="display:grid;grid-template-columns:auto 1fr;gap:10px;padding:12px 13px;background:#fff;border:1px solid oklch(0.89 0.012 80);border-radius:8px;align-items:start">
+<span aria-hidden="true" style="width:18px;height:18px;border-radius:50%;background:{{ l.bg }};color:{{ l.fg }};display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;margin-top:2px">{{ l.glyph }}</span>
+<span><span style="display:block;font-size:14px;font-weight:500;line-height:1.45">{{ l.t }}</span><span style="display:block;font-size:12px;line-height:1.6;color:oklch(0.48 0.02 60);margin-top:3px">{{ l.note }}</span></span>
+</div>
+</sc-for>
+</div>
+</section>
+
+<footer style="font-size:12px;line-height:1.8;color:oklch(0.48 0.02 60);border-top:1px solid oklch(0.88 0.012 80);padding-top:16px">
+كل رقم تنظيمي في الواجهات يأتي من سجل القواعد بتاريخ سريان — لا رقم مكتوب في الشيفرة. كل جواب مطابقة يحمل: الحكم · السبب · المادة · رابط الجريدة الرسمية · تاريخ آخر تحديث · الخطوة التالية · التنويه. التنويه الثابت: «معلومة استرشادية — القرار النهائي يعود لمصالح الجمارك.» وكل شارة تحقّق: «تحقّقت المنصّة من الوثائق المقدَّمة. هذا ليس اعتماداً حكومياً.»
+</footer>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1100,&quot;height&quot;:900}}">
+class Component extends DCLogic {
+  GROUPS = [
+    { title: 'الإسفين العام — بلا حساب', phase: 'المرحلة 0', items: [
+      { name: 'الواجهة العامة', code: 'LND', href: './Landing.dc.html', note: 'تخاطب خوف المستورد لا المستثمر. ثلاث لغات، وقائمة صريحة بما لا نفعله.', screens: [{ t: 'AR/FR/EN' }, { t: 'ما لا نفعله' }, { t: 'الخصوصية' }] },
+      { name: 'فحص المطابقة والحاسبات', code: 'CHK', href: './Compliance Checker.dc.html', note: 'الحكم مع المادة ورابط الجريدة، بطاقة مشاركة لواتساب، حاسبة الهامش والحصّة والصلاحية، ومرجع القواعد.', screens: [{ t: 'فحص سلعة' }, { t: 'الحاسبة' }, { t: 'القواعد' }, { t: 'بطاقة واتساب' }] }] },
+    { title: 'المستورد', phase: 'المرحلتان 1–2', items: [
+      { name: 'لوحة الطلب — الميزة العشرية', code: 'DMD', href: './Demand Board.dc.html', note: 'طلب مُجمَّع × سعة الرحلة × مرشّح المطابقة. ثلاثة عدّادات حيّة، وفصل قاطع بين الملتزَم والمُشار إليه.', screens: [{ t: 'قائمة الشراء' }, { t: 'عدّادات حيّة' }, { t: 'تفكيك الثقة' }] },
+      { name: 'الرحلة', code: 'TRP', href: './Importer App.dc.html', note: 'الرئيسية بقانون اللوحات الستّ، معالج الرحلة، تفاصيل الرحلة والبيان — بكل الحالات الصعبة.', screens: [{ t: 'مفتوحة للطلب' }, { t: 'في الخارج' }, { t: 'موقوفة في الجمارك' }, { t: 'مكتملة جزئياً' }, { t: 'قيد المراجعة' }] },
+      { name: 'الثقة والوثائق', code: 'TRS', href: './Importer Trust.dc.html', note: 'سلّم الثقة برفع وثيقة واحدة في كل مرّة، خزانة بعدّادات انتهاء، ومؤشّر موثوقية مفكَّك.', screens: [{ t: 'سلّم الثقة' }, { t: 'الوثائق' }, { t: 'شهادة السجل' }] },
+      { name: 'السجلات', code: 'REC', href: './Importer Records.dc.html', note: 'الدفتر المرقّم (المادة 4)، مولّد الوسم وسند التسليم (المادة 14)، والرصيد مع تحويل بريدي يدوي.', screens: [{ t: 'الدفتر' }, { t: 'الوسم' }, { t: 'CCP / BaridiMob' }] }] },
+    { title: 'التاجر والمشترك', phase: 'المرحلتان 1–2', items: [
+      { name: 'تطبيق التاجر', code: 'TRD', href: './Trader App.dc.html', note: 'خطّ التوريد، طلب منظّم، مقارنة مستوردين بعدد المعاملات لا بالسعر، مؤشّر الأسعار، وتفاصيل الالتزام.', screens: [{ t: 'الخط' }, { t: 'طلب توريد' }, { t: 'مقارنة' }, { t: 'مؤشّر الأسعار' }, { t: 'التزام' }] },
+      { name: 'التدفّقات المشتركة', code: 'SHR', href: './Shared Flows.dc.html', note: 'محادثة مثبّتة على كائن بقوالب منظّمة، بروتوكول تسليم برمز ونافذة اعتراض، اعتراض بوساطة غير مُلزِمة، وإشعارات.', screens: [{ t: 'المحادثة' }, { t: 'التسليم' }, { t: 'الاعتراض' }, { t: 'الإشعارات' }] }] },
+    { title: 'الأساس التصميمي', phase: 'يسبق كل شاشة', items: [
+      { name: 'الاتجاه البصري «الدفتر المختوم»', code: 'DS', href: './Design System.dc.html', note: 'اللون والحرف والأرقام الجدولية ومفردات الثقة وجرد المكوّنات وقواعد التركيب — مع الممنوعات الصريحة.', screens: [{ t: 'اللون' }, { t: 'الحرف' }, { t: 'عدّاد السعة' }, { t: 'ألفاظ ممنوعة' }] },
+      { name: 'ثلاثية اللغة و RTL', code: 'I18N', href: './Trilingual and RTL.dc.html', note: 'المكوّن نفسه في AR/FR/EN، عزل النصّ المختلط، ستّ صيغ جمع عربية، جدول القلب، واختبار أطول سلسلة.', screens: [{ t: 'AR · FR · EN' }, { t: 'bdi' }, { t: 'صيغ الجمع' }, { t: 'ما يُقلب' }] },
+      { name: 'التصنيف والصلاحيات', code: 'TAX', href: './Taxonomy and Entitlements.dc.html', note: 'شجرة الفئات وسماتها وما يتعلّق بكل ورقة، وحوكمتها، ومصفوفة ما يفتحه المستوى وما يستهلكه الرصيد.', screens: [{ t: 'الشجرة' }, { t: 'السمات' }, { t: 'مصفوفة الصلاحيات' }, { t: 'بوّابة الفعل' }] }] },
+    { title: 'الإدارة والنظام', phase: 'المرحلتان 2–3', items: [
+      { name: 'مركز العمليات', code: 'ADM', href: './Admin Console.dc.html', note: 'ستّ قوائم عمل، مساحة قرار بكل الأدلة في لوحة واحدة، تأليف قواعد بمعاينة أثر، صحة السوق، وسجل تدقيق.', screens: [{ t: 'القوائم' }, { t: 'سبب إلزامي' }, { t: 'معاينة الأثر' }, { t: 'سجل التدقيق' }] },
+      { name: 'تغطية الحالات', code: 'STA', href: './State Coverage.dc.html', note: 'الكائنات الأربعة وكل حالاتها — بما فيها القبيحة — بنصّها ونبرتها وما يراه كل طرف.', screens: [{ t: 'رحلة' }, { t: 'طلب توريد' }, { t: 'عرض' }, { t: 'التزام' }] },
+      { name: 'حالات النظام', code: 'SYS', href: './System States.dc.html', note: 'الفارغ والتحميل والخطأ وغير المتصل والجزئي والبداية الباردة — مرسومة كشاشات حقيقية لا كملاحظات.', screens: [{ t: 'بداية باردة' }, { t: 'قائمة الإرسال' }, { t: 'بيانات غير كافية' }, { t: 'L0 · OTP' }] }] }
+  ];
+  LAWS = [
+    { t: 'القيمة والتنقّلات معاملات لا ثوابت', note: '1 800 000 دج و2 تنقّل و5% و0.5% و50% — كلها في سجل القواعد بتاريخ سريان، تتغيّر بلا نشر شيفرة.', kind: 'g' },
+    { t: 'لا مورّد ولا هامش', note: 'الحقل غير موجود أصلاً. تقدير قيمة الشراء يبقى على جهاز المستورد ولا يُرسل — وهذا مكتوب على العدّاد نفسه.', kind: 'g' },
+    { t: 'بوّابات على الأفعال لا على الوصول', note: 'الفحص والحاسبات مفتوحة بلا حساب. الوثيقة تُطلب لحظة الفعل الذي يحتاجها، مع بيان ما تفتحه.', kind: 'g' },
+    { t: 'لا مال يمرّ', note: 'العربون مُصرَّح من الطرفَين ومسجَّل كدليل. لا حجز ولا تحويل ولا ضمان ولا ردّ من المنصّة.', kind: 'r' },
+    { t: 'لا صرف ولا لغة ضمان', note: 'لا سعر عملة في أي شاشة، ولا «مضمون» أو «معتمَد» أو «100% آمن» في أي نصّ — بما في ذلك نصوص المستخدمين، وهي قائمة مراجعة محتوى.', kind: 'r' },
+    { t: 'الأرقام قابلة للتفكيك', note: 'كل رقم مركّب يُفتح على مكوّناته ويقود إلى فعل. الرقم الذي لا يقود إلى شيء يُحذف.', kind: 'g' },
+    { t: 'عربي أولاً', note: 'خصائص منطقية فقط، أرقام 0–9، أرقام جدولية، لا تباعد حروف ولا حروف كبيرة، وزن أخفّ بدرجة، وارتفاع سطر أعلى 10–15%.', kind: 'g' },
+    { t: 'مصمَّم للبطيء', note: 'عائلة خطّ واحدة، بلا صور زخرفية، مسوّدات محلية وقائمة إرسال، وحالة «سيُرسل عند الاتصال» صريحة.', kind: 'g' }
+  ];
+  renderVals() {
+    const K = { g: ['oklch(0.42 0.07 150)', 'oklch(0.93 0.035 150)', '✓'], r: ['oklch(0.5 0.14 35)', 'oklch(0.94 0.035 35)', '✕'] };
+    return { groups: this.GROUPS, laws: this.LAWS.map(l => ({ ...l, fg: K[l.kind][0], bg: K[l.kind][1], glyph: K[l.kind][2] })) };
+  }
+}
+</script>
+</body>
+</html>
