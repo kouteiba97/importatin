@@ -1,7 +1,7 @@
 # Maabar — Final Design Audit
 **Phase:** Pre-build gate
 **Date:** 14 September 2026
-**Supersedes:** `DESIGN-AUDIT.md` (kept for history)
+**Scope:** design only — no application code exists yet
 **Verdict:** **READY FOR DEVELOPMENT**, with one conditional hold (§9)
 
 ---
@@ -268,17 +268,13 @@ These are settled. Do not re-open them in implementation:
 ## 14. HOW TO VIEW
 
 ```bash
-node _preview/server.js
+node preview/server.js
 ```
 Then open `http://localhost:4321`. Screens are Claude Design artboards (`.dc.html`); the preview server injects the runtime they need. Boards with a chip row at the top or bottom are state-switchable — click through to see every designed state.
 
 ```
-design_handoff_maabar/
-├── designs/                  24 screens + tokens.css   ← THE DESIGN
-├── spec/                     design-system documentation
-├── _archive/                 superseded versions
-├── _preview/                 local preview server
-├── FINAL-DESIGN-AUDIT.md     this file
-├── DESIGN-AUDIT.md           previous audit (history)
-└── REMEDIATION-MAP.md        how the design got here
+importatin/
+├── DESIGN-AUDIT.md     this file
+├── designs/            24 screens + tokens.css
+└── preview/server.js   local preview server
 ```
