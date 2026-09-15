@@ -1,4 +1,3 @@
-| Desktop layouts for the remaining 22 screens | **P0 for a web-first launch** | The responsive app-shell pattern is proven on `Demand Board` (rail replaces bottom tabs at 1140px, capacity panel pins beside the list). Admin is already desktop. The rest need the same treatment |
 # Maabar — Final Design Audit
 **Phase:** Pre-build gate
 **Date:** 14 September 2026
@@ -241,7 +240,7 @@ Screens read them at render. `Trip Creation` displays the value cap with its eff
 | Item | Priority | Note |
 |---|---|---|
 | FR/EN strings on 22 screens | P1 | Content task; architecture proven |
-| Desktop layouts | P1 | Everything is mobile-first; only Admin is desktop |
+| Desktop layouts for the remaining 22 screens | **P0 for a web-first launch** | The responsive shell is proven on `Demand Board` — rail replaces bottom tabs at 1140px, capacity panel pins beside a two-column list. Admin is already desktop. The rest need the same treatment |
 | Real product photography | P1 | Placeholders are designed but are placeholders. **Needed before the client demo** |
 | Per-queue admin evidence panels | P2 | Layout established; contents differ |
 | Requests list, Commitments list, Consumer profile | P2 | Patterns established elsewhere |
