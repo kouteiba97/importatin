@@ -10,380 +10,399 @@
 <helmet>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600&family=IBM+Plex+Sans:wght@500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="./tokens.css">
 <style>
-.scrollx{overflow-x:auto;scrollbar-width:none}
-.scrollx::-webkit-scrollbar{display:none}
-.wrap{padding-inline:20px}
-.sect{padding-block:34px;border-top:1px solid var(--rule-faint)}
-.kicker{font-size:var(--t-xs);color:var(--ink-3);margin-bottom:9px}
-h2.sh{margin:0 0 6px;font-size:var(--t-h1);font-weight:500;line-height:1.35;text-wrap:pretty}
-.lede{margin:0 0 20px;font-size:var(--t-body);color:var(--ink-2)}
+/* ============================================================
+   CONSUMER-FIRST HOMEPAGE
+   The largest, least-informed audience is the shopper. The hero
+   is a search over the marketplace, not a pitch at importers.
+   Importers and traders get their own clearly-marked door, and
+   the role is inferred from which door they walk through.
+   ============================================================ */
+.scrollx{overflow-x:auto;scrollbar-width:none}.scrollx::-webkit-scrollbar{display:none}
+.wrap{width:100%;max-width:1180px;margin:0 auto;padding-inline:20px}
+.sec{padding-block:38px}
+.sech{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:16px}
+.sech h2{margin:0;font-size:var(--t-h1);font-weight:600}
+.more{border:0;background:transparent;font-size:var(--t-sm);color:var(--accent-ink);cursor:pointer;padding:0}
+.clamp2{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.pgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:13px}
+.cgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:11px}
+@media (min-width:760px){.pgrid{grid-template-columns:repeat(4,1fr)}.cgrid{grid-template-columns:repeat(5,1fr)}}
+@media (min-width:1100px){.pgrid{grid-template-columns:repeat(5,1fr)}.cgrid{grid-template-columns:repeat(6,1fr)}}
+.hero{padding-block:44px 34px;text-align:center}
+.h1{margin:0 0 12px;font-size:30px;font-weight:600;line-height:1.28;text-wrap:balance}
+@media (min-width:760px){.h1{font-size:42px}.hero{padding-block:64px 44px}}
+.search{display:flex;align-items:center;gap:11px;height:58px;padding:0 18px;
+        border:1px solid var(--rule-strong);border-radius:var(--r-lg);background:var(--surface);
+        box-shadow:var(--e1);max-width:560px;margin:0 auto}
+.biz{background:var(--ink);color:#fff}
+.bizcard{background:oklch(.26 .02 60);border:1px solid oklch(.34 .02 60);border-radius:var(--r);padding:19px}
 </style>
 </helmet>
 
-<div ref="{{ rootRef }}" dir="rtl" lang="ar" class="tier-public" style="min-height:100vh;display:flex;justify-content:center">
-<div style="width:100%;max-width:430px;min-height:100vh;display:flex;flex-direction:column;background:var(--paper-public);border-inline:1px solid var(--rule)">
+<div ref="{{ rootRef }}" dir="rtl" lang="ar" class="tier-public" style="min-height:100vh;background:var(--paper-public)">
 
-<header style="position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:10px;padding:12px 20px;background:var(--surface);border-bottom:1px solid var(--rule)">
-<span style="font-weight:600;font-size:18px">{{ brand }}</span>
+<!-- ══ HEADER — one clear business door ══ -->
+<header style="position:sticky;top:0;z-index:30;background:var(--surface);border-bottom:1px solid var(--rule)">
+<div class="wrap" style="display:flex;align-items:center;gap:14px;padding-block:13px">
+<span style="display:flex;align-items:center;gap:10px;color:var(--allowed);flex:none">
+<svg width="30" height="30" viewBox="0 0 48 48" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="4.3" stroke-linecap="round"><path d="M11 38V23a13 13 0 0 1 26 0v15"/><path d="M3 38h42"/></g></svg>
+<span style="font-weight:600;font-size:21px;color:var(--ink)">{{ brand }}</span>
+</span>
 <div style="flex:1"></div>
-<div role="group" aria-label="{{ langLabel }}" style="display:flex;border:1px solid var(--rule-strong);border-radius:var(--r-sm);overflow:hidden">
+<button type="button" style="flex:none;height:38px;padding:0 14px;border:1px solid var(--rule-strong);border-radius:var(--r-sm);background:var(--surface);color:inherit;font-size:var(--t-sm);font-weight:500;cursor:pointer">{{ bizLink }}</button>
+<button type="button" style="flex:none;height:38px;padding:0 16px;border:0;border-radius:var(--r-sm);background:var(--ink);color:var(--ink-on);font-size:var(--t-sm);font-weight:500;cursor:pointer">{{ signIn }}</button>
+<div role="group" aria-label="{{ langLabel }}" style="display:flex;border:1px solid var(--rule-strong);border-radius:var(--r-sm);overflow:hidden;flex:none">
 <sc-for list="{{ langs }}" as="l" hint-placeholder-count="3">
-<button type="button" onClick="{{ l.pick }}" aria-pressed="{{ l.on }}" style="height:28px;padding:0 10px;border:0;background:{{ l.bg }};color:{{ l.fg }};font-size:var(--t-xs);font-weight:500;cursor:pointer">{{ l.label }}</button>
+<button type="button" onClick="{{ l.pick }}" aria-pressed="{{ l.on }}" style="height:36px;padding:0 10px;border:0;background:{{ l.bg }};color:{{ l.fg }};font-size:var(--t-xs);font-weight:500;cursor:pointer">{{ l.label }}</button>
 </sc-for>
+</div>
 </div>
 </header>
 
-<main style="flex:1">
-
-<!-- ══ HERO — value only. No negation, no disclaimer, no privacy copy. ══ -->
-<section class="wrap" style="padding-block:36px 30px">
-<div class="kicker">{{ kicker }}</div>
-<h1 style="margin:0 0 14px;font-size:var(--t-display);font-weight:600;line-height:1.28;text-wrap:balance">{{ h1 }}</h1>
-<p style="margin:0 0 22px;font-size:16px;line-height:1.7;color:var(--ink-2)">{{ sub }}</p>
-<div style="display:flex;flex-direction:column;gap:9px">
-<button type="button" style="height:52px;border:0;border-radius:var(--r);background:var(--accent);color:var(--ink-on);font-size:16px;font-weight:500;cursor:pointer">{{ cta1 }}</button>
-<button type="button" style="height:50px;border:1px solid var(--rule-strong);border-radius:var(--r);background:var(--surface);color:inherit;font-size:15px;cursor:pointer">{{ cta2 }}</button>
+<!-- ══ HERO — a search, not a pitch ══ -->
+<section class="wrap hero">
+<h1 class="h1">{{ h1 }}</h1>
+<p style="margin:0 auto 26px;font-size:17px;line-height:1.7;color:var(--ink-2);max-width:52ch">{{ sub }}</p>
+<div class="search">
+<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="var(--ink-3)" stroke-width="2" style="flex:none"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+<input placeholder="{{ searchPh }}" aria-label="{{ searchPh }}" style="flex:1;min-width:0;border:0;background:transparent;font-size:16px;color:inherit;outline:none">
+<button type="button" style="flex:none;height:42px;padding:0 18px;border:0;border-radius:var(--r-sm);background:var(--accent);color:var(--ink-on);font-size:var(--t-sm);font-weight:600;cursor:pointer">{{ searchCta }}</button>
 </div>
-
-<!-- Live proof, not claims -->
-<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1px;margin-top:24px;background:var(--rule);border:1px solid var(--rule);border-radius:var(--r);overflow:hidden">
-<sc-for list="{{ proof }}" as="p" hint-placeholder-count="3">
-<div style="background:var(--surface);padding:13px 7px;text-align:center">
-<div class="num" style="font-size:19px;font-weight:600;line-height:1.2"><bdi>{{ p.v }}</bdi></div>
-<div style="font-size:var(--t-micro);color:var(--ink-2);margin-top:3px;line-height:1.35">{{ p.k }}</div>
-</div>
+<div class="scrollx" style="display:flex;gap:8px;justify-content:center;margin-top:16px;padding-bottom:4px">
+<sc-for list="{{ quick }}" as="q" hint-placeholder-count="5">
+<button type="button" style="flex:none;height:34px;padding:0 14px;border:1px solid var(--rule-strong);border-radius:var(--r-pill);background:var(--surface);font-size:var(--t-sm);cursor:pointer;color:inherit;white-space:nowrap">{{ q }}</button>
 </sc-for>
 </div>
 </section>
 
-<!-- ══ DISCOVERY — show the commerce immediately ══ -->
-<section class="sect" style="padding-inline:0">
-<div class="wrap">
-<div class="kicker">{{ discKicker }}</div>
-<h2 class="sh">{{ discTitle }}</h2>
-<p class="lede">{{ discLede }}</p>
-</div>
-<div class="scrollx" style="display:flex;gap:12px;padding-inline:20px;padding-bottom:6px">
-<sc-for list="{{ tiles }}" as="t" hint-placeholder-count="4">
-<article class="card" style="flex:none;width:150px;overflow:hidden;cursor:pointer">
-<span class="img img-card ph {{ t.ph }}" style="border-radius:0;display:block"></span>
+<!-- ══ CATEGORIES ══ -->
+<section class="wrap sec" style="padding-block-start:8px">
+<div class="sech"><h2>{{ catTitle }}</h2><button type="button" class="more">{{ allLink }}</button></div>
+<div class="cgrid">
+<sc-for list="{{ cats }}" as="c" hint-placeholder-count="6">
+<button type="button" class="card" style="overflow:hidden;padding:0;border:0;cursor:pointer;text-align:start;color:inherit;box-shadow:var(--e1)">
+<span class="img img-tile ph {{ c.ph }}" style="border-radius:0;display:block"></span>
 <span style="display:block;padding:10px 11px 12px">
-<span style="display:block;font-size:var(--t-sm);font-weight:500">{{ t.title }}</span>
-<span class="num" style="display:block;font-size:var(--t-micro);color:var(--ink-3);margin-top:3px"><bdi>{{ t.meta }}</bdi></span>
+<span style="display:block;font-size:var(--t-body);font-weight:500">{{ c.label }}</span>
+<span class="num" style="display:block;font-size:var(--t-micro);color:var(--ink-3);margin-top:2px"><bdi>{{ c.n }}</bdi></span>
 </span>
+</button>
+</sc-for>
+</div>
+</section>
+
+<!-- ══ JUST ARRIVED — proof of a live market ══ -->
+<section class="wrap sec" style="padding-block-start:6px">
+<div class="sech"><h2>{{ freshTitle }}</h2><button type="button" class="more">{{ allLink }}</button></div>
+<div class="pgrid">
+<sc-for list="{{ fresh }}" as="p" hint-placeholder-count="5">
+<article class="card" style="overflow:hidden;cursor:pointer;display:flex;flex-direction:column">
+<div style="position:relative">
+<span class="img img-card ph {{ p.ph }}" style="border-radius:0;display:block"></span>
+<span style="position:absolute;inset-block-start:8px;inset-inline-start:8px;height:20px;padding:0 8px;display:inline-flex;align-items:center;border-radius:var(--r-pill);background:var(--allowed-bg);color:var(--allowed-ink);font-size:var(--t-micro);font-weight:500">{{ p.when }}</span>
+</div>
+<div style="padding:10px 11px 12px;display:flex;flex-direction:column;gap:6px;flex:1">
+<h3 class="clamp2" style="margin:0;font-size:var(--t-sm);font-weight:400;line-height:1.45;min-height:37px">{{ p.title }}</h3>
+<div class="num" style="font-size:16px;font-weight:600;color:var(--accent-ink)"><bdi>{{ p.price }} {{ cur }}</bdi></div>
+<div style="display:flex;align-items:center;gap:5px;padding-top:6px;border-top:1px solid var(--rule-faint);margin-top:auto">
+<span style="flex:1;min-width:0;font-size:var(--t-micro);color:var(--ink-2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ p.seller }}</span>
+<svg width="12" height="12" viewBox="0 0 24 24" style="flex:none" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="var(--allowed)"/><path d="M7.4 12.4l3 3 6.2-6.6" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+</div>
+</div>
 </article>
 </sc-for>
 </div>
 </section>
 
-<!-- ══ THE NETWORK — three roles, one line each ══ -->
-<section class="sect wrap">
-<div class="kicker">{{ netKicker }}</div>
-<h2 class="sh">{{ netTitle }}</h2>
-<p class="lede">{{ netLede }}</p>
-<div style="display:flex;flex-direction:column;gap:11px">
-<sc-for list="{{ roles }}" as="r" hint-placeholder-count="3">
-<div class="card" style="padding:15px;display:flex;gap:12px;align-items:flex-start">
-<span aria-hidden="true" style="flex:none;width:34px;height:34px;border-radius:var(--r-sm);background:{{ r.bg }};display:grid;place-items:center;color:{{ r.fg }}">{{ r.icon }}</span>
-<div style="flex:1;min-width:0">
-<div style="font-size:var(--t-h3);font-weight:500;margin-bottom:4px">{{ r.who }}</div>
-<p style="margin:0;font-size:var(--t-sm);line-height:1.65;color:var(--ink-2)">{{ r.job }}</p>
-</div>
-</div>
-</sc-for>
-</div>
-</section>
-
-<!-- ══ HOW IT WORKS ══ -->
-<section class="sect wrap">
-<div class="kicker">{{ howKicker }}</div>
-<h2 class="sh">{{ howTitle }}</h2>
-<div style="margin-top:18px">
-<sc-for list="{{ steps }}" as="s" hint-placeholder-count="4">
-<div style="display:flex;gap:14px;padding-bottom:18px">
-<div style="flex:none;display:flex;flex-direction:column;align-items:center">
-<span class="mono num" style="width:26px;height:26px;border-radius:50%;border:1px solid var(--rule-strong);display:grid;place-items:center;font-size:var(--t-micro);color:var(--ink-2)">{{ s.n }}</span>
-<sc-if value="{{ s.line }}" hint-placeholder-val="{{ true }}"><span aria-hidden="true" style="flex:1;width:1px;background:var(--rule);margin-block-start:6px;min-height:18px"></span></sc-if>
-</div>
-<div style="flex:1;padding-block-start:3px">
-<div style="font-size:var(--t-body);font-weight:500;margin-bottom:3px">{{ s.t }}</div>
-<p style="margin:0;font-size:var(--t-sm);line-height:1.65;color:var(--ink-2)">{{ s.d }}</p>
-</div>
-</div>
-</sc-for>
-</div>
-</section>
-
-<!-- ══ TRUST ══ -->
-<section class="sect wrap">
-<div class="kicker">{{ trustKicker }}</div>
-<h2 class="sh">{{ trustTitle }}</h2>
-<p class="lede">{{ trustLede }}</p>
-<div class="card" style="padding:4px 15px">
-<sc-for list="{{ trustRows }}" as="t" hint-placeholder-count="4">
-<div style="display:flex;gap:11px;align-items:flex-start;padding-block:13px;border-bottom:1px solid var(--rule-faint)">
-<svg width="17" height="17" viewBox="0 0 24 24" style="flex:none;margin-block-start:2px" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="var(--allowed)"/><path d="M7.4 12.4l3 3 6.2-6.6" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<!-- ══ WHY BUY HERE — trust, stated plainly ══ -->
+<section style="background:var(--surface);border-block:1px solid var(--rule)">
+<div class="wrap sec">
+<h2 style="margin:0 0 6px;font-size:var(--t-h1);font-weight:600">{{ whyTitle }}</h2>
+<p style="margin:0 0 22px;font-size:var(--t-body);color:var(--ink-2);max-width:62ch;line-height:1.7">{{ whyLede }}</p>
+<div style="display:grid;gap:14px;grid-template-columns:1fr" class="whygrid">
+<sc-for list="{{ why }}" as="w" hint-placeholder-count="3">
+<div style="display:flex;gap:12px;align-items:flex-start">
+<svg width="20" height="20" viewBox="0 0 24 24" style="flex:none;margin-block-start:2px" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="var(--allowed)"/><path d="M7.4 12.4l3 3 6.2-6.6" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
 <div>
-<div style="font-size:var(--t-body);font-weight:500;margin-bottom:2px">{{ t.t }}</div>
-<p style="margin:0;font-size:var(--t-sm);line-height:1.65;color:var(--ink-2)">{{ t.d }}</p>
+<div style="font-size:var(--t-h3);font-weight:600;margin-bottom:4px">{{ w.t }}</div>
+<p style="margin:0;font-size:var(--t-sm);line-height:1.7;color:var(--ink-2)">{{ w.d }}</p>
+</div>
+</div>
+</sc-for>
+</div>
+</div>
+</section>
+
+<!-- ══ HOW BUYING WORKS — consumer view, three steps ══ -->
+<section class="wrap sec">
+<h2 style="margin:0 0 22px;font-size:var(--t-h1);font-weight:600">{{ howTitle }}</h2>
+<div style="display:grid;gap:18px;grid-template-columns:1fr" class="howgrid">
+<sc-for list="{{ how }}" as="h" hint-placeholder-count="3">
+<div style="display:flex;gap:13px;align-items:flex-start">
+<span class="mono num" style="flex:none;width:28px;height:28px;border-radius:50%;border:1px solid var(--rule-strong);display:grid;place-items:center;font-size:var(--t-xs);color:var(--ink-2)">{{ h.n }}</span>
+<div>
+<div style="font-size:var(--t-h3);font-weight:600;margin-bottom:4px">{{ h.t }}</div>
+<p style="margin:0;font-size:var(--t-sm);line-height:1.7;color:var(--ink-2)">{{ h.d }}</p>
 </div>
 </div>
 </sc-for>
 </div>
 </section>
 
-<!-- ══ COMPLIANCE — a capability, not a warning ══ -->
-<section class="sect wrap">
-<div class="kicker">{{ compKicker }}</div>
-<h2 class="sh">{{ compTitle }}</h2>
-<p class="lede">{{ compLede }}</p>
-<div class="card" style="padding:15px">
-<div style="display:flex;align-items:center;gap:9px;margin-bottom:12px">
-<span class="chip chip-verified">{{ compVerdict }}</span>
-<span class="num" style="font-size:var(--t-xs);color:var(--ink-3)"><bdi>{{ compUpdated }}</bdi></span>
+<!-- ══ THE BUSINESS DOOR — the only place importers and traders are addressed ══ -->
+<section class="biz">
+<div class="wrap sec">
+<div style="max-width:60ch;margin-bottom:24px">
+<div style="font-size:var(--t-xs);opacity:.7;margin-bottom:9px">{{ bizKicker }}</div>
+<h2 style="margin:0 0 11px;font-size:var(--t-h1);font-weight:600;line-height:1.3">{{ bizTitle }}</h2>
+<p style="margin:0;font-size:16px;line-height:1.75;opacity:.82">{{ bizLede }}</p>
 </div>
-<p style="margin:0 0 12px;font-size:var(--t-sm);line-height:1.7">{{ compExample }}</p>
-<div style="display:flex;justify-content:space-between;align-items:baseline;gap:10px;padding:10px 12px;background:var(--surface-2);border:1px solid var(--rule-faint);border-radius:var(--r-sm)">
-<span class="ref">{{ compCite }}</span>
-<a href="#" style="font-size:var(--t-xs)">{{ compSource }}</a>
+
+<div style="display:grid;gap:14px;grid-template-columns:1fr" class="bizgrid">
+<sc-for list="{{ bizRoles }}" as="b" hint-placeholder-count="2">
+<div class="bizcard">
+<div style="display:flex;align-items:center;gap:11px;margin-bottom:11px">
+<span aria-hidden="true" style="flex:none;width:36px;height:36px;border-radius:var(--r-sm);background:oklch(1 0 0 / .12);display:grid;place-items:center">{{ b.icon }}</span>
+<div style="flex:1;min-width:0">
+<div style="font-size:var(--t-h3);font-weight:600">{{ b.who }}</div>
+<div style="font-size:var(--t-micro);opacity:.66;margin-top:2px">{{ b.req }}</div>
 </div>
-<button type="button" style="width:100%;height:46px;margin-top:13px;border:1px solid var(--rule-strong);border-radius:var(--r-sm);background:var(--surface);color:inherit;font-size:var(--t-sm);font-weight:500;cursor:pointer">{{ compCta }}</button>
+</div>
+<p style="margin:0 0 14px;font-size:var(--t-sm);line-height:1.75;opacity:.82">{{ b.body }}</p>
+<sc-for list="{{ b.points }}" as="p" hint-placeholder-count="3">
+<div style="display:flex;gap:9px;padding:4px 0">
+<span aria-hidden="true" style="flex:none;opacity:.55;font-size:11px;margin-block-start:4px">●</span>
+<span style="flex:1;font-size:var(--t-sm);line-height:1.6;opacity:.86">{{ p }}</span>
+</div>
+</sc-for>
+<button type="button" style="width:100%;height:46px;margin-top:15px;border:0;border-radius:var(--r-sm);background:#fff;color:var(--ink);font-size:var(--t-body);font-weight:600;cursor:pointer">{{ b.cta }}</button>
+</div>
+</sc-for>
+</div>
+
+<p style="margin:20px 0 0;font-size:var(--t-xs);line-height:1.75;opacity:.6;max-width:70ch">{{ bizNote }}</p>
 </div>
 </section>
 
-<!-- ══ FINAL CTA ══ -->
-<section class="sect wrap" style="padding-block:34px 30px">
-<h2 style="margin:0 0 10px;font-size:var(--t-h1);font-weight:500;line-height:1.35">{{ finalTitle }}</h2>
-<p style="margin:0 0 18px;font-size:var(--t-body);line-height:1.7;color:var(--ink-2)">{{ finalLede }}</p>
-<button type="button" style="width:100%;height:52px;border:0;border-radius:var(--r);background:var(--accent);color:var(--ink-on);font-size:16px;font-weight:500;cursor:pointer">{{ cta1 }}</button>
-<p style="margin:11px 0 0;font-size:var(--t-xs);color:var(--ink-3);text-align:center">{{ finalNote }}</p>
+<!-- ══ CREDIBILITY — live numbers, not claims ══ -->
+<section class="wrap sec">
+<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--rule);border:1px solid var(--rule);border-radius:var(--r);overflow:hidden">
+<sc-for list="{{ proof }}" as="p" hint-placeholder-count="3">
+<div style="background:var(--surface);padding:20px 10px;text-align:center">
+<div class="num" style="font-size:26px;font-weight:600;line-height:1.15"><bdi>{{ p.v }}</bdi></div>
+<div style="font-size:var(--t-xs);color:var(--ink-2);margin-top:5px;line-height:1.4">{{ p.k }}</div>
+</div>
+</sc-for>
+</div>
 </section>
 
-<!-- ══ BOUNDARIES — below the fold, collapsed, where they belong ══ -->
-<section style="border-top:1px solid var(--rule);background:var(--surface-2)">
-<button type="button" onClick="{{ toggleLimits }}" aria-expanded="{{ limitsOpen }}" style="width:100%;display:flex;align-items:center;gap:10px;padding:16px 20px;border:0;background:transparent;color:inherit;text-align:start;cursor:pointer">
-<span style="flex:1;font-size:var(--t-sm);font-weight:500">{{ limitsTitle }}</span>
-<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--ink-3)" stroke-width="2" style="flex:none;transform:rotate({{ limitsRot }}deg);transition:transform .16s ease"><path d="M6 9l6 6 6-6"/></svg>
+<!-- ══ FOOTER — limits live here, not in the hero ══ -->
+<footer style="background:var(--surface);border-top:1px solid var(--rule)">
+<div class="wrap" style="padding-block:26px 34px">
+<button type="button" onClick="{{ toggleLimits }}" aria-expanded="{{ limitsOpen }}" style="display:flex;align-items:center;gap:9px;padding:0;border:0;background:transparent;color:inherit;cursor:pointer;margin-bottom:14px">
+<span style="font-size:var(--t-sm);font-weight:500">{{ limitsTitle }}</span>
+<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--ink-3)" stroke-width="2" style="transform:rotate({{ limitsRot }}deg);transition:transform .16s ease"><path d="M6 9l6 6 6-6"/></svg>
 </button>
 <sc-if value="{{ limitsOpen }}" hint-placeholder-val="{{ false }}">
-<div style="padding:0 20px 18px">
+<div style="margin-bottom:16px">
 <div style="display:flex;flex-wrap:wrap;gap:7px;margin-bottom:12px">
-<sc-for list="{{ limits }}" as="l" hint-placeholder-count="6">
-<span class="chip chip-neutral">{{ l }}</span>
-</sc-for>
+<sc-for list="{{ limits }}" as="l" hint-placeholder-count="6"><span class="chip chip-neutral">{{ l }}</span></sc-for>
 </div>
-<p style="margin:0;font-size:var(--t-xs);line-height:1.7;color:var(--ink-2)">{{ limitsNote }}</p>
+<p style="margin:0;font-size:var(--t-xs);line-height:1.75;color:var(--ink-2);max-width:74ch">{{ limitsNote }}</p>
 </div>
 </sc-if>
-</section>
-
-<footer class="wrap" style="padding-block:18px 26px;border-top:1px solid var(--rule)">
-<p style="margin:0;font-size:var(--t-xs);line-height:1.7;color:var(--ink-3)">{{ footer }}</p>
+<p style="margin:0;font-size:var(--t-xs);line-height:1.75;color:var(--ink-3);max-width:74ch">{{ footer }}</p>
+</div>
 </footer>
 
-</main>
-</div>
 </div>
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:430,&quot;height&quot;:2340}}">
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1180,&quot;height&quot;:1800}}">
 class Component extends DCLogic {
   state = { lang: 'ar', limits: false };
   root = React.createRef();
-  componentDidMount() { this._apply(); }
+  componentDidMount() { this._apply(); this._grid(); }
   componentDidUpdate() { this._apply(); }
   _apply() {
     const el = this.root.current;
     if (el) { el.setAttribute('dir', this.L[this.state.lang].dir); el.setAttribute('lang', this.state.lang); }
   }
+  _grid() {
+    const st = document.createElement('style');
+    st.textContent = '@media(min-width:820px){.whygrid,.howgrid{grid-template-columns:repeat(3,1fr)!important}.bizgrid{grid-template-columns:repeat(2,1fr)!important}}';
+    document.head.appendChild(st);
+  }
 
-  TILES = [
-    { ph: 'ph-coat',    tK: ['معاطف نسائية شتوية', 'Manteaux femme hiver', 'Women’s winter coats'], mK: ['340 وحدة مطلوبة', '340 unités demandées', '340 units in demand'] },
-    { ph: 'ph-bag',     tK: ['حقائب يد جلدية', 'Sacs à main cuir', 'Leather handbags'],             mK: ['12 تاجراً مهتمّاً', '12 commerçants intéressés', '12 traders interested'] },
-    { ph: 'ph-perfume', tK: ['عطور نسائية', 'Parfums femme', 'Women’s fragrance'],                   mK: ['رحلة تغادر بعد 6 أيام', 'Voyage dans 6 jours', 'Trip departs in 6 days'] },
-    { ph: 'ph-shoe',    tK: ['أحذية رياضية', 'Baskets homme', 'Men’s sneakers'],                     mK: ['النطاق 3 800 – 5 500 دج', 'Fourchette 3 800 – 5 500 DA', 'Band 3,800 – 5,500 DA'] }
-  ];
+  fmt(n) { return '⁦' + String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + '⁩'; }
 
   ICON = {
     imp: React.createElement('svg', { width: 18, height: 18, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 1.9 }, React.createElement('path', { d: 'M3 15l18-7-7 18-2.5-8z' })),
-    tra: React.createElement('svg', { width: 18, height: 18, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 1.9 }, React.createElement('path', { d: 'M4 8h16l-1.2 11a1 1 0 0 1-1 .9H6.2a1 1 0 0 1-1-.9z' }), React.createElement('path', { d: 'M8.5 8a3.5 3.5 0 0 1 7 0' })),
-    con: React.createElement('svg', { width: 18, height: 18, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 1.9 }, React.createElement('circle', { cx: 12, cy: 8.5, r: 3.7 }), React.createElement('path', { d: 'M4.8 20a7.4 7.4 0 0 1 14.4 0' }))
+    tra: React.createElement('svg', { width: 18, height: 18, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 1.9 }, React.createElement('path', { d: 'M4 8h16l-1.2 11a1 1 0 0 1-1 .9H6.2a1 1 0 0 1-1-.9z' }), React.createElement('path', { d: 'M8.5 8a3.5 3.5 0 0 1 7 0' }))
   };
 
-  TONE = [
-    ['oklch(0.93 0.03 250)', 'oklch(0.35 0.06 250)'],
-    ['oklch(0.93 0.03 28)', 'var(--accent-ink)'],
-    ['oklch(0.92 0.03 150)', 'var(--allowed-ink)']
-  ];
+  CATS = [['ph-coat',1240],['ph-perfume',913],['ph-shoe',702],['ph-bag',486],['ph-watch',188],['ph-home',355]];
+  FRESH = [['ph-coat',7400],['ph-bag',5900],['ph-watch',11500],['ph-perfume',4200],['ph-shoe',6300]];
 
   L = {
     ar: {
       dir: 'rtl', label: 'ع', brand: 'مَعْبَر', langLabel: 'اللغة',
-      kicker: 'شبكة الاستيراد المصغّر في الجزائر',
-      h1: 'اعرف واش يطلبو التجار — قبل ما تشري.',
-      sub: 'مَعْبَر يجمع الطلب المُتحقَّق من التجّار، ويربطه بالمستوردين المسافرين وبالمتاجر التي تبيع للناس. اكتشف، قارِن، واتّفق — في مكان واحد.',
-      cta1: 'ابدأ مجاناً', cta2: 'تصفّح السوق',
-      proof: [['1 240', 'منتج معروض'], ['9', 'رحلات منشورة'], ['24', 'مستورداً مُتحقَّقاً']],
-      discKicker: 'اكتشاف',
-      discTitle: 'ما يتحرّك في السوق الآن',
-      discLede: 'منتجات معروضة، طلب مُجمَّع، ورحلات قادمة — محدّثة يومياً.',
-      netKicker: 'الشبكة',
-      netTitle: 'ثلاثة أطراف، حلقة واحدة',
-      netLede: 'كل طرف يحلّ مشكلة الطرف الذي قبله.',
-      roles: [
-        ['المستورد المصغّر', 'يرى الطلب المُتحقَّق قبل أن يشتري بماله، فلا يتجمّد رأس ماله في بضاعة لا تُباع.'],
-        ['التاجر', 'يكتشف من يسافر ومتى، يقارن بالسجل لا بالوعود، ويوثّق الاتفاق.'],
-        ['المستهلك', 'يجد المنتج عند تاجر مُتحقَّق قريب منه، ويرى سجلّه قبل أن يراسله.']
+      bizLink: 'تستورد أو تبيع؟', signIn: 'دخول',
+      h1: 'سلع مستوردة، من تجّار تعرف سجلّهم.',
+      sub: 'تصفّح آلاف المنتجات التي جلبها مستوردون مقنّنون، واشترِ من تاجر مُتحقَّق قريب منك.',
+      searchPh: 'ابحث عن منتج أو متجر', searchCta: 'ابحث',
+      quick: ['ألبسة نسائية', 'عطور', 'أحذية', 'حقائب', 'ساعات'],
+      catTitle: 'تصفّح حسب الفئة', allLink: 'الكل ←',
+      freshTitle: 'وصل حديثاً', cur: 'دج',
+      catNames: ['ألبسة','تجميل وعطور','أحذية','حقائب','ساعات','منزل'],
+      freshNames: ['معطف نسائي شتوي — صوف مخلوط','حقيبة يد جلدية بحزام كتف','ساعة يد رجالية ستانلس','عطر نسائي 100 مل','حذاء رياضي رجالي'],
+      sellers: ['بوتيك نادية','دار الأناقة','دار الأناقة','بوتيك نادية','محل ياسين'],
+      whens: ['اليوم','اليوم','أمس','أمس','قبل يومين'],
+      unit: 'منتج',
+      whyTitle: 'لماذا تشتري من هنا',
+      whyLede: 'كل بائع على مَعْبَر تاجر مقيَّد في السجل التجاري، وسجلّه معروض قبل أن تراسله.',
+      why: [
+        ['بائع مُتحقَّق', 'راجعنا سجله التجاري وهويته. تشوف عدد معاملاته المؤكَّدة ونسبة ردّه قبل ما تتواصل.'],
+        ['سلعة معروفة المصدر', 'كل منتج يحمل بلد مصدره، ودخل عبر مستورد مقنَّن لا عبر سوق مواز.'],
+        ['مراجعات من شراء فعلي', 'لا تُقبل مراجعة إلا من معاملة مسجَّلة، ولا تُحذف، وللبائع حقّ ردّ يظهر معها.']
       ],
-      howKicker: 'كيف يشتغل',
-      howTitle: 'من الإشارة إلى التسليم',
-      steps: [
-        ['الطلب', 'التجّار ينشرون ما يحتاجونه بمواصفة وكمية ونطاق سعر.'],
-        ['المطابقة', 'المستورد يرى الطلب مُجمَّعاً حسب الفئة والولاية، ويبني قائمة شراء تحت سعة رحلته.'],
-        ['الالتزام', 'الطرفان يوثّقان الاتفاق: مواصفة، كمية، نطاق سعر، وأجل.'],
-        ['التسليم والسجل', 'تأكيد مزدوج عند الاستلام، ثم تقييم يبني سجلّاً يراه الجميع.']
+      howTitle: 'كيفاش تشري',
+      how: [
+        ['اختر المنتج', 'تصفّح أو ابحث، وشوف سجل البائع قبل أي خطوة.'],
+        ['راسل البائع', 'تتّفقوا على السعر والمقاس والتسليم مباشرةً بينكما.'],
+        ['استلم وقيّم', 'استلام من المحل أو توصيل، ثم مراجعتك تبني سجلّه للي بعدك.']
       ],
-      trustKicker: 'الثقة',
-      trustTitle: 'سجل، لا وعود',
-      trustLede: 'كل رقم في الملف قابل للعدّ والرجوع إليه.',
-      trustRows: [
-        ['وثائق مُتحقَّق منها', 'الهوية، وبطاقة المقاول الذاتي، والرخصة العامة، والسجل التجاري — مع تواريخ صلاحيتها.'],
-        ['معاملات مؤكَّدة', 'يُحتسب ما أكّده الطرفان فقط. لا عدّاد يرتفع بالنشاط وحده.'],
-        ['نسبة الإتمام والردّ', 'ما أُنجز في الأجل، وكم يستغرق الردّ فعلياً.'],
-        ['مراجعات من معاملة مسجَّلة', 'لا تُحذف مراجعة، وللطرف المقابل حقّ ردّ واحد يظهر معها.']
+      bizKicker: 'للمحترفين',
+      bizTitle: 'تستورد أو تبيع؟ ابدأ من هنا.',
+      bizLede: 'مَعْبَر تربط المستورد المصغّر بالتاجر: المستورد يرى ما يطلبه السوق قبل أن يشتري بماله، والتاجر يجد من يجلب له ما يحتاج.',
+      bizRoles: [
+        { who: 'مستورد مصغّر', req: 'يحتاج بطاقة المقاول الذاتي والرخصة العامة', icon: 'imp',
+          body: 'تسافر بمالك وترجع ببضاعة. مَعْبَر يريك الطلب المُتحقَّق قبل الشراء، ويحسب ما تبقّى من حدّك القانوني.',
+          points: ['طلب مُجمَّع من تجّار مُتحقَّقين', 'عدّادات القيمة والوزن والحجم', 'دفتر مبسّط ووسم المادة 14'],
+          cta: 'سجّل كمستورد' },
+        { who: 'تاجر', req: 'يحتاج سجلاً تجارياً', icon: 'tra',
+          body: 'تبحث عن سلعة مميّزة بسعر ثابت ومورّد موثوق. تكتشف من يسافر ومتى، وتوثّق اتفاقك.',
+          points: ['اكتشاف الرحلات والمستوردين', 'طلب توريد بمواصفة ونطاق سعر', 'عرض منتجاتك للجمهور في السوق'],
+          cta: 'سجّل كتاجر' }
       ],
-      compKicker: 'الامتثال',
-      compTitle: 'الجواب أولاً، النص بعده',
-      compLede: 'اسأل عن أي سلعة وتحصل على الحكم فوراً، ومعه مادّته ومصدره وتاريخ تحديثه.',
-      compVerdict: 'مسموح بشرط', compUpdated: 'آخر تحديث: 29 جوان 2025',
-      compExample: 'العطور مسموحة، بشرط أن يتبقّى أكثر من نصف مدة الصلاحية عند تاريخ الاستيراد.',
-      compCite: 'المرسوم 25-170 · المادة 6', compSource: 'الجريدة الرسمية',
-      compCta: 'جرّب: هل يمكنني استيراد هذا؟',
-      finalTitle: 'ابدأ من حيث أنت',
-      finalLede: 'تاجر يبحث عن مورّد، مستورد يخطّط لرحلة، أو زبون يبحث عن منتج — الحساب واحد والأدوار تُضاف لاحقاً.',
-      finalNote: 'التسجيل بالهاتف فقط. الأدوات العامة تعمل بلا حساب.',
+      bizNote: 'التسجيل بالهاتف. الوثائق تُطلب فقط للدور الذي تختاره، وتبقى خاصّة ولا تظهر لأي مستخدم.',
+      proof: [['1 240','منتج معروض'],['38','تاجراً مُتحقَّقاً'],['24','مستورداً مُتحقَّقاً']],
       limitsTitle: 'حدود المنصّة ومسؤولياتها',
-      limits: ['لا صرف عملة', 'لا دفع ولا حجز أموال', 'لا شراء بالوكالة', 'لا تصريح جمركي', 'لا ضمان للمعاملات', 'لا اعتماد حكومي'],
-      limitsNote: 'مَعْبَر منصّة خاصة للاكتشاف والتوثيق. ليست طرفاً في أي اتفاق بين المستخدمين، ولا تستلم أموالاً ولا تضمنها. النشاط شخصي وغير قابل للتنازل (المادتان 3 و12 من المرسوم 25-170). التصريح المسبق بالاستيراد يتمّ حصراً على anae.dz.',
+      limits: ['لا صرف عملة','لا دفع ولا حجز أموال','لا شراء بالوكالة','لا تصريح جمركي','لا ضمان للمعاملات','لا اعتماد حكومي'],
+      limitsNote: 'مَعْبَر منصّة اكتشاف وتوثيق. ليست طرفاً في أي اتفاق بين المستخدمين، ولا تستلم أموالاً ولا تضمنها. نشاط الاستيراد المصغّر شخصي وغير قابل للتنازل (المادتان 3 و12 من المرسوم 25-170)، والتصريح المسبق يتمّ حصراً على anae.dz.',
       footer: 'مَعْبَر · منصّة معلومات تجارية خاصة. المعلومات التنظيمية استرشادية والقرار النهائي يعود لمصالح الجمارك.'
     },
     fr: {
       dir: 'ltr', label: 'FR', brand: 'Maabar', langLabel: 'Langue',
-      kicker: 'Le réseau de l’import de faible valeur en Algérie',
-      h1: 'Sachez ce que le marché demande — avant d’acheter.',
-      sub: 'Maabar agrège la demande vérifiée des commerçants et la relie aux micro-importateurs qui voyagent et aux boutiques qui vendent au public. Découvrez, comparez, convenez — au même endroit.',
-      cta1: 'Commencer gratuitement', cta2: 'Parcourir la place de marché',
-      proof: [['1 240', 'produits en ligne'], ['9', 'voyages publiés'], ['24', 'importateurs vérifiés']],
-      discKicker: 'Découverte',
-      discTitle: 'Ce qui bouge en ce moment',
-      discLede: 'Produits en vente, demande agrégée et voyages à venir — mis à jour chaque jour.',
-      netKicker: 'Le réseau',
-      netTitle: 'Trois acteurs, une seule boucle',
-      netLede: 'Chacun résout le problème du précédent.',
-      roles: [
-        ['Le micro-importateur', 'Il voit la demande vérifiée avant d’engager son propre argent, et n’immobilise plus son capital.'],
-        ['Le commerçant', 'Il découvre qui voyage et quand, compare sur l’historique et non sur des promesses, puis documente l’accord.'],
-        ['Le consommateur', 'Il trouve le produit chez un commerçant vérifié près de chez lui, et consulte son historique avant d’écrire.']
+      bizLink: 'Vous importez ou vendez ?', signIn: 'Connexion',
+      h1: 'Des produits importés, chez des commerçants dont vous voyez l’historique.',
+      sub: 'Parcourez des milliers de produits rapportés par des importateurs déclarés, et achetez chez un commerçant vérifié près de chez vous.',
+      searchPh: 'Rechercher un produit ou une boutique', searchCta: 'Chercher',
+      quick: ['Vêtements femme', 'Parfums', 'Chaussures', 'Sacs', 'Montres'],
+      catTitle: 'Parcourir par catégorie', allLink: 'Tout voir →',
+      freshTitle: 'Nouveautés', cur: 'DA',
+      catNames: ['Vêtements','Beauté & parfums','Chaussures','Sacs','Montres','Maison'],
+      freshNames: ['Manteau femme hiver — laine mélangée','Sac à main cuir avec bandoulière','Montre homme acier','Parfum femme 100 ml','Basket homme'],
+      sellers: ['Boutique Nadia','Dar El Anaka','Dar El Anaka','Boutique Nadia','Maison Yacine'],
+      whens: ['Aujourd’hui','Aujourd’hui','Hier','Hier','Il y a 2 jours'],
+      unit: 'produits',
+      whyTitle: 'Pourquoi acheter ici',
+      whyLede: 'Chaque vendeur sur Maabar est inscrit au registre du commerce, et son historique est visible avant que vous le contactiez.',
+      why: [
+        ['Vendeur vérifié', 'Registre du commerce et identité contrôlés. Vous voyez ses transactions confirmées et son taux de réponse avant d’écrire.'],
+        ['Origine connue', 'Chaque produit affiche son pays de provenance et provient d’un importateur déclaré.'],
+        ['Avis issus d’un achat réel', 'Aucun avis sans transaction enregistrée, aucun avis supprimé, et un droit de réponse affiché avec.']
       ],
-      howKicker: 'Fonctionnement',
-      howTitle: 'Du signal à la remise',
-      steps: [
-        ['La demande', 'Les commerçants publient leur besoin : spécification, quantité, fourchette de prix.'],
-        ['L’appariement', 'L’importateur voit la demande agrégée par catégorie et wilaya, et compose sa liste d’achat sous la capacité du voyage.'],
-        ['L’engagement', 'Les deux parties documentent l’accord : spécification, quantité, fourchette, échéance.'],
-        ['Remise et historique', 'Double confirmation à la remise, puis une évaluation qui construit un historique visible de tous.']
+      howTitle: 'Comment acheter',
+      how: [
+        ['Choisissez', 'Parcourez ou cherchez, et consultez l’historique du vendeur avant tout.'],
+        ['Écrivez au vendeur', 'Vous convenez du prix, de la taille et de la remise directement entre vous.'],
+        ['Recevez et évaluez', 'Retrait en boutique ou livraison, puis votre avis construit son historique.']
       ],
-      trustKicker: 'La confiance',
-      trustTitle: 'Un historique, pas des promesses',
-      trustLede: 'Chaque chiffre du profil est vérifiable et dénombrable.',
-      trustRows: [
-        ['Documents vérifiés', 'Identité, carte d’auto-entrepreneur, autorisation générale, registre du commerce — avec leurs dates de validité.'],
-        ['Transactions confirmées', 'Seul ce que les deux parties ont confirmé est compté. Aucun compteur gonflé par l’activité.'],
-        ['Taux d’exécution et de réponse', 'Ce qui a été livré dans les délais, et le temps de réponse réel.'],
-        ['Avis issus d’une transaction', 'Aucun avis n’est supprimé ; la partie mise en cause dispose d’un droit de réponse affiché avec l’avis.']
+      bizKicker: 'Pour les professionnels',
+      bizTitle: 'Vous importez ou vous vendez ? Commencez ici.',
+      bizLede: 'Maabar relie le micro-importateur au commerçant : l’importateur voit ce que le marché demande avant d’engager son argent, le commerçant trouve qui peut le fournir.',
+      bizRoles: [
+        { who: 'Micro-importateur', req: 'Carte d’auto-entrepreneur et autorisation générale requises', icon: 'imp',
+          body: 'Vous voyagez avec votre propre argent. Maabar vous montre la demande vérifiée avant l’achat et calcule ce qu’il reste de votre plafond légal.',
+          points: ['Demande agrégée de commerçants vérifiés', 'Compteurs valeur, poids et volume', 'Registre simplifié et étiquetage art. 14'],
+          cta: 'S’inscrire comme importateur' },
+        { who: 'Commerçant', req: 'Registre du commerce requis', icon: 'tra',
+          body: 'Vous cherchez un produit différenciant, à prix tenu, chez un fournisseur fiable. Découvrez qui voyage et quand, et documentez l’accord.',
+          points: ['Découverte des voyages et importateurs', 'Demande d’approvisionnement chiffrée', 'Vos produits visibles sur la place de marché'],
+          cta: 'S’inscrire comme commerçant' }
       ],
-      compKicker: 'Conformité',
-      compTitle: 'La réponse d’abord, le texte ensuite',
-      compLede: 'Interrogez n’importe quelle marchandise : verdict immédiat, avec son article, sa source et sa date de mise à jour.',
-      compVerdict: 'Autorisé sous condition', compUpdated: 'Mise à jour : 29 juin 2025',
-      compExample: 'Les parfums sont autorisés, à condition qu’il reste plus de la moitié de la durée de validité à la date d’importation.',
-      compCite: 'Décret 25-170 · Art. 6', compSource: 'Journal Officiel',
-      compCta: 'Essayer : puis-je importer ceci ?',
-      finalTitle: 'Commencez là où vous êtes',
-      finalLede: 'Commerçant en quête d’un fournisseur, importateur qui prépare un voyage, ou client à la recherche d’un produit — un seul compte, les rôles s’ajoutent ensuite.',
-      finalNote: 'Inscription par téléphone. Les outils publics fonctionnent sans compte.',
+      bizNote: 'Inscription par téléphone. Les documents ne sont demandés que pour le rôle choisi ; ils restent privés et ne sont montrés à aucun utilisateur.',
+      proof: [['1 240','produits en ligne'],['38','commerçants vérifiés'],['24','importateurs vérifiés']],
       limitsTitle: 'Limites et responsabilités de la plateforme',
-      limits: ['Aucun change', 'Aucun paiement ni séquestre', 'Aucun achat par procuration', 'Aucune déclaration douanière', 'Aucune garantie de transaction', 'Aucun agrément public'],
-      limitsNote: 'Maabar est une plateforme privée de découverte et de documentation. Elle n’est partie à aucun accord entre utilisateurs, ne reçoit ni ne garantit aucun fonds. L’activité est personnelle et incessible (art. 3 et 12 du décret 25-170). La pré-déclaration d’importation se fait exclusivement sur anae.dz.',
-      footer: 'Maabar · plateforme privée d’information commerciale. L’information réglementaire est indicative ; la décision finale appartient aux services des douanes.'
+      limits: ['Aucun change','Aucun paiement ni séquestre','Aucun achat par procuration','Aucune déclaration douanière','Aucune garantie','Aucun agrément public'],
+      limitsNote: 'Maabar est une plateforme de découverte et de documentation. Elle n’est partie à aucun accord entre utilisateurs et ne reçoit aucun fonds. L’activité de micro-importation est personnelle et incessible (art. 3 et 12 du décret 25-170) ; la pré-déclaration se fait exclusivement sur anae.dz.',
+      footer: 'Maabar · plateforme privée d’information commerciale. L’information réglementaire est indicative ; la décision finale appartient aux douanes.'
     },
     en: {
       dir: 'ltr', label: 'EN', brand: 'Maabar', langLabel: 'Language',
-      kicker: 'Algeria’s micro-import network',
-      h1: 'Know what the market wants — before you buy.',
-      sub: 'Maabar aggregates verified demand from traders and connects it to the micro-importers who travel and the shops that sell to the public. Discover, compare, and agree — in one place.',
-      cta1: 'Start free', cta2: 'Browse the marketplace',
-      proof: [['1,240', 'products listed'], ['9', 'published trips'], ['24', 'verified importers']],
-      discKicker: 'Discovery',
-      discTitle: 'What is moving right now',
-      discLede: 'Listed products, aggregated demand, and upcoming trips — updated daily.',
-      netKicker: 'The network',
-      netTitle: 'Three actors, one loop',
-      netLede: 'Each one solves the problem of the one before.',
-      roles: [
-        ['The micro-importer', 'Sees verified demand before committing their own money, so capital stops freezing in unsold stock.'],
-        ['The trader', 'Discovers who travels and when, compares on record rather than promises, and documents the agreement.'],
-        ['The consumer', 'Finds the product at a verified trader nearby, and reads their record before making contact.']
+      bizLink: 'Import or sell?', signIn: 'Sign in',
+      h1: 'Imported goods, from sellers whose record you can see.',
+      sub: 'Browse thousands of products brought in by licensed importers, and buy from a verified trader near you.',
+      searchPh: 'Search a product or a shop', searchCta: 'Search',
+      quick: ['Women’s clothing', 'Fragrance', 'Shoes', 'Bags', 'Watches'],
+      catTitle: 'Browse by category', allLink: 'See all →',
+      freshTitle: 'Just arrived', cur: 'DA',
+      catNames: ['Clothing','Beauty & fragrance','Shoes','Bags','Watches','Home'],
+      freshNames: ['Women’s winter coat — wool blend','Leather handbag with shoulder strap','Men’s steel wristwatch','Women’s perfume 100 ml','Men’s sneakers'],
+      sellers: ['Boutique Nadia','Dar El Anaka','Dar El Anaka','Boutique Nadia','Maison Yacine'],
+      whens: ['Today','Today','Yesterday','Yesterday','2 days ago'],
+      unit: 'products',
+      whyTitle: 'Why buy here',
+      whyLede: 'Every seller on Maabar holds a commercial register, and their record is visible before you make contact.',
+      why: [
+        ['Verified seller', 'Commercial register and identity checked. You see confirmed transactions and response rate before you write.'],
+        ['Known origin', 'Every product carries its country of provenance and came through a licensed importer.'],
+        ['Reviews from real purchases', 'No review without a recorded transaction, none deleted, and a right of reply shown alongside.']
       ],
-      howKicker: 'How it works',
-      howTitle: 'From signal to handover',
-      steps: [
-        ['Demand', 'Traders publish what they need: specification, quantity, price band.'],
-        ['Matching', 'The importer sees demand aggregated by category and wilaya, and builds a buy list within trip capacity.'],
-        ['Commitment', 'Both sides document the agreement: specification, quantity, band, deadline.'],
-        ['Handover and record', 'Dual confirmation on delivery, then a review that builds a record everyone can see.']
+      howTitle: 'How buying works',
+      how: [
+        ['Pick the product', 'Browse or search, and read the seller’s record before anything else.'],
+        ['Message the seller', 'You agree price, size and handover directly between you.'],
+        ['Receive and review', 'Shop pickup or delivery, then your review builds their record for the next buyer.']
       ],
-      trustKicker: 'Trust',
-      trustTitle: 'A record, not promises',
-      trustLede: 'Every figure on a profile is countable and traceable.',
-      trustRows: [
-        ['Verified documents', 'Identity, auto-entrepreneur card, general authorization, commercial register — with their expiry dates.'],
-        ['Confirmed transactions', 'Only what both parties confirmed is counted. No counter inflated by activity alone.'],
-        ['Completion and response rates', 'What was delivered on time, and how long replies actually take.'],
-        ['Reviews from recorded transactions', 'No review is deleted; the other party has one right of reply shown alongside it.']
+      bizKicker: 'For professionals',
+      bizTitle: 'Import or sell? Start here.',
+      bizLede: 'Maabar connects the micro-importer to the trader: the importer sees what the market wants before committing their own money, and the trader finds who can supply it.',
+      bizRoles: [
+        { who: 'Micro-importer', req: 'Auto-entrepreneur card and general authorisation required', icon: 'imp',
+          body: 'You travel with your own money. Maabar shows you verified demand before you buy, and computes what is left of your legal cap.',
+          points: ['Aggregated demand from verified traders', 'Value, weight and volume meters', 'Simplified ledger and Art. 14 labelling'],
+          cta: 'Sign up as an importer' },
+        { who: 'Trader', req: 'Commercial register required', icon: 'tra',
+          body: 'You want differentiated stock at a price that holds, from a supplier you can check. Discover who travels and when, and document the agreement.',
+          points: ['Trip and importer discovery', 'Sourcing requests with spec and price band', 'Your products listed on the marketplace'],
+          cta: 'Sign up as a trader' }
       ],
-      compKicker: 'Compliance',
-      compTitle: 'The answer first, the text after',
-      compLede: 'Ask about any goods and get the verdict immediately — with its article, its source, and when it was last updated.',
-      compVerdict: 'Conditionally allowed', compUpdated: 'Last updated: 29 June 2025',
-      compExample: 'Fragrances are permitted, provided more than half of the shelf life remains on the import date.',
-      compCite: 'Decree 25-170 · Art. 6', compSource: 'Official Journal',
-      compCta: 'Try it: can I import this?',
-      finalTitle: 'Start where you are',
-      finalLede: 'A trader looking for supply, an importer planning a trip, or a customer looking for a product — one account, roles added later.',
-      finalNote: 'Sign up with a phone number. Public tools work without an account.',
+      bizNote: 'Sign up with a phone number. Documents are requested only for the role you choose; they stay private and are never shown to another user.',
+      proof: [['1,240','products listed'],['38','verified traders'],['24','verified importers']],
       limitsTitle: 'Platform limits and responsibilities',
-      limits: ['No currency exchange', 'No payments or escrow', 'No buying by proxy', 'No customs declaration', 'No transaction guarantee', 'No government approval'],
-      limitsNote: 'Maabar is a private discovery and documentation platform. It is not a party to any agreement between users and neither receives nor guarantees any funds. The activity is personal and non-transferable (arts. 3 and 12 of Decree 25-170). Import pre-declaration happens exclusively on anae.dz.',
+      limits: ['No currency exchange','No payments or escrow','No buying by proxy','No customs declaration','No transaction guarantee','No government approval'],
+      limitsNote: 'Maabar is a discovery and documentation platform. It is not a party to any agreement between users and receives no funds. Micro-importing is personal and non-transferable (arts. 3 and 12 of Decree 25-170); pre-declaration happens exclusively on anae.dz.',
       footer: 'Maabar · private commercial information platform. Regulatory information is indicative; the final decision rests with customs.'
     }
   };
 
   renderVals() {
-    const lang = this.state.lang, t = this.L[lang], i = ['ar', 'fr', 'en'].indexOf(lang);
+    const lang = this.state.lang, t = this.L[lang];
     return {
       ...t,
       rootRef: this.root,
+      cats: this.CATS.map(([ph, n], i) => ({ ph, label: t.catNames[i], n: this.fmt(n) + ' ' + t.unit })),
+      fresh: this.FRESH.map(([ph, p], i) => ({
+        ph, price: this.fmt(p), title: t.freshNames[i], seller: t.sellers[i], when: t.whens[i]
+      })),
+      why: t.why.map(([tt, d]) => ({ t: tt, d })),
+      how: t.how.map(([tt, d], i) => ({ n: String(i + 1), t: tt, d })),
+      bizRoles: t.bizRoles.map(b => ({ ...b, icon: this.ICON[b.icon] })),
       proof: t.proof.map(([v, k]) => ({ v, k })),
-      tiles: this.TILES.map(x => ({ ph: x.ph, title: x.tK[i], meta: x.mK[i] })),
-      roles: t.roles.map(([who, job], n) => {
-        const [bg, fg] = this.TONE[n];
-        return { who, job, bg, fg, icon: this.ICON[['imp', 'tra', 'con'][n]] };
-      }),
-      steps: t.steps.map(([tt, d], n) => ({ n: String(n + 1).padStart(2, '0'), t: tt, d, line: n < t.steps.length - 1 })),
-      trustRows: t.trustRows.map(([tt, d]) => ({ t: tt, d })),
       limitsOpen: this.state.limits,
       limitsRot: this.state.limits ? 180 : 0,
       toggleLimits: () => this.setState(s => ({ limits: !s.limits })),

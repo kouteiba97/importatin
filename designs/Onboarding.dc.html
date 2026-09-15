@@ -13,16 +13,34 @@
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="./tokens.css">
 <style>
+/* ============================================================
+   ENTRY-DRIVEN SIGNUP
+   The role comes from the door the user walked through, never
+   from a menu. A shopper arriving from a product page is never
+   asked whether they are an importer — they just sign up.
+   A visitor who clicked "سجّل كمستورد" has already declared it,
+   so that path opens with eligibility before asking for anything.
+   ============================================================ */
 .fld{display:block;font-size:var(--t-sm);color:var(--ink-2);margin-bottom:7px}
 .inp{width:100%;height:52px;padding:0 15px;border:1px solid var(--rule-strong);border-radius:var(--r);background:var(--surface);font-size:16px;color:inherit}
 .otp{width:46px;height:56px;text-align:center;font-size:22px;font-weight:600;border:1px solid var(--rule-strong);border-radius:var(--r-sm);background:var(--surface);color:inherit}
 .cta{width:100%;height:52px;border:0;border-radius:var(--r);background:var(--ink);color:var(--ink-on);font-size:16px;font-weight:600;cursor:pointer}
 .ghost{width:100%;height:48px;border:1px solid var(--rule-strong);border-radius:var(--r);background:transparent;color:inherit;font-size:15px;cursor:pointer}
+.sw{flex:none;height:27px;padding:0 11px;border:1px solid var(--rule-strong);border-radius:var(--r-pill);background:var(--surface);font-size:var(--t-micro);cursor:pointer;color:inherit}
+.scrollx{overflow-x:auto;scrollbar-width:none}.scrollx::-webkit-scrollbar{display:none}
 </style>
 </helmet>
 
-<div dir="rtl" lang="ar" class="tier-public" style="min-height:100vh;display:flex;justify-content:center">
-<div style="width:100%;max-width:430px;min-height:100vh;display:flex;flex-direction:column;background:var(--paper-public);border-inline:1px solid var(--rule)">
+<div dir="rtl" lang="ar" class="tier-public" style="min-height:100vh;display:flex;justify-content:center;background:var(--paper-public)">
+<div style="width:100%;max-width:430px;min-height:100vh;display:flex;flex-direction:column;border-inline:1px solid var(--rule)">
+
+<!-- entry switcher: lets the client walk all three doors -->
+<div class="scrollx" style="display:flex;gap:6px;padding:9px 14px;background:var(--surface-2);border-bottom:1px solid var(--rule-faint)">
+<span style="flex:none;align-self:center;font-size:var(--t-micro);color:var(--ink-3);margin-inline-end:4px">الباب:</span>
+<sc-for list="{{ entries }}" as="e" hint-placeholder-count="3">
+<button type="button" onClick="{{ e.pick }}" aria-pressed="{{ e.on }}" class="sw" style="background:{{ e.bg }};color:{{ e.fg }};border-color:{{ e.bd }}">{{ e.label }}</button>
+</sc-for>
+</div>
 
 <header style="display:flex;align-items:center;gap:10px;padding:12px 14px;background:var(--surface);border-bottom:1px solid var(--rule)">
 <sc-if value="{{ canBack }}" hint-placeholder-val="{{ true }}">
@@ -30,22 +48,65 @@
 <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 5l-7 7 7 7"/></svg>
 </button>
 </sc-if>
-<span style="flex:1;font-weight:600;font-size:17px">مَعْبَر</span>
+<span style="display:flex;align-items:center;gap:9px;color:var(--allowed);flex:1">
+<svg width="24" height="24" viewBox="0 0 48 48" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="4.4" stroke-linecap="round"><path d="M11 38V23a13 13 0 0 1 26 0v15"/><path d="M3 38h42"/></g></svg>
+<span style="font-weight:600;font-size:17px;color:var(--ink)">مَعْبَر</span>
+</span>
 <span class="num" style="font-size:var(--t-xs);color:var(--ink-3)"><bdi>{{ stepLabel }}</bdi></span>
 </header>
 
-<sc-if value="{{ showBar }}" hint-placeholder-val="{{ true }}">
 <div style="height:3px;background:var(--neutral-bg)"><i style="display:block;height:100%;width:{{ progress }}%;background:var(--allowed);transition:width .2s ease"></i></div>
+
+<main style="flex:1;padding:24px 18px 22px;display:flex;flex-direction:column;gap:20px">
+
+<!-- ══ ELIGIBILITY — business doors only ══ -->
+<sc-if value="{{ isEligible }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;gap:18px">
+<div>
+<span class="chip {{ el.chip }}" style="margin-bottom:11px">{{ el.badge }}</span>
+<h1 style="margin:0 0 9px;font-size:25px;font-weight:600;line-height:1.3">{{ el.title }}</h1>
+<p style="margin:0;font-size:var(--t-body);line-height:1.75;color:var(--ink-2)">{{ el.lede }}</p>
+</div>
+
+<div class="card" style="padding:16px">
+<div style="font-size:var(--t-sm);font-weight:600;margin-bottom:11px">ما تحتاجه</div>
+<sc-for list="{{ el.needs }}" as="n" hint-placeholder-count="3">
+<div style="display:flex;gap:10px;align-items:flex-start;padding:6px 0">
+<span aria-hidden="true" style="flex:none;width:18px;height:18px;border-radius:50%;background:var(--neutral-bg);color:var(--ink-2);display:grid;place-items:center;font-size:10px;margin-block-start:2px">{{ n.i }}</span>
+<div>
+<div style="font-size:var(--t-sm);font-weight:500">{{ n.t }}</div>
+<div style="font-size:var(--t-xs);color:var(--ink-2);margin-top:2px;line-height:1.6">{{ n.d }}</div>
+</div>
+</div>
+</sc-for>
+</div>
+
+<div class="card" style="padding:16px">
+<div style="font-size:var(--t-sm);font-weight:600;margin-bottom:11px">ما يفتحه لك</div>
+<sc-for list="{{ el.unlocks }}" as="u" hint-placeholder-count="3">
+<div style="display:flex;gap:10px;align-items:center;padding:6px 0">
+<svg width="16" height="16" viewBox="0 0 24 24" style="flex:none" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="var(--allowed)"/><path d="M7.4 12.4l3 3 6.2-6.6" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<span style="flex:1;font-size:var(--t-sm)">{{ u }}</span>
+</div>
+</sc-for>
+</div>
+
+<div style="display:flex;gap:10px;padding:13px 14px;border:1px solid var(--rule);border-radius:var(--r);background:var(--surface-2)">
+<span aria-hidden="true" style="flex:none;color:var(--ink-3)">i</span>
+<p style="margin:0;font-size:var(--t-xs);line-height:1.75;color:var(--ink-2)">{{ el.note }}</p>
+</div>
+
+<button type="button" onClick="{{ next }}" class="cta" style="background:var(--allowed)">{{ el.cta }}</button>
+<button type="button" class="ghost">ما عنديش هذه الوثائق بعد</button>
+</div>
 </sc-if>
 
-<main style="flex:1;padding:26px 18px 20px;display:flex;flex-direction:column;gap:20px">
-
-<!-- ══ 1 · PHONE ══ -->
+<!-- ══ PHONE ══ -->
 <sc-if value="{{ isPhone }}" hint-placeholder-val="{{ true }}">
 <div style="display:flex;flex-direction:column;gap:20px">
 <div>
-<h1 style="margin:0 0 8px;font-size:26px;font-weight:600;line-height:1.3">أهلاً بك في مَعْبَر</h1>
-<p style="margin:0;font-size:var(--t-body);line-height:1.7;color:var(--ink-2)">رقم هاتفك يكفي للبدء. تحتاج وثائق لاحقاً فقط إذا أردت الاستيراد أو البيع.</p>
+<h1 style="margin:0 0 9px;font-size:26px;font-weight:600;line-height:1.3">{{ ph.title }}</h1>
+<p style="margin:0;font-size:var(--t-body);line-height:1.75;color:var(--ink-2)">{{ ph.lede }}</p>
 </div>
 <div>
 <label class="fld" for="ph">رقم الهاتف</label>
@@ -55,21 +116,23 @@
 </div>
 </div>
 <button type="button" onClick="{{ next }}" class="cta">أرسل رمز التأكيد</button>
+<sc-if value="{{ isConsumerEntry }}" hint-placeholder-val="{{ true }}">
 <div style="display:flex;align-items:center;gap:12px">
 <span style="flex:1;height:1px;background:var(--rule)"></span>
 <span style="font-size:var(--t-xs);color:var(--ink-3)">أو</span>
 <span style="flex:1;height:1px;background:var(--rule)"></span>
 </div>
 <button type="button" class="ghost">تصفّح السوق بلا حساب</button>
-<p style="margin:0;font-size:var(--t-xs);color:var(--ink-3);line-height:1.7">بالمتابعة أنت توافق على شروط الاستعمال وسياسة الخصوصية.</p>
+</sc-if>
+<p style="margin:0;font-size:var(--t-xs);color:var(--ink-3);line-height:1.75">بالمتابعة أنت توافق على شروط الاستعمال وسياسة الخصوصية.</p>
 </div>
 </sc-if>
 
-<!-- ══ 2 · OTP ══ -->
+<!-- ══ OTP ══ -->
 <sc-if value="{{ isOtp }}" hint-placeholder-val="{{ false }}">
 <div style="display:flex;flex-direction:column;gap:20px">
 <div>
-<h1 style="margin:0 0 8px;font-size:24px;font-weight:600">أدخل الرمز</h1>
+<h1 style="margin:0 0 9px;font-size:24px;font-weight:600">أدخل الرمز</h1>
 <p class="num" style="margin:0;font-size:var(--t-body);color:var(--ink-2)"><bdi>أرسلنا رمزاً إلى +213 5 55 12 34 56</bdi></p>
 </div>
 <div style="display:flex;gap:9px;justify-content:space-between" dir="ltr">
@@ -82,14 +145,14 @@
 </div>
 </sc-if>
 
-<!-- ══ 3 · PROFILE ══ -->
+<!-- ══ PROFILE ══ -->
 <sc-if value="{{ isProfile }}" hint-placeholder-val="{{ false }}">
 <div style="display:flex;flex-direction:column;gap:18px">
 <div>
-<h1 style="margin:0 0 8px;font-size:24px;font-weight:600">عرّفنا بك</h1>
-<p style="margin:0;font-size:var(--t-body);color:var(--ink-2)">اسمك يظهر للطرف الآخر عند التواصل.</p>
+<h1 style="margin:0 0 9px;font-size:24px;font-weight:600">{{ pr.title }}</h1>
+<p style="margin:0;font-size:var(--t-body);color:var(--ink-2);line-height:1.75">{{ pr.lede }}</p>
 </div>
-<div><label class="fld" for="nm">الاسم واللقب</label><input id="nm" class="inp" placeholder="سفيان بن عمارة"></div>
+<div><label class="fld" for="nm">{{ pr.nameLabel }}</label><input id="nm" class="inp" placeholder="{{ pr.namePh }}"></div>
 <div><label class="fld" for="wl">الولاية</label>
 <select id="wl" class="inp"><option>الجزائر</option><option>سطيف</option><option>وهران</option><option>قسنطينة</option></select>
 </div>
@@ -101,60 +164,32 @@
 </sc-for>
 </div>
 </div>
-<button type="button" onClick="{{ next }}" class="cta">متابعة</button>
+<button type="button" onClick="{{ next }}" class="cta">{{ pr.cta }}</button>
 </div>
 </sc-if>
 
-<!-- ══ 4 · CAPABILITY — one identity, several contexts ══ -->
-<sc-if value="{{ isRole }}" hint-placeholder-val="{{ false }}">
-<div style="display:flex;flex-direction:column;gap:18px">
-<div>
-<h1 style="margin:0 0 8px;font-size:24px;font-weight:600">واش تحبّ تدير؟</h1>
-<p style="margin:0;font-size:var(--t-body);line-height:1.7;color:var(--ink-2)">اختر ما ينطبق عليك الآن. حسابك واحد ويمكنك إضافة أي دور لاحقاً.</p>
-</div>
-
-<div style="display:flex;flex-direction:column;gap:11px">
-<sc-for list="{{ roles }}" as="r" hint-placeholder-count="3">
-<button type="button" onClick="{{ r.pick }}" aria-pressed="{{ r.on }}" class="card" style="padding:15px;display:flex;gap:13px;align-items:flex-start;text-align:start;cursor:pointer;color:inherit;border-color:{{ r.bd }};border-width:{{ r.bw }}px">
-<span aria-hidden="true" style="flex:none;width:38px;height:38px;border-radius:var(--r-sm);background:{{ r.iconBg }};display:grid;place-items:center;color:{{ r.iconFg }}">{{ r.icon }}</span>
-<span style="flex:1;min-width:0">
-<span style="display:block;font-size:var(--t-h3);font-weight:600">{{ r.title }}</span>
-<span style="display:block;font-size:var(--t-sm);color:var(--ink-2);line-height:1.6;margin-top:4px">{{ r.body }}</span>
-<span style="display:flex;align-items:center;gap:6px;margin-top:8px">
-<span class="chip {{ r.reqChip }}" style="height:20px;font-size:var(--t-micro)">{{ r.req }}</span>
-</span>
-</span>
-<span aria-hidden="true" style="flex:none;width:21px;height:21px;border-radius:50%;border:2px solid {{ r.dotBd }};background:{{ r.dotBg }};display:grid;place-items:center;color:#fff;font-size:11px">{{ r.check }}</span>
-</button>
-</sc-for>
-</div>
-
-<button type="button" onClick="{{ next }}" class="cta">متابعة</button>
-</div>
-</sc-if>
-
-<!-- ══ 5 · DONE ══ -->
+<!-- ══ DONE ══ -->
 <sc-if value="{{ isDone }}" hint-placeholder-val="{{ false }}">
 <div style="display:flex;flex-direction:column;gap:20px;padding-top:12px">
 <div style="text-align:center">
 <span aria-hidden="true" style="display:inline-grid;place-items:center;width:64px;height:64px;border-radius:50%;background:var(--allowed-bg);color:var(--allowed-ink);font-size:30px;margin-bottom:14px">✓</span>
-<h1 style="margin:0 0 8px;font-size:24px;font-weight:600">حسابك جاهز</h1>
-<p style="margin:0;font-size:var(--t-body);line-height:1.7;color:var(--ink-2)">تقدر تتصفّح وتحفظ وتراسل من دابا. التحقّق مطلوب فقط للأدوار اللي تحتاجه.</p>
+<h1 style="margin:0 0 9px;font-size:24px;font-weight:600">{{ dn.title }}</h1>
+<p style="margin:0;font-size:var(--t-body);line-height:1.75;color:var(--ink-2)">{{ dn.lede }}</p>
 </div>
 
 <div class="card" style="padding:4px 15px">
-<sc-for list="{{ unlocked }}" as="u" hint-placeholder-count="4">
+<sc-for list="{{ dn.rows }}" as="r" hint-placeholder-count="4">
 <div style="display:flex;align-items:center;gap:10px;padding:12px 0;border-bottom:1px solid var(--rule-faint)">
-<span aria-hidden="true" style="flex:none;width:19px;height:19px;border-radius:50%;background:{{ u.bg }};display:grid;place-items:center;font-size:10px;color:{{ u.fg }}">{{ u.glyph }}</span>
-<span style="flex:1;min-width:0;font-size:var(--t-sm)">{{ u.label }}</span>
-<span style="flex:none;font-size:var(--t-micro);color:var(--ink-3)">{{ u.note }}</span>
+<span aria-hidden="true" style="flex:none;width:19px;height:19px;border-radius:50%;background:{{ r.bg }};display:grid;place-items:center;font-size:10px;color:{{ r.fg }}">{{ r.glyph }}</span>
+<span style="flex:1;min-width:0;font-size:var(--t-sm)">{{ r.label }}</span>
+<span style="flex:none;font-size:var(--t-micro);color:var(--ink-3)">{{ r.note }}</span>
 </div>
 </sc-for>
 </div>
 
 <div style="display:flex;flex-direction:column;gap:9px">
-<button type="button" class="cta" style="background:var(--allowed)">ابدأ التحقّق كمستورد</button>
-<button type="button" class="ghost">لاحقاً — خذني للرئيسية</button>
+<button type="button" class="cta" style="background:var(--allowed)">{{ dn.cta1 }}</button>
+<button type="button" class="ghost">{{ dn.cta2 }}</button>
 </div>
 </div>
 </sc-if>
@@ -163,51 +198,124 @@
 </div>
 </div>
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:430,&quot;height&quot;:900}}">
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:430,&quot;height&quot;:980}}">
 class Component extends DCLogic {
-  state = { step: 3, lang: 'ar', roles: { importer: true } };
+  state = { entry: 'importer', step: 0, lang: 'ar' };
 
-  STEPS = ['phone', 'otp', 'profile', 'role', 'done'];
+  ENTRIES = [
+    ['consumer', 'زبون — من السوق'],
+    ['importer', 'مستورد — «سجّل كمستورد»'],
+    ['trader', 'تاجر — «سجّل كتاجر»']
+  ];
 
-  ICON = {
-    imp: React.createElement('svg', { width: 19, height: 19, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 1.9 }, React.createElement('path', { d: 'M3 15l18-7-7 18-2.5-8z' })),
-    tra: React.createElement('svg', { width: 19, height: 19, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 1.9 }, React.createElement('path', { d: 'M4 8h16l-1.2 11a1 1 0 0 1-1 .9H6.2a1 1 0 0 1-1-.9z' }), React.createElement('path', { d: 'M8.5 8a3.5 3.5 0 0 1 7 0' })),
-    con: React.createElement('svg', { width: 19, height: 19, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 1.9 }, React.createElement('circle', { cx: 12, cy: 8.5, r: 3.7 }), React.createElement('path', { d: 'M4.8 20a7.4 7.4 0 0 1 14.4 0' }))
+  // The consumer never sees an eligibility screen or a role question.
+  FLOW = {
+    consumer: ['phone', 'otp', 'profile', 'done'],
+    importer: ['eligible', 'phone', 'otp', 'profile', 'done'],
+    trader:   ['eligible', 'phone', 'otp', 'profile', 'done']
   };
 
-  // One identity, several operating contexts. Never separate accounts.
-  ROLES = [
-    { id: 'importer', icon: 'imp', title: 'أستورد', iconBg: 'oklch(0.92 0.03 150)', iconFg: 'var(--allowed-ink)',
-      body: 'عندي بطاقة المقاول الذاتي ونسافر نجيب سلعة نبيعها.',
-      req: 'يحتاج بطاقة ANAE ورخصة عامة', reqChip: 'chip-conditional' },
-    { id: 'trader', icon: 'tra', title: 'أشتري وأبيع', iconBg: 'oklch(0.93 0.03 28)', iconFg: 'var(--accent-ink)',
-      body: 'عندي محل أو نشاط تجاري ونحتاج سلعة من الخارج.',
-      req: 'يحتاج سجل تجاري', reqChip: 'chip-conditional' },
-    { id: 'consumer', icon: 'con', title: 'نشري لنفسي', iconBg: 'oklch(0.93 0.03 250)', iconFg: 'oklch(0.35 0.06 250)',
-      body: 'نبحث على منتجات عند تجّار موثوقين.',
-      req: 'بلا وثائق', reqChip: 'chip-verified' }
-  ];
+  EL = {
+    importer: {
+      badge: 'مستورد مصغّر', chip: 'chip-verified',
+      title: 'قبل ما تبدأ — واش تحتاج',
+      lede: 'التسجيل بالهاتف ويأخذ دقيقة. الوثائق تُطلب بعد ذلك، ويمكنك رفعها على مراحل.',
+      needs: [
+        { i: '1', t: 'بطاقة المقاول الذاتي', d: 'بميدان «الاستيراد المصغّر»، سارية المفعول.' },
+        { i: '2', t: 'الرخصة العامة', d: 'من وزارة التجارة الخارجية، صالحة سنة قابلة للتجديد.' },
+        { i: '3', t: 'الرقم الجبائي والانتساب إلى CASNOS', d: 'وثيقتان قصيرتان تُرفعان بالصورة.' }
+      ],
+      unlocks: ['نشر رحلة واستقبال طلبات التجّار', 'لوحة الطلب المُجمَّع كاملةً', 'عدّادات القيمة والوزن والحجم', 'الدفتر المبسّط ومولّد وسم المادة 14'],
+      note: 'مَعْبَر تتحقّق من وثائقك فقط. لا تمنحك المنصّة حقّ الاستيراد — هذا الحق تحصل عليه من الجهات الرسمية، ونحن نتأكّد أنك تملكه.',
+      cta: 'ابدأ التسجيل'
+    },
+    trader: {
+      badge: 'تاجر', chip: 'chip-verified',
+      title: 'قبل ما تبدأ — واش تحتاج',
+      lede: 'التسجيل بالهاتف ويأخذ دقيقة. السجل التجاري يُطلب فقط إذا أردت عرض منتجاتك للجمهور.',
+      needs: [
+        { i: '1', t: 'السجل التجاري', d: 'مستخرج ساري، باسمك أو باسم نشاطك.' },
+        { i: '2', t: 'الرقم الجبائي', d: 'يُرفع بالصورة.' },
+        { i: '3', t: 'عنوان النشاط', d: 'يظهر في ملف متجرك العام.' }
+      ],
+      unlocks: ['طلب توريد بمواصفة ونطاق سعر', 'اكتشاف الرحلات والمستوردين وسجلّاتهم', 'عرض منتجاتك للجمهور في السوق', 'ملف متجر عام بسجلّك'],
+      note: 'يمكنك البحث والمراسلة وطلب التوريد قبل رفع السجل التجاري. الوثيقة مطلوبة فقط لعرض المنتجات للجمهور.',
+      cta: 'ابدأ التسجيل'
+    }
+  };
 
-  UNLOCKED = [
-    { label: 'تصفّح السوق والبحث', ok: true, note: 'الآن' },
-    { label: 'حفظ المنتجات والمتاجر', ok: true, note: 'الآن' },
-    { label: 'مراسلة التجّار', ok: true, note: 'الآن' },
-    { label: 'نشر رحلة واستقبال طلبات', ok: false, note: 'بعد التحقّق' }
-  ];
+  PH = {
+    consumer: { title: 'أهلاً بك في مَعْبَر', lede: 'رقم هاتفك يكفي. ما نطلبوش منك وثائق — أنت هنا باش تشري.' },
+    importer: { title: 'أنشئ حسابك', lede: 'رقم الهاتف أولاً. الوثائق بعد ذلك.' },
+    trader:   { title: 'أنشئ حسابك', lede: 'رقم الهاتف أولاً. الوثائق بعد ذلك.' }
+  };
+
+  PR = {
+    consumer: { title: 'عرّفنا بك', lede: 'اسمك يظهر للبائع عند المراسلة فقط.', nameLabel: 'الاسم', namePh: 'سمية لعمارة', cta: 'ابدأ التصفّح' },
+    importer: { title: 'عرّفنا بك', lede: 'اسمك يجب أن يطابق ما في وثائقك.', nameLabel: 'الاسم واللقب', namePh: 'سفيان بن عمارة', cta: 'متابعة' },
+    trader:   { title: 'عرّفنا بنشاطك', lede: 'اسم النشاط يظهر في ملف متجرك العام.', nameLabel: 'اسم النشاط', namePh: 'بوتيك نادية', cta: 'متابعة' }
+  };
+
+  DN = {
+    consumer: {
+      title: 'حسابك جاهز', lede: 'تقدر تشري وتحفظ وتراسل من دابا.',
+      rows: [['البحث والتصفّح', true, 'الآن'], ['حفظ المنتجات والمتاجر', true, 'الآن'], ['مراسلة البائعين', true, 'الآن'], ['ترك مراجعة', true, 'بعد أول شراء']],
+      cta1: 'تصفّح السوق', cta2: 'شوف محفوظاتي'
+    },
+    importer: {
+      title: 'حسابك جاهز', lede: 'خطوة وحدة باقية: ارفع وثائقك باش تقدر تنشر رحلة.',
+      rows: [['تصفّح السوق والبحث', true, 'الآن'], ['مراسلة التجّار', true, 'الآن'], ['ملخّص لوحة الطلب', true, 'الآن'], ['نشر رحلة واستقبال طلبات', false, 'بعد التحقّق']],
+      cta1: 'ابدأ رفع الوثائق', cta2: 'لاحقاً — خذني للرئيسية'
+    },
+    trader: {
+      title: 'حسابك جاهز', lede: 'تقدر تطلب توريد من دابا. السجل التجاري مطلوب فقط لعرض منتجاتك.',
+      rows: [['اكتشاف الرحلات والمستوردين', true, 'الآن'], ['نشر طلب توريد', true, 'الآن'], ['مراسلة المستوردين', true, 'الآن'], ['عرض منتجاتك للجمهور', false, 'بعد التحقّق']],
+      cta1: 'ابدأ رفع الوثائق', cta2: 'لاحقاً — انشر طلب توريد'
+    }
+  };
 
   renderVals() {
-    const s = this.state, step = this.STEPS[s.step];
-    const labels = { phone: '', otp: 'خطوة 2 من 4', profile: 'خطوة 3 من 4', role: 'خطوة 4 من 4', done: '' };
+    const s = this.state;
+    const flow = this.FLOW[s.entry];
+    const step = flow[Math.min(s.step, flow.length - 1)];
+    const el = this.EL[s.entry];
 
     return {
-      isPhone: step === 'phone', isOtp: step === 'otp', isProfile: step === 'profile',
-      isRole: step === 'role', isDone: step === 'done',
+      entries: this.ENTRIES.map(([id, label]) => ({
+        label, on: s.entry === id,
+        bg: s.entry === id ? 'var(--ink)' : 'var(--surface)',
+        fg: s.entry === id ? 'var(--ink-on)' : 'var(--ink-2)',
+        bd: s.entry === id ? 'var(--ink)' : 'var(--rule-strong)',
+        pick: () => this.setState({ entry: id, step: 0 })
+      })),
+
+      isEligible: step === 'eligible',
+      isPhone: step === 'phone', isOtp: step === 'otp',
+      isProfile: step === 'profile', isDone: step === 'done',
+      isConsumerEntry: s.entry === 'consumer',
+
       canBack: s.step > 0 && step !== 'done',
-      showBar: step !== 'done',
-      stepLabel: labels[step],
-      progress: Math.round((s.step + 1) / this.STEPS.length * 100),
+      stepLabel: step === 'done' ? '' : 'خطوة ' + (s.step + 1) + ' من ' + (flow.length - 1),
+      progress: Math.round((s.step + 1) / flow.length * 100),
       back: () => this.setState(x => ({ step: Math.max(0, x.step - 1) })),
-      next: () => this.setState(x => ({ step: Math.min(this.STEPS.length - 1, x.step + 1) })),
+      next: () => this.setState(x => ({ step: Math.min(flow.length - 1, x.step + 1) })),
+
+      el: el || this.EL.importer,
+      ph: this.PH[s.entry],
+      pr: this.PR[s.entry],
+
+      dn: (() => {
+        const d = this.DN[s.entry];
+        return {
+          title: d.title, lede: d.lede, cta1: d.cta1, cta2: d.cta2,
+          rows: d.rows.map(([label, ok, note]) => ({
+            label, note,
+            glyph: ok ? '✓' : '·',
+            bg: ok ? 'var(--allowed-bg)' : 'var(--neutral-bg)',
+            fg: ok ? 'var(--allowed-ink)' : 'var(--ink-3)'
+          }))
+        };
+      })(),
 
       otpCells: ['4', '7', '2', '9', '', ''].map(v => ({ v, bd: v ? 'var(--ink)' : 'var(--rule-strong)' })),
 
@@ -217,31 +325,6 @@ class Component extends DCLogic {
         bg: s.lang === id ? 'var(--ink)' : 'var(--surface)',
         fg: s.lang === id ? 'var(--ink-on)' : 'var(--ink)',
         pick: () => this.setState({ lang: id })
-      })),
-
-      roles: this.ROLES.map(r => {
-        const on = !!s.roles[r.id];
-        return {
-          ...r, on,
-          icon: this.ICON[r.icon],
-          bd: on ? 'var(--allowed)' : 'var(--rule-faint)',
-          bw: on ? 2 : 1,
-          dotBd: on ? 'var(--allowed)' : 'var(--rule-strong)',
-          dotBg: on ? 'var(--allowed)' : 'transparent',
-          check: on ? '✓' : '',
-          pick: () => this.setState(x => {
-            const roles = { ...x.roles };
-            if (roles[r.id]) delete roles[r.id]; else roles[r.id] = true;
-            return { roles };
-          })
-        };
-      }),
-
-      unlocked: this.UNLOCKED.map(u => ({
-        label: u.label, note: u.note,
-        glyph: u.ok ? '✓' : '·',
-        bg: u.ok ? 'var(--allowed-bg)' : 'var(--neutral-bg)',
-        fg: u.ok ? 'var(--allowed-ink)' : 'var(--ink-3)'
       }))
     };
   }

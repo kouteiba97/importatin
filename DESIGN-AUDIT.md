@@ -248,6 +248,25 @@ Screens read them at render. `Trip Creation` displays the value cap with its eff
 
 ---
 
+## 12b. SURFACE ARCHITECTURE — three deployables, not one
+
+The product ships as **three separate surfaces**. This is an architecture decision, not a routing preference.
+
+| Surface | Audience | Auth | Notes |
+|---|---|---|---|
+| **Public web** | Anyone, signed out | none | Marketplace, product, seller, search, compliance checker, landing. Server-rendered for SEO and WhatsApp previews — this is how consumers arrive |
+| **App** | Consumer · trader · importer, signed in | user session | One identity, roles as capabilities. Responsive: bottom tabs on phone, persistent rail from 1140px |
+| **Admin** | Trust & safety staff only | **separate auth, separate domain** | Never reachable from the public app. Admin code must never ship in the user bundle |
+
+**Why admin is its own deployable, not a route:**
+- Different threat model — a compromised user session must not reach moderation, verification or rule authoring
+- Bundle weight — queue tooling, evidence panels and the rule editor are dead weight for a shopper on 3G
+- Staff auth belongs on its own lifecycle (SSO, forced rotation, IP allowlisting) without touching consumer signup
+
+**Entry determines role.** A visitor arriving at a product page and signing up is a consumer — they are never asked whether they import. Someone who clicks *«سجّل كمستورد»* or *«سجّل كتاجر»* has already declared it, so that path opens with eligibility before asking for a phone number. There is no role-selection menu anywhere in the product.
+
+---
+
 ## 13. FOR THE DEVELOPER — WHAT NOT TO DECIDE DURING CODING
 
 These are settled. Do not re-open them in implementation:
