@@ -13,6 +13,52 @@
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="./tokens.css">
 <style>
+/* ============================================================
+   RESPONSIVE APP SHELL — one document, two shapes.
+   Phone keeps bottom tabs. From 1140px a persistent rail replaces
+   them and the capacity panel pins beside the list instead of
+   stacking above it. This is a web platform that happens to work
+   well on a phone, not a phone app stretched onto a desktop.
+   ============================================================ */
+.app{min-height:100vh;display:flex;background:var(--paper)}
+
+/* In RTL the first flex child sits on the right — correct for the rail. */
+.rail{display:none;flex:none;width:232px;background:var(--surface);
+      border-inline-end:1px solid var(--rule);flex-direction:column;
+      position:sticky;top:0;height:100vh}
+.railtop{padding:16px 16px 13px;border-bottom:1px solid var(--rule);display:flex;align-items:center;gap:11px}
+.railnav{padding:11px 9px;display:flex;flex-direction:column;gap:2px;flex:1}
+.raillink{display:flex;align-items:center;gap:11px;padding:10px 11px;border:0;border-radius:var(--r-sm);
+          background:transparent;color:var(--ink-2);font-size:var(--t-body);cursor:pointer;text-align:start;width:100%}
+.raillink:hover{background:var(--surface-2)}
+.raillink[aria-current="true"]{background:var(--allowed-bg);color:var(--allowed-ink);font-weight:600}
+
+.body{flex:1;min-width:0;display:flex;flex-direction:column}
+.shellpad{width:100%;max-width:430px;margin:0 auto;padding-inline:16px}
+.topbar{position:sticky;top:0;z-index:20;background:var(--surface);border-bottom:1px solid var(--rule)}
+.content{padding:14px 16px 128px;display:grid;grid-template-columns:1fr;gap:12px;align-content:start}
+/* the pinned panel is desktop-only; on phone the header strip carries capacity */
+.side{display:none}
+.list{display:flex;flex-direction:column;gap:12px;min-width:0}
+.tabs{position:fixed;inset-block-end:0;inset-inline:0;margin:0 auto;max-width:430px;
+      display:grid;grid-template-columns:repeat(5,1fr);background:var(--surface);
+      border-top:1px solid var(--rule);padding-block:6px 8px;z-index:20}
+
+@media (min-width:1140px){
+  .rail{display:flex}
+  .tabs{display:none}
+  .shellpad{max-width:none;padding-inline:26px}
+  .content{max-width:1180px;margin:0 auto;padding:22px 26px 44px;
+           grid-template-columns:minmax(0,1fr) 336px;gap:24px;align-items:start}
+  .side{display:block;position:sticky;top:104px}
+  .list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+  .only-sm{display:none !important}
+}
+@media (min-width:1600px){
+  .content{max-width:1440px}
+  .list{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
+
 .scrollx{overflow-x:auto;scrollbar-width:none}
 .scrollx::-webkit-scrollbar{display:none}
 .meter{height:5px;border-radius:3px;background:var(--neutral-bg);overflow:hidden}
@@ -23,18 +69,44 @@
 </style>
 </helmet>
 
-<div dir="rtl" lang="ar" class="tier-op" style="min-height:100vh;display:flex;justify-content:center">
-<div style="width:100%;max-width:430px;min-height:100vh;display:flex;flex-direction:column;background:var(--paper);border-inline:1px solid var(--rule)">
+<div dir="rtl" lang="ar" class="app tier-op">
 
-<header style="position:sticky;top:0;z-index:20;background:var(--surface);border-bottom:1px solid var(--rule)">
-<div style="display:flex;align-items:center;gap:10px;padding:12px 16px 10px">
+<!-- ══ RAIL — desktop only ══ -->
+<nav class="rail" aria-label="التنقّل">
+<div class="railtop">
+<span style="color:var(--allowed);display:grid;place-items:center;flex:none">
+<svg width="26" height="26" viewBox="0 0 48 48" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="4.4" stroke-linecap="round"><path d="M11 38V23a13 13 0 0 1 26 0v15"/><path d="M3 38h42"/></g></svg>
+</span>
+<span style="font-weight:600;font-size:19px">مَعْبَر</span>
+</div>
+<div class="railnav">
+<sc-for list="{{ nav }}" as="n" hint-placeholder-count="5">
+<button type="button" class="raillink" aria-current="{{ n.on }}">
+<span aria-hidden="true" style="flex:none;display:grid;place-items:center">{{ n.icon }}</span>
+<span style="flex:1;min-width:0">{{ n.label }}</span>
+</button>
+</sc-for>
+</div>
+<div style="padding:12px 14px;border-top:1px solid var(--rule);display:flex;align-items:center;gap:9px">
+<span aria-hidden="true" style="flex:none;width:30px;height:30px;border-radius:50%;background:oklch(0.92 0.03 150);display:grid;place-items:center;font-size:11px;font-weight:600;color:var(--allowed-ink)">س ب</span>
+<div style="flex:1;min-width:0">
+<div style="font-size:var(--t-xs);font-weight:500">سفيان ب.</div>
+<div style="font-size:var(--t-micro);color:var(--ink-3)">مستورد مُتحقَّق</div>
+</div>
+</div>
+</nav>
+
+<div class="body">
+
+<header class="topbar">
+<div class="shellpad" style="display:flex;align-items:center;gap:12px;padding-block:12px 10px">
 <span style="font-size:var(--t-h2);font-weight:600">لوحة الطلب</span>
 <div style="flex:1"></div>
 <span class="num" style="font-size:var(--t-xs);color:var(--ink-3)"><bdi>{{ basis }}</bdi></span>
 </div>
 
-<!-- live capacity — the signature interaction -->
-<div style="padding:0 16px 11px">
+<!-- capacity strip: phone only — on desktop it lives in the pinned panel -->
+<div class="shellpad only-sm" style="padding-block:0 11px">
 <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
 <span style="font-size:var(--t-xs);color:var(--ink-2);flex:1">{{ tripLabel }}</span>
 <span class="num" style="font-size:var(--t-micro);color:var(--ink-3)"><bdi>{{ tripCounter }}</bdi></span>
@@ -52,15 +124,42 @@
 </div>
 </div>
 
-<div class="scrollx" style="display:flex;gap:7px;padding:0 16px 11px">
+<div class="shellpad scrollx" style="display:flex;gap:7px;padding-block:0 11px">
 <sc-for list="{{ filters }}" as="f" hint-placeholder-count="5">
 <button type="button" onClick="{{ f.pick }}" aria-pressed="{{ f.on }}" style="flex:none;height:31px;padding:0 12px;border:1px solid {{ f.bd }};border-radius:var(--r-pill);background:{{ f.bg }};color:{{ f.fg }};font-size:var(--t-sm);cursor:pointer">{{ f.label }}</button>
 </sc-for>
 </div>
 </header>
 
-<main style="flex:1;padding:14px 16px 96px;display:flex;flex-direction:column;gap:12px">
+<div class="content">
 
+<!-- ══ PINNED CAPACITY PANEL — desktop only ══ -->
+<aside class="side">
+<div class="card sidecard" style="padding:15px">
+<div style="font-size:var(--t-h3);font-weight:600;margin-bottom:4px">{{ tripLabel }}</div>
+<div class="num" style="font-size:var(--t-xs);color:var(--ink-3);margin-bottom:15px"><bdi>{{ tripCounter }}</bdi></div>
+<div style="display:flex;flex-direction:column;gap:13px">
+<sc-for list="{{ meters }}" as="m" hint-placeholder-count="3">
+<div>
+<div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:5px">
+<span style="font-size:var(--t-sm);color:var(--ink-2)">{{ m.label }}</span>
+<span class="num" style="font-size:var(--t-sm);font-weight:600;color:{{ m.fg }}"><bdi>{{ m.left }}</bdi></span>
+</div>
+<div class="meter" style="height:7px"><i style="width:{{ m.pct }}%;background:{{ m.fg }}"></i></div>
+</div>
+</sc-for>
+</div>
+<sc-if value="{{ hasList }}" hint-placeholder-val="{{ true }}">
+<div style="margin-top:17px;padding-top:15px;border-top:1px solid var(--rule-faint)">
+<div style="font-size:var(--t-xs);color:var(--ink-3);margin-bottom:5px">قائمة الشراء</div>
+<div class="num" style="font-size:var(--t-body);font-weight:600;margin-bottom:13px"><bdi>{{ listSummary }}</bdi></div>
+<button type="button" style="width:100%;height:44px;border:0;border-radius:var(--r-sm);background:var(--allowed);color:var(--ink-on);font-size:var(--t-sm);font-weight:600;cursor:pointer">افتح القائمة</button>
+</div>
+</sc-if>
+</div>
+</aside>
+
+<main class="list">
 <sc-for list="{{ items }}" as="it" hint-placeholder-count="4">
 <article class="card" style="padding:13px;display:flex;flex-direction:column;gap:11px">
 
@@ -80,7 +179,6 @@
 </div>
 </div>
 
-<!-- price band on a market track -->
 <div style="padding:11px 0;border-block:1px solid var(--rule-faint)">
 <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:7px">
 <span style="font-size:var(--t-xs);color:var(--ink-3)">سعر البيع المرجعي</span>
@@ -98,7 +196,7 @@
 </sc-if>
 
 <sc-if value="{{ it.inList }}" hint-placeholder-val="{{ false }}">
-<div style="display:flex;align-items:center;gap:9px">
+<div style="display:flex;align-items:center;gap:9px;margin-top:auto">
 <div style="flex:1;min-width:0">
 <div class="num" style="font-size:var(--t-sm);font-weight:500"><bdi>{{ it.qty }} وحدة في قائمتك</bdi></div>
 <div class="num" style="font-size:var(--t-micro);color:var(--ink-3);margin-top:2px"><bdi>{{ it.lineCost }}</bdi></div>
@@ -109,16 +207,28 @@
 </sc-if>
 
 <sc-if value="{{ it.notInList }}" hint-placeholder-val="{{ true }}">
-<button type="button" onClick="{{ it.add }}" disabled="{{ it.blocked }}" style="height:44px;border:0;border-radius:var(--r-sm);background:{{ it.addBg }};color:{{ it.addFg }};font-size:var(--t-sm);font-weight:500;cursor:pointer">{{ it.addLabel }}</button>
+<button type="button" onClick="{{ it.add }}" disabled="{{ it.blocked }}" style="height:44px;margin-top:auto;border:0;border-radius:var(--r-sm);background:{{ it.addBg }};color:{{ it.addFg }};font-size:var(--t-sm);font-weight:500;cursor:pointer">{{ it.addLabel }}</button>
 </sc-if>
 
 </article>
 </sc-for>
-
 </main>
 
+</div>
+</div>
+
+<!-- ══ BOTTOM TABS — phone only ══ -->
+<nav class="tabs" aria-label="التنقّل">
+<sc-for list="{{ nav }}" as="n" hint-placeholder-count="5">
+<button type="button" aria-current="{{ n.on }}" style="display:flex;flex-direction:column;align-items:center;gap:3px;border:0;background:transparent;padding:5px 0;cursor:pointer;color:{{ n.tabFg }}">
+<span aria-hidden="true" style="width:21px;height:21px;display:grid;place-items:center">{{ n.icon }}</span>
+<span style="font-size:var(--t-micro);font-weight:{{ n.fw }}">{{ n.label }}</span>
+</button>
+</sc-for>
+</nav>
+
 <sc-if value="{{ hasList }}" hint-placeholder-val="{{ true }}">
-<div style="position:fixed;inset-block-end:0;inset-inline:0;margin:0 auto;max-width:430px;display:flex;align-items:center;gap:12px;padding:12px 16px 16px;background:var(--surface);border-top:1px solid var(--rule);box-shadow:0 -2px 14px oklch(0.20 0.02 60 / 0.06)">
+<div class="only-sm" style="position:fixed;inset-block-end:62px;inset-inline:0;margin:0 auto;max-width:430px;display:flex;align-items:center;gap:12px;padding:12px 16px;background:var(--surface);border-top:1px solid var(--rule);box-shadow:0 -2px 14px oklch(0.20 0.02 60 / 0.06);z-index:19">
 <div style="flex:1;min-width:0">
 <div style="font-size:var(--t-sm);font-weight:500">قائمة الشراء</div>
 <div class="num" style="font-size:var(--t-xs);color:var(--ink-2);margin-top:2px"><bdi>{{ listSummary }}</bdi></div>
@@ -128,9 +238,8 @@
 </sc-if>
 
 </div>
-</div>
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:430,&quot;height&quot;:1560}}">
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1280,&quot;height&quot;:920}}">
 class Component extends DCLogic {
   state = { qty: { coats: 30 }, filter: 'all' };
 
@@ -140,9 +249,17 @@ class Component extends DCLogic {
     const s = Number(n).toFixed(d), [i, f] = s.split('.');
     return '⁦' + i.replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + (f ? '.' + f : '') + '⁩';
   }
+  counted(n, f) {
+    const m = n % 100;
+    if (n === 1) return f.one;
+    if (n === 2) return f.two;
+    if (m >= 3 && m <= 10) return this.fmt(n) + ' ' + f.few;
+    return this.fmt(n) + ' ' + f.many;
+  }
+  KIND_N = { one: 'صنف واحد', two: 'صنفان', few: 'أصناف', many: 'صنفاً' };
+  UNIT_N = { one: 'وحدة واحدة', two: 'وحدتان', few: 'وحدات', many: 'وحدة' };
 
   TRIP = { dest: 'إسطنبول', dates: '12 – 16 أكتوبر', value: 1800000, weight: 46, volume: 1.2, no: 1, max: 2 };
-
   FILTERS = [['all','الكل'],['clothes','ألبسة'],['bags','حقائب'],['cosm','تجميل'],['shoes','أحذية']];
 
   ITEMS = [
@@ -169,17 +286,21 @@ class Component extends DCLogic {
   COMP = { ok: 'chip-verified', cond: 'chip-conditional' };
   STEP = 10;
 
-  // Arabic counted nouns: one / two / few (3-10) / many (11+).
-  // "1 أصناف" is wrong; the noun changes form with the count.
-  counted(n, f) {
-    const m = n % 100;
-    if (n === 1) return f.one;
-    if (n === 2) return f.two;
-    if (m >= 3 && m <= 10) return this.fmt(n) + ' ' + f.few;
-    return this.fmt(n) + ' ' + f.many;
-  }
-  KIND_N = { one: 'صنف واحد', two: 'صنفان', few: 'أصناف', many: 'صنفاً' };
-  UNIT_N = { one: 'وحدة واحدة', two: 'وحدتان', few: 'وحدات', many: 'وحدة' };
+  ICON = {
+    home: React.createElement('svg', { width: 20, height: 20, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 1.8 }, React.createElement('path', { d: 'M4 11l8-7 8 7v8a1 1 0 0 1-1 1h-4v-6H9v6H5a1 1 0 0 1-1-1z' })),
+    trip: React.createElement('svg', { width: 20, height: 20, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 1.8 }, React.createElement('path', { d: 'M3 15l18-7-7 18-2.5-8z' })),
+    demand: React.createElement('svg', { width: 20, height: 20, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 1.8 }, React.createElement('path', { d: 'M4 19V9M10 19V5M16 19v-7M22 19H2' })),
+    msg: React.createElement('svg', { width: 20, height: 20, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 1.8 }, React.createElement('path', { d: 'M21 11.5a8.4 8.4 0 0 1-9 8.4 9 9 0 0 1-3.3-.6L3 21l1.7-5a8.2 8.2 0 0 1-.7-3.4 8.4 8.4 0 0 1 8.5-8.5 8.4 8.4 0 0 1 8.5 8.4z' })),
+    me: React.createElement('svg', { width: 20, height: 20, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 1.8 }, React.createElement('circle', { cx: 12, cy: 8.5, r: 3.7 }), React.createElement('path', { d: 'M4.8 20a7.4 7.4 0 0 1 14.4 0' }))
+  };
+
+  NAV = [
+    { id: 'home', label: 'الرئيسية', icon: 'home' },
+    { id: 'trip', label: 'رحلتي', icon: 'trip' },
+    { id: 'demand', label: 'الطلب', icon: 'demand' },
+    { id: 'msg', label: 'الرسائل', icon: 'msg' },
+    { id: 'me', label: 'حسابي', icon: 'me' }
+  ];
 
   used() {
     return this.ITEMS.reduce((a, it) => {
@@ -249,7 +370,7 @@ class Component extends DCLogic {
     return {
       basis: 'مبنيّة على 214 طلباً',
       tripLabel: T.dest + ' · ' + T.dates,
-      tripCounter: 'الرحلة ' + T.no + ' من ' + T.max,
+      tripCounter: 'الرحلة ' + T.no + ' من ' + T.max + ' هذا الشهر',
       meters: caps,
       filters: this.FILTERS.map(([id, label]) => ({
         label, on: s.filter === id,
@@ -257,6 +378,13 @@ class Component extends DCLogic {
         bg: s.filter === id ? 'var(--ink)' : 'var(--surface)',
         fg: s.filter === id ? 'var(--ink-on)' : 'var(--ink)',
         pick: () => this.setState({ filter: id })
+      })),
+      nav: this.NAV.map(n => ({
+        ...n,
+        on: n.id === 'demand',
+        tabFg: n.id === 'demand' ? 'var(--ink)' : 'var(--ink-3)',
+        fw: n.id === 'demand' ? 600 : 400,
+        icon: this.ICON[n.icon]
       })),
       items,
       hasList: inList.length > 0,

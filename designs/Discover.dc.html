@@ -187,13 +187,13 @@ class Component extends DCLogic {
   fmt(n) { return '⁦' + String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + '⁩'; }
 
   TABS = [
-    { id: 'trips', label: 'رحلات', ph: 'ابحث بالوجهة أو الفئة' },
+    { id: 'trips', label: 'رحلات', ph: 'ابحث بأي وجهة في العالم أو بالفئة' },
     { id: 'importers', label: 'مستوردون', ph: 'ابحث بالاسم أو التخصّص' },
     { id: 'products', label: 'منتجات', ph: 'ابحث في السوق' }
   ];
 
   CHIPS = {
-    trips: [['all','الكل'],['tr','تركيا'],['ae','الإمارات'],['cn','الصين'],['soon','يغادر هذا الأسبوع'],['cap','سعة واسعة']],
+    trips: [['all','كل الوجهات'],['soon','يغادر هذا الأسبوع'],['cap','سعة واسعة'],['tr','تركيا'],['ae','الإمارات'],['cn','الصين'],['eu','أوروبا'],['asia','آسيا'],['other','وجهات أخرى']],
     importers: [['all','الكل'],['clothes','ألبسة'],['cosm','تجميل'],['shoes','أحذية'],['new','مُتحقَّق حديثاً']],
     products: [['all','الكل']]
   };
@@ -215,8 +215,8 @@ class Component extends DCLogic {
       state: 'سعة محدودة', stateChip: 'chip-conditional', cats: 'عطور · ساعات · إلكترونيات صغيرة',
       capNote: 'يحدّدها المستورد', mw: [26, 30], mv: [0.55, 0.6],
       who: 'سفيان ب.', initials: 'س ب', whoMeta: '12 معاملة مؤكَّدة · مستورد جديد', tone: 0 },
-    { id: 't3', cc: 'TR', dest: 'غازي عنتاب', dates: '2–7 نوفمبر', arrival: '9 نوفمبر',
-      state: 'مفتوحة للطلب', stateChip: 'chip-verified', cats: 'منسوجات منزلية · مفروشات',
+    { id: 't3', cc: 'CN', dest: 'قوانغتشو', dates: '2–7 نوفمبر', arrival: '9 نوفمبر',
+      state: 'مفتوحة للطلب', stateChip: 'chip-verified', cats: 'إلكترونيات صغيرة · منسوجات منزلية',
       capNote: 'يحدّدها المستورد', mw: [12, 52], mv: [0.3, 1.4],
       who: 'ن. مرابط', initials: 'ن م', whoMeta: '46 معاملة مؤكَّدة · ترد خلال 3 ساعات', tone: 1 }
   ];

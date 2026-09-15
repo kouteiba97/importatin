@@ -42,10 +42,16 @@
 <h1 style="margin:0 0 7px;font-size:23px;font-weight:600">وين وامتى؟</h1>
 <p style="margin:0;font-size:var(--t-body);color:var(--ink-2);line-height:1.7">التجّار يبحثون بالوجهة والتاريخ أولاً.</p>
 </div>
-<div><span class="fld">الوجهة</span>
-<div class="scrollx" style="display:flex;gap:8px">
-<sc-for list="{{ dests }}" as="d" hint-placeholder-count="4">
-<button type="button" onClick="{{ d.pick }}" aria-pressed="{{ d.on }}" style="flex:none;padding:0 15px;height:44px;border:1px solid {{ d.bd }};border-radius:var(--r);background:{{ d.bg }};color:{{ d.fg }};font-size:var(--t-body);font-weight:500;cursor:pointer">{{ d.label }}</button>
+<div>
+<label class="fld" for="dst">الوجهة</label>
+<div style="display:flex;align-items:center;gap:9px;height:48px;padding:0 14px;border:1px solid var(--rule-strong);border-radius:var(--r);background:var(--surface)">
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--ink-3)" stroke-width="2" style="flex:none"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+<input id="dst" value="{{ destName }}" placeholder="اكتب أي مدينة أو بلد في العالم" style="flex:1;min-width:0;border:0;background:transparent;font-size:15px;color:inherit;outline:none">
+</div>
+<div style="font-size:var(--t-xs);color:var(--ink-3);margin:9px 0 8px">الأكثر استعمالاً</div>
+<div class="scrollx" style="display:flex;gap:7px">
+<sc-for list="{{ dests }}" as="d" hint-placeholder-count="8">
+<button type="button" onClick="{{ d.pick }}" aria-pressed="{{ d.on }}" style="flex:none;height:36px;padding:0 13px;border:1px solid {{ d.bd }};border-radius:var(--r-pill);background:{{ d.bg }};color:{{ d.fg }};font-size:var(--t-sm);cursor:pointer;white-space:nowrap">{{ d.label }}</button>
 </sc-for>
 </div>
 </div>
@@ -209,7 +215,8 @@ class Component extends DCLogic {
   state = { step: 2, dest: 'ist', cats: { clothes: true, bags: true, cosm: true }, vis: 'all' };
 
   N = 6;
-  DESTS = [['ist', 'إسطنبول'], ['dxb', 'دبي'], ['gaz', 'غازي عنتاب'], ['can', 'قوانغتشو']];
+  // Any destination worldwide. These are the most-used shortcuts, not the options.
+  DESTS = [['ist','إسطنبول'],['dxb','دبي'],['can','قوانغتشو'],['yiw','ييوو'],['ist2','غازي عنتاب'],['bkk','بانكوك'],['mil','ميلانو'],['par','باريس'],['ist3','جدة'],['tun','تونس']];
   CATS = [['clothes','ألبسة نسائية'],['men','ألبسة رجالية'],['bags','حقائب'],['shoes','أحذية'],['cosm','تجميل وعطور'],['watch','ساعات'],['home','منزل']];
   PRESETS = ['حقيبتان 23 كغ', 'حقيبة + يد', 'شحن مرافق'];
 
@@ -240,6 +247,7 @@ class Component extends DCLogic {
       is0: s.step === 0, is1: s.step === 1, is2: s.step === 2,
       is3: s.step === 3, is4: s.step === 4, is5: s.step === 5,
 
+      destName: dest,
       dests: this.DESTS.map(([id, label]) => ({
         label, on: s.dest === id,
         bd: s.dest === id ? 'var(--ink)' : 'var(--rule-strong)',

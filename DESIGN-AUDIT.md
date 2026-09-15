@@ -1,3 +1,4 @@
+| Desktop layouts for the remaining 22 screens | **P0 for a web-first launch** | The responsive app-shell pattern is proven on `Demand Board` (rail replaces bottom tabs at 1140px, capacity panel pins beside the list). Admin is already desktop. The rest need the same treatment |
 # Maabar — Final Design Audit
 **Phase:** Pre-build gate
 **Date:** 14 September 2026
