@@ -69,15 +69,15 @@
 </style>
 </helmet>
 
-<div dir="rtl" lang="ar" class="app tier-op">
+<div ref="{{ rootRef }}" dir="rtl" lang="ar" class="app tier-op">
 
 <!-- ══ RAIL — desktop only ══ -->
-<nav class="rail" aria-label="التنقّل">
+<nav class="rail" aria-label="{{ t.navLabel }}">
 <div class="railtop">
 <span style="color:var(--brand);display:grid;place-items:center;flex:none">
 <svg width="26" height="26" viewBox="0 0 48 48" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="4.4" stroke-linecap="round" stroke-linejoin="round"><path d="M8 36V23a8 8 0 0 1 16 0v13"/><path d="M24 23a8 8 0 0 1 16 0v13"/></g></svg>
 </span>
-<span style="font-family:var(--font-display);font-weight:600;font-size:19px">مَعْبَر</span>
+<span style="font-family:var(--font-display);font-weight:600;font-size:19px">{{ t.brand }}</span>
 </div>
 <div class="railnav">
 <sc-for list="{{ nav }}" as="n" hint-placeholder-count="5">
@@ -88,10 +88,10 @@
 </sc-for>
 </div>
 <div style="padding:12px 14px;border-top:1px solid var(--rule);display:flex;align-items:center;gap:9px">
-<span aria-hidden="true" style="flex:none;width:30px;height:30px;border-radius:50%;background:var(--role-trader-bg);display:grid;place-items:center;font-size:11px;font-weight:600;color:var(--role-trader-ink)">س ب</span>
+<span aria-hidden="true" style="flex:none;width:30px;height:30px;border-radius:50%;background:var(--role-importer-bg);display:grid;place-items:center;font-size:11px;font-weight:600;color:var(--role-importer-ink)">{{ t.userInitials }}</span>
 <div style="flex:1;min-width:0">
-<div style="font-size:var(--t-xs);font-weight:500">سفيان ب.</div>
-<div style="font-size:var(--t-micro);color:var(--ink-3)">مستورد مُتحقَّق</div>
+<div style="font-size:var(--t-xs);font-weight:500">{{ t.userName }}</div>
+<div style="font-size:var(--t-micro);color:var(--ink-3)">{{ t.userRole }}</div>
 </div>
 </div>
 </nav>
@@ -100,9 +100,14 @@
 
 <header class="topbar">
 <div class="shellpad" style="display:flex;align-items:center;gap:12px;padding-block:12px 10px">
-<span style="font-size:var(--t-h2);font-weight:600">لوحة الطلب</span>
+<span style="font-size:var(--t-h2);font-weight:600">{{ t.title }}</span>
 <div style="flex:1"></div>
 <span class="num" style="font-size:var(--t-xs);color:var(--ink-3)"><bdi>{{ basis }}</bdi></span>
+<div role="group" aria-label="{{ t.langLabel }}" style="display:flex;border:1px solid var(--rule-strong);border-radius:var(--r-sm);overflow:hidden;flex:none">
+<sc-for list="{{ langs }}" as="l" hint-placeholder-count="3">
+<button type="button" onClick="{{ l.pick }}" aria-pressed="{{ l.on }}" style="height:24px;padding:0 8px;border:0;background:{{ l.bg }};color:{{ l.fg }};font-size:var(--t-micro);font-weight:500;cursor:pointer">{{ l.short }}</button>
+</sc-for>
+</div>
 </div>
 
 <!-- capacity strip: phone only — on desktop it lives in the pinned panel -->
@@ -151,9 +156,9 @@
 </div>
 <sc-if value="{{ hasList }}" hint-placeholder-val="{{ true }}">
 <div style="margin-top:17px;padding-top:15px;border-top:1px solid var(--rule-faint)">
-<div style="font-size:var(--t-xs);color:var(--ink-3);margin-bottom:5px">قائمة الشراء</div>
+<div style="font-size:var(--t-xs);color:var(--ink-3);margin-bottom:5px">{{ t.buyingList }}</div>
 <div class="num" style="font-size:var(--t-body);font-weight:600;margin-bottom:13px"><bdi>{{ listSummary }}</bdi></div>
-<button type="button" style="width:100%;height:44px;border:0;border-radius:var(--r-sm);background:var(--brand);color:var(--ink-on);font-size:var(--t-sm);font-weight:600;cursor:pointer">افتح القائمة</button>
+<button type="button" style="width:100%;height:44px;border:0;border-radius:var(--r-sm);background:var(--brand);color:var(--ink-on);font-size:var(--t-sm);font-weight:600;cursor:pointer">{{ t.openList }}</button>
 </div>
 </sc-if>
 </div>
@@ -173,15 +178,15 @@
 <div style="font-size:var(--t-xs);color:var(--ink-2);margin-top:5px">{{ it.wilayas }}</div>
 <div style="display:flex;align-items:baseline;gap:7px;margin-top:9px">
 <span class="num" style="font-size:24px;font-weight:600;line-height:1;color:var(--allowed-ink)"><bdi>{{ it.confirmed }}</bdi></span>
-<span style="font-size:var(--t-sm);color:var(--ink-2)">مؤكَّد</span>
-<span class="num" style="font-size:var(--t-sm);color:var(--ink-3);margin-inline-start:3px"><bdi>+{{ it.interested }} مهتمّ</bdi></span>
+<span style="font-size:var(--t-sm);color:var(--ink-2)">{{ confirmedWord }}</span>
+<span class="num" style="font-size:var(--t-sm);color:var(--ink-3);margin-inline-start:3px"><bdi>{{ it.interestedLine }}</bdi></span>
 </div>
 </div>
 </div>
 
 <div style="padding:11px 0;border-block:1px solid var(--rule-faint)">
 <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:7px">
-<span style="font-size:var(--t-xs);color:var(--ink-3)">سعر البيع المرجعي</span>
+<span style="font-size:var(--t-xs);color:var(--ink-3)">{{ refPrice }}</span>
 <span class="num" style="font-size:var(--t-sm);font-weight:600"><bdi>{{ it.band }}</bdi></span>
 </div>
 <div class="track"><b style="inset-inline-start:{{ it.bandStart }}%;width:{{ it.bandWidth }}%"></b></div>
@@ -198,11 +203,11 @@
 <sc-if value="{{ it.inList }}" hint-placeholder-val="{{ false }}">
 <div style="display:flex;align-items:center;gap:9px;margin-top:auto">
 <div style="flex:1;min-width:0">
-<div class="num" style="font-size:var(--t-sm);font-weight:500"><bdi>{{ it.qty }} وحدة في قائمتك</bdi></div>
+<div class="num" style="font-size:var(--t-sm);font-weight:500"><bdi>{{ it.inListLine }}</bdi></div>
 <div class="num" style="font-size:var(--t-micro);color:var(--ink-3);margin-top:2px"><bdi>{{ it.lineCost }}</bdi></div>
 </div>
-<button type="button" class="step" onClick="{{ it.dec }}" aria-label="أنقص">−</button>
-<button type="button" class="step" onClick="{{ it.inc }}" aria-label="زد">+</button>
+<button type="button" class="step" onClick="{{ it.dec }}" aria-label="{{ less }}">−</button>
+<button type="button" class="step" onClick="{{ it.inc }}" aria-label="{{ more }}">+</button>
 </div>
 </sc-if>
 
@@ -218,7 +223,7 @@
 </div>
 
 <!-- ══ BOTTOM TABS — phone only ══ -->
-<nav class="tabs" aria-label="التنقّل">
+<nav class="tabs" aria-label="{{ t.navLabel }}">
 <sc-for list="{{ nav }}" as="n" hint-placeholder-count="5">
 <button type="button" aria-current="{{ n.on }}" style="display:flex;flex-direction:column;align-items:center;gap:3px;border:0;background:transparent;padding:5px 0;cursor:pointer;color:{{ n.tabFg }}">
 <span aria-hidden="true" style="width:21px;height:21px;display:grid;place-items:center">{{ n.icon }}</span>
@@ -230,10 +235,10 @@
 <sc-if value="{{ hasList }}" hint-placeholder-val="{{ true }}">
 <div class="only-sm" style="position:fixed;inset-block-end:62px;inset-inline:0;margin:0 auto;max-width:430px;display:flex;align-items:center;gap:12px;padding:12px 16px;background:var(--surface);border-top:1px solid var(--rule);box-shadow:0 -2px 14px oklch(0.24 0.06 257 / 0.06);z-index:19">
 <div style="flex:1;min-width:0">
-<div style="font-size:var(--t-sm);font-weight:500">قائمة الشراء</div>
+<div style="font-size:var(--t-sm);font-weight:500">{{ t.buyingList }}</div>
 <div class="num" style="font-size:var(--t-xs);color:var(--ink-2);margin-top:2px"><bdi>{{ listSummary }}</bdi></div>
 </div>
-<button type="button" style="flex:none;height:46px;padding:0 20px;border:0;border-radius:var(--r);background:var(--brand);color:var(--ink-on);font-size:var(--t-sm);font-weight:600;cursor:pointer">افتح القائمة</button>
+<button type="button" style="flex:none;height:46px;padding:0 20px;border:0;border-radius:var(--r);background:var(--brand);color:var(--ink-on);font-size:var(--t-sm);font-weight:600;cursor:pointer">{{ t.openList }}</button>
 </div>
 </sc-if>
 
@@ -241,46 +246,130 @@
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1280,&quot;height&quot;:920}}">
 class Component extends DCLogic {
-  state = { qty: { coats: 30 }, filter: 'all' };
+  /* Locale is browser-detected. French is the fallback — Algeria's commercial
+     lingua franca and the neutral middle between Arabic and English. One value. */
+  static FALLBACK = 'fr';
+  static detect() {
+    const tag = (typeof navigator !== 'undefined' && (navigator.language || '')).slice(0, 2).toLowerCase();
+    return ['ar', 'fr', 'en'].includes(tag) ? tag : Component.FALLBACK;
+  }
 
-  LRI = '⁦'; PDI = '⁩';
-  ltr(s) { return this.LRI + s + this.PDI; }
-  fmt(n, d = 0) {
+  state = { qty: { coats: 30 }, filter: 'all', lang: Component.detect() };
+  root = React.createRef();
+  componentDidMount() { this._apply(); }
+  componentDidUpdate() { this._apply(); }
+  _apply() {
+    const el = this.root.current;
+    if (el) { el.setAttribute('dir', this.L[this.state.lang].dir); el.setAttribute('lang', this.state.lang); }
+  }
+
+  /* Text runs take a first-strong isolate so Arabic stays RTL and Latin stays LTR;
+     inside Arabic, each digit group is pinned LTR so "4 800" never reads "800 4". */
+  iso(s) { if (/[\u0600-\u06FF]/.test(s)) s = s.replace(/\d[\d ,.:]*\d%?|\d%?/g, m => '\u2066' + m + '\u2069'); return '\u2068' + s + '\u2069'; }
+  fmt(n, sep) { return '⁦' + String(n).replace(/\B(?=(\d{3})+(?!\d))/g, sep === undefined ? ' ' : sep) + '⁩'; }
+  /* Arabic counts nouns in four forms (one / two / 3–10 / 11+); French and English in two.
+     f = { one, two, few, many } for Arabic, { one, many } otherwise. */
+  count(n, t, f) {
+    if (t.dir === 'rtl') {
+      const m = n % 100;
+      if (n === 1) return f.one;
+      if (n === 2) return f.two;
+      if (m >= 3 && m <= 10) return this.fmt(n, t.sep) + ' ' + f.few;
+      return this.fmt(n, t.sep) + ' ' + f.many;
+    }
+    return this.fmt(n, t.sep) + ' ' + (n === 1 ? f.one : f.many);
+  }
+  langsFor(cur) {
+    return ['ar', 'fr', 'en'].map(id => ({
+      short: this.L[id].short, on: cur === id,
+      bg: cur === id ? 'var(--ink)' : 'var(--surface)',
+      fg: cur === id ? 'var(--ink-on)' : 'var(--ink-2)',
+      pick: () => this.setState({ lang: id })
+    }));
+  }
+
+  fmtD(n, d, sep, dec) {
     const s = Number(n).toFixed(d), [i, f] = s.split('.');
-    return '⁦' + i.replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + (f ? '.' + f : '') + '⁩';
+    return '⁦' + i.replace(/\B(?=(\d{3})+(?!\d))/g, sep) + (f ? dec + f : '') + '⁩';
   }
-  counted(n, f) {
-    const m = n % 100;
-    if (n === 1) return f.one;
-    if (n === 2) return f.two;
-    if (m >= 3 && m <= 10) return this.fmt(n) + ' ' + f.few;
-    return this.fmt(n) + ' ' + f.many;
-  }
-  KIND_N = { one: 'صنف واحد', two: 'صنفان', few: 'أصناف', many: 'صنفاً' };
-  UNIT_N = { one: 'وحدة واحدة', two: 'وحدتان', few: 'وحدات', many: 'وحدة' };
 
-  TRIP = { dest: 'إسطنبول', dates: '12 – 16 أكتوبر', value: 1800000, weight: 46, volume: 1.2, no: 1, max: 2 };
-  FILTERS = [['all','الكل'],['clothes','ألبسة'],['bags','حقائب'],['cosm','تجميل'],['shoes','أحذية']];
+  L = {
+    ar: {
+      dir: 'rtl', short: 'ع', langLabel: 'اللغة', sep: ' ', dec: '.', cur: 'دج',
+      brand: 'مَعْبَر', navLabel: 'التنقّل', title: 'لوحة الطلب',
+      userInitials: 'س ب', userName: 'سفيان ب.', userRole: 'مستورد مُتحقَّق',
+      basis: 'مبنيّة على 214 طلباً', trip: 'إسطنبول · 12 – 16 أكتوبر', tripCounter: (i, n) => 'الرحلة ' + i + ' من ' + n + ' هذا الشهر',
+      meters: ['القيمة', 'الوزن', 'الحجم'], units: ['دج', 'كغ', 'م³'],
+      filters: ['الكل', 'ألبسة', 'حقائب', 'تجميل', 'أحذية'],
+      buyingList: 'قائمة الشراء', openList: 'افتح القائمة',
+      confirmed: 'مؤكَّد', interested: n => '+' + n + ' مهتمّ', refPrice: 'سعر البيع المرجعي',
+      inList: n => n + ' وحدة في قائمتك', less: 'أنقص', more: 'زد',
+      noRoom: 'لا يتّسع في المتبقّي', add: n => 'أضف ' + n + ' وحدات',
+      kind: { one: 'صنف واحد', two: 'صنفان', few: 'أصناف', many: 'صنفاً' },
+      unit: { one: 'وحدة واحدة', two: 'وحدتان', few: 'وحدات', many: 'وحدة' },
+      items: {
+        coats: ['معاطف نسائية شتوية', 'سطيف · الجزائر · وهران', 'مسموح', ''],
+        bags: ['حقائب يد نسائية', 'الجزائر · البليدة · تيزي وزو', 'مسموح', ''],
+        perfume: ['عطور نسائية 100 مل', 'وهران · الجزائر · قسنطينة', 'بشرط', 'يجب أن يتبقّى أكثر من نصف مدة الصلاحية عند دخول البضاعة.'],
+        shoes: ['أحذية رياضية رجالية', 'الجزائر · عنابة · باتنة', 'مسموح', 'ثلاثة بلاغات تقليد في هذه الفئة خلال 30 يوماً. اطلب تأكيد المواصفة قبل الالتزام.']
+      },
+      nav: ['الرئيسية', 'رحلتي', 'الطلب', 'الرسائل', 'حسابي']
+    },
+
+    fr: {
+      dir: 'ltr', short: 'FR', langLabel: 'Langue', sep: ' ', dec: ',', cur: 'DA',
+      brand: 'Maabar', navLabel: 'Navigation', title: 'Tableau de la demande',
+      userInitials: 'SB', userName: 'Sofiane B.', userRole: 'Importateur vérifié',
+      basis: 'basé sur 214 demandes', trip: 'Istanbul · 12 – 16 octobre', tripCounter: (i, n) => 'Voyage ' + i + ' sur ' + n + ' ce mois-ci',
+      meters: ['Valeur', 'Poids', 'Volume'], units: ['DA', 'kg', 'm³'],
+      filters: ['Tout', 'Vêtements', 'Sacs', 'Beauté', 'Chaussures'],
+      buyingList: 'Liste d’achat', openList: 'Ouvrir la liste',
+      confirmed: 'confirmés', interested: n => '+' + n + ' intéressés', refPrice: 'Prix de vente de référence',
+      inList: n => n + ' unités dans votre liste', less: 'Diminuer', more: 'Augmenter',
+      noRoom: 'Ne tient pas dans le reste', add: n => 'Ajouter ' + n + ' unités',
+      kind: { one: 'article', many: 'articles' },
+      unit: { one: 'unité', many: 'unités' },
+      items: {
+        coats: ['Manteaux femme hiver', 'Sétif · Alger · Oran', 'Autorisé', ''],
+        bags: ['Sacs à main femme', 'Alger · Blida · Tizi Ouzou', 'Autorisé', ''],
+        perfume: ['Parfums femme 100 ml', 'Oran · Alger · Constantine', 'Sous condition', 'Plus de la moitié de la durée de conservation doit rester à l’entrée de la marchandise.'],
+        shoes: ['Baskets homme', 'Alger · Annaba · Batna', 'Autorisé', 'Trois signalements de contrefaçon dans cette catégorie en 30 jours. Demandez une confirmation de la spécification avant de vous engager.']
+      },
+      nav: ['Accueil', 'Voyage', 'Demande', 'Messages', 'Compte']
+    },
+
+    en: {
+      dir: 'ltr', short: 'EN', langLabel: 'Language', sep: ',', dec: '.', cur: 'DA',
+      brand: 'Maabar', navLabel: 'Navigation', title: 'Demand board',
+      userInitials: 'SB', userName: 'Sofiane B.', userRole: 'Verified importer',
+      basis: 'based on 214 requests', trip: 'Istanbul · 12 – 16 October', tripCounter: (i, n) => 'Trip ' + i + ' of ' + n + ' this month',
+      meters: ['Value', 'Weight', 'Volume'], units: ['DA', 'kg', 'm³'],
+      filters: ['All', 'Clothing', 'Bags', 'Beauty', 'Shoes'],
+      buyingList: 'Buying list', openList: 'Open the list',
+      confirmed: 'confirmed', interested: n => '+' + n + ' interested', refPrice: 'Reference selling price',
+      inList: n => n + ' units in your list', less: 'Decrease', more: 'Increase',
+      noRoom: 'Doesn’t fit what’s left', add: n => 'Add ' + n + ' units',
+      kind: { one: 'item', many: 'items' },
+      unit: { one: 'unit', many: 'units' },
+      items: {
+        coats: ['Women’s winter coats', 'Sétif · Algiers · Oran', 'Allowed', ''],
+        bags: ['Women’s handbags', 'Algiers · Blida · Tizi Ouzou', 'Allowed', ''],
+        perfume: ['Women’s perfume 100 ml', 'Oran · Algiers · Constantine', 'Conditional', 'More than half the shelf life must remain when the goods enter the country.'],
+        shoes: ['Men’s trainers', 'Algiers · Annaba · Batna', 'Allowed', 'Three counterfeit reports in this category in 30 days. Ask for specification confirmation before committing.']
+      },
+      nav: ['Home', 'My trip', 'Demand', 'Messages', 'Account']
+    }
+  };
+
+  // Regulatory values come from configuration with effective dates, not constants.
+  TRIP = { value: 1800000, weight: 46, volume: 1.2, no: 1, max: 2 };
+  FILTER_IDS = ['all', 'clothes', 'bags', 'cosm', 'shoes'];
 
   ITEMS = [
-    { id: 'coats', cat: 'clothes', ph: 'ph-coat', name: 'معاطف نسائية شتوية',
-      wilayas: 'سطيف · الجزائر · وهران', confirmed: 95, interested: 245,
-      band: [4500, 6200], track: [3000, 8000], comp: 'مسموح', compKind: 'ok',
-      unitCost: 2600, w: 0.8, v: 0.004 },
-    { id: 'bags', cat: 'bags', ph: 'ph-bag', name: 'حقائب يد نسائية',
-      wilayas: 'الجزائر · البليدة · تيزي وزو', confirmed: 80, interested: 160,
-      band: [6500, 9000], track: [4000, 12000], comp: 'مسموح', compKind: 'ok',
-      unitCost: 3400, w: 0.6, v: 0.008 },
-    { id: 'perfume', cat: 'cosm', ph: 'ph-perfume', name: 'عطور نسائية 100 مل',
-      wilayas: 'وهران · الجزائر · قسنطينة', confirmed: 62, interested: 118,
-      band: [2800, 4200], track: [1500, 7000], comp: 'بشرط', compKind: 'cond',
-      unitCost: 1500, w: 0.45, v: 0.001,
-      note: 'يجب أن يتبقّى أكثر من نصف مدة الصلاحية عند دخول البضاعة.' },
-    { id: 'shoes', cat: 'shoes', ph: 'ph-shoe', name: 'أحذية رياضية رجالية',
-      wilayas: 'الجزائر · عنابة · باتنة', confirmed: 40, interested: 210,
-      band: [3800, 5500], track: [2500, 9000], comp: 'مسموح', compKind: 'ok',
-      unitCost: 2100, w: 0.7, v: 0.006,
-      note: 'ثلاثة بلاغات تقليد في هذه الفئة خلال 30 يوماً. اطلب تأكيد المواصفة قبل الالتزام.' }
+    { id: 'coats', cat: 'clothes', ph: 'ph-coat', confirmed: 95, interested: 245, band: [4500, 6200], track: [3000, 8000], compKind: 'ok', unitCost: 2600, w: 0.8, v: 0.004 },
+    { id: 'bags', cat: 'bags', ph: 'ph-bag', confirmed: 80, interested: 160, band: [6500, 9000], track: [4000, 12000], compKind: 'ok', unitCost: 3400, w: 0.6, v: 0.008 },
+    { id: 'perfume', cat: 'cosm', ph: 'ph-perfume', confirmed: 62, interested: 118, band: [2800, 4200], track: [1500, 7000], compKind: 'cond', unitCost: 1500, w: 0.45, v: 0.001 },
+    { id: 'shoes', cat: 'shoes', ph: 'ph-shoe', confirmed: 40, interested: 210, band: [3800, 5500], track: [2500, 9000], compKind: 'ok', unitCost: 2100, w: 0.7, v: 0.006 }
   ];
 
   COMP = { ok: 'chip-verified', cond: 'chip-conditional' };
@@ -293,14 +382,7 @@ class Component extends DCLogic {
     msg: React.createElement('svg', { width: 20, height: 20, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 1.8 }, React.createElement('path', { d: 'M21 11.5a8.4 8.4 0 0 1-9 8.4 9 9 0 0 1-3.3-.6L3 21l1.7-5a8.2 8.2 0 0 1-.7-3.4 8.4 8.4 0 0 1 8.5-8.5 8.4 8.4 0 0 1 8.5 8.4z' })),
     me: React.createElement('svg', { width: 20, height: 20, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 1.8 }, React.createElement('circle', { cx: 12, cy: 8.5, r: 3.7 }), React.createElement('path', { d: 'M4.8 20a7.4 7.4 0 0 1 14.4 0' }))
   };
-
-  NAV = [
-    { id: 'home', label: 'الرئيسية', icon: 'home' },
-    { id: 'trip', label: 'رحلتي', icon: 'trip' },
-    { id: 'demand', label: 'الطلب', icon: 'demand' },
-    { id: 'msg', label: 'الرسائل', icon: 'msg' },
-    { id: 'me', label: 'حسابي', icon: 'me' }
-  ];
+  NAV_IDS = ['home', 'trip', 'demand', 'msg', 'me'];
 
   used() {
     return this.ITEMS.reduce((a, it) => {
@@ -319,16 +401,17 @@ class Component extends DCLogic {
   }
 
   renderVals() {
-    const s = this.state, T = this.TRIP, u = this.used();
+    const s = this.state, T = this.TRIP, u = this.used(), t = this.L[s.lang];
+    const num = (n, d) => this.fmtD(n, d || 0, t.sep, t.dec);
 
     const caps = [
-      { id: 'value', label: 'القيمة', cap: T.value, used: u.value, unit: 'دج', d: 0 },
-      { id: 'weight', label: 'الوزن', cap: T.weight, used: u.weight, unit: 'كغ', d: 0 },
-      { id: 'volume', label: 'الحجم', cap: T.volume, used: u.volume, unit: 'م³', d: 2 }
-    ].map(m => {
+      { id: 'value', cap: T.value, used: u.value, d: 0 },
+      { id: 'weight', cap: T.weight, used: u.weight, d: 0 },
+      { id: 'volume', cap: T.volume, used: u.volume, d: 2 }
+    ].map((m, i) => {
       const ratio = m.used / m.cap, pct = Math.min(100, ratio * 100);
       const fg = ratio >= 1 ? 'var(--prohibited)' : ratio >= 0.9 ? 'var(--conditional)' : 'var(--allowed)';
-      return { ...m, pct, fg, rem: m.cap - m.used, left: this.ltr(this.fmt(Math.max(0, m.cap - m.used), m.d) + ' ' + m.unit) };
+      return { ...m, label: t.meters[i], pct, fg, rem: m.cap - m.used, left: this.iso(num(Math.max(0, m.cap - m.used), m.d) + ' ' + t.units[i]) };
     });
 
     const fits = it => caps.every(m => {
@@ -337,25 +420,26 @@ class Component extends DCLogic {
     });
 
     const items = this.ITEMS.filter(it => s.filter === 'all' || it.cat === s.filter).map(it => {
+      const [name, wilayas, comp, note] = t.items[it.id];
       const q = s.qty[it.id] || 0;
       const span = it.track[1] - it.track[0];
       const blocked = !q && !fits(it);
       return {
-        ...it,
-        confirmed: this.fmt(it.confirmed),
-        interested: this.fmt(it.interested),
-        band: this.ltr(this.fmt(it.band[0]) + ' – ' + this.fmt(it.band[1]) + ' دج'),
+        ph: it.ph, name, wilayas, comp, note,
+        confirmed: num(it.confirmed),
+        interestedLine: this.iso(t.interested(num(it.interested))),
+        band: this.iso(num(it.band[0]) + ' – ' + num(it.band[1]) + ' ' + t.cur),
         bandStart: (it.band[0] - it.track[0]) / span * 100,
         bandWidth: (it.band[1] - it.band[0]) / span * 100,
-        trackLo: this.fmt(it.track[0]), trackHi: this.fmt(it.track[1]),
+        trackLo: num(it.track[0]), trackHi: num(it.track[1]),
         compChip: this.COMP[it.compKind],
-        hasNote: !!it.note,
+        hasNote: !!note,
         noteBg: it.compKind === 'cond' ? 'var(--conditional-bg)' : 'var(--neutral-bg)',
         noteBd: it.compKind === 'cond' ? 'var(--conditional-bd)' : 'var(--neutral-bd)',
         noteFg: it.compKind === 'cond' ? 'var(--conditional-ink)' : 'var(--ink-2)',
-        qty: this.fmt(q), inList: q > 0, notInList: q === 0, blocked,
-        lineCost: this.ltr('≈ ' + this.fmt(q * it.unitCost) + ' دج · ' + this.fmt(q * it.w, 1) + ' كغ'),
-        addLabel: blocked ? 'لا يتّسع في المتبقّي' : 'أضف ' + this.STEP + ' وحدات',
+        inListLine: this.iso(t.inList(num(q))), inList: q > 0, notInList: q === 0, blocked,
+        lineCost: this.iso('≈ ' + num(q * it.unitCost) + ' ' + t.cur + ' · ' + num(q * it.w, 1) + ' ' + t.units[1]),
+        addLabel: blocked ? t.noRoom : t.add(this.STEP),
         addBg: blocked ? 'var(--neutral-bg)' : 'var(--ink)',
         addFg: blocked ? 'var(--ink-3)' : 'var(--ink-on)',
         add: () => this.setQty(it.id, this.STEP),
@@ -368,27 +452,30 @@ class Component extends DCLogic {
     const units = inList.reduce((a, it) => a + s.qty[it.id], 0);
 
     return {
-      basis: 'مبنيّة على 214 طلباً',
-      tripLabel: T.dest + ' · ' + T.dates,
-      tripCounter: 'الرحلة ' + T.no + ' من ' + T.max + ' هذا الشهر',
+      rootRef: this.root, t, langs: this.langsFor(s.lang),
+      confirmedWord: t.confirmed, refPrice: t.refPrice, less: t.less, more: t.more,
+
+      basis: this.iso(t.basis),
+      tripLabel: this.iso(t.trip),
+      tripCounter: this.iso(t.tripCounter(T.no, T.max)),
       meters: caps,
-      filters: this.FILTERS.map(([id, label]) => ({
-        label, on: s.filter === id,
+      filters: this.FILTER_IDS.map((id, i) => ({
+        label: t.filters[i], on: s.filter === id,
         bd: s.filter === id ? 'var(--ink)' : 'var(--rule-strong)',
         bg: s.filter === id ? 'var(--ink)' : 'var(--surface)',
         fg: s.filter === id ? 'var(--ink-on)' : 'var(--ink)',
         pick: () => this.setState({ filter: id })
       })),
-      nav: this.NAV.map(n => ({
-        ...n,
-        on: n.id === 'demand',
-        tabFg: n.id === 'demand' ? 'var(--ink)' : 'var(--ink-3)',
-        fw: n.id === 'demand' ? 600 : 400,
-        icon: this.ICON[n.icon]
+      nav: this.NAV_IDS.map((id, i) => ({
+        label: t.nav[i],
+        on: id === 'demand',
+        tabFg: id === 'demand' ? 'var(--ink)' : 'var(--ink-3)',
+        fw: id === 'demand' ? 600 : 400,
+        icon: this.ICON[id]
       })),
       items,
       hasList: inList.length > 0,
-      listSummary: this.counted(inList.length, this.KIND_N) + ' · ' + this.counted(units, this.UNIT_N)
+      listSummary: this.iso(this.count(inList.length, t, t.kind) + ' · ' + this.count(units, t, t.unit))
     };
   }
 }
