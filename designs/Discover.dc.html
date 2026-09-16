@@ -182,11 +182,12 @@
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:430,&quot;height&quot;:1420}}">
 class Component extends DCLogic {
-  /* Locale is browser-detected. French is the fallback — Algeria's commercial
+  /* Locale: ?lang= in the URL, else the browser, else French. French is the fallback as Algeria's commercial
      lingua franca and the neutral middle between Arabic and English. One value. */
   static FALLBACK = 'fr';
   static detect() {
-    const tag = (typeof navigator !== 'undefined' && (navigator.language || '')).slice(0, 2).toLowerCase();
+    const q = typeof location !== 'undefined' ? new URLSearchParams(location.search).get('lang') : null;
+    const tag = (q || (typeof navigator !== 'undefined' && navigator.language) || '').slice(0, 2).toLowerCase();
     return ['ar', 'fr', 'en'].includes(tag) ? tag : Component.FALLBACK;
   }
 

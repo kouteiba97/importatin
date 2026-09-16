@@ -23,14 +23,21 @@
 </style>
 </helmet>
 
-<div dir="rtl" lang="ar" class="tier-admin" style="min-height:100vh">
+<div ref="{{ rootRef }}" dir="rtl" lang="ar" class="tier-admin" style="min-height:100vh">
 <div style="display:flex;min-height:100vh">
 
 <!-- ══ QUEUE RAIL ══ -->
 <aside style="flex:none;width:216px;background:var(--surface);border-inline-end:1px solid var(--rule);display:flex;flex-direction:column">
 <div style="padding:13px 14px;border-bottom:1px solid var(--rule)">
-<div style="font-weight:600;font-size:16px">مَعْبَر</div>
-<div style="font-size:var(--t-xs);color:var(--ink-3);margin-top:2px">مركز العمليات</div>
+<div style="display:flex;align-items:center;gap:8px">
+<div style="flex:1;font-family:var(--font-display);font-weight:600;font-size:16px">{{ t.brand }}</div>
+<div role="group" aria-label="{{ t.langLabel }}" style="display:flex;border:1px solid var(--rule-strong);border-radius:var(--r-sm);overflow:hidden;flex:none">
+<sc-for list="{{ langs }}" as="l" hint-placeholder-count="3">
+<button type="button" onClick="{{ l.pick }}" aria-pressed="{{ l.on }}" style="height:24px;padding:0 8px;border:0;background:{{ l.bg }};color:{{ l.fg }};font-size:var(--t-micro);font-weight:500;cursor:pointer">{{ l.short }}</button>
+</sc-for>
+</div>
+</div>
+<div style="font-size:var(--t-xs);color:var(--ink-3);margin-top:2px">{{ t.opsCenter }}</div>
 </div>
 
 <div style="padding:11px 8px;flex:1">
@@ -49,10 +56,10 @@
 </div>
 
 <div style="padding:11px 14px;border-top:1px solid var(--rule);display:flex;align-items:center;gap:8px">
-<span aria-hidden="true" style="width:26px;height:26px;border-radius:50%;background:var(--role-trader-bg);display:grid;place-items:center;font-size:10px;font-weight:600;color:var(--role-trader-ink)">أ ب</span>
+<span aria-hidden="true" style="width:26px;height:26px;border-radius:50%;background:var(--role-trader-bg);display:grid;place-items:center;font-size:10px;font-weight:600;color:var(--role-trader-ink)">{{ t.adminInitials }}</span>
 <div style="flex:1;min-width:0">
-<div style="font-size:var(--t-xs);font-weight:500">أمين ب.</div>
-<div style="font-size:var(--t-micro);color:var(--ink-3)">الثقة والسلامة</div>
+<div style="font-size:var(--t-xs);font-weight:500">{{ t.adminName }}</div>
+<div style="font-size:var(--t-micro);color:var(--ink-3)">{{ t.adminTeam }}</div>
 </div>
 </div>
 </aside>
@@ -101,7 +108,7 @@
 <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
 
 <div class="panel">
-<div class="ph"><span>الوثائق</span><span class="num" style="font-weight:400;color:var(--ink-3)"><bdi>{{ docCount }}</bdi></span></div>
+<div class="ph"><span>{{ t.docsTitle }}</span><span class="num" style="font-weight:400;color:var(--ink-3)"><bdi>{{ docCount }}</bdi></span></div>
 <div style="padding:4px 12px">
 <sc-for list="{{ docs }}" as="d" hint-placeholder-count="4">
 <div style="display:flex;align-items:center;gap:9px;padding:8px 0;border-bottom:1px solid var(--rule-faint)">
@@ -114,7 +121,7 @@
 </div>
 
 <div class="panel">
-<div class="ph"><span>إشارات المخاطرة</span></div>
+<div class="ph"><span>{{ t.signalsTitle }}</span></div>
 <div style="padding:4px 12px">
 <sc-for list="{{ signals }}" as="s" hint-placeholder-count="4">
 <div style="display:flex;align-items:center;gap:9px;padding:8px 0;border-bottom:1px solid var(--rule-faint)">
@@ -127,7 +134,7 @@
 </div>
 
 <div class="panel">
-<div class="ph"><span>سياق المستخدم</span></div>
+<div class="ph"><span>{{ t.contextTitle }}</span></div>
 <div style="padding:4px 12px">
 <sc-for list="{{ context }}" as="c" hint-placeholder-count="4">
 <div style="display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:8px 0;border-bottom:1px solid var(--rule-faint)">
@@ -139,7 +146,7 @@
 </div>
 
 <div class="panel">
-<div class="ph"><span>قرارات سابقة</span></div>
+<div class="ph"><span>{{ t.historyTitle }}</span></div>
 <div style="padding:4px 12px">
 <sc-for list="{{ history }}" as="h" hint-placeholder-count="3">
 <div style="padding:8px 0;border-bottom:1px solid var(--rule-faint)">
@@ -156,7 +163,7 @@
 
 <!-- decision -->
 <div class="panel">
-<div class="ph"><span>القرار</span></div>
+<div class="ph"><span>{{ t.decisionTitle }}</span></div>
 <div style="padding:13px">
 <div style="display:flex;gap:8px;margin-bottom:13px">
 <sc-for list="{{ actions }}" as="a" hint-placeholder-count="3">
@@ -166,7 +173,7 @@
 
 <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px">
 <div>
-<div class="fld">سبب القرار — إلزامي</div>
+<div class="fld">{{ t.reasonLabel }}</div>
 <select style="width:100%;height:38px;padding:0 10px;border:1px solid {{ reasonBd }};border-radius:var(--r-sm);background:var(--surface);font-size:var(--t-sm);color:inherit">
 <sc-for list="{{ reasons }}" as="r" hint-placeholder-count="4">
 <option>{{ r }}</option>
@@ -174,20 +181,20 @@
 </select>
 </div>
 <div>
-<div class="fld">ملاحظة داخلية</div>
-<input placeholder="لا تظهر للمستخدم" style="width:100%;height:38px;padding:0 10px;border:1px solid var(--rule-strong);border-radius:var(--r-sm);background:var(--surface);font-size:var(--t-sm);color:inherit">
+<div class="fld">{{ t.internalNote }}</div>
+<input placeholder="{{ t.internalPh }}" style="width:100%;height:38px;padding:0 10px;border:1px solid var(--rule-strong);border-radius:var(--r-sm);background:var(--surface);font-size:var(--t-sm);color:inherit">
 </div>
 </div>
 
 <div style="padding:11px 12px;background:var(--surface-2);border:1px solid var(--rule-faint);border-radius:var(--r-sm);margin-bottom:13px">
-<div class="fld">ما سيصل المستخدم</div>
+<div class="fld">{{ t.userSees }}</div>
 <p style="margin:0;font-size:var(--t-sm);line-height:1.65">{{ consequence }}</p>
 </div>
 
 <div style="display:flex;align-items:center;gap:12px">
-<button type="button" style="height:40px;padding:0 20px;border:0;border-radius:var(--r-sm);background:var(--ink);color:var(--ink-on);font-size:var(--t-sm);font-weight:600;cursor:pointer">سجّل القرار</button>
-<button type="button" style="height:40px;padding:0 16px;border:1px solid var(--rule-strong);border-radius:var(--r-sm);background:transparent;color:inherit;font-size:var(--t-sm);cursor:pointer">مرّر لمشرف</button>
-<span style="flex:1;font-size:var(--t-micro);color:var(--ink-3);line-height:1.5">يُسجَّل باسمك وتوقيته. التصحيح يكون بقرار جديد يشير إليه.</span>
+<button type="button" style="height:40px;padding:0 20px;border:0;border-radius:var(--r-sm);background:var(--ink);color:var(--ink-on);font-size:var(--t-sm);font-weight:600;cursor:pointer">{{ t.record }}</button>
+<button type="button" style="height:40px;padding:0 16px;border:1px solid var(--rule-strong);border-radius:var(--r-sm);background:transparent;color:inherit;font-size:var(--t-sm);cursor:pointer">{{ t.escalate }}</button>
+<span style="flex:1;font-size:var(--t-micro);color:var(--ink-3);line-height:1.5">{{ t.auditNote }}</span>
 </div>
 </div>
 </div>
@@ -198,149 +205,248 @@
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1240,&quot;height&quot;:840}}">
 class Component extends DCLogic {
-  state = { q: 'ver', row: 0, action: 'approve' };
-  fmt(n) { return '⁦' + String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + '⁩'; }
+  /* Locale: ?lang= in the URL, else the browser, else French. French is the fallback as Algeria's commercial
+     lingua franca and the neutral middle between Arabic and English. One value. */
+  static FALLBACK = 'fr';
+  static detect() {
+    const q = typeof location !== 'undefined' ? new URLSearchParams(location.search).get('lang') : null;
+    const tag = (q || (typeof navigator !== 'undefined' && navigator.language) || '').slice(0, 2).toLowerCase();
+    return ['ar', 'fr', 'en'].includes(tag) ? tag : Component.FALLBACK;
+  }
+
+  state = { q: 'ver', row: 0, action: 'approve', lang: Component.detect() };
+  root = React.createRef();
+  componentDidMount() { this._apply(); }
+  componentDidUpdate() { this._apply(); }
+  _apply() {
+    const el = this.root.current;
+    if (el) { el.setAttribute('dir', this.L[this.state.lang].dir); el.setAttribute('lang', this.state.lang); }
+  }
+
+  /* Text runs take a first-strong isolate so Arabic stays RTL and Latin stays LTR;
+     inside Arabic, each digit group is pinned LTR so "4 800" never reads "800 4". */
+  iso(s) { if (/[\u0600-\u06FF]/.test(s)) s = s.replace(/\d[\d ,.:]*\d%?|\d%?/g, m => '\u2066' + m + '\u2069'); return '\u2068' + s + '\u2069'; }
+  fmt(n, sep) { return '⁦' + String(n).replace(/\B(?=(\d{3})+(?!\d))/g, sep === undefined ? ' ' : sep) + '⁩'; }
+  /* Arabic counts nouns in four forms (one / two / 3–10 / 11+); French and English in two.
+     f = { one, two, few, many } for Arabic, { one, many } otherwise. */
+  count(n, t, f) {
+    if (t.dir === 'rtl') {
+      const m = n % 100;
+      if (n === 1) return f.one;
+      if (n === 2) return f.two;
+      if (m >= 3 && m <= 10) return this.fmt(n, t.sep) + ' ' + f.few;
+      return this.fmt(n, t.sep) + ' ' + f.many;
+    }
+    return this.fmt(n, t.sep) + ' ' + (n === 1 ? f.one : f.many);
+  }
+  langsFor(cur) {
+    return ['ar', 'fr', 'en'].map(id => ({
+      short: this.L[id].short, on: cur === id,
+      bg: cur === id ? 'var(--ink)' : 'var(--surface)',
+      fg: cur === id ? 'var(--ink-on)' : 'var(--ink-2)',
+      pick: () => this.setState({ lang: id })
+    }));
+  }
+
+  L = {
+    ar: {
+      dir: 'rtl', short: 'ع', langLabel: 'اللغة', sep: ' ',
+      brand: 'مَعْبَر', opsCenter: 'مركز العمليات', adminInitials: 'أ ب', adminName: 'أمين ب.', adminTeam: 'الثقة والسلامة',
+      groups: [
+        ['الثقة والسلامة', [['طلبات التحقّق', 'أقدم بند: 19 ساعة · الحدّ 24'], ['مخاطرة', 'أقدم بند: 3 ساعات'], ['إشراف المحتوى', 'أقدم بند: 8 ساعات'], ['نزاعات', 'أقدم بند: يومان']]],
+        ['الامتثال', [['أصناف تحتاج مراجعة', 'أقدم بند: يوم'], ['قواعد قيد النشر', 'مسودّة v7']]],
+        ['الفوترة', [['تأكيد اشتراكات', 'تحويلات CCP بانتظار التأكيد']]]
+      ],
+      items: { one: 'بند واحد', two: 'بندان', few: 'بنود', many: 'بنداً' },
+      rows: [
+        ['مستورد مصغّر — توثيق أول', 'سفيان ب. · الجزائر', '19 س'],
+        ['تاجر — سجل تجاري', 'بوتيك نادية · قسنطينة', '11 س'],
+        ['تجديد رخصة عامة', 'كريمة ح. · وهران', '6 س'],
+        ['مستورد مصغّر — توثيق أول', 'ر. حمادي · سطيف', '4 س'],
+        ['تاجر — تغيير عنوان النشاط', 'دار الأناقة · وهران', 'ساعة']
+      ],
+      risk: { high: 'أولوية عالية', mid: 'أولوية متوسطة', low: 'أولوية عادية' },
+      docsTitle: 'الوثائق', docCount: (a, b) => a + ' من ' + b + ' مكتملة',
+      docs: [['بطاقة التعريف الوطنية', 'مطابقة للصورة الحيّة'], ['بطاقة المقاول الذاتي', 'سارية حتى 06/2027'], ['الرخصة العامة', 'سارية حتى 06/2027'], ['الانتساب إلى CASNOS', 'الصورة غير واضحة']],
+      signalsTitle: 'إشارات المخاطرة',
+      signals: [['عمر الحساب', '5 أشهر'], ['حسابات من نفس الجهاز', '1'], ['بلاغات', 'لا شيء'], ['تطابق الاسم بين الوثائق', 'مطابق']],
+      contextTitle: 'سياق المستخدم',
+      context: [['الدور المطلوب', 'مستورد مصغّر'], ['الولاية', 'الجزائر'], ['معاملات مؤكَّدة', '12'], ['نزاعات', 'لا شيء']],
+      historyTitle: 'قرارات سابقة',
+      history: [['قُبل التحقّق المستوى الأول', 'قبل 4 أشهر', 'ADM-002'], ['طُلبت وثيقة أوضح — CASNOS', 'قبل 9 أيام', 'ADM-014'], ['أُعيد تقديم الوثائق', 'قبل 19 ساعة', 'المستخدم']],
+      decisionTitle: 'القرار', actions: ['اقبل', 'اطلب وثيقة', 'ارفض'],
+      reasonLabel: 'سبب القرار — إلزامي',
+      reasons: ['الوثائق مكتملة ومتطابقة', 'وثيقة ناقصة أو غير مقروءة', 'تعارض في الاسم بين الوثائق', 'يحتاج مراجعة مشرف'],
+      internalNote: 'ملاحظة داخلية', internalPh: 'لا تظهر للمستخدم', userSees: 'ما سيصل المستخدم',
+      conseq: {
+        approve: 'يُرقّى حسابه إلى «مستورد مُتحقَّق» ويمكنه نشر رحلة واستقبال طلبات. يصله إشعار بذلك.',
+        more: 'يصله طلب بوثيقة أوضح مع سبب الطلب، ويبقى في الطابور دون أن يُعاد من البداية.',
+        reject: 'يصله الرفض مع السبب وحقّه في إعادة التقديم بعد تصحيح الوثيقة.'
+      },
+      record: 'سجّل القرار', escalate: 'مرّر لمشرف', auditNote: 'يُسجَّل باسمك وتوقيته. التصحيح يكون بقرار جديد يشير إليه.'
+    },
+
+    fr: {
+      dir: 'ltr', short: 'FR', langLabel: 'Langue', sep: ' ',
+      brand: 'Maabar', opsCenter: 'Centre des opérations', adminInitials: 'AB', adminName: 'Amine B.', adminTeam: 'Confiance et sécurité',
+      groups: [
+        ['Confiance et sécurité', [['Demandes de vérification', 'plus ancien : 19 h · limite 24'], ['Risque', 'plus ancien : 3 h'], ['Modération', 'plus ancien : 8 h'], ['Litiges', 'plus ancien : 2 jours']]],
+        ['Conformité', [['Articles à examiner', 'plus ancien : 1 jour'], ['Règles en attente de publication', 'brouillon v7']]],
+        ['Facturation', [['Confirmation d’abonnements', 'virements CCP en attente']]]
+      ],
+      items: { one: 'élément', many: 'éléments' },
+      rows: [
+        ['Micro-importateur — première vérification', 'Sofiane B. · Alger', '19 h'],
+        ['Commerçant — registre de commerce', 'Boutique Nadia · Constantine', '11 h'],
+        ['Renouvellement d’autorisation générale', 'Karima H. · Oran', '6 h'],
+        ['Micro-importateur — première vérification', 'R. Hamadi · Sétif', '4 h'],
+        ['Commerçant — changement d’adresse', 'Dar El Anaqa · Oran', '1 h']
+      ],
+      risk: { high: 'Priorité haute', mid: 'Priorité moyenne', low: 'Priorité normale' },
+      docsTitle: 'Documents', docCount: (a, b) => a + ' sur ' + b + ' complets',
+      docs: [['Carte d’identité nationale', 'conforme au selfie'], ['Carte d’auto-entrepreneur', 'valide jusqu’au 06/2027'], ['Autorisation générale', 'valide jusqu’au 06/2027'], ['Affiliation CASNOS', 'photo illisible']],
+      signalsTitle: 'Signaux de risque',
+      signals: [['Ancienneté du compte', '5 mois'], ['Comptes sur le même appareil', '1'], ['Signalements', 'aucun'], ['Nom identique sur les documents', 'conforme']],
+      contextTitle: 'Contexte de l’utilisateur',
+      context: [['Rôle demandé', 'Micro-importateur'], ['Wilaya', 'Alger'], ['Transactions confirmées', '12'], ['Litiges', 'aucun']],
+      historyTitle: 'Décisions antérieures',
+      history: [['Vérification niveau 1 acceptée', 'il y a 4 mois', 'ADM-002'], ['Document plus net demandé — CASNOS', 'il y a 9 jours', 'ADM-014'], ['Documents soumis à nouveau', 'il y a 19 h', 'Utilisateur']],
+      decisionTitle: 'Décision', actions: ['Accepter', 'Demander un document', 'Refuser'],
+      reasonLabel: 'Motif de la décision — obligatoire',
+      reasons: ['Documents complets et concordants', 'Document manquant ou illisible', 'Nom discordant entre documents', 'Nécessite l’avis d’un superviseur'],
+      internalNote: 'Note interne', internalPh: 'Non visible par l’utilisateur', userSees: 'Ce que l’utilisateur recevra',
+      conseq: {
+        approve: 'Son compte passe « importateur vérifié » : il peut publier un voyage et recevoir des demandes. Il en est notifié.',
+        more: 'Il reçoit une demande de document plus net avec le motif, et reste dans la file sans repartir de zéro.',
+        reject: 'Il reçoit le refus avec le motif et son droit de soumettre à nouveau après correction.'
+      },
+      record: 'Enregistrer la décision', escalate: 'Transmettre à un superviseur', auditNote: 'Enregistrée à votre nom et horodatée. Une correction se fait par une nouvelle décision qui y renvoie.'
+    },
+
+    en: {
+      dir: 'ltr', short: 'EN', langLabel: 'Language', sep: ',',
+      brand: 'Maabar', opsCenter: 'Operations centre', adminInitials: 'AB', adminName: 'Amine B.', adminTeam: 'Trust & Safety',
+      groups: [
+        ['Trust & Safety', [['Verification requests', 'oldest: 19 h · limit 24'], ['Risk', 'oldest: 3 h'], ['Content moderation', 'oldest: 8 h'], ['Disputes', 'oldest: 2 days']]],
+        ['Compliance', [['Items needing review', 'oldest: 1 day'], ['Rules pending publication', 'draft v7']]],
+        ['Billing', [['Subscription confirmations', 'CCP transfers awaiting confirmation']]]
+      ],
+      items: { one: 'item', many: 'items' },
+      rows: [
+        ['Micro-importer — first verification', 'Sofiane B. · Algiers', '19 h'],
+        ['Trader — commercial register', 'Boutique Nadia · Constantine', '11 h'],
+        ['General authorisation renewal', 'Karima H. · Oran', '6 h'],
+        ['Micro-importer — first verification', 'R. Hamadi · Sétif', '4 h'],
+        ['Trader — business address change', 'Dar El Anaqa · Oran', '1 h']
+      ],
+      risk: { high: 'High priority', mid: 'Medium priority', low: 'Normal priority' },
+      docsTitle: 'Documents', docCount: (a, b) => a + ' of ' + b + ' complete',
+      docs: [['National ID card', 'matches live selfie'], ['Auto-entrepreneur card', 'valid until 06/2027'], ['General authorisation', 'valid until 06/2027'], ['CASNOS affiliation', 'photo unclear']],
+      signalsTitle: 'Risk signals',
+      signals: [['Account age', '5 months'], ['Accounts on same device', '1'], ['Reports', 'none'], ['Name matches across documents', 'match']],
+      contextTitle: 'User context',
+      context: [['Requested role', 'Micro-importer'], ['Wilaya', 'Algiers'], ['Confirmed transactions', '12'], ['Disputes', 'none']],
+      historyTitle: 'Previous decisions',
+      history: [['Level 1 verification approved', '4 months ago', 'ADM-002'], ['Clearer document requested — CASNOS', '9 days ago', 'ADM-014'], ['Documents resubmitted', '19 h ago', 'User']],
+      decisionTitle: 'Decision', actions: ['Approve', 'Request document', 'Reject'],
+      reasonLabel: 'Reason for decision — required',
+      reasons: ['Documents complete and consistent', 'Document missing or unreadable', 'Name mismatch between documents', 'Needs supervisor review'],
+      internalNote: 'Internal note', internalPh: 'Not shown to the user', userSees: 'What the user will receive',
+      conseq: {
+        approve: 'Their account is upgraded to “verified importer” and can publish trips and receive requests. They are notified.',
+        more: 'They receive a request for a clearer document with the reason, and stay in the queue without starting over.',
+        reject: 'They receive the rejection with the reason and their right to resubmit after correcting the document.'
+      },
+      record: 'Record decision', escalate: 'Escalate to supervisor', auditNote: 'Recorded under your name with a timestamp. Corrections are made by a new decision that references this one.'
+    }
+  };
 
   // Billing sits in its OWN group. A subscription payment must never appear
   // beside goods-related work, or the console implies Maabar settles trade.
   GROUPS = [
-    { label: 'الثقة والسلامة', items: [
-      { id: 'ver', label: 'طلبات التحقّق', n: 14, sla: 'أقدم بند: 19 ساعة · الحدّ 24', risk: 'var(--conditional)' },
-      { id: 'risk', label: 'مخاطرة', n: 6, sla: 'أقدم بند: 3 ساعات', risk: 'var(--prohibited)' },
-      { id: 'mod', label: 'إشراف المحتوى', n: 23, sla: 'أقدم بند: 8 ساعات', risk: 'var(--conditional)' },
-      { id: 'dis', label: 'نزاعات', n: 4, sla: 'أقدم بند: 2 يوم', risk: 'var(--prohibited)' }
-    ]},
-    { label: 'الامتثال', items: [
-      { id: 'rev', label: 'أصناف تحتاج مراجعة', n: 9, sla: 'أقدم بند: يوم', risk: 'var(--conditional)' },
-      { id: 'rul', label: 'قواعد قيد النشر', n: 1, sla: 'مسودّة v7', risk: 'var(--ink-3)' }
-    ]},
-    { label: 'الفوترة', items: [
-      { id: 'bil', label: 'تأكيد اشتراكات', n: 7, sla: 'تحويلات CCP بانتظار التأكيد', risk: 'var(--ink-3)' }
-    ]}
+    [{ id: 'ver', n: 14, risk: 'var(--conditional)' }, { id: 'risk', n: 6, risk: 'var(--prohibited)' }, { id: 'mod', n: 23, risk: 'var(--conditional)' }, { id: 'dis', n: 4, risk: 'var(--prohibited)' }],
+    [{ id: 'rev', n: 9, risk: 'var(--conditional)' }, { id: 'rul', n: 1, risk: 'var(--ink-3)' }],
+    [{ id: 'bil', n: 7, risk: 'var(--ink-3)' }]
   ];
-
-  ROWS = {
-    ver: [
-      { ref: 'VER-26-0881', title: 'مستورد مصغّر — توثيق أول', sub: 'سفيان ب. · الجزائر', age: '19 س', risk: 'high' },
-      { ref: 'VER-26-0884', title: 'تاجر — سجل تجاري', sub: 'بوتيك نادية · قسنطينة', age: '11 س', risk: 'mid' },
-      { ref: 'VER-26-0886', title: 'تجديد رخصة عامة', sub: 'كريمة ح. · وهران', age: '6 س', risk: 'low' },
-      { ref: 'VER-26-0890', title: 'مستورد مصغّر — توثيق أول', sub: 'ر. حمادي · سطيف', age: '4 س', risk: 'low' },
-      { ref: 'VER-26-0891', title: 'تاجر — تغيير عنوان النشاط', sub: 'دار الأناقة · وهران', age: 'ساعة', risk: 'low' }
-    ]
-  };
-
-  DOCS = [
-    { label: 'بطاقة التعريف الوطنية', ok: true, meta: 'مطابقة للصورة الحيّة' },
-    { label: 'بطاقة المقاول الذاتي', ok: true, meta: 'سارية حتى 06/2027' },
-    { label: 'الرخصة العامة', ok: true, meta: 'سارية حتى 06/2027' },
-    { label: 'الانتساب إلى CASNOS', ok: false, meta: 'الصورة غير واضحة' }
+  ROWS = [
+    { ref: 'VER-26-0881', risk: 'high' }, { ref: 'VER-26-0884', risk: 'mid' }, { ref: 'VER-26-0886', risk: 'low' },
+    { ref: 'VER-26-0890', risk: 'low' }, { ref: 'VER-26-0891', risk: 'low' }
   ];
-
-  SIGNALS = [
-    { label: 'عمر الحساب', v: '5 أشهر', kind: 'mid' },
-    { label: 'حسابات من نفس الجهاز', v: '1', kind: 'ok' },
-    { label: 'بلاغات', v: 'لا شيء', kind: 'ok' },
-    { label: 'تطابق الاسم بين الوثائق', v: 'مطابق', kind: 'ok' }
-  ];
-
-  CONTEXT = [
-    { k: 'الدور المطلوب', v: 'مستورد مصغّر' },
-    { k: 'الولاية', v: 'الجزائر' },
-    { k: 'معاملات مؤكَّدة', v: '12' },
-    { k: 'نزاعات', v: 'لا شيء' }
-  ];
-
-  HISTORY = [
-    { what: 'قُبل التحقّق المستوى الأول', when: 'قبل 4 أشهر', by: 'ADM-002' },
-    { what: 'طُلبت وثيقة أوضح — CASNOS', when: 'قبل 9 أيام', by: 'ADM-014' },
-    { what: 'أُعيد تقديم الوثائق', when: 'قبل 19 ساعة', by: 'المستخدم' }
-  ];
-
-  REASONS = [
-    'الوثائق مكتملة ومتطابقة',
-    'وثيقة ناقصة أو غير مقروءة',
-    'تعارض في الاسم بين الوثائق',
-    'يحتاج مراجعة مشرف'
-  ];
-
-  ACTIONS = [
-    { id: 'approve', label: 'اقبل', tone: 'ok' },
-    { id: 'more', label: 'اطلب وثيقة', tone: 'cond' },
-    { id: 'reject', label: 'ارفض', tone: 'risk' }
-  ];
-
+  DOC_OK = [true, true, true, false];
+  SIGNAL_KIND = ['mid', 'ok', 'ok', 'ok'];
+  ACTIONS = [{ id: 'approve', tone: 'ok' }, { id: 'more', tone: 'cond' }, { id: 'reject', tone: 'risk' }];
   RISK = { high: 'var(--prohibited)', mid: 'var(--conditional)', low: 'var(--rule-strong)' };
 
   renderVals() {
-    const s = this.state;
-    const all = this.GROUPS.flatMap(g => g.items);
-    const q = all.find(x => x.id === s.q) || all[0];
-    const rows = this.ROWS[s.q] || this.ROWS.ver;
-    const cur = rows[s.row] || rows[0];
-    const act = this.ACTIONS.find(a => a.id === s.action);
-
-    const CONSEQ = {
-      approve: 'يُرقّى حسابه إلى «مستورد مُتحقَّق» ويمكنه نشر رحلة واستقبال طلبات. يصله إشعار بذلك.',
-      more: 'يصله طلب بوثيقة أوضح مع سبب الطلب، ويبقى في الطابور دون أن يُعاد من البداية.',
-      reject: 'يصله الرفض مع السبب وحقّه في إعادة التقديم بعد تصحيح الوثيقة.'
-    };
+    const s = this.state, t = this.L[s.lang];
+    const flat = [];
+    this.GROUPS.forEach((g, gi) => g.forEach((x, xi) => flat.push({ ...x, label: t.groups[gi][1][xi][0], sla: t.groups[gi][1][xi][1] })));
+    const q = flat.find(x => x.id === s.q) || flat[0];
+    const ri = Math.min(s.row, this.ROWS.length - 1);
+    const cur = this.ROWS[ri];
+    const [curTitle, curSub] = t.rows[ri];
 
     return {
-      groups: this.GROUPS.map(g => ({
-        label: g.label,
-        items: g.items.map(x => ({
-          ...x, on: x.id === s.q,
+      rootRef: this.root, t, langs: this.langsFor(s.lang),
+
+      groups: this.GROUPS.map((g, gi) => ({
+        label: t.groups[gi][0],
+        items: g.map((x, xi) => ({
+          label: t.groups[gi][1][xi][0], on: x.id === s.q,
           bg: x.id === s.q ? 'var(--neutral-bg)' : 'transparent',
           fw: x.id === s.q ? 600 : 400,
           dot: x.risk,
-          n: this.fmt(x.n),
+          n: this.fmt(x.n, t.sep),
           nFg: x.id === s.q ? 'var(--ink)' : 'var(--ink-2)',
           pick: () => this.setState({ q: x.id, row: 0 })
         }))
       })),
 
       queueLabel: q.label,
-      queueCount: this.fmt(q.n) + ' بنداً',
-      queueSla: q.sla,
+      queueCount: this.count(q.n, t, t.items),
+      queueSla: this.iso(q.sla),
 
-      rows: rows.map((r, i) => ({
-        ...r, on: i === s.row,
-        bg: i === s.row ? 'var(--surface-2)' : 'transparent',
-        fw: i === s.row ? 600 : 400,
+      rows: this.ROWS.map((r, i) => ({
+        ref: r.ref, title: t.rows[i][0], sub: t.rows[i][1], age: this.iso(t.rows[i][2]),
+        on: i === ri,
+        bg: i === ri ? 'var(--surface-2)' : 'transparent',
+        fw: i === ri ? 600 : 400,
         risk: this.RISK[r.risk],
         ageFg: r.risk === 'high' ? 'var(--prohibited)' : 'var(--ink-3)',
         pick: () => this.setState({ row: i })
       })),
 
       cur: {
-        ...cur,
+        ref: cur.ref, title: curTitle, sub: this.iso(curSub),
         riskChip: cur.risk === 'high' ? 'chip-prohibited' : cur.risk === 'mid' ? 'chip-conditional' : 'chip-neutral',
-        riskLabel: cur.risk === 'high' ? 'أولوية عالية' : cur.risk === 'mid' ? 'أولوية متوسطة' : 'أولوية عادية'
+        riskLabel: t.risk[cur.risk]
       },
 
-      docCount: this.DOCS.filter(d => d.ok).length + ' من ' + this.DOCS.length + ' مكتملة',
-      docs: this.DOCS.map(d => ({
-        label: d.label, meta: d.meta,
-        glyph: d.ok ? '✓' : '!',
-        bg: d.ok ? 'var(--allowed-bg)' : 'var(--conditional-bg)',
-        fg: d.ok ? 'var(--allowed-ink)' : 'var(--conditional-ink)'
-      })),
+      docCount: this.iso(t.docCount(this.DOC_OK.filter(Boolean).length, this.DOC_OK.length)),
+      docs: t.docs.map(([label, meta], i) => {
+        const ok = this.DOC_OK[i];
+        return { label, meta: this.iso(meta), glyph: ok ? '✓' : '!', bg: ok ? 'var(--allowed-bg)' : 'var(--conditional-bg)', fg: ok ? 'var(--allowed-ink)' : 'var(--conditional-ink)' };
+      }),
 
-      signals: this.SIGNALS.map(x => ({
-        label: x.label, v: x.v,
-        dot: x.kind === 'ok' ? 'var(--allowed)' : x.kind === 'mid' ? 'var(--conditional)' : 'var(--prohibited)',
-        fg: x.kind === 'ok' ? 'var(--ink-2)' : 'var(--conditional-ink)'
-      })),
+      signals: t.signals.map(([label, v], i) => {
+        const kind = this.SIGNAL_KIND[i];
+        return {
+          label, v: this.iso(v),
+          dot: kind === 'ok' ? 'var(--allowed)' : kind === 'mid' ? 'var(--conditional)' : 'var(--prohibited)',
+          fg: kind === 'ok' ? 'var(--ink-2)' : 'var(--conditional-ink)'
+        };
+      }),
 
-      context: this.CONTEXT,
-      history: this.HISTORY,
-      reasons: this.REASONS,
+      context: t.context.map(([k, v]) => ({ k, v: this.iso(v) })),
+      history: t.history.map(([what, when, by]) => ({ what, when: this.iso(when), by })),
+      reasons: t.reasons,
 
-      actions: this.ACTIONS.map(a => {
+      // Approve / request / reject ARE verdicts, so status colours are correct here.
+      actions: this.ACTIONS.map((a, i) => {
         const on = a.id === s.action;
         const tone = a.tone === 'ok' ? 'var(--allowed)' : a.tone === 'cond' ? 'var(--conditional-ink)' : 'var(--prohibited)';
         return {
-          label: a.label, on,
+          label: t.actions[i], on,
           bd: on ? tone : 'var(--rule-strong)',
           bg: on ? tone : 'var(--surface)',
           fg: on ? 'var(--ink-on)' : 'var(--ink)',
@@ -349,7 +455,7 @@ class Component extends DCLogic {
       }),
 
       reasonBd: 'var(--rule-strong)',
-      consequence: CONSEQ[s.action]
+      consequence: t.conseq[s.action]
     };
   }
 }

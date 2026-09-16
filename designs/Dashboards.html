@@ -1,9 +1,9 @@
 <!doctype html>
-<html dir="rtl" lang="ar">
+<html dir="ltr" lang="fr">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>مَعْبَر — لوحات الأدوار الثلاثة</title>
+<title>Maabar — three role dashboards</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600&family=IBM+Plex+Sans:wght@500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="./tokens.css">
@@ -17,6 +17,9 @@
   .wm{font-family:"Sora",system-ui,sans-serif;font-weight:600;letter-spacing:-.02em;font-size:34px;line-height:1.05;color:var(--ink)}
   .wm-ar{font-weight:500;font-size:14px;color:var(--ink-2)}
   .tag{flex:1;min-width:280px;font-size:15px;line-height:1.75;color:var(--ink-2);max-width:60ch}
+  .langs{display:flex;border:1px solid var(--rule-strong);border-radius:var(--r-sm);overflow:hidden;align-self:flex-start}
+  .langs button{height:30px;padding:0 12px;border:0;background:var(--surface);color:var(--ink-2);font-size:12px;font-weight:500;cursor:pointer}
+  .langs button[aria-pressed="true"]{background:var(--ink);color:var(--ink-on)}
 
   .row{display:flex;gap:26px;align-items:flex-start;justify-content:center;flex-wrap:wrap}
   .col{flex:0 0 auto;width:392px;max-width:100%}
@@ -32,7 +35,8 @@
          box-shadow:0 16px 40px oklch(.24 .06 257/.15), 0 3px 10px oklch(.24 .06 257/.08)}
   .screen{position:relative;border-radius:26px;overflow:hidden;background:#fff;height:760px}
   .screen iframe{position:absolute;inset:0;width:430px;height:880px;border:0;
-                 transform:scale(.870);transform-origin:top right}
+                 transform:scale(.870);transform-origin:top left}
+  [dir="rtl"] .screen iframe{transform-origin:top right}
   .notch{position:absolute;inset-inline:0;top:9px;margin:0 auto;width:96px;height:22px;
          border-radius:12px;background:var(--ink);z-index:2}
 
@@ -58,61 +62,115 @@
       </svg>
       <div>
         <div class="wm" dir="ltr">Maabar</div>
-        <div class="wm-ar">مَعْبَر — شبكة الاستيراد المصغّر في الجزائر</div>
+        <div class="wm-ar" data-i18n="descriptor"></div>
       </div>
     </div>
-    <p class="tag">شبكة تجارية تربط المستورد المصغّر بالتاجر بالمستهلك. ثلاثة أدوار، حساب واحد، وثلاث لوحات مختلفة عمداً — لأن ما يحتاجه كلّ طرف ليس ما يحتاجه الآخر.</p>
+    <p class="tag" data-i18n="tag"></p>
+    <div class="langs" role="group" aria-label="Language">
+      <button type="button" data-lang="en">EN</button><button type="button" data-lang="fr">FR</button><button type="button" data-lang="ar">ع</button>
+    </div>
   </header>
 
   <div class="row">
 
     <section class="col">
       <div class="head">
-        <span class="role" style="background:var(--role-importer-bg);color:var(--role-importer-ink)">المستورد المصغّر</span>
-        <h3 class="h3">لوحة الرحلة</h3>
-        <p class="sub">الرحلة القادمة وسعتها الثلاثية، ما يحتاج انتباهه، وما يطلبه السوق — في شاشة واحدة.</p>
+        <span class="role" style="background:var(--role-importer-bg);color:var(--role-importer-ink)" data-i18n="r1"></span>
+        <h3 class="h3" data-i18n="h1"></h3>
+        <p class="sub" data-i18n="s1"></p>
       </div>
       <div class="phone">
         <div class="notch"></div>
-        <div class="screen"><iframe src="./Importer%20Home.dc.html" title="لوحة المستورد" loading="lazy"></iframe></div>
+        <div class="screen"><iframe data-src="./Importer%20Home.dc.html" data-i18n-title="t1" loading="lazy"></iframe></div>
       </div>
-      <p class="note">القيمة حدّ قانوني (1 800 000 دج للتنقّل). الوزن والحجم حدوده هو.</p>
+      <p class="note" data-i18n="n1"></p>
     </section>
 
     <section class="col">
       <div class="head">
-        <span class="role" style="background:var(--role-trader-bg);color:var(--role-trader-ink)">التاجر</span>
-        <h3 class="h3">لوحة التوريد</h3>
-        <p class="sub">الفرص أولاً، ثم الرحلات القادمة، ثم ما يحتاج قراره — يجد ما يفعله حتى بلا طلب مفتوح.</p>
+        <span class="role" style="background:var(--role-trader-bg);color:var(--role-trader-ink)" data-i18n="r2"></span>
+        <h3 class="h3" data-i18n="h2"></h3>
+        <p class="sub" data-i18n="s2"></p>
       </div>
       <div class="phone">
         <div class="notch"></div>
-        <div class="screen"><iframe src="./Trader%20Home.dc.html" title="لوحة التاجر" loading="lazy"></iframe></div>
+        <div class="screen"><iframe data-src="./Trader%20Home.dc.html" data-i18n-title="t2" loading="lazy"></iframe></div>
       </div>
-      <p class="note">الترتيب بعدد المعاملات المؤكَّدة، لا بالسعر ولا بالدفع.</p>
+      <p class="note" data-i18n="n2"></p>
     </section>
 
     <section class="col">
       <div class="head">
-        <span class="role" style="background:var(--role-consumer-bg);color:var(--role-consumer-ink)">المستهلك</span>
-        <h3 class="h3">الواجهة العامة</h3>
-        <p class="sub">كثافة منخفضة وصور أولاً. لا يرى المستهلك أي تعقيد تنظيمي أو تشغيلي.</p>
+        <span class="role" style="background:var(--role-consumer-bg);color:var(--role-consumer-ink)" data-i18n="r3"></span>
+        <h3 class="h3" data-i18n="h3"></h3>
+        <p class="sub" data-i18n="s3"></p>
       </div>
       <div class="phone">
         <div class="notch"></div>
-        <div class="screen"><iframe src="./Consumer%20Home.dc.html" title="واجهة المستهلك" loading="lazy"></iframe></div>
+        <div class="screen"><iframe data-src="./Consumer%20Home.dc.html" data-i18n-title="t3" loading="lazy"></iframe></div>
       </div>
-      <p class="note">البائع دائماً تاجر مُتحقَّق بسجل تجاري — لا يظهر المستورد هنا.</p>
+      <p class="note" data-i18n="n3"></p>
     </section>
 
   </div>
 
-  <footer>
-    اللوحات الثلاث مبنية على طبقة رموز واحدة، عربية أولاً باتجاه من اليمين إلى اليسار.
-    الكثافة تختلف عمداً حسب الوظيفة: منخفضة للواجهة العامة، متوسطة للتشغيل، عالية لواجهة الإدارة.
-    مَعْبَر منصّة اكتشاف وتوثيق — لا تبيع، ولا تستلم أموالاً، ولا تصدر ترخيصاً.
-  </footer>
+  <footer data-i18n="foot"></footer>
 
 </div>
+<script>
+/* One switch drives the deck copy and the three embedded screens (via ?lang=).
+   Locale: ?lang= in the URL, else the browser, else French. */
+const T = {
+  en: { dir: 'ltr',
+    descriptor: 'Algeria’s micro-import network',
+    tag: 'A trade network connecting the micro-importer, the trader and the consumer. Three roles, one account, and three deliberately different dashboards — because what each side needs is not what the others need.',
+    r1: 'Micro-importer', h1: 'Trip dashboard', s1: 'The next trip and its three capacity limits, what needs attention, and what the market wants — on one screen.', t1: 'Importer dashboard',
+    n1: 'Value is a legal limit (1,800,000 DA per trip). Weight and volume are the importer’s own limits.',
+    r2: 'Trader', h2: 'Sourcing dashboard', s2: 'Opportunities first, then upcoming trips, then what needs a decision — there is always something to do, even without an open request.', t2: 'Trader dashboard',
+    n2: 'Ranked by confirmed transactions — never by price or by payment.',
+    r3: 'Consumer', h3: 'Public storefront', s3: 'Low density, images first. The consumer never sees regulatory or operational complexity.', t3: 'Consumer storefront',
+    n3: 'The seller is always a verified trader with a commercial register — importers never appear here.',
+    foot: 'All three dashboards are built on one token layer and render in English, French and Arabic, left-to-right or right-to-left. Density differs by function on purpose: low for the storefront, medium for operations, high for administration. Maabar is a discovery and record platform — it does not sell, does not hold money, and does not issue licences.' },
+  fr: { dir: 'ltr',
+    descriptor: 'Le réseau algérien de l’import de faible valeur',
+    tag: 'Un réseau commercial qui relie le micro-importateur, le commerçant et le consommateur. Trois rôles, un compte, et trois tableaux de bord volontairement différents — parce que chacun n’a pas besoin de la même chose.',
+    r1: 'Micro-importateur', h1: 'Tableau du voyage', s1: 'Le prochain voyage et ses trois limites de capacité, ce qui demande attention, et ce que veut le marché — sur un seul écran.', t1: 'Tableau importateur',
+    n1: 'La valeur est une limite légale (1 800 000 DA par déplacement). Poids et volume sont les limites propres à l’importateur.',
+    r2: 'Commerçant', h2: 'Tableau d’approvisionnement', s2: 'Les opportunités d’abord, puis les voyages à venir, puis ce qui attend une décision — il y a toujours quelque chose à faire, même sans demande ouverte.', t2: 'Tableau commerçant',
+    n2: 'Classement par transactions confirmées — jamais par prix ni par paiement.',
+    r3: 'Consommateur', h3: 'Vitrine publique', s3: 'Faible densité, image d’abord. Le consommateur ne voit aucune complexité réglementaire ou opérationnelle.', t3: 'Vitrine consommateur',
+    n3: 'Le vendeur est toujours un commerçant vérifié inscrit au registre de commerce — l’importateur n’apparaît jamais ici.',
+    foot: 'Les trois tableaux reposent sur une seule couche de jetons et s’affichent en anglais, français et arabe, de gauche à droite ou de droite à gauche. La densité varie volontairement selon la fonction : faible pour la vitrine, moyenne pour l’opérationnel, élevée pour l’administration. Maabar est une plateforme de découverte et de traçabilité — elle ne vend pas, ne détient pas d’argent et ne délivre pas de licence.' },
+  ar: { dir: 'rtl',
+    descriptor: 'مَعْبَر — شبكة الاستيراد المصغّر في الجزائر',
+    tag: 'شبكة تجارية تربط المستورد المصغّر بالتاجر بالمستهلك. ثلاثة أدوار، حساب واحد، وثلاث لوحات مختلفة عمداً — لأن ما يحتاجه كلّ طرف ليس ما يحتاجه الآخر.',
+    r1: 'المستورد المصغّر', h1: 'لوحة الرحلة', s1: 'الرحلة القادمة وسعتها الثلاثية، ما يحتاج انتباهه، وما يطلبه السوق — في شاشة واحدة.', t1: 'لوحة المستورد',
+    n1: 'القيمة حدّ قانوني (⁦1 800 000⁩ دج للتنقّل). الوزن والحجم حدوده هو.',
+    r2: 'التاجر', h2: 'لوحة التوريد', s2: 'الفرص أولاً، ثم الرحلات القادمة، ثم ما يحتاج قراره — يجد ما يفعله حتى بلا طلب مفتوح.', t2: 'لوحة التاجر',
+    n2: 'الترتيب بعدد المعاملات المؤكَّدة، لا بالسعر ولا بالدفع.',
+    r3: 'المستهلك', h3: 'الواجهة العامة', s3: 'كثافة منخفضة وصور أولاً. لا يرى المستهلك أي تعقيد تنظيمي أو تشغيلي.', t3: 'واجهة المستهلك',
+    n3: 'البائع دائماً تاجر مُتحقَّق بسجل تجاري — لا يظهر المستورد هنا.',
+    foot: 'اللوحات الثلاث مبنية على طبقة رموز واحدة، وتُعرض بالإنجليزية والفرنسية والعربية، من اليسار إلى اليمين أو من اليمين إلى اليسار. الكثافة تختلف عمداً حسب الوظيفة: منخفضة للواجهة العامة، متوسطة للتشغيل، عالية لواجهة الإدارة. مَعْبَر منصّة اكتشاف وتوثيق — لا تبيع، ولا تستلم أموالاً، ولا تصدر ترخيصاً.' }
+};
+function pick() {
+  const q = new URLSearchParams(location.search).get('lang');
+  const tag = (q || navigator.language || '').slice(0, 2).toLowerCase();
+  return T[tag] ? tag : 'fr';
+}
+function apply(lang) {
+  const t = T[lang];
+  document.documentElement.lang = lang;
+  document.documentElement.dir = t.dir;
+  document.querySelectorAll('[data-i18n]').forEach(el => { el.textContent = t[el.dataset.i18n]; });
+  document.querySelectorAll('iframe[data-src]').forEach(fr => {
+    fr.title = t[fr.dataset.i18nTitle];
+    const src = fr.dataset.src + '?lang=' + lang;
+    if (fr.getAttribute('src') !== src) fr.setAttribute('src', src);
+  });
+  document.querySelectorAll('[data-lang]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.lang === lang)));
+}
+document.querySelectorAll('[data-lang]').forEach(b => b.addEventListener('click', () => apply(b.dataset.lang)));
+apply(pick());
+</script>
 </body>
 </html>

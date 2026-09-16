@@ -181,11 +181,17 @@ Roles are **capabilities on one identity**, not separate accounts. A user may ho
 
 The **logo is Latin in all three interfaces** — `Maabar`. `مَعْبَر` exists as a localised wordmark variant used only inside the Arabic interface, never as a second line beneath the Latin.
 
-**Partial — the one honest gap:**
-French and English copy is drawn on **2 of 24 screens** (`Landing`, `Compliance Checker`). The architecture is proven — `dir` derives from locale, no component has a fixed width, French runs ~20% longer and is absorbed — but the remaining 22 screens carry Arabic strings only.
+**Complete — all 24 screens carry EN, FR and AR.** Every screen has a compact language switch; direction, number separators, decimals and plurals follow the active locale.
 
-**Assessment:** this is a **P1 content task, not a P0 design task**. The pattern is established and repeatable; no product decision remains. It does not block development, but it does block launch, and the string extraction should happen as part of the i18n layer in the first implementation sprint.
+- **Locale resolution:** `?lang=` in the URL, else the browser language, else **French**. One value (`FALLBACK`) per screen; in the build it becomes one config value
+- **Numbers:** Western digits in all three. Group separator is a space in AR/FR, a comma in EN; the decimal mark is a comma in FR only
+- **Plurals:** Arabic uses four counted-noun forms (one / two / 3–10 / 11+); French and English use two
+- **Bidi — two isolates, two jobs.** Pure number runs take LRI…PDI. Mixed text runs take a *first-strong* isolate (FSI…PDI), with each digit group inside Arabic pinned LTR. The first pass used LRI for everything, which forced Arabic segments joined by `·` into left-to-right order and put units on the wrong side of amounts; verified glyph-by-glyph after the fix
+- **Icon mirroring:** back and send glyphs flip in RTL; forward chevrons flip in LTR. The original Arabic-only screens had the back arrow pointing the wrong way
+- **What does not translate — by law:** the Article 14 label content. The label preview in `Records` is fixed `dir="rtl" lang="ar"` in every interface language; only the surrounding UI and the note beneath it translate
+- **Legal meaning held constant:** deposit, dispute and platform-role copy says the same thing in all three — Maabar does not receive, hold, guarantee or refund money, and does not grant the right to import
 
+**Not yet done:** a professional review of the French and Arabic copy by native commercial writers, and Tamazight, which is not in scope.
 ---
 
 ## 9. LEGAL — UNRESOLVED, MUST NOT BE GUESSED
@@ -248,7 +254,7 @@ Screens read them at render. `Trip Creation` displays the value cap with its eff
 
 | Item | Priority | Note |
 |---|---|---|
-| FR/EN strings on 22 screens | P1 | Content task; architecture proven on `Landing` and `Compliance Checker` |
+| Native-speaker review of FR and AR copy | P1 | All 24 screens are trilingual; copy is accurate but not yet reviewed by native commercial writers |
 | Desktop layouts for the remaining 22 screens | **P0 for a web-first launch** | The responsive shell is proven on `Demand Board` — rail replaces bottom tabs at 1140px, capacity panel pins beside a two-column list. Admin is already desktop. The rest need the same treatment |
 | Real product photography | P1 | Placeholders are designed but are placeholders. **Needed before the client demo** |
 | Per-queue admin evidence panels | P2 | Layout established; contents differ |

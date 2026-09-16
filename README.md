@@ -42,7 +42,9 @@ Brand colour and status colour are deliberately disjoint. On a product whose cor
 
 ## Languages
 
-**Three equals: English, French, Arabic.** Arabic is not the source language and not the default. Locale is browser-detected with **French as the fallback**; direction derives from the locale rather than being hardcoded.
+**Three equals: English, French, Arabic** — on all 24 screens. Arabic is not the source language and not the default. Locale comes from `?lang=` in the URL, else the browser, else **French**; direction derives from the locale rather than being hardcoded. Append `?lang=en`, `?lang=fr` or `?lang=ar` to any screen to open it in that language.
+
+One thing never translates: the **Article 14 label** is legally Arabic, so its preview stays Arabic in every interface language.
 
 ---
 
@@ -64,7 +66,7 @@ Boards with a chip row at the top or bottom are **state-switchable** — click t
 
 **Design complete. No application code yet.**
 
-24 screens, one token layer, both directions supported throughout. Every P0 user journey is drawn end to end.
+24 screens in three languages, one token layer, both directions supported throughout. Every P0 user journey is drawn end to end.
 
 **One module is held pending Algerian legal review:** the deposit declaration in `Commitment` — see `DESIGN-AUDIT.md` §9.2. Everything else is buildable.
 
@@ -89,6 +91,6 @@ Ten decisions were settled during design. Do not re-open them while implementing
 
 ## Known gaps
 
-- French and English copy is drawn on 2 of 24 screens (`Landing`, `Compliance Checker`). The bidirectional architecture is proven — direction flips cleanly, no component has a fixed width, French runs ~20% longer and is absorbed. The remaining 22 screens carry Arabic strings only; that is an i18n content task, not a design decision.
+- All 24 screens are trilingual (EN / FR / AR). The French and Arabic copy has not yet been reviewed by native commercial writers.
 - Desktop layouts exist for the admin console and `Demand Board`, which proves the responsive shell — bottom tabs below 1140px, a persistent rail above it. The remaining screens still need the same treatment, and that is **P0 for a web-first launch**.
 - Product imagery uses designed category placeholders, not real photography.
