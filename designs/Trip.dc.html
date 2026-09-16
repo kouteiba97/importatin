@@ -21,15 +21,20 @@
 </style>
 </helmet>
 
-<div dir="rtl" lang="ar" class="tier-op" style="min-height:100vh;display:flex;justify-content:center">
+<div ref="{{ rootRef }}" dir="rtl" lang="ar" class="tier-op" style="min-height:100vh;display:flex;justify-content:center">
 <div style="width:100%;max-width:430px;min-height:100vh;display:flex;flex-direction:column;background:var(--paper);border-inline:1px solid var(--rule)">
 
 <header style="position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:10px;padding:11px 14px;background:var(--surface);border-bottom:1px solid var(--rule)">
-<button type="button" aria-label="رجوع" style="width:34px;height:34px;border:0;background:transparent;cursor:pointer;display:grid;place-items:center;color:inherit">
-<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 5l-7 7 7 7"/></svg>
+<button type="button" aria-label="{{ t.back }}" style="width:34px;height:34px;border:0;background:transparent;cursor:pointer;display:grid;place-items:center;color:inherit">
+<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="transform:scaleX({{ backFlip }})"><path d="M15 5l-7 7 7 7"/></svg>
 </button>
-<span style="flex:1;font-size:var(--t-h3);font-weight:500">رحلتي</span>
-<button type="button" aria-label="خيارات" style="width:34px;height:34px;border:0;background:transparent;cursor:pointer;display:grid;place-items:center;color:var(--ink-2)">
+<span style="flex:1;font-size:var(--t-h3);font-weight:500">{{ t.title }}</span>
+<div role="group" aria-label="{{ t.langLabel }}" style="display:flex;border:1px solid var(--rule-strong);border-radius:var(--r-sm);overflow:hidden;flex:none">
+<sc-for list="{{ langs }}" as="l" hint-placeholder-count="3">
+<button type="button" onClick="{{ l.pick }}" aria-pressed="{{ l.on }}" style="height:24px;padding:0 8px;border:0;background:{{ l.bg }};color:{{ l.fg }};font-size:var(--t-micro);font-weight:500;cursor:pointer">{{ l.short }}</button>
+</sc-for>
+</div>
+<button type="button" aria-label="{{ t.options }}" style="width:34px;height:34px;border:0;background:transparent;cursor:pointer;display:grid;place-items:center;color:var(--ink-2)">
 <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="5" r="1.7"/><circle cx="12" cy="12" r="1.7"/><circle cx="12" cy="19" r="1.7"/></svg>
 </button>
 </header>
@@ -67,7 +72,7 @@
 
 <!-- ══ CAPACITY ══ -->
 <section class="card" style="padding:15px">
-<div class="sech"><h2>ما تبقّى من سعتك</h2></div>
+<div class="sech"><h2>{{ t.capTitle }}</h2></div>
 <div style="display:flex;flex-direction:column;gap:12px">
 <sc-for list="{{ meters }}" as="m" hint-placeholder-count="3">
 <div>
@@ -85,8 +90,8 @@
 <!-- ══ BUY LIST ══ -->
 <section>
 <div class="sech">
-<h2>قائمة الشراء</h2>
-<button type="button" class="more">أضف صنفاً ←</button>
+<h2>{{ t.listTitle }}</h2>
+<button type="button" class="more">{{ t.addItem }}</button>
 </div>
 <div class="card">
 <sc-for list="{{ list }}" as="l" hint-placeholder-count="3">
@@ -103,7 +108,7 @@
 </div>
 </sc-for>
 <div style="display:flex;justify-content:space-between;align-items:baseline;padding:13px">
-<span style="font-size:var(--t-sm);color:var(--ink-2)">الإجمالي</span>
+<span style="font-size:var(--t-sm);color:var(--ink-2)">{{ t.total }}</span>
 <span class="num" style="font-size:var(--t-h3);font-weight:600"><bdi>{{ listTotal }}</bdi></span>
 </div>
 </div>
@@ -112,7 +117,7 @@
 <!-- ══ BUYERS WAITING ══ -->
 <section>
 <div class="sech">
-<h2>مشترون بانتظارك</h2>
+<h2>{{ t.buyersTitle }}</h2>
 <span class="num" style="font-size:var(--t-xs);color:var(--ink-3)"><bdi>{{ buyerCount }}</bdi></span>
 </div>
 <div class="card">
@@ -123,7 +128,7 @@
 <div style="font-size:var(--t-sm);font-weight:500">{{ b.name }}</div>
 <div class="num" style="font-size:var(--t-micro);color:var(--ink-2);margin-top:2px"><bdi>{{ b.meta }}</bdi></div>
 </div>
-<button type="button" style="flex:none;height:32px;padding:0 12px;border:1px solid var(--rule-strong);border-radius:var(--r-sm);background:var(--surface);color:inherit;font-size:var(--t-sm);cursor:pointer">راسل</button>
+<button type="button" style="flex:none;height:32px;padding:0 12px;border:1px solid var(--rule-strong);border-radius:var(--r-sm);background:var(--surface);color:inherit;font-size:var(--t-sm);cursor:pointer">{{ t.message }}</button>
 </div>
 </sc-for>
 </div>
@@ -133,17 +138,17 @@
 <section style="display:flex;gap:11px;padding:14px;border:1px solid var(--conditional-bd);border-radius:var(--r);background:var(--conditional-bg)">
 <span aria-hidden="true" style="flex:none;width:24px;height:24px;border-radius:50%;background:var(--conditional);color:#fff;display:grid;place-items:center;font-size:13px;font-weight:600">!</span>
 <div style="flex:1">
-<div style="font-size:var(--t-sm);font-weight:500;margin-bottom:4px">صرّح بالبضاعة قبل السفر</div>
-<p style="margin:0 0 10px;font-size:var(--t-xs);line-height:1.65;color:var(--ink-2)">التصريح المسبق يتمّ على anae.dz، وليس هنا.</p>
-<button type="button" style="height:34px;padding:0 14px;border:0;border-radius:var(--r-sm);background:var(--conditional-ink);color:var(--ink-on);font-size:var(--t-sm);font-weight:500;cursor:pointer">افتح anae.dz</button>
+<div style="font-size:var(--t-sm);font-weight:500;margin-bottom:4px">{{ t.declareTitle }}</div>
+<p style="margin:0 0 10px;font-size:var(--t-xs);line-height:1.65;color:var(--ink-2)">{{ t.declareLede }}</p>
+<button type="button" style="height:34px;padding:0 14px;border:0;border-radius:var(--r-sm);background:var(--conditional-ink);color:var(--ink-on);font-size:var(--t-sm);font-weight:500;cursor:pointer">{{ t.openAnae }}</button>
 </div>
 </section>
 
 </main>
 
 <div style="position:fixed;inset-block-end:0;inset-inline:0;margin:0 auto;max-width:430px;display:flex;gap:9px;padding:12px 16px 16px;background:var(--surface);border-top:1px solid var(--rule)">
-<button type="button" style="flex:1;height:50px;border:0;border-radius:var(--r);background:var(--brand);color:var(--ink-on);font-size:15px;font-weight:600;cursor:pointer">أغلق القائمة وابدأ الشراء</button>
-<button type="button" style="flex:none;width:50px;height:50px;border:1px solid var(--rule-strong);border-radius:var(--r);background:var(--surface);display:grid;place-items:center;cursor:pointer;color:inherit">
+<button type="button" style="flex:1;height:50px;border:0;border-radius:var(--r);background:var(--brand);color:var(--ink-on);font-size:15px;font-weight:600;cursor:pointer">{{ t.closeList }}</button>
+<button type="button" aria-label="{{ t.exportList }}" style="flex:none;width:50px;height:50px;border:1px solid var(--rule-strong);border-radius:var(--r);background:var(--surface);display:grid;place-items:center;cursor:pointer;color:inherit">
 <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M7 3h7l4 4v14H7z"/><path d="M14 3v4h4"/></svg>
 </button>
 </div>
@@ -153,49 +158,116 @@
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:430,&quot;height&quot;:1500}}">
 class Component extends DCLogic {
-  LRI = '⁦'; PDI = '⁩';
-  ltr(s) { return this.LRI + s + this.PDI; }
-  fmt(n, d = 0) {
+  /* Locale is browser-detected. French is the fallback — Algeria's commercial
+     lingua franca and the neutral middle between Arabic and English. One value. */
+  static FALLBACK = 'fr';
+  static detect() {
+    const tag = (typeof navigator !== 'undefined' && (navigator.language || '')).slice(0, 2).toLowerCase();
+    return ['ar', 'fr', 'en'].includes(tag) ? tag : Component.FALLBACK;
+  }
+
+  state = { lang: Component.detect() };
+  root = React.createRef();
+  componentDidMount() { this._apply(); }
+  componentDidUpdate() { this._apply(); }
+  _apply() {
+    const el = this.root.current;
+    if (el) { el.setAttribute('dir', this.L[this.state.lang].dir); el.setAttribute('lang', this.state.lang); }
+  }
+
+  /* Text runs take a first-strong isolate so Arabic stays RTL and Latin stays LTR;
+     inside Arabic, each digit group is pinned LTR so "4 800" never reads "800 4". */
+  iso(s) { if (/[\u0600-\u06FF]/.test(s)) s = s.replace(/\d[\d ,.:]*\d%?|\d%?/g, m => '\u2066' + m + '\u2069'); return '\u2068' + s + '\u2069'; }
+  fmt(n, sep) { return '⁦' + String(n).replace(/\B(?=(\d{3})+(?!\d))/g, sep === undefined ? ' ' : sep) + '⁩'; }
+  /* Arabic counts nouns in four forms (one / two / 3–10 / 11+); French and English in two.
+     f = { one, two, few, many } for Arabic, { one, many } otherwise. */
+  count(n, t, f) {
+    if (t.dir === 'rtl') {
+      const m = n % 100;
+      if (n === 1) return f.one;
+      if (n === 2) return f.two;
+      if (m >= 3 && m <= 10) return this.fmt(n, t.sep) + ' ' + f.few;
+      return this.fmt(n, t.sep) + ' ' + f.many;
+    }
+    return this.fmt(n, t.sep) + ' ' + (n === 1 ? f.one : f.many);
+  }
+  langsFor(cur) {
+    return ['ar', 'fr', 'en'].map(id => ({
+      short: this.L[id].short, on: cur === id,
+      bg: cur === id ? 'var(--ink)' : 'var(--surface)',
+      fg: cur === id ? 'var(--ink-on)' : 'var(--ink-2)',
+      pick: () => this.setState({ lang: id })
+    }));
+  }
+
+  fmtD(n, d, sep, dec) {
     const s = Number(n).toFixed(d), [i, f] = s.split('.');
-    return '⁦' + i.replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + (f ? '.' + f : '') + '⁩';
+    return '⁦' + i.replace(/\B(?=(\d{3})+(?!\d))/g, sep) + (f ? (dec || '.') + f : '') + '⁩';
   }
-  counted(n, f) {
-    const m = n % 100;
-    if (n === 1) return f.one;
-    if (n === 2) return f.two;
-    if (m >= 3 && m <= 10) return this.fmt(n) + ' ' + f.few;
-    return this.fmt(n) + ' ' + f.many;
-  }
-  UNIT_N = { one: 'وحدة واحدة', two: 'وحدتان', few: 'وحدات', many: 'وحدة' };
-  BUYER_N = { one: 'مشترٍ واحد', two: 'مشتريان', few: 'مشترين', many: 'مشترياً' };
 
-  T = { dest: 'إسطنبول', dates: '12 – 16 أكتوبر · يصل 18 أكتوبر', status: 'مفتوحة للطلب' };
+  L = {
+    ar: {
+      dir: 'rtl', short: 'ع', langLabel: 'اللغة', sep: ' ',
+      back: 'رجوع', title: 'رحلتي', options: 'خيارات',
+      dest: 'إسطنبول', dates: '12 – 16 أكتوبر · يصل 18 أكتوبر', status: 'مفتوحة للطلب',
+      stages: ['التخطيط', 'جمع الطلب', 'السفر', 'الجمركة', 'التسليم'],
+      capTitle: 'ما تبقّى من سعتك', of: 'من',
+      caps: [['القيمة', 'دج', 'الحدّ القانوني لكل رحلة'], ['الوزن', 'كغ', 'حسب سماح الطيران الذي حدّدته'], ['الحجم', 'م³', 'حسب حقائبك التي حدّدتها']],
+      listTitle: 'قائمة الشراء', addItem: 'أضف صنفاً ←', total: 'الإجمالي',
+      list: [['معاطف نسائية شتوية', 'مطلوبة بالكامل'], ['حقائب يد نسائية', 'مطلوبة جزئياً'], ['عطور نسائية 100 مل', 'بلا مشترٍ مؤكَّد']],
+      noBuyer: 'بلا مشترٍ بعد',
+      unit:  { one: 'وحدة واحدة', two: 'وحدتان', few: 'وحدات', many: 'وحدة' },
+      buyer: { one: 'مشترٍ واحد', two: 'مشتريان', few: 'مشترين', many: 'مشترياً' },
+      buyersTitle: 'مشترون بانتظارك', message: 'راسل',
+      buyers: [['ياسين ب.', 'ي ب', 'سطيف · 18 معاطف · وافق على النطاق'], ['نادية ر.', 'ن ر', 'قسنطينة · 12 معاطف · بانتظار المواصفة'], ['دار الأناقة', 'د أ', 'وهران · 20 حقيبة · وافق على النطاق']],
+      declareTitle: 'صرّح بالبضاعة قبل السفر', declareLede: 'التصريح المسبق يتمّ على anae.dz، وليس هنا.', openAnae: 'افتح anae.dz',
+      closeList: 'أغلق القائمة وابدأ الشراء', exportList: 'صدّر القائمة'
+    },
 
-  STAGES = [
-    { label: 'التخطيط', done: true },
-    { label: 'جمع الطلب', done: true, now: true },
-    { label: 'السفر', done: false },
-    { label: 'الجمركة', done: false },
-    { label: 'التسليم', done: false }
-  ];
+    fr: {
+      dir: 'ltr', short: 'FR', langLabel: 'Langue', sep: ' ', dec: ',',
+      back: 'Retour', title: 'Mon voyage', options: 'Options',
+      dest: 'Istanbul', dates: '12 – 16 octobre · arrivée 18 octobre', status: 'Ouvert aux demandes',
+      stages: ['Préparation', 'Collecte', 'Voyage', 'Douane', 'Remise'],
+      capTitle: 'Capacité restante', of: 'sur',
+      caps: [['Valeur', 'DA', 'plafond légal par voyage'], ['Poids', 'kg', 'selon la franchise bagages que vous avez fixée'], ['Volume', 'm³', 'selon les bagages que vous avez déclarés']],
+      listTitle: 'Liste d’achat', addItem: 'Ajouter un article →', total: 'Total',
+      list: [['Manteaux femme hiver', 'Entièrement demandé'], ['Sacs à main femme', 'Partiellement demandé'], ['Parfums femme 100 ml', 'Aucun acheteur confirmé']],
+      noBuyer: 'Pas encore d’acheteur',
+      unit:  { one: 'unité', many: 'unités' },
+      buyer: { one: 'acheteur', many: 'acheteurs' },
+      buyersTitle: 'Acheteurs en attente', message: 'Écrire',
+      buyers: [['Yacine B.', 'YB', 'Sétif · 18 manteaux · a accepté la fourchette'], ['Nadia R.', 'NR', 'Constantine · 12 manteaux · attend la spécification'], ['Dar El Anaqa', 'DA', 'Oran · 20 sacs · a accepté la fourchette']],
+      declareTitle: 'Déclarez la marchandise avant de partir', declareLede: 'La pré-déclaration se fait sur anae.dz, pas ici.', openAnae: 'Ouvrir anae.dz',
+      closeList: 'Clore la liste et commencer les achats', exportList: 'Exporter la liste'
+    },
 
-  CAPS = [
-    { label: 'القيمة', used: 560000, cap: 1800000, unit: 'دج', d: 0, note: 'الحدّ القانوني لكل رحلة' },
-    { label: 'الوزن', used: 24, cap: 46, unit: 'كغ', d: 0, note: 'حسب سماح الطيران الذي حدّدته' },
-    { label: 'الحجم', used: 0.42, cap: 1.2, unit: 'م³', d: 2, note: 'حسب حقائبك التي حدّدتها' }
-  ];
+    en: {
+      dir: 'ltr', short: 'EN', langLabel: 'Language', sep: ',',
+      back: 'Back', title: 'My trip', options: 'Options',
+      dest: 'Istanbul', dates: '12 – 16 October · arrives 18 October', status: 'Open to requests',
+      stages: ['Planning', 'Collecting', 'Travel', 'Customs', 'Handover'],
+      capTitle: 'Capacity remaining', of: 'of',
+      caps: [['Value', 'DA', 'legal limit per trip'], ['Weight', 'kg', 'per the baggage allowance you set'], ['Volume', 'm³', 'per the luggage you declared']],
+      listTitle: 'Buying list', addItem: 'Add an item →', total: 'Total',
+      list: [['Women’s winter coats', 'Fully requested'], ['Women’s handbags', 'Partly requested'], ['Women’s perfume 100 ml', 'No confirmed buyer']],
+      noBuyer: 'No buyer yet',
+      unit:  { one: 'unit', many: 'units' },
+      buyer: { one: 'buyer', many: 'buyers' },
+      buyersTitle: 'Buyers waiting on you', message: 'Message',
+      buyers: [['Yacine B.', 'YB', 'Sétif · 18 coats · accepted the range'], ['Nadia R.', 'NR', 'Constantine · 12 coats · awaiting specification'], ['Dar El Anaqa', 'DA', 'Oran · 20 bags · accepted the range']],
+      declareTitle: 'Declare the goods before you travel', declareLede: 'Pre-declaration happens on anae.dz, not here.', openAnae: 'Open anae.dz',
+      closeList: 'Close the list and start buying', exportList: 'Export the list'
+    }
+  };
 
-  LIST = [
-    { ph: 'ph-coat', name: 'معاطف نسائية شتوية', q: 30, buyers: 3, state: 'مطلوبة بالكامل', kind: 'ok' },
-    { ph: 'ph-bag', name: 'حقائب يد نسائية', q: 20, buyers: 2, state: 'مطلوبة جزئياً', kind: 'cond' },
-    { ph: 'ph-perfume', name: 'عطور نسائية 100 مل', q: 40, buyers: 0, state: 'بلا مشترٍ مؤكَّد', kind: 'risk' }
-  ];
+  STAGES = [{ done: true }, { done: true, now: true }, { done: false }, { done: false }, { done: false }];
 
-  BUYERS = [
-    { name: 'ياسين ب.', initials: 'ي ب', meta: 'سطيف · 18 معاطف · وافق على النطاق', tone: 0 },
-    { name: 'نادية ر.', initials: 'ن ر', meta: 'قسنطينة · 12 معاطف · بانتظار المواصفة', tone: 1 },
-    { name: 'دار الأناقة', initials: 'د أ', meta: 'وهران · 20 حقيبة · وافق على النطاق', tone: 2 }
-  ];
+  // The 1,800,000 DA value is configuration with an effective date, not a constant.
+  CAPS = [{ used: 560000, cap: 1800000, d: 0 }, { used: 24, cap: 46, d: 0 }, { used: 0.42, cap: 1.2, d: 2 }];
+
+  LIST = [{ ph: 'ph-coat', q: 30, buyers: 3, kind: 'ok' }, { ph: 'ph-bag', q: 20, buyers: 2, kind: 'cond' }, { ph: 'ph-perfume', q: 40, buyers: 0, kind: 'risk' }];
+  BUYER_TONE = [0, 1, 2];
 
   CHIP = { ok: 'chip-verified', cond: 'chip-conditional', risk: 'chip-prohibited' };
   TONE = [
@@ -205,15 +277,16 @@ class Component extends DCLogic {
   ];
 
   renderVals() {
+    const t = this.L[this.state.lang];
     const totalUnits = this.LIST.reduce((a, l) => a + l.q, 0);
-    const totalBuyers = this.BUYERS.length;
 
     return {
-      ...this.T,
-      dates: this.ltr(this.T.dates),
+      rootRef: this.root, t, langs: this.langsFor(this.state.lang),
+      backFlip: t.dir === 'rtl' ? -1 : 1,
+      dest: t.dest, status: t.status, dates: this.iso(t.dates),
 
       stages: this.STAGES.map((s, i) => ({
-        label: s.label,
+        label: t.stages[i],
         line: i > 0,
         lineFg: s.done ? 'var(--allowed)' : 'var(--rule)',
         dotBg: s.done ? 'var(--allowed)' : 'var(--surface)',
@@ -223,28 +296,29 @@ class Component extends DCLogic {
         fw: s.now ? 600 : 400
       })),
 
-      meters: this.CAPS.map(m => {
+      meters: this.CAPS.map((m, i) => {
+        const [label, unit, note] = t.caps[i];
         const ratio = m.used / m.cap, pct = Math.min(100, ratio * 100);
         const fg = ratio >= 1 ? 'var(--prohibited)' : ratio >= 0.9 ? 'var(--conditional)' : 'var(--allowed)';
         return {
-          label: m.label, pct, fg,
-          text: this.ltr(this.fmt(m.cap - m.used, m.d) + ' ' + m.unit),
-          sub: this.ltr('من ' + this.fmt(m.cap, m.d) + ' ' + m.unit + ' · ' + m.note)
+          label, pct, fg,
+          text: '⁦' + this.fmtD(m.cap - m.used, m.d, t.sep, t.dec) + ' ' + unit + '⁩',
+          sub: this.iso(t.of + ' ' + this.fmtD(m.cap, m.d, t.sep, t.dec) + ' ' + unit + ' · ' + note)
         };
       }),
 
-      list: this.LIST.map(l => ({
-        ...l,
-        qty: this.counted(l.q, this.UNIT_N),
+      list: this.LIST.map((l, i) => ({
+        ph: l.ph, name: t.list[i][0], state: t.list[i][1],
+        qty: this.count(l.q, t, t.unit),
         chip: this.CHIP[l.kind],
-        buyers: l.buyers ? this.counted(l.buyers, this.BUYER_N) : 'بلا مشترٍ بعد'
+        buyers: l.buyers ? this.count(l.buyers, t, t.buyer) : t.noBuyer
       })),
-      listTotal: this.counted(totalUnits, this.UNIT_N),
+      listTotal: this.count(totalUnits, t, t.unit),
 
-      buyerCount: this.counted(totalBuyers, this.BUYER_N),
-      buyers: this.BUYERS.map(b => {
-        const [avBg, avFg] = this.TONE[b.tone];
-        return { ...b, avBg, avFg };
+      buyerCount: this.count(t.buyers.length, t, t.buyer),
+      buyers: t.buyers.map(([name, initials, meta], i) => {
+        const [avBg, avFg] = this.TONE[this.BUYER_TONE[i]];
+        return { name, initials, meta: this.iso(meta), avBg, avFg };
       })
     };
   }
