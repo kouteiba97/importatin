@@ -26,7 +26,7 @@
 
 <header style="position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--surface);border-bottom:1px solid var(--rule)">
 <button type="button" aria-label="{{ t.back }}" style="width:36px;height:36px;border:0;background:transparent;cursor:pointer;display:grid;place-items:center;color:inherit">
-<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="transform:scaleX({{ arrow }})"><path d="M15 5l-7 7 7 7"/></svg>
+<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="transform:scaleX({{ backFlip }})"><path d="M15 5l-7 7 7 7"/></svg>
 </button>
 <span style="flex:1;min-width:0;font-size:var(--t-h3);font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ name }}</span>
 <div role="group" aria-label="{{ t.langLabel }}" style="display:flex;border:1px solid var(--rule-strong);border-radius:var(--r-sm);overflow:hidden;flex:none">
@@ -168,7 +168,9 @@ class Component extends DCLogic {
     if (el) { el.setAttribute('dir', this.L[this.state.lang].dir); el.setAttribute('lang', this.state.lang); }
   }
 
-  iso(s) { return '⁦' + s + '⁩'; }
+  /* Text runs take a first-strong isolate so Arabic stays RTL and Latin stays LTR;
+     inside Arabic, each digit group is pinned LTR so "4 800" never reads "800 4". */
+  iso(s) { if (/[\u0600-\u06FF]/.test(s)) s = s.replace(/\d[\d ,.:]*\d%?|\d%?/g, m => '\u2066' + m + '\u2069'); return '\u2068' + s + '\u2069'; }
   fmt(n, sep) { return '⁦' + String(n).replace(/\B(?=(\d{3})+(?!\d))/g, sep) + '⁩'; }
 
   /* Arabic counts nouns in five categories; French and English in two.
@@ -297,6 +299,7 @@ class Component extends DCLogic {
       rootRef: this.root,
       t,
       arrow: t.dir === 'rtl' ? 1 : -1,
+      backFlip: t.dir === 'rtl' ? -1 : 1,
 
       langs: ['ar', 'fr', 'en'].map(id => ({
         short: this.L[id].short, on: this.state.lang === id,

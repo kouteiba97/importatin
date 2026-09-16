@@ -19,18 +19,23 @@
 </style>
 </helmet>
 
-<div dir="rtl" lang="ar" class="tier-public" style="min-height:100vh;display:flex;justify-content:center">
+<div ref="{{ rootRef }}" dir="rtl" lang="ar" class="tier-public" style="min-height:100vh;display:flex;justify-content:center">
 <div style="width:100%;max-width:430px;min-height:100vh;display:flex;flex-direction:column;background:var(--paper-public);border-inline:1px solid var(--rule)">
 
 <header style="position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--surface);border-bottom:1px solid var(--rule)">
-<button type="button" aria-label="رجوع" style="width:36px;height:36px;border:0;border-radius:var(--r-sm);background:transparent;cursor:pointer;display:grid;place-items:center;color:inherit">
-<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 5l-7 7 7 7"/></svg>
+<button type="button" aria-label="{{ t.back }}" style="width:36px;height:36px;border:0;border-radius:var(--r-sm);background:transparent;cursor:pointer;display:grid;place-items:center;color:inherit">
+<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="transform:scaleX({{ backFlip }})"><path d="M15 5l-7 7 7 7"/></svg>
 </button>
 <div style="flex:1"></div>
+<div role="group" aria-label="{{ t.langLabel }}" style="display:flex;border:1px solid var(--rule-strong);border-radius:var(--r-sm);overflow:hidden;flex:none">
+<sc-for list="{{ langs }}" as="l" hint-placeholder-count="3">
+<button type="button" onClick="{{ l.pick }}" aria-pressed="{{ l.on }}" style="height:24px;padding:0 8px;border:0;background:{{ l.bg }};color:{{ l.fg }};font-size:var(--t-micro);font-weight:500;cursor:pointer">{{ l.short }}</button>
+</sc-for>
+</div>
 <button type="button" onClick="{{ save }}" aria-pressed="{{ saved }}" aria-label="{{ saveLabel }}" style="width:36px;height:36px;border:0;background:transparent;cursor:pointer;display:grid;place-items:center">
 <svg width="19" height="19" viewBox="0 0 24 24" fill="{{ heartFill }}" stroke="{{ heartStroke }}" stroke-width="1.9"><path d="M12 20s-7-4.4-7-9.3A4.2 4.2 0 0 1 12 8a4.2 4.2 0 0 1 7 2.7c0 4.9-7 9.3-7 9.3z"/></svg>
 </button>
-<button type="button" aria-label="مشاركة" style="width:36px;height:36px;border:0;background:transparent;cursor:pointer;display:grid;place-items:center;color:inherit">
+<button type="button" aria-label="{{ t.share }}" style="width:36px;height:36px;border:0;background:transparent;cursor:pointer;display:grid;place-items:center;color:inherit">
 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="6" cy="12" r="2.4"/><circle cx="17" cy="6" r="2.4"/><circle cx="17" cy="18" r="2.4"/><path d="M8.2 10.9l6.6-3.6M8.2 13.1l6.6 3.6"/></svg>
 </button>
 </header>
@@ -51,7 +56,7 @@
 <h1 style="margin:0 0 8px;font-size:var(--t-h1);font-weight:500;line-height:1.4">{{ title }}</h1>
 
 <div style="display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;margin-bottom:10px">
-<span class="num" style="font-size:26px;font-weight:600;color:var(--ink)"><bdi>{{ price }} دج</bdi></span>
+<span class="num" style="font-size:26px;font-weight:600;color:var(--ink)"><bdi>{{ price }}</bdi></span>
 <span class="num" style="font-size:var(--t-sm);color:var(--ink-3)"><bdi>{{ perUnit }}</bdi></span>
 </div>
 
@@ -69,11 +74,11 @@
 <span style="flex:1;min-width:0">
 <span style="display:flex;align-items:center;gap:5px">
 <span style="font-size:var(--t-h3);font-weight:500">{{ seller }}</span>
-<svg width="14" height="14" viewBox="0 0 24 24" style="flex:none" role="img" aria-label="متجر مُتحقَّق"><circle cx="12" cy="12" r="10" fill="var(--allowed)"/><path d="M7.4 12.4l3 3 6.2-6.6" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<svg width="14" height="14" viewBox="0 0 24 24" style="flex:none" role="img" aria-label="{{ t.verifiedShop }}"><circle cx="12" cy="12" r="10" fill="var(--allowed)"/><path d="M7.4 12.4l3 3 6.2-6.6" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
 </span>
 <span class="num" style="display:block;font-size:var(--t-xs);color:var(--ink-2);margin-top:3px"><bdi>{{ sellerMeta }}</bdi></span>
 </span>
-<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--ink-3)" stroke-width="2" style="flex:none"><path d="M15 5l-7 7 7 7"/></svg>
+<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--ink-3)" stroke-width="2" style="flex:none;transform:scaleX({{ arrow }})"><path d="M15 5l-7 7 7 7"/></svg>
 </button>
 
 <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1px;margin-top:10px;background:var(--rule);border:1px solid var(--rule);border-radius:var(--r);overflow:hidden">
@@ -100,15 +105,15 @@
 <!-- ── 6. REVIEWS ── -->
 <section style="margin:0 16px 16px">
 <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:9px">
-<h2 style="margin:0;font-size:var(--t-h2);font-weight:500">آراء المشترين</h2>
-<button type="button" style="border:0;background:transparent;font-size:var(--t-sm);color:var(--brand-ink);cursor:pointer">الكل ←</button>
+<h2 style="margin:0;font-size:var(--t-h2);font-weight:500">{{ t.reviewsTitle }}</h2>
+<button type="button" style="border:0;background:transparent;font-size:var(--t-sm);color:var(--brand-ink);cursor:pointer">{{ t.all }}</button>
 </div>
 <div class="card" style="padding:13px">
 <sc-for list="{{ reviews }}" as="r" hint-placeholder-count="2">
 <div style="padding:9px 0;border-bottom:1px solid var(--rule-faint)">
 <div style="display:flex;align-items:center;gap:8px;margin-bottom:5px">
 <span style="font-size:var(--t-sm);font-weight:500">{{ r.name }}</span>
-<span class="chip chip-verified" style="height:19px;font-size:var(--t-micro)">شراء مؤكَّد</span>
+<span class="chip chip-verified" style="height:19px;font-size:var(--t-micro)">{{ t.confirmedBuy }}</span>
 <span class="num" style="margin-inline-start:auto;font-size:var(--t-micro);color:var(--ink-3)"><bdi>{{ r.when }}</bdi></span>
 </div>
 <p style="margin:0;font-size:var(--t-sm);line-height:1.65;color:var(--ink-2)">{{ r.text }}</p>
@@ -128,7 +133,7 @@
 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--ink-3)" stroke-width="2" style="flex:none;transform:rotate({{ d.rot }}deg);transition:transform .16s ease"><path d="M6 9l6 6 6-6"/></svg>
 </button>
 <sc-if value="{{ d.open }}" hint-placeholder-val="{{ false }}">
-<div style="padding:0 0 14px 32px;padding-inline:32px 0">
+<div style="padding-block:0 14px;padding-inline:32px 0">
 <p style="margin:0 0 8px;font-size:var(--t-sm);line-height:1.7;color:var(--ink-2)">{{ d.body }}</p>
 <sc-if value="{{ d.hasCite }}" hint-placeholder-val="{{ false }}">
 <div style="display:flex;justify-content:space-between;align-items:baseline;gap:10px;padding:9px 11px;background:var(--surface-2);border:1px solid var(--rule-faint);border-radius:var(--r-sm)">
@@ -144,14 +149,14 @@
 
 <!-- ── SIMILAR ── -->
 <section style="padding:0 0 20px">
-<h2 style="margin:0 16px 10px;font-size:var(--t-h2);font-weight:500">منتجات مشابهة</h2>
+<h2 style="margin:0 16px 10px;font-size:var(--t-h2);font-weight:500">{{ t.similarTitle }}</h2>
 <div class="scrollx" style="display:flex;gap:12px;padding:0 16px 6px">
 <sc-for list="{{ similar }}" as="p" hint-placeholder-count="3">
 <article class="card" style="flex:none;width:132px;overflow:hidden;cursor:pointer">
 <span class="img img-card ph {{ p.ph }}" style="border-radius:0;display:block"></span>
 <span style="display:block;padding:9px 10px 11px">
 <span style="display:block;font-size:var(--t-xs);line-height:1.45;height:33px;overflow:hidden">{{ p.title }}</span>
-<span class="num" style="display:block;font-size:var(--t-sm);font-weight:600;color:var(--ink);margin-top:5px"><bdi>{{ p.price }} دج</bdi></span>
+<span class="num" style="display:block;font-size:var(--t-sm);font-weight:600;color:var(--ink);margin-top:5px"><bdi>{{ p.price }}</bdi></span>
 </span>
 </article>
 </sc-for>
@@ -165,8 +170,8 @@
 <button type="button" onClick="{{ save }}" aria-label="{{ saveLabel }}" style="flex:none;width:50px;height:50px;border:1px solid var(--rule-strong);border-radius:var(--r);background:var(--surface);display:grid;place-items:center;cursor:pointer">
 <svg width="20" height="20" viewBox="0 0 24 24" fill="{{ heartFill }}" stroke="{{ heartStroke }}" stroke-width="1.9"><path d="M12 20s-7-4.4-7-9.3A4.2 4.2 0 0 1 12 8a4.2 4.2 0 0 1 7 2.7c0 4.9-7 9.3-7 9.3z"/></svg>
 </button>
-<button type="button" style="flex:1;height:50px;border:0;border-radius:var(--r);background:var(--brand);color:var(--ink-on);font-size:16px;font-weight:500;cursor:pointer">راسل البائع</button>
-<button type="button" style="flex:none;padding:0 16px;height:50px;border:1px solid var(--rule-strong);border-radius:var(--r);background:var(--surface);color:inherit;font-size:var(--t-sm);cursor:pointer">اسأل عن التوفّر</button>
+<button type="button" style="flex:1;height:50px;border:0;border-radius:var(--r);background:var(--brand);color:var(--ink-on);font-size:16px;font-weight:500;cursor:pointer">{{ t.message }}</button>
+<button type="button" style="flex:none;padding:0 16px;height:50px;border:1px solid var(--rule-strong);border-radius:var(--r);background:var(--surface);color:inherit;font-size:var(--t-sm);cursor:pointer">{{ t.askStock }}</button>
 </div>
 
 </div>
@@ -174,102 +179,168 @@
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:430,&quot;height&quot;:1900}}">
 class Component extends DCLogic {
-  state = { saved: false, open: null };
-
-  fmt(n) { return '⁦' + String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + '⁩'; }
-
-  P = {
-    ph: 'ph-coat',
-    title: 'معطف نسائي شتوي — صوف مخلوط',
-    price: 7400,
-    perUnit: 'للقطعة · الكمية 1–5',
-    origin: 'المصدر: تركيا',
-    updated: 'حُدّث قبل يومين',
-    seller: 'بوتيك نادية',
-    initials: 'ب ن',
-    sellerMeta: 'قسنطينة · تاجر مُتحقَّق · سجل تجاري مُتحقَّق منه',
-    desc: 'معطف بقصّة مستقيمة، بطانة داخلية، جيبان جانبيان وأزرار معدنية. المقاسات المتوفّرة ⁦S · M · L · XL⁩. الصور للقطعة الفعلية كما وصلت.'
-  };
-
-  // Mixed-direction discipline.
-  // U+2066 LRI … U+2069 PDI isolates a left-to-right run inside Arabic text.
-  // Without it: "60%" renders as "%60", and "S · M · L · XL" reverses to
-  // "XL · L · M · S" — both caught in RTL review.
-  LRI = '⁦'; PDI = '⁩';
-  ltr(s) { return this.LRI + s + this.PDI; }
-
-  get SPECS() {
-    return [
-      { k: 'الفئة', v: 'ألبسة نسائية · معاطف' },
-      { k: 'المقاسات', v: this.ltr('S · M · L · XL') },
-      { k: 'الألوان', v: 'أسود · بيج · كحلي' },
-      { k: 'الخامة', v: 'صوف مخلوط ' + this.ltr('60%') },
-      { k: 'الكمية المتاحة', v: '14 قطعة' },
-      { k: 'التسليم', v: 'استلام من المحل · توصيل داخل الولاية' }
-    ];
+  /* Locale is browser-detected. French is the fallback — Algeria's commercial
+     lingua franca and the neutral middle between Arabic and English. One value. */
+  static FALLBACK = 'fr';
+  static detect() {
+    const tag = (typeof navigator !== 'undefined' && (navigator.language || '')).slice(0, 2).toLowerCase();
+    return ['ar', 'fr', 'en'].includes(tag) ? tag : Component.FALLBACK;
   }
 
-  TRUST = [
-    { k: 'معاملة مؤكَّدة', v: '63' },
-    { k: 'نسبة الردّ', v: '94%' },
-    { k: 'على المنصّة', v: 'سنة و4 أشهر' }
-  ];
+  state = { saved: false, open: null, lang: Component.detect() };
+  root = React.createRef();
+  componentDidMount() { this._apply(); }
+  componentDidUpdate() { this._apply(); }
+  _apply() {
+    const el = this.root.current;
+    if (el) { el.setAttribute('dir', this.L[this.state.lang].dir); el.setAttribute('lang', this.state.lang); }
+  }
 
-  REVIEWS = [
-    { name: 'سمية ل.', when: 'قبل 9 أيام', text: 'المقاس مطابق للوصف والخامة ثقيلة كما في الصور. التسليم تمّ في المحل بلا تأخير.' },
-    { name: 'ر. بوزيد', when: 'قبل 3 أسابيع', text: 'اللون الكحلي أغمق قليلاً ممّا ظهر في الصورة، لكن الجودة ممتازة والبائعة ردّت بسرعة.' }
-  ];
+  /* Text runs take a first-strong isolate so Arabic stays RTL and Latin stays LTR;
+     inside Arabic, each digit group is pinned LTR so "4 800" never reads "800 4". */
+  iso(s) { if (/[\u0600-\u06FF]/.test(s)) s = s.replace(/\d[\d ,.:]*\d%?|\d%?/g, m => '\u2066' + m + '\u2069'); return '\u2068' + s + '\u2069'; }
+  fmt(n, sep) { return '⁦' + String(n).replace(/\B(?=(\d{3})+(?!\d))/g, sep === undefined ? ' ' : sep) + '⁩'; }
+  langsFor(cur) {
+    return ['ar', 'fr', 'en'].map(id => ({
+      short: this.L[id].short, on: cur === id,
+      bg: cur === id ? 'var(--ink)' : 'var(--surface)',
+      fg: cur === id ? 'var(--ink-on)' : 'var(--ink-2)',
+      pick: () => this.setState({ lang: id })
+    }));
+  }
 
-  DISCS = [
-    { id: 'ret', glyph: '↩', label: 'الإرجاع والاستبدال', hint: 'سياسة البائع', kind: 'n',
-      body: 'الاستبدال خلال 48 ساعة عند وجود عيب أو اختلاف في المقاس، من المحل مباشرةً. السياسة يحدّدها البائع لا مَعْبَر، والاتفاق يتمّ بينك وبينه.' },
-    { id: 'pay', glyph: '⇄', label: 'الدفع', hint: 'بينك وبين البائع', kind: 'n',
-      body: 'الدفع يتمّ مباشرةً مع البائع بالطريقة التي تتّفقان عليها. مَعْبَر لا تستلم المبلغ ولا تحتفظ به ولا تضمنه ولا تردّه، وليست طرفاً في البيع.' },
-    { id: 'reg', glyph: '§', label: 'معلومات تنظيمية', hint: 'مسموح', kind: 'a',
-      body: 'هذا الصنف ضمن المسموح به في نشاط الاستيراد المصغّر. السلعة دخلت عبر مستورد مصغّر حائز على البطاقة والرخصة العامة، وتُباع لك من تاجر مقيّد في السجل التجاري.',
-      cite: 'المرسوم 25-170 · المادة 9', citeLink: 'الجريدة الرسمية' }
-  ];
+  L = {
+    ar: {
+      dir: 'rtl', short: 'ع', langLabel: 'اللغة', sep: ' ', cur: 'دج',
+      back: 'رجوع', share: 'مشاركة', verifiedShop: 'متجر مُتحقَّق',
+      saveOn: 'إزالة من المحفوظات', saveOff: 'احفظ المنتج',
+      reviewsTitle: 'آراء المشترين', all: 'الكل ←', confirmedBuy: 'شراء مؤكَّد',
+      similarTitle: 'منتجات مشابهة', message: 'راسل البائع', askStock: 'اسأل عن التوفّر',
+      title: 'معطف نسائي شتوي — صوف مخلوط',
+      perUnit: 'للقطعة · الكمية 1–5', origin: 'المصدر: تركيا', updated: 'حُدّث قبل يومين',
+      avail: 'متوفر الآن · 14 قطعة',
+      seller: 'بوتيك نادية', initials: 'ب ن',
+      sellerMeta: 'قسنطينة · تاجر مُتحقَّق · سجل تجاري مُتحقَّق منه',
+      desc: 'معطف بقصّة مستقيمة، بطانة داخلية، جيبان جانبيان وأزرار معدنية. المقاسات المتوفّرة ⁦S · M · L · XL⁩. الصور للقطعة الفعلية كما وصلت.',
+      specs: [['الفئة', 'ألبسة نسائية · معاطف'], ['المقاسات', 'S · M · L · XL'], ['الألوان', 'أسود · بيج · كحلي'], ['الخامة', 'صوف مخلوط ⁦60%⁩'], ['الكمية المتاحة', '14 قطعة'], ['التسليم', 'استلام من المحل · توصيل داخل الولاية']],
+      trust: [['معاملة مؤكَّدة', '63'], ['نسبة الردّ', '94%'], ['على المنصّة', 'سنة و4 أشهر']],
+      reviews: [
+        { name: 'سمية ل.', when: 'قبل 9 أيام', text: 'المقاس مطابق للوصف والخامة ثقيلة كما في الصور. التسليم تمّ في المحل بلا تأخير.' },
+        { name: 'ر. بوزيد', when: 'قبل 3 أسابيع', text: 'اللون الكحلي أغمق قليلاً ممّا ظهر في الصورة، لكن الجودة ممتازة والبائعة ردّت بسرعة.' }
+      ],
+      discs: [
+        { label: 'الإرجاع والاستبدال', hint: 'سياسة البائع',
+          body: 'الاستبدال خلال 48 ساعة عند وجود عيب أو اختلاف في المقاس، من المحل مباشرةً. السياسة يحدّدها البائع لا مَعْبَر، والاتفاق يتمّ بينك وبينه.' },
+        { label: 'الدفع', hint: 'بينك وبين البائع',
+          body: 'الدفع يتمّ مباشرةً مع البائع بالطريقة التي تتّفقان عليها. مَعْبَر لا تستلم المبلغ ولا تحتفظ به ولا تضمنه ولا تردّه، وليست طرفاً في البيع.' },
+        { label: 'معلومات تنظيمية', hint: 'مسموح',
+          body: 'هذا الصنف ضمن المسموح به في نشاط الاستيراد المصغّر. السلعة دخلت عبر مستورد مصغّر حائز على البطاقة والرخصة العامة، وتُباع لك من تاجر مقيّد في السجل التجاري.',
+          cite: 'المرسوم 25-170 · المادة 9', citeLink: 'الجريدة الرسمية' }
+      ],
+      similar: ['معطف نسائي — جلد صناعي', 'حقيبة كتف مبطّنة', 'عطر نسائي 50 مل']
+    },
 
-  SIMILAR = [
-    { ph: 'ph-coat',    title: 'معطف نسائي — جلد صناعي', price: 8900 },
-    { ph: 'ph-bag',     title: 'حقيبة كتف مبطّنة',        price: 4600 },
-    { ph: 'ph-perfume', title: 'عطر نسائي 50 مل',        price: 2900 }
-  ];
+    fr: {
+      dir: 'ltr', short: 'FR', langLabel: 'Langue', sep: ' ', cur: 'DA',
+      back: 'Retour', share: 'Partager', verifiedShop: 'Boutique vérifiée',
+      saveOn: 'Retirer des enregistrements', saveOff: 'Enregistrer le produit',
+      reviewsTitle: 'Avis des acheteurs', all: 'Tout →', confirmedBuy: 'Achat confirmé',
+      similarTitle: 'Produits similaires', message: 'Écrire au vendeur', askStock: 'Demander la disponibilité',
+      title: 'Manteau femme hiver — laine mélangée',
+      perUnit: 'la pièce · quantité 1–5', origin: 'Origine : Turquie', updated: 'Mis à jour il y a 2 jours',
+      avail: 'Disponible · 14 pièces',
+      seller: 'Boutique Nadia', initials: 'BN',
+      sellerMeta: 'Constantine · commerçante vérifiée · registre de commerce vérifié',
+      desc: 'Coupe droite, doublure intérieure, deux poches latérales et boutons métalliques. Tailles disponibles S · M · L · XL. Les photos montrent la pièce réelle, telle qu’arrivée.',
+      specs: [['Catégorie', 'Vêtements femme · manteaux'], ['Tailles', 'S · M · L · XL'], ['Coloris', 'Noir · beige · bleu marine'], ['Matière', 'Laine mélangée 60 %'], ['Quantité disponible', '14 pièces'], ['Remise', 'Retrait en boutique · livraison dans la wilaya']],
+      trust: [['Transactions confirmées', '63'], ['Taux de réponse', '94 %'], ['Sur la plateforme', '1 an 4 mois']],
+      reviews: [
+        { name: 'Soumia L.', when: 'Il y a 9 jours', text: 'La taille correspond à la description et la matière est épaisse, comme sur les photos. Retrait en boutique sans attente.' },
+        { name: 'R. Bouzid', when: 'Il y a 3 semaines', text: 'Le bleu marine est un peu plus foncé que sur la photo, mais la qualité est excellente et la vendeuse a répondu vite.' }
+      ],
+      discs: [
+        { label: 'Retours et échanges', hint: 'Politique du vendeur',
+          body: 'Échange sous 48 heures en cas de défaut ou d’erreur de taille, directement en boutique. La politique est fixée par le vendeur et non par Maabar ; l’accord se fait entre vous.' },
+        { label: 'Paiement', hint: 'Entre vous et le vendeur',
+          body: 'Le paiement se fait directement avec le vendeur, selon le moyen convenu. Maabar ne reçoit pas le montant, ne le conserve pas, ne le garantit pas et ne le rembourse pas ; elle n’est pas partie à la vente.' },
+        { label: 'Informations réglementaires', hint: 'Autorisé',
+          body: 'Cet article fait partie des marchandises autorisées dans l’importation de faible valeur. Il est entré par un micro-importateur titulaire de la carte et de l’autorisation générale, et vous est vendu par un commerçant inscrit au registre de commerce.',
+          cite: 'Décret 25-170 · article 9', citeLink: 'Journal officiel' }
+      ],
+      similar: ['Manteau femme — cuir synthétique', 'Sac bandoulière matelassé', 'Parfum femme 50 ml']
+    },
+
+    en: {
+      dir: 'ltr', short: 'EN', langLabel: 'Language', sep: ',', cur: 'DA',
+      back: 'Back', share: 'Share', verifiedShop: 'Verified shop',
+      saveOn: 'Remove from saved', saveOff: 'Save this product',
+      reviewsTitle: 'Buyer reviews', all: 'All →', confirmedBuy: 'Confirmed purchase',
+      similarTitle: 'Similar products', message: 'Message the seller', askStock: 'Ask about availability',
+      title: 'Women’s winter coat — wool blend',
+      perUnit: 'per piece · quantity 1–5', origin: 'Origin: Türkiye', updated: 'Updated 2 days ago',
+      avail: 'In stock · 14 pieces',
+      seller: 'Boutique Nadia', initials: 'BN',
+      sellerMeta: 'Constantine · verified trader · commercial register verified',
+      desc: 'Straight cut, full lining, two side pockets and metal buttons. Available sizes S · M · L · XL. Photos show the actual piece as it arrived.',
+      specs: [['Category', 'Women’s clothing · coats'], ['Sizes', 'S · M · L · XL'], ['Colours', 'Black · beige · navy'], ['Material', 'Wool blend 60%'], ['Available quantity', '14 pieces'], ['Handover', 'Collect in store · delivery within the wilaya']],
+      trust: [['Confirmed transactions', '63'], ['Response rate', '94%'], ['On the platform', '1 yr 4 mo']],
+      reviews: [
+        { name: 'Soumia L.', when: '9 days ago', text: 'The size matches the description and the fabric is heavy, just as in the photos. Collected in store with no wait.' },
+        { name: 'R. Bouzid', when: '3 weeks ago', text: 'The navy is slightly darker than in the photo, but the quality is excellent and the seller replied quickly.' }
+      ],
+      discs: [
+        { label: 'Returns and exchanges', hint: 'Seller’s policy',
+          body: 'Exchange within 48 hours for a defect or a size mismatch, directly in store. The policy is set by the seller, not by Maabar, and the agreement is between you.' },
+        { label: 'Payment', hint: 'Between you and the seller',
+          body: 'Payment is made directly with the seller, by whatever method you agree. Maabar does not receive, hold, guarantee or refund the amount, and is not a party to the sale.' },
+        { label: 'Regulatory information', hint: 'Allowed',
+          body: 'This item is among the goods allowed under low-value importing. It entered through a micro-importer holding the card and the general authorisation, and is sold to you by a trader on the commercial register.',
+          cite: 'Decree 25-170 · Article 9', citeLink: 'Official Journal' }
+      ],
+      similar: ['Women’s coat — synthetic leather', 'Quilted shoulder bag', 'Women’s perfume 50 ml']
+    }
+  };
+
+  DISC_META = [{ id: 'ret', glyph: '↩', kind: 'n' }, { id: 'pay', glyph: '⇄', kind: 'n' }, { id: 'reg', glyph: '§', kind: 'a' }];
+  SIMILAR = [{ ph: 'ph-coat', price: 8900 }, { ph: 'ph-bag', price: 4600 }, { ph: 'ph-perfume', price: 2900 }];
 
   renderVals() {
-    const s = this.state;
-    const P = this.P;
+    const s = this.state, t = this.L[s.lang];
+    const money = n => this.fmt(n, t.sep) + ' ' + t.cur;
     return {
-      ...P,
-      price: this.fmt(P.price),
+      rootRef: this.root, t, langs: this.langsFor(s.lang),
+      arrow: t.dir === 'rtl' ? 1 : -1,
+      backFlip: t.dir === 'rtl' ? -1 : 1,
+
+      ph: 'ph-coat', title: t.title, desc: t.desc,
+      price: money(7400), perUnit: this.iso(t.perUnit), origin: this.iso(t.origin), updated: this.iso(t.updated),
+      seller: t.seller, initials: t.initials, sellerMeta: this.iso(t.sellerMeta),
+
       saved: s.saved,
-      saveLabel: s.saved ? 'إزالة من المحفوظات' : 'احفظ المنتج',
+      saveLabel: s.saved ? t.saveOn : t.saveOff,
       heartFill: s.saved ? 'var(--brand)' : 'none',
       heartStroke: s.saved ? 'var(--brand)' : 'var(--ink-2)',
       save: () => this.setState(st => ({ saved: !st.saved })),
 
-      availChip: 'chip-verified',
-      availLabel: 'متوفر الآن · 14 قطعة',
+      availChip: 'chip-verified', availLabel: t.avail,
 
-      thumbs: ['ph-coat', 'ph-coat', 'ph-bag', 'ph-coat'].map((ph, i) => ({
-        ph, bd: i === 0 ? 'var(--ink)' : 'var(--rule)'
-      })),
+      thumbs: ['ph-coat', 'ph-coat', 'ph-bag', 'ph-coat'].map((ph, i) => ({ ph, bd: i === 0 ? 'var(--ink)' : 'var(--rule)' })),
 
-      trustStats: this.TRUST.map(t => ({ ...t })),
-      specs: this.SPECS,
-      reviews: this.REVIEWS,
-      similar: this.SIMILAR.map(x => ({ ...x, price: this.fmt(x.price) })),
+      trustStats: t.trust.map(([k, v]) => ({ k, v: this.iso(v) })),
+      specs: t.specs.map(([k, v]) => ({ k, v: this.iso(v) })),
+      reviews: t.reviews.map(r => ({ ...r, when: this.iso(r.when) })),
+      similar: this.SIMILAR.map((x, i) => ({ ph: x.ph, title: t.similar[i], price: money(x.price) })),
 
-      discs: this.DISCS.map((d, i) => {
-        const open = s.open === d.id;
-        const a = d.kind === 'a';
+      discs: this.DISC_META.map((m, i) => {
+        const d = t.discs[i];
+        const open = s.open === m.id, a = m.kind === 'a';
         return {
-          ...d, open, rot: open ? 180 : 0,
+          ...d, glyph: m.glyph, open, rot: open ? 180 : 0,
           bt: i === 0 ? 'transparent' : 'var(--rule-faint)',
           iconBg: a ? 'var(--allowed-bg)' : 'var(--neutral-bg)',
           iconFg: a ? 'var(--allowed-ink)' : 'var(--ink-2)',
-          hasCite: !!d.cite,
-          toggle: () => this.setState(st => ({ open: st.open === d.id ? null : d.id }))
+          hasCite: !!d.cite, cite: d.cite || '', citeLink: d.citeLink || '',
+          toggle: () => this.setState(st => ({ open: st.open === m.id ? null : m.id }))
         };
       })
     };
