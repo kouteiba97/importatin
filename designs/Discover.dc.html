@@ -20,22 +20,27 @@
 </style>
 </helmet>
 
-<div dir="rtl" lang="ar" class="tier-op" style="min-height:100vh;display:flex;justify-content:center">
+<div ref="{{ rootRef }}" dir="rtl" lang="ar" class="tier-op" style="min-height:100vh;display:flex;justify-content:center">
 <div style="width:100%;max-width:430px;min-height:100vh;display:flex;flex-direction:column;background:var(--paper);border-inline:1px solid var(--rule)">
 
 <header style="position:sticky;top:0;z-index:20;background:var(--surface);border-bottom:1px solid var(--rule)">
 <div style="display:flex;align-items:center;gap:10px;padding:11px 16px 9px">
-<span style="font-weight:600;font-size:18px">اكتشف</span>
+<span style="font-weight:600;font-size:18px">{{ t.title }}</span>
 <div style="flex:1"></div>
 <span class="num" style="font-size:var(--t-xs);color:var(--ink-3)"><bdi>{{ scopeNote }}</bdi></span>
+<div role="group" aria-label="{{ t.langLabel }}" style="display:flex;border:1px solid var(--rule-strong);border-radius:var(--r-sm);overflow:hidden;flex:none">
+<sc-for list="{{ langs }}" as="l" hint-placeholder-count="3">
+<button type="button" onClick="{{ l.pick }}" aria-pressed="{{ l.on }}" style="height:24px;padding:0 8px;border:0;background:{{ l.bg }};color:{{ l.fg }};font-size:var(--t-micro);font-weight:500;cursor:pointer">{{ l.short }}</button>
+</sc-for>
+</div>
 </div>
 <div style="padding:0 16px 10px">
 <div style="display:flex;align-items:center;gap:9px;height:40px;padding:0 12px;border:1px solid var(--rule-strong);border-radius:var(--r);background:var(--surface-2)">
 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--ink-3)" stroke-width="2" style="flex:none"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
-<input value="{{ q }}" onChange="{{ onQ }}" placeholder="{{ placeholder }}" aria-label="بحث" style="flex:1;min-width:0;border:0;background:transparent;font-size:var(--t-body);color:inherit;outline:none">
+<input value="{{ q }}" onChange="{{ onQ }}" placeholder="{{ placeholder }}" aria-label="{{ t.search }}" style="flex:1;min-width:0;border:0;background:transparent;font-size:var(--t-body);color:inherit;outline:none">
 </div>
 </div>
-<nav aria-label="أقسام الاكتشاف" style="display:grid;grid-template-columns:repeat(3,1fr)">
+<nav aria-label="{{ t.sections }}" style="display:grid;grid-template-columns:repeat(3,1fr)">
 <sc-for list="{{ tabs }}" as="t" hint-placeholder-count="3">
 <button type="button" onClick="{{ t.pick }}" aria-current="{{ t.on }}" style="height:42px;border:0;border-bottom:2px solid {{ t.bd }};background:transparent;color:{{ t.fg }};font-size:var(--t-body);font-weight:{{ t.fw }};cursor:pointer">{{ t.label }}</button>
 </sc-for>
@@ -63,17 +68,17 @@
 <span style="font-size:var(--t-h2);font-weight:500">{{ t.dest }}</span>
 <span class="chip {{ t.stateChip }}" style="height:20px;font-size:var(--t-micro)">{{ t.state }}</span>
 </div>
-<div class="num" style="font-size:var(--t-sm);color:var(--ink-2);margin-top:3px"><bdi>{{ t.dates }} · يصل {{ t.arrival }}</bdi></div>
+<div class="num" style="font-size:var(--t-sm);color:var(--ink-2);margin-top:3px"><bdi>{{ t.datesLine }}</bdi></div>
 </div>
 </div>
 
-<div style="font-size:var(--t-sm);color:var(--ink-2);margin-bottom:11px">يشتري عادةً: {{ t.cats }}</div>
+<div style="font-size:var(--t-sm);color:var(--ink-2);margin-bottom:11px">{{ t.catsLine }}</div>
 
 <!-- Capacity: only what the trader legitimately needs. Value headroom is
      the importer's private figure and is never exposed here. -->
 <div style="padding:11px 0;border-block:1px solid var(--rule-faint);display:flex;flex-direction:column;gap:9px">
 <div style="display:flex;justify-content:space-between;align-items:baseline">
-<span style="font-size:var(--t-xs);color:var(--ink-3)">السعة المتاحة المعلنة</span>
+<span style="font-size:var(--t-xs);color:var(--ink-3)">{{ capTitle }}</span>
 <span class="num" style="font-size:var(--t-xs);color:var(--ink-3)"><bdi>{{ t.capNote }}</bdi></span>
 </div>
 <sc-for list="{{ t.meters }}" as="m" hint-placeholder-count="2">
@@ -92,15 +97,15 @@
 <span style="flex:1;min-width:0">
 <span style="display:flex;align-items:center;gap:5px">
 <span style="font-size:var(--t-sm);font-weight:500">{{ t.who }}</span>
-<svg width="13" height="13" viewBox="0 0 24 24" style="flex:none" role="img" aria-label="مستورد مُتحقَّق"><circle cx="12" cy="12" r="10" fill="var(--allowed)"/><path d="M7.4 12.4l3 3 6.2-6.6" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<svg width="13" height="13" viewBox="0 0 24 24" style="flex:none" role="img" aria-label="{{ verifiedImporter }}"><circle cx="12" cy="12" r="10" fill="var(--allowed)"/><path d="M7.4 12.4l3 3 6.2-6.6" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
 </span>
 <span class="num" style="display:block;font-size:var(--t-micro);color:var(--ink-2);margin-top:2px"><bdi>{{ t.whoMeta }}</bdi></span>
 </span>
-<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--ink-3)" stroke-width="2" style="flex:none"><path d="M15 5l-7 7 7 7"/></svg>
+<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--ink-3)" stroke-width="2" style="flex:none;transform:scaleX({{ arrow }})"><path d="M15 5l-7 7 7 7"/></svg>
 </button>
 
 <div style="display:flex;gap:8px;margin-top:12px">
-<button type="button" style="flex:1;height:42px;border:0;border-radius:var(--r-sm);background:var(--brand);color:var(--ink-on);font-size:var(--t-sm);font-weight:500;cursor:pointer">اطلب عرضاً لهذه الرحلة</button>
+<button type="button" style="flex:1;height:42px;border:0;border-radius:var(--r-sm);background:var(--brand);color:var(--ink-on);font-size:var(--t-sm);font-weight:500;cursor:pointer">{{ requestOffer }}</button>
 <button type="button" onClick="{{ t.follow }}" aria-pressed="{{ t.followed }}" aria-label="{{ t.followLabel }}" style="flex:none;width:42px;height:42px;border:1px solid var(--rule-strong);border-radius:var(--r-sm);background:var(--surface);display:grid;place-items:center;cursor:pointer">
 <svg width="17" height="17" viewBox="0 0 24 24" fill="{{ t.bellFill }}" stroke="{{ t.bellStroke }}" stroke-width="1.8"><path d="M6 9a6 6 0 0 1 12 0c0 5 2 6 2 6H4s2-1 2-6z"/><path d="M10.5 19.5a2 2 0 0 0 3 0" fill="none"/></svg>
 </button>
@@ -121,7 +126,7 @@
 <div style="flex:1;min-width:0">
 <div style="display:flex;align-items:center;gap:6px">
 <span style="font-size:var(--t-h3);font-weight:500">{{ im.name }}</span>
-<svg width="14" height="14" viewBox="0 0 24 24" style="flex:none" role="img" aria-label="مُتحقَّق"><circle cx="12" cy="12" r="10" fill="var(--allowed)"/><path d="M7.4 12.4l3 3 6.2-6.6" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<svg width="14" height="14" viewBox="0 0 24 24" style="flex:none" role="img" aria-label="{{ verified }}"><circle cx="12" cy="12" r="10" fill="var(--allowed)"/><path d="M7.4 12.4l3 3 6.2-6.6" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
 </div>
 <div style="font-size:var(--t-xs);color:var(--ink-2);margin-top:3px">{{ im.level }}</div>
 <div style="display:flex;gap:5px;flex-wrap:wrap;margin-top:7px">
@@ -144,29 +149,26 @@
 
 <div style="display:flex;align-items:center;gap:7px;margin-top:11px;padding-top:11px;border-top:1px solid var(--rule-faint)">
 <span class="num" style="flex:1;font-size:var(--t-xs);color:var(--ink-2)"><bdi>{{ im.next }}</bdi></span>
-<button type="button" style="height:36px;padding:0 14px;border:1px solid var(--rule-strong);border-radius:var(--r-sm);background:var(--surface);color:inherit;font-size:var(--t-sm);cursor:pointer">الملف</button>
-<button type="button" style="height:36px;padding:0 14px;border:0;border-radius:var(--r-sm);background:var(--ink);color:var(--ink-on);font-size:var(--t-sm);cursor:pointer">راسل</button>
+<button type="button" style="height:36px;padding:0 14px;border:1px solid var(--rule-strong);border-radius:var(--r-sm);background:var(--surface);color:inherit;font-size:var(--t-sm);cursor:pointer">{{ profile }}</button>
+<button type="button" style="height:36px;padding:0 14px;border:0;border-radius:var(--r-sm);background:var(--ink);color:var(--ink-on);font-size:var(--t-sm);cursor:pointer">{{ message }}</button>
 </div>
 </article>
 </sc-for>
 
-<div style="padding:13px 14px;border:1px solid var(--rule);border-radius:var(--r);background:var(--surface-2);display:flex;gap:10px">
-<span aria-hidden="true" style="flex:none;color:var(--ink-3)">i</span>
-</div>
 </div>
 </sc-if>
 
 <!-- ══ PRODUCTS → hands off to Marketplace ══ -->
 <sc-if value="{{ isProducts }}" hint-placeholder-val="{{ false }}">
 <div style="padding:34px 16px;text-align:center">
-<p style="margin:0 0 14px;font-size:var(--t-body);color:var(--ink-2);line-height:1.7">تصفّح المنتجات المعروضة من التجّار المُتحقَّقين في السوق.</p>
-<button type="button" style="height:46px;padding:0 22px;border:0;border-radius:var(--r);background:var(--brand);color:var(--ink-on);font-size:var(--t-body);font-weight:500;cursor:pointer">افتح السوق</button>
+<p style="margin:0 0 14px;font-size:var(--t-body);color:var(--ink-2);line-height:1.7">{{ productsLede }}</p>
+<button type="button" style="height:46px;padding:0 22px;border:0;border-radius:var(--r);background:var(--brand);color:var(--ink-on);font-size:var(--t-body);font-weight:500;cursor:pointer">{{ openMarket }}</button>
 </div>
 </sc-if>
 
 </main>
 
-<nav aria-label="التنقّل" style="position:fixed;inset-block-end:0;inset-inline:0;margin:0 auto;max-width:430px;display:grid;grid-template-columns:repeat(6,1fr);background:var(--surface);border-top:1px solid var(--rule);padding-block:6px 8px">
+<nav aria-label="{{ navLabel }}" style="position:fixed;inset-block-end:0;inset-inline:0;margin:0 auto;max-width:430px;display:grid;grid-template-columns:repeat(6,1fr);background:var(--surface);border-top:1px solid var(--rule);padding-block:6px 8px">
 <sc-for list="{{ nav }}" as="n" hint-placeholder-count="6">
 <button type="button" aria-current="{{ n.on }}" style="display:flex;flex-direction:column;align-items:center;gap:3px;border:0;background:transparent;padding:4px 0;cursor:pointer;color:{{ n.fg }}">
 <span aria-hidden="true" style="width:20px;height:20px;display:grid;place-items:center">{{ n.icon }}</span>
@@ -180,22 +182,148 @@
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:430,&quot;height&quot;:1420}}">
 class Component extends DCLogic {
-  state = { tab: 'trips', chip: 'all', followed: { t2: true } };
+  /* Locale is browser-detected. French is the fallback — Algeria's commercial
+     lingua franca and the neutral middle between Arabic and English. One value. */
+  static FALLBACK = 'fr';
+  static detect() {
+    const tag = (typeof navigator !== 'undefined' && (navigator.language || '')).slice(0, 2).toLowerCase();
+    return ['ar', 'fr', 'en'].includes(tag) ? tag : Component.FALLBACK;
+  }
 
-  LRI = '⁦'; PDI = '⁩';
-  ltr(s) { return this.LRI + s + this.PDI; }
-  fmt(n) { return '⁦' + String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + '⁩'; }
+  state = { tab: 'trips', chip: 'all', followed: { t2: true }, lang: Component.detect() };
+  root = React.createRef();
+  componentDidMount() { this._apply(); }
+  componentDidUpdate() { this._apply(); }
+  _apply() {
+    const el = this.root.current;
+    if (el) { el.setAttribute('dir', this.L[this.state.lang].dir); el.setAttribute('lang', this.state.lang); }
+  }
 
-  TABS = [
-    { id: 'trips', label: 'رحلات', ph: 'ابحث بأي وجهة في العالم أو بالفئة' },
-    { id: 'importers', label: 'مستوردون', ph: 'ابحث بالاسم أو التخصّص' },
-    { id: 'products', label: 'منتجات', ph: 'ابحث في السوق' }
-  ];
+  /* Text runs take a first-strong isolate so Arabic stays RTL and Latin stays LTR;
+     inside Arabic, each digit group is pinned LTR so "4 800" never reads "800 4". */
+  iso(s) { if (/[\u0600-\u06FF]/.test(s)) s = s.replace(/\d[\d ,.:]*\d%?|\d%?/g, m => '\u2066' + m + '\u2069'); return '\u2068' + s + '\u2069'; }
+  fmt(n, sep) { return '⁦' + String(n).replace(/\B(?=(\d{3})+(?!\d))/g, sep === undefined ? ' ' : sep) + '⁩'; }
+  /* Arabic counts nouns in four forms (one / two / 3–10 / 11+); French and English in two.
+     f = { one, two, few, many } for Arabic, { one, many } otherwise. */
+  count(n, t, f) {
+    if (t.dir === 'rtl') {
+      const m = n % 100;
+      if (n === 1) return f.one;
+      if (n === 2) return f.two;
+      if (m >= 3 && m <= 10) return this.fmt(n, t.sep) + ' ' + f.few;
+      return this.fmt(n, t.sep) + ' ' + f.many;
+    }
+    return this.fmt(n, t.sep) + ' ' + (n === 1 ? f.one : f.many);
+  }
+  langsFor(cur) {
+    return ['ar', 'fr', 'en'].map(id => ({
+      short: this.L[id].short, on: cur === id,
+      bg: cur === id ? 'var(--ink)' : 'var(--surface)',
+      fg: cur === id ? 'var(--ink-on)' : 'var(--ink-2)',
+      pick: () => this.setState({ lang: id })
+    }));
+  }
 
-  CHIPS = {
-    trips: [['all','كل الوجهات'],['soon','يغادر هذا الأسبوع'],['cap','سعة واسعة'],['tr','تركيا'],['ae','الإمارات'],['cn','الصين'],['eu','أوروبا'],['asia','آسيا'],['other','وجهات أخرى']],
-    importers: [['all','الكل'],['clothes','ألبسة'],['cosm','تجميل'],['shoes','أحذية'],['new','مُتحقَّق حديثاً']],
-    products: [['all','الكل']]
+  L = {
+    ar: {
+      dir: 'rtl', short: 'ع', langLabel: 'اللغة', sep: ' ',
+      title: 'اكتشف', search: 'بحث', sections: 'أقسام الاكتشاف', navLabel: 'التنقّل',
+      tabs: [['رحلات', 'ابحث بأي وجهة في العالم أو بالفئة'], ['مستوردون', 'ابحث بالاسم أو التخصّص'], ['منتجات', 'ابحث في السوق']],
+      chips: {
+        trips: ['كل الوجهات', 'يغادر هذا الأسبوع', 'سعة واسعة', 'تركيا', 'الإمارات', 'الصين', 'أوروبا', 'آسيا', 'وجهات أخرى'],
+        importers: ['الكل', 'ألبسة', 'تجميل', 'أحذية', 'مُتحقَّق حديثاً'],
+        products: ['الكل']
+      },
+      scopeTrips: '9 رحلات منشورة', scopeImporters: '24 مستورداً مُتحقَّقاً',
+      arrives: 'يصل', buysUsually: 'يشتري عادةً:',
+      capTitle: 'السعة المتاحة المعلنة', capNote: 'يحدّدها المستورد',
+      weight: 'الوزن', volume: 'الحجم', kg: 'كغ', m3: 'م³',
+      verifiedImporter: 'مستورد مُتحقَّق', verified: 'مُتحقَّق',
+      requestOffer: 'اطلب عرضاً لهذه الرحلة', followOn: 'إلغاء التنبيه', followOff: 'نبّهني عند فتح السعة',
+      profile: 'الملف', message: 'راسل',
+      productsLede: 'تصفّح المنتجات المعروضة من التجّار المُتحقَّقين في السوق.', openMarket: 'افتح السوق',
+      trips: [
+        { dest: 'إسطنبول', dates: '12–16 أكتوبر', arrival: '18 أكتوبر', state: 'مفتوحة للطلب', cats: 'ألبسة نسائية · حقائب · إكسسوار', who: 'كريمة ح.', initials: 'ك ح', whoMeta: '84 معاملة مؤكَّدة · ترد خلال ساعة' },
+        { dest: 'دبي', dates: '19–23 أكتوبر', arrival: '25 أكتوبر', state: 'سعة محدودة', cats: 'عطور · ساعات · إلكترونيات صغيرة', who: 'سفيان ب.', initials: 'س ب', whoMeta: '12 معاملة مؤكَّدة · مستورد جديد' },
+        { dest: 'قوانغتشو', dates: '2–7 نوفمبر', arrival: '9 نوفمبر', state: 'مفتوحة للطلب', cats: 'إلكترونيات صغيرة · منسوجات منزلية', who: 'ن. مرابط', initials: 'ن م', whoMeta: '46 معاملة مؤكَّدة · ترد خلال 3 ساعات' }
+      ],
+      statLabels: ['معاملة مؤكَّدة', 'نسبة الإتمام', 'متوسط الردّ', 'على المنصّة'],
+      importers: [
+        { name: 'كريمة ح.', initials: 'ك ح', level: 'مستوردة مُتحقَّقة · وثائق سارية حتى جوان 2027', cats: ['ألبسة نسائية', 'حقائب', 'إكسسوار'], stats: ['84', '97%', 'ساعة', '3 سنوات'], next: 'رحلتها القادمة: إسطنبول · 12 أكتوبر' },
+        { name: 'ن. مرابط', initials: 'ن م', level: 'مستورد مُتحقَّق · وثائق سارية حتى مارس 2027', cats: ['منسوجات منزلية', 'مفروشات'], stats: ['46', '92%', '3 ساعات', 'سنتان'], next: 'رحلته القادمة: غازي عنتاب · 2 نوفمبر' },
+        { name: 'سفيان ب.', initials: 'س ب', level: 'مستورد مُتحقَّق · سجل قصير', cats: ['عطور', 'ساعات'], stats: ['12', '100%', 'ساعتان', '5 أشهر'], next: 'رحلته القادمة: دبي · 19 أكتوبر' }
+      ],
+      nav: ['الرئيسية', 'اكتشف', 'طلباتي', 'التزاماتي', 'الرسائل', 'حسابي']
+    },
+
+    fr: {
+      dir: 'ltr', short: 'FR', langLabel: 'Langue', sep: ' ',
+      title: 'Découvrir', search: 'Recherche', sections: 'Rubriques', navLabel: 'Navigation',
+      tabs: [['Voyages', 'Chercher par destination dans le monde ou par catégorie'], ['Importateurs', 'Chercher par nom ou spécialité'], ['Produits', 'Chercher sur la place']],
+      chips: {
+        trips: ['Toutes destinations', 'Départ cette semaine', 'Grande capacité', 'Turquie', 'Émirats', 'Chine', 'Europe', 'Asie', 'Autres destinations'],
+        importers: ['Tout', 'Vêtements', 'Beauté', 'Chaussures', 'Vérifiés récemment'],
+        products: ['Tout']
+      },
+      scopeTrips: '9 voyages publiés', scopeImporters: '24 importateurs vérifiés',
+      arrives: 'arrivée', buysUsually: 'Achète habituellement :',
+      capTitle: 'Capacité disponible annoncée', capNote: 'Fixée par l’importateur',
+      weight: 'Poids', volume: 'Volume', kg: 'kg', m3: 'm³',
+      verifiedImporter: 'Importateur vérifié', verified: 'Vérifié',
+      requestOffer: 'Demander une offre pour ce voyage', followOn: 'Désactiver l’alerte', followOff: 'M’alerter quand la capacité s’ouvre',
+      profile: 'Profil', message: 'Écrire',
+      productsLede: 'Parcourez les produits proposés par les commerçants vérifiés sur la place.', openMarket: 'Ouvrir la place',
+      trips: [
+        { dest: 'Istanbul', dates: '12–16 octobre', arrival: '18 octobre', state: 'Ouvert aux demandes', cats: 'Vêtements femme · sacs · accessoires', who: 'Karima H.', initials: 'KH', whoMeta: '84 transactions confirmées · répond en 1 h' },
+        { dest: 'Dubaï', dates: '19–23 octobre', arrival: '25 octobre', state: 'Capacité limitée', cats: 'Parfums · montres · petite électronique', who: 'Sofiane B.', initials: 'SB', whoMeta: '12 transactions confirmées · nouvel importateur' },
+        { dest: 'Canton', dates: '2–7 novembre', arrival: '9 novembre', state: 'Ouvert aux demandes', cats: 'Petite électronique · linge de maison', who: 'N. Merabet', initials: 'NM', whoMeta: '46 transactions confirmées · répond en 3 h' }
+      ],
+      statLabels: ['Transactions confirmées', 'Taux d’achèvement', 'Délai de réponse', 'Sur la plateforme'],
+      importers: [
+        { name: 'Karima H.', initials: 'KH', level: 'Importatrice vérifiée · documents valides jusqu’en juin 2027', cats: ['Vêtements femme', 'Sacs', 'Accessoires'], stats: ['84', '97 %', '1 h', '3 ans'], next: 'Prochain voyage : Istanbul · 12 octobre' },
+        { name: 'N. Merabet', initials: 'NM', level: 'Importateur vérifié · documents valides jusqu’en mars 2027', cats: ['Linge de maison', 'Ameublement'], stats: ['46', '92 %', '3 h', '2 ans'], next: 'Prochain voyage : Gaziantep · 2 novembre' },
+        { name: 'Sofiane B.', initials: 'SB', level: 'Importateur vérifié · historique court', cats: ['Parfums', 'Montres'], stats: ['12', '100 %', '2 h', '5 mois'], next: 'Prochain voyage : Dubaï · 19 octobre' }
+      ],
+      nav: ['Accueil', 'Découvrir', 'Demandes', 'Engagements', 'Messages', 'Compte']
+    },
+
+    en: {
+      dir: 'ltr', short: 'EN', langLabel: 'Language', sep: ',',
+      title: 'Discover', search: 'Search', sections: 'Sections', navLabel: 'Navigation',
+      tabs: [['Trips', 'Search any destination in the world, or a category'], ['Importers', 'Search by name or speciality'], ['Products', 'Search the marketplace']],
+      chips: {
+        trips: ['All destinations', 'Leaving this week', 'Plenty of capacity', 'Türkiye', 'UAE', 'China', 'Europe', 'Asia', 'Other destinations'],
+        importers: ['All', 'Clothing', 'Beauty', 'Shoes', 'Recently verified'],
+        products: ['All']
+      },
+      scopeTrips: '9 published trips', scopeImporters: '24 verified importers',
+      arrives: 'arrives', buysUsually: 'Usually buys:',
+      capTitle: 'Declared available capacity', capNote: 'Set by the importer',
+      weight: 'Weight', volume: 'Volume', kg: 'kg', m3: 'm³',
+      verifiedImporter: 'Verified importer', verified: 'Verified',
+      requestOffer: 'Request an offer for this trip', followOn: 'Turn off alert', followOff: 'Alert me when capacity opens',
+      profile: 'Profile', message: 'Message',
+      productsLede: 'Browse products listed by verified traders on the marketplace.', openMarket: 'Open the marketplace',
+      trips: [
+        { dest: 'Istanbul', dates: '12–16 October', arrival: '18 October', state: 'Open to requests', cats: 'Women’s clothing · bags · accessories', who: 'Karima H.', initials: 'KH', whoMeta: '84 confirmed transactions · replies within 1 h' },
+        { dest: 'Dubai', dates: '19–23 October', arrival: '25 October', state: 'Limited capacity', cats: 'Perfumes · watches · small electronics', who: 'Sofiane B.', initials: 'SB', whoMeta: '12 confirmed transactions · new importer' },
+        { dest: 'Guangzhou', dates: '2–7 November', arrival: '9 November', state: 'Open to requests', cats: 'Small electronics · home textiles', who: 'N. Merabet', initials: 'NM', whoMeta: '46 confirmed transactions · replies within 3 h' }
+      ],
+      statLabels: ['Confirmed transactions', 'Completion rate', 'Response time', 'On the platform'],
+      importers: [
+        { name: 'Karima H.', initials: 'KH', level: 'Verified importer · documents valid until June 2027', cats: ['Women’s clothing', 'Bags', 'Accessories'], stats: ['84', '97%', '1 h', '3 yrs'], next: 'Next trip: Istanbul · 12 October' },
+        { name: 'N. Merabet', initials: 'NM', level: 'Verified importer · documents valid until March 2027', cats: ['Home textiles', 'Furnishings'], stats: ['46', '92%', '3 h', '2 yrs'], next: 'Next trip: Gaziantep · 2 November' },
+        { name: 'Sofiane B.', initials: 'SB', level: 'Verified importer · short record', cats: ['Perfumes', 'Watches'], stats: ['12', '100%', '2 h', '5 mo'], next: 'Next trip: Dubai · 19 October' }
+      ],
+      nav: ['Home', 'Discover', 'Requests', 'Commitments', 'Messages', 'Account']
+    }
+  };
+
+  TAB_IDS = ['trips', 'importers', 'products'];
+  CHIP_IDS = {
+    trips: ['all', 'soon', 'cap', 'tr', 'ae', 'cn', 'eu', 'asia', 'other'],
+    importers: ['all', 'clothes', 'cosm', 'shoes', 'new'],
+    products: ['all']
   };
 
   TONE = [
@@ -207,33 +335,16 @@ class Component extends DCLogic {
   // Weight and volume only. The value meter is the importer's legal cap
   // against their own money — never shown to a counterparty.
   TRIPS = [
-    { id: 't1', cc: 'TR', dest: 'إسطنبول', dates: '12–16 أكتوبر', arrival: '18 أكتوبر',
-      state: 'مفتوحة للطلب', stateChip: 'chip-verified', cats: 'ألبسة نسائية · حقائب · إكسسوار',
-      capNote: 'يحدّدها المستورد', mw: [38, 46], mv: [0.9, 1.2],
-      who: 'كريمة ح.', initials: 'ك ح', whoMeta: '84 معاملة مؤكَّدة · ترد خلال ساعة', tone: 2 },
-    { id: 't2', cc: 'AE', dest: 'دبي', dates: '19–23 أكتوبر', arrival: '25 أكتوبر',
-      state: 'سعة محدودة', stateChip: 'chip-conditional', cats: 'عطور · ساعات · إلكترونيات صغيرة',
-      capNote: 'يحدّدها المستورد', mw: [26, 30], mv: [0.55, 0.6],
-      who: 'سفيان ب.', initials: 'س ب', whoMeta: '12 معاملة مؤكَّدة · مستورد جديد', tone: 0 },
-    { id: 't3', cc: 'CN', dest: 'قوانغتشو', dates: '2–7 نوفمبر', arrival: '9 نوفمبر',
-      state: 'مفتوحة للطلب', stateChip: 'chip-verified', cats: 'إلكترونيات صغيرة · منسوجات منزلية',
-      capNote: 'يحدّدها المستورد', mw: [12, 52], mv: [0.3, 1.4],
-      who: 'ن. مرابط', initials: 'ن م', whoMeta: '46 معاملة مؤكَّدة · ترد خلال 3 ساعات', tone: 1 }
+    { id: 't1', cc: 'TR', stateChip: 'chip-verified', mw: [38, 46], mv: [0.9, 1.2], tone: 2 },
+    { id: 't2', cc: 'AE', stateChip: 'chip-conditional', mw: [26, 30], mv: [0.55, 0.6], tone: 0 },
+    { id: 't3', cc: 'CN', stateChip: 'chip-verified', mw: [12, 52], mv: [0.3, 1.4], tone: 1 }
   ];
 
-  IMPORTERS = [
-    { name: 'كريمة ح.', initials: 'ك ح', level: 'مستوردة مُتحقَّقة · وثائق سارية حتى جوان 2027',
-      cats: ['ألبسة نسائية', 'حقائب', 'إكسسوار'], tone: 2,
-      stats: [['84','معاملة مؤكَّدة',''],['97%','نسبة الإتمام','var(--allowed-ink)'],['ساعة','متوسط الردّ',''],['3 سنوات','على المنصّة','']],
-      next: 'رحلتها القادمة: إسطنبول · 12 أكتوبر' },
-    { name: 'ن. مرابط', initials: 'ن م', level: 'مستورد مُتحقَّق · وثائق سارية حتى مارس 2027',
-      cats: ['منسوجات منزلية', 'مفروشات'], tone: 1,
-      stats: [['46','معاملة مؤكَّدة',''],['92%','نسبة الإتمام',''],['3 ساعات','متوسط الردّ',''],['سنتان','على المنصّة','']],
-      next: 'رحلته القادمة: غازي عنتاب · 2 نوفمبر' },
-    { name: 'سفيان ب.', initials: 'س ب', level: 'مستورد مُتحقَّق · سجل قصير',
-      cats: ['عطور', 'ساعات'], tone: 0,
-      stats: [['12','معاملة مؤكَّدة',''],['100%','نسبة الإتمام','var(--allowed-ink)'],['ساعتان','متوسط الردّ',''],['5 أشهر','على المنصّة','var(--conditional-ink)']],
-      next: 'رحلته القادمة: دبي · 19 أكتوبر' }
+  // Tint only where a figure is notably strong (completion) or thin (tenure).
+  IMPORTER_META = [
+    { tone: 2, fg: ['', 'var(--allowed-ink)', '', ''] },
+    { tone: 1, fg: ['', '', '', ''] },
+    { tone: 0, fg: ['', 'var(--allowed-ink)', '', 'var(--conditional-ink)'] }
   ];
 
   ICON = {
@@ -244,89 +355,93 @@ class Component extends DCLogic {
     msg: React.createElement('svg', { width: 19, height: 19, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 1.8 }, React.createElement('path', { d: 'M21 11.5a8.4 8.4 0 0 1-9 8.4 9 9 0 0 1-3.3-.6L3 21l1.7-5a8.2 8.2 0 0 1-.7-3.4 8.4 8.4 0 0 1 8.5-8.5 8.4 8.4 0 0 1 8.5 8.4z' })),
     me: React.createElement('svg', { width: 19, height: 19, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 1.8 }, React.createElement('circle', { cx: 12, cy: 8.5, r: 3.7 }), React.createElement('path', { d: 'M4.8 20a7.4 7.4 0 0 1 14.4 0' }))
   };
+  NAV_IDS = ['home', 'disc', 'req', 'cmt', 'msg', 'me'];
 
-  NAV = [
-    { id: 'home', label: 'الرئيسية', icon: 'home' },
-    { id: 'disc', label: 'اكتشف', icon: 'disc' },
-    { id: 'req', label: 'طلباتي', icon: 'req' },
-    { id: 'cmt', label: 'التزاماتي', icon: 'cmt' },
-    { id: 'msg', label: 'الرسائل', icon: 'msg' },
-    { id: 'me', label: 'حسابي', icon: 'me' }
-  ];
-
-  meter(label, used, cap, unit, d) {
+  meter(label, used, cap, unit, d, sep) {
     const pct = Math.min(100, Math.round(used / cap * 100));
     const fg = pct >= 85 ? 'var(--conditional)' : 'var(--allowed)';
-    const f = (x) => d ? x.toFixed(d) : this.fmt(x);
-    return { label, pct, fg, text: this.ltr(f(used) + ' / ' + f(cap) + ' ' + unit) };
+    const f = x => d ? '⁦' + x.toFixed(d) + '⁩' : this.fmt(x, sep);
+    return { label, pct, fg, text: '⁦' + f(used) + ' / ' + f(cap) + ' ' + unit + '⁩' };
   }
 
   renderVals() {
-    const s = this.state;
-    const tab = this.TABS.find(t => t.id === s.tab);
-    const chips = this.CHIPS[s.tab];
+    const s = this.state, t = this.L[s.lang];
+    const ti = this.TAB_IDS.indexOf(s.tab);
 
     return {
+      rootRef: this.root, t, langs: this.langsFor(s.lang),
+      arrow: t.dir === 'rtl' ? 1 : -1,
+
+      capTitle: t.capTitle, verifiedImporter: t.verifiedImporter, verified: t.verified,
+      requestOffer: t.requestOffer, profile: t.profile, message: t.message,
+      productsLede: t.productsLede, openMarket: t.openMarket, navLabel: t.navLabel,
+
       q: '', onQ: () => {},
-      placeholder: tab.ph,
-      scopeNote: s.tab === 'trips' ? '9 رحلات منشورة' : s.tab === 'importers' ? '24 مستورداً مُتحقَّقاً' : '',
+      placeholder: t.tabs[ti][1],
+      scopeNote: s.tab === 'trips' ? this.iso(t.scopeTrips) : s.tab === 'importers' ? this.iso(t.scopeImporters) : '',
       isTrips: s.tab === 'trips',
       isImporters: s.tab === 'importers',
       isProducts: s.tab === 'products',
 
-      tabs: this.TABS.map(t => ({
-        ...t, on: t.id === s.tab,
-        bd: t.id === s.tab ? 'var(--ink)' : 'transparent',
-        fg: t.id === s.tab ? 'var(--ink)' : 'var(--ink-3)',
-        fw: t.id === s.tab ? 600 : 400,
-        pick: () => this.setState({ tab: t.id, chip: 'all' })
+      tabs: this.TAB_IDS.map((id, i) => ({
+        label: t.tabs[i][0], on: id === s.tab,
+        bd: id === s.tab ? 'var(--ink)' : 'transparent',
+        fg: id === s.tab ? 'var(--ink)' : 'var(--ink-3)',
+        fw: id === s.tab ? 600 : 400,
+        pick: () => this.setState({ tab: id, chip: 'all' })
       })),
 
-      chips: chips.map(([id, label]) => ({
-        label, on: s.chip === id,
+      chips: this.CHIP_IDS[s.tab].map((id, i) => ({
+        label: t.chips[s.tab][i], on: s.chip === id,
         bd: s.chip === id ? 'var(--ink)' : 'var(--rule-strong)',
         bg: s.chip === id ? 'var(--ink)' : 'var(--surface)',
         fg: s.chip === id ? 'var(--ink-on)' : 'var(--ink)',
         pick: () => this.setState({ chip: id })
       })),
 
-      trips: this.TRIPS.map(t => {
-        const [ccBg, ccFg] = this.TONE[t.tone];
-        const [avBg, avFg] = this.TONE[t.tone];
-        const on = !!s.followed[t.id];
+      trips: this.TRIPS.map((m, i) => {
+        const c = t.trips[i];
+        const [bg, fg] = this.TONE[m.tone];
+        const on = !!s.followed[m.id];
         return {
-          ...t,
-          ccBg, ccFg, avBg, avFg,
-          dates: this.ltr(t.dates),
+          cc: m.cc, stateChip: m.stateChip,
+          dest: c.dest, state: c.state, who: c.who, initials: c.initials,
+          ccBg: bg, ccFg: fg, avBg: bg, avFg: fg,
+          datesLine: this.iso(c.dates + ' · ' + t.arrives + ' ' + c.arrival),
+          catsLine: t.buysUsually + ' ' + c.cats,
+          capNote: t.capNote,
+          whoMeta: this.iso(c.whoMeta),
           meters: [
-            this.meter('الوزن', t.mw[0], t.mw[1], 'كغ', 0),
-            this.meter('الحجم', t.mv[0], t.mv[1], 'م³', 2)
+            this.meter(t.weight, m.mw[0], m.mw[1], t.kg, 0, t.sep),
+            this.meter(t.volume, m.mv[0], m.mv[1], t.m3, 2, t.sep)
           ],
           followed: on,
-          followLabel: on ? 'إلغاء التنبيه' : 'نبّهني عند فتح السعة',
-          bellFill: on ? 'var(--conditional)' : 'none',
-          bellStroke: on ? 'var(--conditional)' : 'var(--ink-2)',
+          followLabel: on ? t.followOn : t.followOff,
+          bellFill: on ? 'var(--brand)' : 'none',
+          bellStroke: on ? 'var(--brand)' : 'var(--ink-2)',
           follow: () => this.setState(st => {
             const f = { ...st.followed };
-            if (f[t.id]) delete f[t.id]; else f[t.id] = true;
+            if (f[m.id]) delete f[m.id]; else f[m.id] = true;
             return { followed: f };
           })
         };
       }),
 
-      importers: this.IMPORTERS.map(im => {
-        const [avBg, avFg] = this.TONE[im.tone];
+      importers: t.importers.map((im, i) => {
+        const meta = this.IMPORTER_META[i];
+        const [avBg, avFg] = this.TONE[meta.tone];
         return {
-          ...im, avBg, avFg,
-          stats: im.stats.map(([v, k, fg]) => ({ v, k, fg: fg || 'var(--ink)' }))
+          name: im.name, initials: im.initials, level: im.level, cats: im.cats,
+          next: this.iso(im.next), avBg, avFg,
+          stats: im.stats.map((v, k) => ({ v: this.iso(v), k: t.statLabels[k], fg: meta.fg[k] || 'var(--ink)' }))
         };
       }),
 
-      nav: this.NAV.map(n => ({
-        ...n, on: n.id === 'disc',
-        fg: n.id === 'disc' ? 'var(--ink)' : 'var(--ink-3)',
-        fw: n.id === 'disc' ? 600 : 400,
-        icon: this.ICON[n.icon]
+      nav: this.NAV_IDS.map((id, i) => ({
+        label: t.nav[i], on: id === 'disc',
+        fg: id === 'disc' ? 'var(--ink)' : 'var(--ink-3)',
+        fw: id === 'disc' ? 600 : 400,
+        icon: this.ICON[id]
       }))
     };
   }
