@@ -18,15 +18,20 @@
 </style>
 </helmet>
 
-<div dir="rtl" lang="ar" class="tier-op" style="min-height:100vh;display:flex;justify-content:center">
+<div ref="{{ rootRef }}" dir="rtl" lang="ar" class="tier-op" style="min-height:100vh;display:flex;justify-content:center">
 <div style="width:100%;max-width:430px;min-height:100vh;display:flex;flex-direction:column;background:var(--paper);border-inline:1px solid var(--rule)">
 
 <header style="display:flex;align-items:center;gap:10px;padding:11px 14px;background:var(--surface);border-bottom:1px solid var(--rule)">
-<button type="button" aria-label="رجوع" style="width:34px;height:34px;border:0;background:transparent;cursor:pointer;display:grid;place-items:center;color:inherit">
-<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 5l-7 7 7 7"/></svg>
+<button type="button" aria-label="{{ t.back }}" style="width:34px;height:34px;border:0;background:transparent;cursor:pointer;display:grid;place-items:center;color:inherit">
+<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="transform:scaleX({{ backFlip }})"><path d="M15 5l-7 7 7 7"/></svg>
 </button>
-<span style="flex:1;font-size:var(--t-h3);font-weight:500">الاتفاق</span>
+<span style="flex:1;font-size:var(--t-h3);font-weight:500">{{ t.title }}</span>
 <span class="ref">CMT-26-0331</span>
+<div role="group" aria-label="{{ t.langLabel }}" style="display:flex;border:1px solid var(--rule-strong);border-radius:var(--r-sm);overflow:hidden;flex:none">
+<sc-for list="{{ langs }}" as="l" hint-placeholder-count="3">
+<button type="button" onClick="{{ l.pick }}" aria-pressed="{{ l.on }}" style="height:24px;padding:0 8px;border:0;background:{{ l.bg }};color:{{ l.fg }};font-size:var(--t-micro);font-weight:500;cursor:pointer">{{ l.short }}</button>
+</sc-for>
+</div>
 </header>
 
 <div class="scrollx" style="display:flex;gap:6px;padding:9px 14px;background:var(--surface-2);border-bottom:1px solid var(--rule-faint)">
@@ -48,7 +53,7 @@
 
 <!-- ══ LIFECYCLE ══ -->
 <section class="card" style="padding:15px">
-<div style="font-size:var(--t-xs);color:var(--ink-3);margin-bottom:13px">مسار الاتفاق</div>
+<div style="font-size:var(--t-xs);color:var(--ink-3);margin-bottom:13px">{{ t.lifecycle }}</div>
 <div style="display:flex;flex-direction:column;gap:0">
 <sc-for list="{{ stages }}" as="g" hint-placeholder-count="7">
 <div style="display:flex;gap:12px">
@@ -74,39 +79,39 @@
 
 <!-- ══ TERMS ══ -->
 <section class="card" style="padding:4px 15px">
-<sc-for list="{{ terms }}" as="t" hint-placeholder-count="6">
+<sc-for list="{{ terms }}" as="tm" hint-placeholder-count="6">
 <div style="display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:12px 0;border-bottom:1px solid var(--rule-faint)">
-<span style="font-size:var(--t-sm);color:var(--ink-2);flex:none">{{ t.k }}</span>
-<span class="num" style="font-size:var(--t-sm);font-weight:{{ t.fw }};text-align:end"><bdi>{{ t.v }}</bdi></span>
+<span style="font-size:var(--t-sm);color:var(--ink-2);flex:none">{{ tm.k }}</span>
+<span class="num" style="font-size:var(--t-sm);font-weight:{{ tm.fw }};text-align:end"><bdi>{{ tm.v }}</bdi></span>
 </div>
 </sc-for>
 </section>
 
 <!-- ══ COUNTERPARTY ══ -->
 <section class="card" style="padding:13px;display:flex;align-items:center;gap:11px">
-<span aria-hidden="true" style="flex:none;width:40px;height:40px;border-radius:50%;background:var(--role-trader-bg);display:grid;place-items:center;font-size:11px;font-weight:600;color:var(--role-trader-ink)">ك ح</span>
+<span aria-hidden="true" style="flex:none;width:40px;height:40px;border-radius:50%;background:var(--role-trader-bg);display:grid;place-items:center;font-size:11px;font-weight:600;color:var(--role-trader-ink)">{{ t.cpInitials }}</span>
 <div style="flex:1;min-width:0">
 <div style="display:flex;align-items:center;gap:6px">
-<span style="font-size:var(--t-body);font-weight:500">كريمة ح.</span>
+<span style="font-size:var(--t-body);font-weight:500">{{ t.cpName }}</span>
 <svg width="13" height="13" viewBox="0 0 24 24" style="flex:none" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="var(--allowed)"/><path d="M7.4 12.4l3 3 6.2-6.6" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
 </div>
-<div class="num" style="font-size:var(--t-micro);color:var(--ink-2);margin-top:2px"><bdi>مستوردة مُتحقَّقة · 84 معاملة مؤكَّدة</bdi></div>
+<div class="num" style="font-size:var(--t-micro);color:var(--ink-2);margin-top:2px"><bdi>{{ cpMeta }}</bdi></div>
 </div>
-<button type="button" style="flex:none;height:34px;padding:0 13px;border:1px solid var(--rule-strong);border-radius:var(--r-sm);background:var(--surface);color:inherit;font-size:var(--t-sm);cursor:pointer">راسل</button>
+<button type="button" style="flex:none;height:34px;padding:0 13px;border:1px solid var(--rule-strong);border-radius:var(--r-sm);background:var(--surface);color:inherit;font-size:var(--t-sm);cursor:pointer">{{ t.message }}</button>
 </section>
 
 <!-- ══ DEPOSIT — declared, never held ══ -->
 <sc-if value="{{ hasDeposit }}" hint-placeholder-val="{{ true }}">
 <section class="card" style="padding:14px">
 <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:9px">
-<span style="font-size:var(--t-sm);font-weight:600">العربون</span>
-<span class="num" style="font-size:var(--t-h3);font-weight:600"><bdi>40 000 دج</bdi></span>
+<span style="font-size:var(--t-sm);font-weight:600">{{ t.deposit }}</span>
+<span class="num" style="font-size:var(--t-h3);font-weight:600"><bdi>{{ depositAmount }}</bdi></span>
 </div>
 <div style="display:flex;align-items:center;gap:7px;margin-bottom:10px">
-<span class="chip chip-verified" style="height:20px;font-size:var(--t-micro)">صرّح به الطرفان</span>
-<span class="num" style="font-size:var(--t-micro);color:var(--ink-3)"><bdi>12 أكتوبر</bdi></span>
+<span class="chip chip-verified" style="height:20px;font-size:var(--t-micro)">{{ t.depositDeclared }}</span>
+<span class="num" style="font-size:var(--t-micro);color:var(--ink-3)"><bdi>{{ depositDate }}</bdi></span>
 </div>
-<p style="margin:0;font-size:var(--t-xs);line-height:1.7;color:var(--ink-2)">مبلغ متّفق عليه بينكما ومسجَّل للتوثيق. مَعْبَر لا تستلمه ولا تحتفظ به ولا تضمنه ولا تردّه.</p>
+<p style="margin:0;font-size:var(--t-xs);line-height:1.7;color:var(--ink-2)">{{ t.depositNote }}</p>
 </section>
 </sc-if>
 
@@ -124,44 +129,147 @@
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:430,&quot;height&quot;:1240}}">
 class Component extends DCLogic {
-  state = { at: 4 };
+  /* Locale is browser-detected. French is the fallback — Algeria's commercial
+     lingua franca and the neutral middle between Arabic and English. One value. */
+  static FALLBACK = 'fr';
+  static detect() {
+    const tag = (typeof navigator !== 'undefined' && (navigator.language || '')).slice(0, 2).toLowerCase();
+    return ['ar', 'fr', 'en'].includes(tag) ? tag : Component.FALLBACK;
+  }
+
+  state = { at: 4, lang: Component.detect() };
+  root = React.createRef();
+  componentDidMount() { this._apply(); }
+  componentDidUpdate() { this._apply(); }
+  _apply() {
+    const el = this.root.current;
+    if (el) { el.setAttribute('dir', this.L[this.state.lang].dir); el.setAttribute('lang', this.state.lang); }
+  }
+
+  /* Text runs take a first-strong isolate so Arabic stays RTL and Latin stays LTR;
+     inside Arabic, each digit group is pinned LTR so "4 800" never reads "800 4". */
+  iso(s) { if (/[\u0600-\u06FF]/.test(s)) s = s.replace(/\d[\d ,.:]*\d%?|\d%?/g, m => '\u2066' + m + '\u2069'); return '\u2068' + s + '\u2069'; }
+  fmt(n, sep) { return '⁦' + String(n).replace(/\B(?=(\d{3})+(?!\d))/g, sep === undefined ? ' ' : sep) + '⁩'; }
+  /* Arabic counts nouns in four forms (one / two / 3–10 / 11+); French and English in two.
+     f = { one, two, few, many } for Arabic, { one, many } otherwise. */
+  count(n, t, f) {
+    if (t.dir === 'rtl') {
+      const m = n % 100;
+      if (n === 1) return f.one;
+      if (n === 2) return f.two;
+      if (m >= 3 && m <= 10) return this.fmt(n, t.sep) + ' ' + f.few;
+      return this.fmt(n, t.sep) + ' ' + f.many;
+    }
+    return this.fmt(n, t.sep) + ' ' + (n === 1 ? f.one : f.many);
+  }
+  langsFor(cur) {
+    return ['ar', 'fr', 'en'].map(id => ({
+      short: this.L[id].short, on: cur === id,
+      bg: cur === id ? 'var(--ink)' : 'var(--surface)',
+      fg: cur === id ? 'var(--ink-on)' : 'var(--ink-2)',
+      pick: () => this.setState({ lang: id })
+    }));
+  }
+
+  L = {
+    ar: {
+      dir: 'rtl', short: 'ع', langLabel: 'اللغة', sep: ' ', cur: 'دج',
+      back: 'رجوع', title: 'الاتفاق', lifecycle: 'مسار الاتفاق', message: 'راسل',
+      cpInitials: 'ك ح', cpName: 'كريمة ح.', cpMeta: 'مستوردة مُتحقَّقة · 84 معاملة مؤكَّدة',
+      deposit: 'العربون', depositDeclared: 'صرّح به الطرفان', depositDate: '12 أكتوبر',
+      depositNote: 'مبلغ متّفق عليه بينكما ومسجَّل للتوثيق. مَعْبَر لا تستلمه ولا تحتفظ به ولا تضمنه ولا تردّه.',
+      flow: [
+        ['اقتُرح الاتفاق', '9 أكتوبر'], ['وافق الطرفان', '9 أكتوبر'],
+        ['صُرّح بالعربون', '12 أكتوبر', 'صرّح به الطرفان — المنصّة لا تستلمه'],
+        ['الشراء في الخارج', '13 أكتوبر'], ['في الطريق والجمركة', '17 أكتوبر'],
+        ['التسليم', '20 أكتوبر'], ['مكتمل ومؤكَّد', '']
+      ],
+      switch: ['موافق', 'عربون', 'في الطريق', 'تسليم', 'مكتمل', 'نزاع', 'ملغى', 'منتهٍ'],
+      st: {
+        accepted: ['وافق الطرفان', 'الاتفاق قائم. الخطوة التالية أن تتّفقا على العربون إن أردتما.', 'صرّح بالعربون', 'راسل'],
+        secured: ['العربون مُصرَّح به', 'كلاكما سجّل المبلغ. الشراء يبدأ عند سفر المستوردة.', 'تتبّع الرحلة', 'راسل'],
+        transit: ['البضاعة في الطريق', 'وصلت إلى الجمركة. سنعلمك فور الإفراج عنها.', 'تتبّع الرحلة', 'راسل'],
+        handover: ['جاهزة للاستلام', 'حدّدا نقطة وموعد التسليم. أكّد الاستلام بعد المعاينة.', 'أكّد الاستلام', 'اعترض'],
+        done: ['الاتفاق مكتمل', 'أكّد الطرفان التسليم والمطابقة. تقدر دابا تترك مراجعة.', 'اترك مراجعة', ''],
+        disputed: ['في نزاع', 'فُتح بلاغ عدم مطابقة. الاتفاق موقوف حتى صدور القرار.', 'تابع البلاغ', 'راسل'],
+        cancelled: ['أُلغي الاتفاق', 'ألغته المستوردة قبل الشراء بسبب عدم توفّر المواصفة. لم يُخصم شيء.', 'ابحث عن بديل', ''],
+        expired: ['انتهت صلاحية العرض', 'لم يُقبل الاتفاق قبل 14 أكتوبر. تقدر تطلب تجديده.', 'اطلب تجديداً', '']
+      },
+      terms: [
+        ['السلعة', 'معاطف نسائية شتوية'], ['المواصفة', 'صوف مخلوط 60% · M · L · XL'], ['الكمية', '18 وحدة'],
+        ['نطاق السعر', '4 800 – 5 200 دج للوحدة'], ['الاستلام', 'سطيف · 20 أكتوبر'], ['الرحلة', 'إسطنبول · تصل 18 أكتوبر']
+      ]
+    },
+
+    fr: {
+      dir: 'ltr', short: 'FR', langLabel: 'Langue', sep: ' ', cur: 'DA',
+      back: 'Retour', title: 'L’accord', lifecycle: 'Déroulement de l’accord', message: 'Écrire',
+      cpInitials: 'KH', cpName: 'Karima H.', cpMeta: 'Importatrice vérifiée · 84 transactions confirmées',
+      deposit: 'Arrhes', depositDeclared: 'Déclarées par les deux parties', depositDate: '12 octobre',
+      depositNote: 'Montant convenu entre vous et enregistré pour mémoire. Maabar ne le reçoit pas, ne le conserve pas, ne le garantit pas et ne le rembourse pas.',
+      flow: [
+        ['Accord proposé', '9 octobre'], ['Accepté par les deux parties', '9 octobre'],
+        ['Arrhes déclarées', '12 octobre', 'Déclarées par les deux parties — la plateforme ne les reçoit pas'],
+        ['Achat à l’étranger', '13 octobre'], ['En route et en douane', '17 octobre'],
+        ['Remise', '20 octobre'], ['Terminé et confirmé', '']
+      ],
+      switch: ['Accepté', 'Arrhes', 'En route', 'Remise', 'Terminé', 'Litige', 'Annulé', 'Expiré'],
+      st: {
+        accepted: ['Accepté par les deux parties', 'L’accord est en place. Étape suivante : convenir d’arrhes, si vous le souhaitez.', 'Déclarer les arrhes', 'Écrire'],
+        secured: ['Arrhes déclarées', 'Vous avez tous deux enregistré le montant. L’achat commence au départ de l’importatrice.', 'Suivre le voyage', 'Écrire'],
+        transit: ['Marchandise en route', 'Elle est arrivée en douane. Nous vous prévenons dès sa mainlevée.', 'Suivre le voyage', 'Écrire'],
+        handover: ['Prête à être remise', 'Fixez ensemble le lieu et l’heure. Confirmez la réception après vérification.', 'Confirmer la réception', 'Contester'],
+        done: ['Accord terminé', 'Les deux parties ont confirmé la remise et la conformité. Vous pouvez laisser un avis.', 'Laisser un avis', ''],
+        disputed: ['En litige', 'Un signalement de non-conformité est ouvert. L’accord est suspendu jusqu’à la décision.', 'Suivre le signalement', 'Écrire'],
+        cancelled: ['Accord annulé', 'Annulé par l’importatrice avant l’achat, la spécification étant indisponible. Rien n’a été prélevé.', 'Chercher une alternative', ''],
+        expired: ['Offre expirée', 'L’accord n’a pas été accepté avant le 14 octobre. Vous pouvez demander son renouvellement.', 'Demander un renouvellement', '']
+      },
+      terms: [
+        ['Article', 'Manteaux femme hiver'], ['Spécification', 'Laine mélangée 60 % · M · L · XL'], ['Quantité', '18 unités'],
+        ['Fourchette de prix', '4 800 – 5 200 DA l’unité'], ['Remise', 'Sétif · 20 octobre'], ['Voyage', 'Istanbul · arrivée 18 octobre']
+      ]
+    },
+
+    en: {
+      dir: 'ltr', short: 'EN', langLabel: 'Language', sep: ',', cur: 'DA',
+      back: 'Back', title: 'Agreement', lifecycle: 'Agreement lifecycle', message: 'Message',
+      cpInitials: 'KH', cpName: 'Karima H.', cpMeta: 'Verified importer · 84 confirmed transactions',
+      deposit: 'Deposit', depositDeclared: 'Declared by both parties', depositDate: '12 October',
+      depositNote: 'An amount agreed between you and recorded for reference. Maabar does not receive, hold, guarantee or refund it.',
+      flow: [
+        ['Agreement proposed', '9 October'], ['Accepted by both parties', '9 October'],
+        ['Deposit declared', '12 October', 'Declared by both parties — the platform does not receive it'],
+        ['Buying abroad', '13 October'], ['In transit and customs', '17 October'],
+        ['Handover', '20 October'], ['Completed and confirmed', '']
+      ],
+      switch: ['Accepted', 'Deposit', 'In transit', 'Handover', 'Completed', 'Dispute', 'Cancelled', 'Expired'],
+      st: {
+        accepted: ['Accepted by both parties', 'The agreement stands. Next, agree a deposit if you want one.', 'Declare the deposit', 'Message'],
+        secured: ['Deposit declared', 'You have both recorded the amount. Buying starts when the importer travels.', 'Track the trip', 'Message'],
+        transit: ['Goods in transit', 'They have reached customs. We’ll tell you as soon as they are released.', 'Track the trip', 'Message'],
+        handover: ['Ready for handover', 'Agree a place and time. Confirm receipt after you inspect the goods.', 'Confirm receipt', 'Object'],
+        done: ['Agreement completed', 'Both parties confirmed handover and conformity. You can now leave a review.', 'Leave a review', ''],
+        disputed: ['In dispute', 'A non-conformity report is open. The agreement is paused until a decision is issued.', 'Follow the report', 'Message'],
+        cancelled: ['Agreement cancelled', 'Cancelled by the importer before buying, as the specification was unavailable. Nothing was charged.', 'Find an alternative', ''],
+        expired: ['Offer expired', 'The agreement was not accepted before 14 October. You can ask for it to be renewed.', 'Request renewal', '']
+      },
+      terms: [
+        ['Item', 'Women’s winter coats'], ['Specification', 'Wool blend 60% · M · L · XL'], ['Quantity', '18 units'],
+        ['Price range', '4,800 – 5,200 DA per unit'], ['Handover', 'Sétif · 20 October'], ['Trip', 'Istanbul · arrives 18 October']
+      ]
+    }
+  };
 
   // One vocabulary, used everywhere. No state exists that the user
   // cannot see a reason for.
-  FLOW = [
-    { id: 'proposed', label: 'اقتُرح الاتفاق', when: '9 أكتوبر' },
-    { id: 'accepted', label: 'وافق الطرفان', when: '9 أكتوبر' },
-    { id: 'secured', label: 'صُرّح بالعربون', when: '12 أكتوبر', note: 'صرّح به الطرفان — المنصّة لا تستلمه' },
-    { id: 'buying', label: 'الشراء في الخارج', when: '13 أكتوبر' },
-    { id: 'transit', label: 'في الطريق والجمركة', when: '17 أكتوبر' },
-    { id: 'handover', label: 'التسليم', when: '20 أكتوبر' },
-    { id: 'done', label: 'مكتمل ومؤكَّد', when: '' }
-  ];
-
-  SWITCH = [
-    ['accepted', 'موافق'], ['secured', 'عربون'], ['transit', 'في الطريق'],
-    ['handover', 'تسليم'], ['done', 'مكتمل'], ['disputed', 'نزاع'],
-    ['cancelled', 'ملغى'], ['expired', 'منتهٍ']
-  ];
-
-  ST = {
-    accepted: { glyph: '✓', title: 'وافق الطرفان', body: 'الاتفاق قائم. الخطوة التالية أن تتّفقا على العربون إن أردتما.',
-      tone: 'ok', cta: 'صرّح بالعربون', alt: 'راسل', dep: false },
-    secured: { glyph: '✓', title: 'العربون مُصرَّح به', body: 'كلاكما سجّل المبلغ. الشراء يبدأ عند سفر المستوردة.',
-      tone: 'ok', cta: 'تتبّع الرحلة', alt: 'راسل', dep: true },
-    transit: { glyph: '→', title: 'البضاعة في الطريق', body: 'وصلت إلى الجمركة. سنعلمك فور الإفراج عنها.',
-      tone: 'cond', cta: 'تتبّع الرحلة', alt: 'راسل', dep: true },
-    handover: { glyph: '↓', title: 'جاهزة للاستلام', body: 'حدّدا نقطة وموعد التسليم. أكّد الاستلام بعد المعاينة.',
-      tone: 'cond', cta: 'أكّد الاستلام', alt: 'اعترض', dep: true },
-    done: { glyph: '✓', title: 'الاتفاق مكتمل', body: 'أكّد الطرفان التسليم والمطابقة. تقدر دابا تترك مراجعة.',
-      tone: 'ok', cta: 'اترك مراجعة', alt: '', dep: true },
-    disputed: { glyph: '!', title: 'في نزاع', body: 'فُتح بلاغ عدم مطابقة. الاتفاق موقوف حتى صدور القرار.',
-      tone: 'risk', cta: 'تابع البلاغ', alt: 'راسل', dep: true },
-    cancelled: { glyph: '✕', title: 'أُلغي الاتفاق', body: 'ألغته المستوردة قبل الشراء بسبب عدم توفّر المواصفة. لم يُخصم شيء.',
-      tone: 'neutral', cta: 'ابحث عن بديل', alt: '', dep: false },
-    expired: { glyph: '⏱', title: 'انتهت صلاحية العرض', body: 'لم يُقبل الاتفاق قبل 14 أكتوبر. تقدر تطلب تجديده.',
-      tone: 'neutral', cta: 'اطلب تجديداً', alt: '', dep: false }
+  SWITCH_IDS = ['accepted', 'secured', 'transit', 'handover', 'done', 'disputed', 'cancelled', 'expired'];
+  ST_META = {
+    accepted: { glyph: '✓', tone: 'ok', dep: false }, secured: { glyph: '✓', tone: 'ok', dep: true },
+    transit: { glyph: '→', tone: 'cond', dep: true }, handover: { glyph: '↓', tone: 'cond', dep: true },
+    done: { glyph: '✓', tone: 'ok', dep: true }, disputed: { glyph: '!', tone: 'risk', dep: true },
+    cancelled: { glyph: '✕', tone: 'neutral', dep: false }, expired: { glyph: '⏱', tone: 'neutral', dep: false }
   };
+  TERM_FW = [600, 400, 600, 600, 400, 400];
 
   TONE = {
     ok: ['var(--allowed-bg)', 'var(--allowed-bd)', 'var(--allowed)'],
@@ -170,28 +278,26 @@ class Component extends DCLogic {
     neutral: ['var(--neutral-bg)', 'var(--neutral-bd)', 'var(--ink-3)']
   };
 
-  TERMS = [
-    { k: 'السلعة', v: 'معاطف نسائية شتوية', fw: 600 },
-    { k: 'المواصفة', v: 'صوف مخلوط ⁦60%⁩ · ⁦M · L · XL⁩', fw: 400 },
-    { k: 'الكمية', v: '⁦18⁩ وحدة', fw: 600 },
-    { k: 'نطاق السعر', v: '⁦4 800 – 5 200⁩ دج للوحدة', fw: 600 },
-    { k: 'الاستلام', v: 'سطيف · ⁦20 أكتوبر⁩', fw: 400 },
-    { k: 'الرحلة', v: 'إسطنبول · تصل ⁦18 أكتوبر⁩', fw: 400 }
-  ];
-
   renderVals() {
-    const s = this.state;
-    const key = this.SWITCH[s.at][0];
-    const st = this.ST[key];
-    const [bg, bd, dot] = this.TONE[st.tone];
+    const s = this.state, t = this.L[s.lang];
+    const key = this.SWITCH_IDS[s.at];
+    const meta = this.ST_META[key];
+    const [title, body, cta, alt] = t.st[key];
+    const [bg, bd, dot] = this.TONE[meta.tone];
 
     // how far along the flow the current state sits
     const idx = { accepted: 1, secured: 2, transit: 4, handover: 5, done: 6, disputed: 5, cancelled: 2, expired: 0 }[key];
     const halted = key === 'disputed' || key === 'cancelled' || key === 'expired';
 
     return {
-      switcher: this.SWITCH.map(([id, label], i) => ({
-        label, on: i === s.at,
+      rootRef: this.root, t, langs: this.langsFor(s.lang),
+      backFlip: t.dir === 'rtl' ? -1 : 1,
+      cpMeta: this.iso(t.cpMeta),
+      depositAmount: this.fmt(40000, t.sep) + ' ' + t.cur,
+      depositDate: this.iso(t.depositDate),
+
+      switcher: this.SWITCH_IDS.map((id, i) => ({
+        label: t.switch[i], on: i === s.at,
         bg: i === s.at ? 'var(--ink)' : 'var(--surface)',
         fg: i === s.at ? 'var(--ink-on)' : 'var(--ink-2)',
         bd: i === s.at ? 'var(--ink)' : 'var(--rule-strong)',
@@ -199,23 +305,21 @@ class Component extends DCLogic {
       })),
 
       st: {
-        ...st, bg, bd, dot,
-        ctaBg: st.tone === 'risk' ? 'var(--prohibited)' : st.tone === 'neutral' ? 'var(--ink)' : 'var(--brand)',
+        glyph: meta.glyph, title, body, cta, alt, bg, bd, dot,
+        ctaBg: meta.tone === 'risk' ? 'var(--prohibited)' : meta.tone === 'neutral' ? 'var(--ink)' : 'var(--brand)',
         ctaFg: 'var(--ink-on)',
-        hasAlt: !!st.alt
+        hasAlt: !!alt
       },
 
-      hasDeposit: st.dep,
+      hasDeposit: meta.dep,
 
-      stages: this.FLOW.map((g, i) => {
+      stages: t.flow.map(([label, when, note], i) => {
         const done = i <= idx;
         const current = i === idx;
         return {
-          label: g.label,
-          when: g.when,
-          hasNote: !!g.note && done,
-          note: g.note,
-          line: i < this.FLOW.length - 1,
+          label, when: when ? this.iso(when) : '',
+          hasNote: !!note && done, note: note || '',
+          line: i < t.flow.length - 1,
           lineFg: i < idx ? 'var(--allowed)' : 'var(--rule)',
           dotBg: halted && current ? dot : done ? 'var(--allowed)' : 'var(--surface)',
           dotBd: halted && current ? dot : done ? 'var(--allowed)' : 'var(--rule-strong)',
@@ -225,7 +329,7 @@ class Component extends DCLogic {
         };
       }),
 
-      terms: this.TERMS
+      terms: t.terms.map(([k, v], i) => ({ k, v: this.iso(v), fw: this.TERM_FW[i] }))
     };
   }
 }
