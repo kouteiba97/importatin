@@ -20,19 +20,24 @@
 </style>
 </helmet>
 
-<div dir="rtl" lang="ar" class="tier-op" style="min-height:100vh;display:flex;justify-content:center">
+<div ref="{{ rootRef }}" dir="rtl" lang="ar" class="tier-op" style="min-height:100vh;display:flex;justify-content:center">
 <div style="width:100%;max-width:430px;min-height:100vh;display:flex;flex-direction:column;background:var(--paper);border-inline:1px solid var(--rule)">
 
 <header style="background:var(--surface);border-bottom:1px solid var(--rule)">
 <div style="display:flex;align-items:center;gap:10px;padding:11px 14px 9px">
-<button type="button" aria-label="رجوع" style="width:34px;height:34px;border:0;background:transparent;cursor:pointer;display:grid;place-items:center;color:inherit">
-<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 5l-7 7 7 7"/></svg>
+<button type="button" aria-label="{{ t.back }}" style="width:34px;height:34px;border:0;background:transparent;cursor:pointer;display:grid;place-items:center;color:inherit">
+<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="transform:scaleX({{ backFlip }})"><path d="M15 5l-7 7 7 7"/></svg>
 </button>
-<span style="flex:1;font-size:var(--t-h3);font-weight:500">التحقّق</span>
+<span style="flex:1;font-size:var(--t-h3);font-weight:500">{{ t.title }}</span>
+<div role="group" aria-label="{{ t.langLabel }}" style="display:flex;border:1px solid var(--rule-strong);border-radius:var(--r-sm);overflow:hidden;flex:none">
+<sc-for list="{{ langs }}" as="l" hint-placeholder-count="3">
+<button type="button" onClick="{{ l.pick }}" aria-pressed="{{ l.on }}" style="height:24px;padding:0 8px;border:0;background:{{ l.bg }};color:{{ l.fg }};font-size:var(--t-micro);font-weight:500;cursor:pointer">{{ l.short }}</button>
+</sc-for>
+</div>
 </div>
 <!-- Two document sets, one journey. The trader path unlocks consumer-facing
      listings; the importer path never does. -->
-<nav aria-label="الدور" style="display:grid;grid-template-columns:repeat(2,1fr)">
+<nav aria-label="{{ t.role }}" style="display:grid;grid-template-columns:repeat(2,1fr)">
 <sc-for list="{{ roles }}" as="r" hint-placeholder-count="2">
 <button type="button" onClick="{{ r.pick }}" aria-current="{{ r.on }}" style="height:40px;border:0;border-bottom:2px solid {{ r.bd }};background:transparent;color:{{ r.fg }};font-size:var(--t-sm);font-weight:{{ r.fw }};cursor:pointer">{{ r.label }}</button>
 </sc-for>
@@ -56,16 +61,16 @@
 <div style="display:flex;align-items:center;gap:11px;margin-bottom:13px">
 <span aria-hidden="true" style="flex:none;width:44px;height:44px;border-radius:50%;background:var(--allowed-bg);display:grid;place-items:center;color:var(--allowed-ink);font-size:18px;font-weight:600">2</span>
 <div style="flex:1;min-width:0">
-<div style="font-size:var(--t-h3);font-weight:600">هوية مؤكَّدة</div>
-<div style="font-size:var(--t-xs);color:var(--ink-2);margin-top:2px">مستواك الحالي</div>
+<div style="font-size:var(--t-h3);font-weight:600">{{ t.currentLevelName }}</div>
+<div style="font-size:var(--t-xs);color:var(--ink-2);margin-top:2px">{{ t.currentLevel }}</div>
 </div>
 </div>
 <div style="height:6px;border-radius:3px;background:var(--neutral-bg);overflow:hidden"><i style="display:block;height:100%;width:50%;background:var(--brand);border-radius:3px"></i></div>
-<div style="font-size:var(--t-xs);color:var(--ink-2);margin-top:8px">خطوة واحدة تفصلك عن نشر رحلة.</div>
+<div style="font-size:var(--t-xs);color:var(--ink-2);margin-top:8px">{{ oneStep }}</div>
 </section>
 
 <section>
-<div style="font-size:var(--t-h2);font-weight:500;margin-bottom:10px">المستويات</div>
+<div style="font-size:var(--t-h2);font-weight:500;margin-bottom:10px">{{ t.levelsTitle }}</div>
 <div style="display:flex;flex-direction:column;gap:10px">
 <sc-for list="{{ levels }}" as="l" hint-placeholder-count="4">
 <div class="card" style="padding:14px;border-color:{{ l.bd }};border-width:{{ l.bw }}px">
@@ -76,14 +81,14 @@
 </div>
 <sc-if value="{{ l.expanded }}" hint-placeholder-val="{{ true }}">
 <div style="padding-inline-start:36px">
-<div style="font-size:var(--t-xs);color:var(--ink-3);margin-bottom:6px">المطلوب</div>
+<div style="font-size:var(--t-xs);color:var(--ink-3);margin-bottom:6px">{{ requiredLabel }}</div>
 <sc-for list="{{ l.needs }}" as="n" hint-placeholder-count="3">
 <div style="display:flex;align-items:center;gap:8px;padding:5px 0">
 <span aria-hidden="true" style="flex:none;width:16px;height:16px;border-radius:50%;background:{{ n.bg }};display:grid;place-items:center;font-size:9px;color:{{ n.fg }}">{{ n.glyph }}</span>
 <span style="flex:1;min-width:0;font-size:var(--t-sm);color:{{ n.tone }}">{{ n.label }}</span>
 </div>
 </sc-for>
-<div style="font-size:var(--t-xs);color:var(--ink-3);margin:11px 0 6px">يفتح لك</div>
+<div style="font-size:var(--t-xs);color:var(--ink-3);margin:11px 0 6px">{{ unlocksLabel }}</div>
 <sc-for list="{{ l.unlocks }}" as="u" hint-placeholder-count="2">
 <div style="font-size:var(--t-sm);color:var(--ink-2);padding:3px 0">• {{ u }}</div>
 </sc-for>
@@ -99,7 +104,7 @@
 
 <section style="display:flex;gap:10px;padding:13px 14px;border:1px solid var(--rule);border-radius:var(--r);background:var(--surface-2)">
 <span aria-hidden="true" style="flex:none;color:var(--ink-3)">i</span>
-<p style="margin:0;font-size:var(--t-xs);line-height:1.7;color:var(--ink-2)">مَعْبَر تتحقّق من وثائقك ومن صلاحيتها. <strong style="font-weight:500">لا تمنحك المنصّة حقّ الاستيراد</strong> — هذا الحق تحصل عليه من الجهات الرسمية، ونحن نتأكّد فقط أنك تملكه.</p>
+<p style="margin:0;font-size:var(--t-xs);line-height:1.7;color:var(--ink-2)">{{ t.noteA }} <strong style="font-weight:500">{{ t.noteB }}</strong> {{ t.noteC }}</p>
 </section>
 
 </div>
@@ -114,13 +119,13 @@
 </div>
 
 <div class="card" style="padding:15px">
-<div style="font-size:var(--t-sm);font-weight:600;margin-bottom:9px">لماذا نطلبها</div>
+<div style="font-size:var(--t-sm);font-weight:600;margin-bottom:9px">{{ t.why }}</div>
 <p style="margin:0 0 13px;font-size:var(--t-sm);line-height:1.7;color:var(--ink-2)">{{ docWhy }}</p>
-<div style="font-size:var(--t-sm);font-weight:600;margin-bottom:9px">شروط الصورة</div>
-<sc-for list="{{ tips }}" as="t" hint-placeholder-count="4">
+<div style="font-size:var(--t-sm);font-weight:600;margin-bottom:9px">{{ t.photoRules }}</div>
+<sc-for list="{{ tips }}" as="tip" hint-placeholder-count="4">
 <div style="display:flex;align-items:center;gap:8px;padding:4px 0">
 <span aria-hidden="true" style="flex:none;width:15px;height:15px;border-radius:50%;background:var(--allowed-bg);display:grid;place-items:center;font-size:9px;color:var(--allowed-ink)">✓</span>
-<span style="font-size:var(--t-sm);color:var(--ink-2)">{{ t }}</span>
+<span style="font-size:var(--t-sm);color:var(--ink-2)">{{ tip }}</span>
 </div>
 </sc-for>
 </div>
@@ -128,21 +133,21 @@
 <div style="display:flex;flex-direction:column;gap:9px">
 <button type="button" onClick="{{ goCapture }}" class="cta" style="background:var(--brand);display:flex;align-items:center;justify-content:center;gap:9px">
 <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8"><path d="M4 8h3l1.5-2h7L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="3.4"/></svg>
-صوّر الوثيقة
+{{ t.shoot }}
 </button>
-<button type="button" class="ghost">اختر صورة من الجهاز</button>
+<button type="button" class="ghost">{{ t.pickPhoto }}</button>
 </div>
 
-<p style="margin:0;font-size:var(--t-xs);color:var(--ink-3);line-height:1.7">وثائقك تُحفظ داخل الجزائر ولا تظهر لأي مستخدم آخر. تُستعمل للتحقّق فقط.</p>
+<p style="margin:0;font-size:var(--t-xs);color:var(--ink-3);line-height:1.7">{{ t.storage }}</p>
 </div>
 </sc-if>
 
 <!-- ══════ PREVIEW / RETAKE ══════ -->
 <sc-if value="{{ isPreview }}" hint-placeholder-val="{{ false }}">
 <div style="display:flex;flex-direction:column;gap:16px">
-<h1 style="margin:0;font-size:22px;font-weight:600">تأكّد من الصورة</h1>
+<h1 style="margin:0;font-size:22px;font-weight:600">{{ t.checkPhoto }}</h1>
 <div style="aspect-ratio:1.45;border-radius:var(--r);background:linear-gradient(135deg, var(--rule-strong), var(--neutral-bd));border:1px solid var(--rule);display:grid;place-items:center">
-<span style="font-size:var(--t-sm);color:var(--ink-2)">صورة الوثيقة</span>
+<span style="font-size:var(--t-sm);color:var(--ink-2)">{{ t.docImage }}</span>
 </div>
 <div class="card" style="padding:4px 14px">
 <sc-for list="{{ checks }}" as="c" hint-placeholder-count="3">
@@ -153,8 +158,8 @@
 </sc-for>
 </div>
 <div style="display:flex;gap:9px">
-<button type="button" onClick="{{ goUploading }}" class="cta" style="flex:1;background:var(--brand)">أرسل للمراجعة</button>
-<button type="button" onClick="{{ goCapture }}" style="flex:none;padding:0 18px;height:50px;border:1px solid var(--rule-strong);border-radius:var(--r);background:var(--surface);color:inherit;font-size:14px;cursor:pointer">أعد التصوير</button>
+<button type="button" onClick="{{ goUploading }}" class="cta" style="flex:1;background:var(--brand)">{{ t.sendReview }}</button>
+<button type="button" onClick="{{ goCapture }}" style="flex:none;padding:0 18px;height:50px;border:1px solid var(--rule-strong);border-radius:var(--r);background:var(--surface);color:inherit;font-size:14px;cursor:pointer">{{ t.retake }}</button>
 </div>
 </div>
 </sc-if>
@@ -163,12 +168,12 @@
 <sc-if value="{{ isUploading }}" hint-placeholder-val="{{ false }}">
 <div style="display:flex;flex-direction:column;gap:16px;padding-top:28px;text-align:center">
 <div>
-<div style="font-size:20px;font-weight:600;margin-bottom:8px">جارٍ الإرسال</div>
-<p class="num" style="margin:0;font-size:var(--t-sm);color:var(--ink-2)"><bdi>1.2 من 2.4 ميغا</bdi></p>
+<div style="font-size:20px;font-weight:600;margin-bottom:8px">{{ t.sending }}</div>
+<p class="num" style="margin:0;font-size:var(--t-sm);color:var(--ink-2)"><bdi>{{ progressText }}</bdi></p>
 </div>
 <div style="height:7px;border-radius:4px;background:var(--neutral-bg);overflow:hidden"><i style="display:block;height:100%;width:52%;background:var(--brand);border-radius:4px"></i></div>
-<p style="margin:0;font-size:var(--t-xs);color:var(--ink-3);line-height:1.7">إذا انقطع الاتصال سنُكمل الإرسال تلقائياً عند عودته. تقدر تغلق الشاشة.</p>
-<button type="button" class="ghost">ألغِ</button>
+<p style="margin:0;font-size:var(--t-xs);color:var(--ink-3);line-height:1.7">{{ t.resume }}</p>
+<button type="button" class="ghost">{{ t.cancel }}</button>
 </div>
 </sc-if>
 
@@ -177,8 +182,8 @@
 <div style="display:flex;flex-direction:column;gap:18px;padding-top:16px">
 <div style="text-align:center">
 <span aria-hidden="true" style="display:inline-grid;place-items:center;width:58px;height:58px;border-radius:50%;background:var(--conditional-bg);color:var(--conditional-ink);font-size:24px;margin-bottom:13px">⏱</span>
-<h1 style="margin:0 0 8px;font-size:22px;font-weight:600">وثائقك قيد المراجعة</h1>
-<p style="margin:0;font-size:var(--t-body);line-height:1.7;color:var(--ink-2)">عادةً خلال يوم عمل. سيصلك إشعار فور صدور القرار.</p>
+<h1 style="margin:0 0 8px;font-size:22px;font-weight:600">{{ t.reviewTitle }}</h1>
+<p style="margin:0;font-size:var(--t-body);line-height:1.7;color:var(--ink-2)">{{ t.reviewLede }}</p>
 </div>
 <div class="card" style="padding:4px 14px">
 <sc-for list="{{ submitted }}" as="d" hint-placeholder-count="4">
@@ -189,7 +194,7 @@
 </div>
 </sc-for>
 </div>
-<button type="button" class="ghost">ما الذي يمكنني فعله الآن؟</button>
+<button type="button" class="ghost">{{ t.whatNow }}</button>
 </div>
 </sc-if>
 
@@ -199,20 +204,20 @@
 <div style="display:flex;gap:12px;padding:15px;border:1px solid var(--conditional-bd);border-radius:var(--r);background:var(--conditional-bg)">
 <span aria-hidden="true" style="flex:none;width:30px;height:30px;border-radius:50%;background:var(--conditional);color:#fff;display:grid;place-items:center;font-size:15px;font-weight:600">!</span>
 <div style="flex:1;min-width:0">
-<div style="font-size:var(--t-h3);font-weight:600;margin-bottom:5px">نحتاج صورة أوضح</div>
-<p style="margin:0;font-size:var(--t-sm);line-height:1.7;color:var(--ink-2)">حسابك لم يُرفض. نحتاج فقط تصحيح وثيقة واحدة وتكمل من حيث توقّفت.</p>
+<div style="font-size:var(--t-h3);font-weight:600;margin-bottom:5px">{{ t.fixTitle }}</div>
+<p style="margin:0;font-size:var(--t-sm);line-height:1.7;color:var(--ink-2)">{{ t.fixLede }}</p>
 </div>
 </div>
 
 <div class="card" style="padding:15px">
-<div style="font-size:var(--t-sm);font-weight:600;margin-bottom:10px">ما المشكلة</div>
+<div style="font-size:var(--t-sm);font-weight:600;margin-bottom:10px">{{ t.problem }}</div>
 <sc-for list="{{ problems }}" as="p" hint-placeholder-count="2">
 <div style="display:flex;gap:9px;padding:7px 0">
 <span aria-hidden="true" style="flex:none;width:6px;height:6px;border-radius:50%;background:var(--conditional);margin-block-start:7px"></span>
 <span style="flex:1;font-size:var(--t-sm);line-height:1.65;color:var(--ink-2)">{{ p }}</span>
 </div>
 </sc-for>
-<div style="font-size:var(--t-sm);font-weight:600;margin:13px 0 10px">ما عليك فعله</div>
+<div style="font-size:var(--t-sm);font-weight:600;margin:13px 0 10px">{{ t.todo }}</div>
 <sc-for list="{{ fixes }}" as="f" hint-placeholder-count="2">
 <div style="display:flex;gap:9px;padding:7px 0">
 <span aria-hidden="true" style="flex:none;width:17px;height:17px;border-radius:50%;background:var(--allowed-bg);display:grid;place-items:center;font-size:9px;color:var(--allowed-ink);margin-block-start:1px">✓</span>
@@ -221,8 +226,8 @@
 </sc-for>
 </div>
 
-<button type="button" onClick="{{ goCapture }}" class="cta" style="background:var(--brand)">صوّر الوثيقة من جديد</button>
-<button type="button" class="ghost">تواصل مع الدعم</button>
+<button type="button" onClick="{{ goCapture }}" class="cta" style="background:var(--brand)">{{ t.reshoot }}</button>
+<button type="button" class="ghost">{{ t.support }}</button>
 </div>
 </sc-if>
 
@@ -231,8 +236,8 @@
 <div style="display:flex;flex-direction:column;gap:18px;padding-top:16px">
 <div style="text-align:center">
 <span aria-hidden="true" style="display:inline-grid;place-items:center;width:62px;height:62px;border-radius:50%;background:var(--allowed-bg);color:var(--allowed-ink);font-size:28px;margin-bottom:13px">✓</span>
-<h1 style="margin:0 0 8px;font-size:23px;font-weight:600">صرت مستورداً مُتحقَّقاً</h1>
-<p style="margin:0;font-size:var(--t-body);line-height:1.7;color:var(--ink-2)">تقدر دابا تنشر رحلة وتستقبل طلبات التجّار.</p>
+<h1 style="margin:0 0 8px;font-size:23px;font-weight:600">{{ doneTitle }}</h1>
+<p style="margin:0;font-size:var(--t-body);line-height:1.7;color:var(--ink-2)">{{ doneLede }}</p>
 </div>
 <div class="card" style="padding:4px 15px">
 <sc-for list="{{ newUnlocks }}" as="u" hint-placeholder-count="4">
@@ -243,10 +248,10 @@
 </sc-for>
 </div>
 <div style="display:flex;gap:9px">
-<button type="button" class="cta" style="flex:1;background:var(--brand)">أنشئ رحلتك الأولى</button>
-<button type="button" style="flex:none;padding:0 18px;height:50px;border:1px solid var(--rule-strong);border-radius:var(--r);background:var(--surface);color:inherit;font-size:14px;cursor:pointer">لاحقاً</button>
+<button type="button" class="cta" style="flex:1;background:var(--brand)">{{ doneCta }}</button>
+<button type="button" style="flex:none;padding:0 18px;height:50px;border:1px solid var(--rule-strong);border-radius:var(--r);background:var(--surface);color:inherit;font-size:14px;cursor:pointer">{{ t.later }}</button>
 </div>
-<p style="margin:0;font-size:var(--t-xs);color:var(--ink-3);line-height:1.7">رخصتك سارية حتى جوان 2027. سننبّهك قبل شهر من انتهائها.</p>
+<p style="margin:0;font-size:var(--t-xs);color:var(--ink-3);line-height:1.7">{{ validity }}</p>
 </div>
 </sc-if>
 
@@ -256,8 +261,8 @@
 <div style="display:flex;gap:12px;padding:15px;border:1px solid var(--prohibited-bd);border-radius:var(--r);background:var(--prohibited-bg)">
 <span aria-hidden="true" style="flex:none;width:30px;height:30px;border-radius:50%;background:var(--prohibited);color:#fff;display:grid;place-items:center;font-size:15px;font-weight:600">!</span>
 <div style="flex:1;min-width:0">
-<div style="font-size:var(--t-h3);font-weight:600;margin-bottom:5px">انتهت صلاحية رخصتك</div>
-<p class="num" style="margin:0;font-size:var(--t-sm);line-height:1.7;color:var(--ink-2)"><bdi>انتهت في 30 جوان 2026. رحلاتك متوقّفة حتى التجديد.</bdi></p>
+<div style="font-size:var(--t-h3);font-weight:600;margin-bottom:5px">{{ t.expiredTitle }}</div>
+<p class="num" style="margin:0;font-size:var(--t-sm);line-height:1.7;color:var(--ink-2)"><bdi>{{ expiredLede }}</bdi></p>
 </div>
 </div>
 <div class="card" style="padding:4px 14px">
@@ -268,7 +273,7 @@
 </div>
 </sc-for>
 </div>
-<button type="button" onClick="{{ goNeed }}" class="cta">ارفع الرخصة الجديدة</button>
+<button type="button" onClick="{{ goNeed }}" class="cta">{{ t.uploadNew }}</button>
 </div>
 </sc-if>
 
@@ -278,114 +283,251 @@
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:430,&quot;height&quot;:1180}}">
 class Component extends DCLogic {
-  state = { view: 'ladder', role: 'importer' };
+  /* Locale is browser-detected. French is the fallback — Algeria's commercial
+     lingua franca and the neutral middle between Arabic and English. One value. */
+  static FALLBACK = 'fr';
+  static detect() {
+    const tag = (typeof navigator !== 'undefined' && (navigator.language || '')).slice(0, 2).toLowerCase();
+    return ['ar', 'fr', 'en'].includes(tag) ? tag : Component.FALLBACK;
+  }
 
-  ROLES = [['importer', 'مستورد'], ['trader', 'تاجر']];
+  state = { view: 'ladder', role: 'importer', lang: Component.detect() };
+  root = React.createRef();
+  componentDidMount() { this._apply(); }
+  componentDidUpdate() { this._apply(); }
+  _apply() {
+    const el = this.root.current;
+    if (el) { el.setAttribute('dir', this.L[this.state.lang].dir); el.setAttribute('lang', this.state.lang); }
+  }
+
+  /* Text runs take a first-strong isolate so Arabic stays RTL and Latin stays LTR;
+     inside Arabic, each digit group is pinned LTR so "4 800" never reads "800 4". */
+  iso(s) { if (/[\u0600-\u06FF]/.test(s)) s = s.replace(/\d[\d ,.:]*\d%?|\d%?/g, m => '\u2066' + m + '\u2069'); return '\u2068' + s + '\u2069'; }
+  fmt(n, sep) { return '⁦' + String(n).replace(/\B(?=(\d{3})+(?!\d))/g, sep === undefined ? ' ' : sep) + '⁩'; }
+  /* Arabic counts nouns in four forms (one / two / 3–10 / 11+); French and English in two.
+     f = { one, two, few, many } for Arabic, { one, many } otherwise. */
+  count(n, t, f) {
+    if (t.dir === 'rtl') {
+      const m = n % 100;
+      if (n === 1) return f.one;
+      if (n === 2) return f.two;
+      if (m >= 3 && m <= 10) return this.fmt(n, t.sep) + ' ' + f.few;
+      return this.fmt(n, t.sep) + ' ' + f.many;
+    }
+    return this.fmt(n, t.sep) + ' ' + (n === 1 ? f.one : f.many);
+  }
+  langsFor(cur) {
+    return ['ar', 'fr', 'en'].map(id => ({
+      short: this.L[id].short, on: cur === id,
+      bg: cur === id ? 'var(--ink)' : 'var(--surface)',
+      fg: cur === id ? 'var(--ink-on)' : 'var(--ink-2)',
+      pick: () => this.setState({ lang: id })
+    }));
+  }
+
+  L = {
+    ar: {
+      dir: 'rtl', short: 'ع', langLabel: 'اللغة', sep: ' ',
+      back: 'رجوع', title: 'التحقّق', role: 'الدور', roles: ['مستورد', 'تاجر'],
+      views: ['السلّم', 'الوثيقة', 'المعاينة', 'الإرسال', 'قيد المراجعة', 'تصحيح', 'مقبول', 'منتهية'],
+      currentLevelName: 'هوية مؤكَّدة', currentLevel: 'مستواك الحالي',
+      oneStep: { importer: 'خطوة واحدة تفصلك عن نشر رحلة.', trader: 'خطوة واحدة تفصلك عن عرض منتجاتك للجمهور.' },
+      levelsTitle: 'المستويات', required: 'المطلوب', unlocks: 'يفتح لك',
+      states: { done: 'مكتمل', now: 'ناقص', later: 'لاحقاً' },
+      levels: {
+        importer: [
+          ['حساب مسجَّل', ['رقم هاتف مؤكَّد'], ['تصفّح السوق والبحث', 'الحفظ والمراسلة']],
+          ['هوية مؤكَّدة', ['بطاقة التعريف الوطنية', 'صورة حيّة مطابقة'], ['ملف عام', 'نشر طلب توريد']],
+          ['مستورد مُتحقَّق', ['بطاقة المقاول الذاتي — استيراد مصغّر', 'الرخصة العامة', 'الرقم الجبائي', 'الانتساب إلى CASNOS'], ['نشر رحلة', 'الظهور في المطابقة', 'استقبال التزامات'], 'أكمل الوثيقة الناقصة'],
+          ['سجل مُثبَت', ['10 معاملات مؤكَّدة', 'بلا نزاع مفتوح'], ['شارة السجل', 'أولوية في الترتيب']]
+        ],
+        trader: [
+          ['حساب مسجَّل', ['رقم هاتف مؤكَّد'], ['تصفّح السوق والبحث', 'الحفظ والمراسلة']],
+          ['هوية مؤكَّدة', ['بطاقة التعريف الوطنية', 'صورة حيّة مطابقة'], ['نشر طلب توريد', 'التواصل مع المستوردين']],
+          ['تاجر مُتحقَّق', ['السجل التجاري', 'الرقم الجبائي', 'عنوان النشاط'], ['عرض منتجات للجمهور في السوق', 'ملف متجر عام', 'الالتزام بعربون'], 'ارفع السجل التجاري'],
+          ['سجل مُثبَت', ['10 معاملات مؤكَّدة', 'بلا نزاع مفتوح'], ['شارة السجل', 'أولوية في نتائج البحث']]
+        ]
+      },
+      noteA: 'مَعْبَر تتحقّق من وثائقك ومن صلاحيتها.', noteB: 'لا تمنحك المنصّة حقّ الاستيراد', noteC: '— هذا الحق تحصل عليه من الجهات الرسمية، ونحن نتأكّد فقط أنك تملكه.',
+      docs: {
+        importer: ['الرخصة العامة', 'الوثيقة التي تسلّمها وزارة التجارة الخارجية وتسمح لك بممارسة الاستيراد المصغّر.', 'حتى يرى التاجر أنك مؤهّل فعلاً قبل أن يلتزم معك، ولتنبيهك قبل انتهاء صلاحيتها.'],
+        trader: ['السجل التجاري', 'المستخرج الذي يثبت قيدك في السجل التجاري ويسمح لك بالبيع للجمهور.', 'لأن العرض للمستهلك يتطلّب صفة تاجر مقيَّد. بدونه يمكنك الشراء والتواصل، لكن لا يمكنك نشر منتج في السوق.']
+      },
+      why: 'لماذا نطلبها', photoRules: 'شروط الصورة',
+      tips: ['الوثيقة كاملة داخل الإطار', 'النص واضح وغير منعكس', 'بلا ظلّ يغطّي المعلومات', 'الصورة ملوّنة لا بالأبيض والأسود'],
+      shoot: 'صوّر الوثيقة', pickPhoto: 'اختر صورة من الجهاز',
+      storage: 'وثائقك تُحفظ داخل الجزائر ولا تظهر لأي مستخدم آخر. تُستعمل للتحقّق فقط.',
+      checkPhoto: 'تأكّد من الصورة', docImage: 'صورة الوثيقة',
+      checks: ['الوثيقة كاملة في الصورة', 'النص مقروء', 'الإضاءة كافية'],
+      sendReview: 'أرسل للمراجعة', retake: 'أعد التصوير',
+      sending: 'جارٍ الإرسال', progress: (a, b) => a + ' من ' + b + ' ميغا',
+      resume: 'إذا انقطع الاتصال سنُكمل الإرسال تلقائياً عند عودته. تقدر تغلق الشاشة.', cancel: 'ألغِ',
+      reviewTitle: 'وثائقك قيد المراجعة', reviewLede: 'عادةً خلال يوم عمل. سيصلك إشعار فور صدور القرار.',
+      submitted: [['بطاقة التعريف الوطنية', 'مقبولة'], ['بطاقة المقاول الذاتي', 'مقبولة'], ['الرخصة العامة', 'قيد المراجعة'], ['الانتساب إلى CASNOS', 'مقبولة']],
+      whatNow: 'ما الذي يمكنني فعله الآن؟',
+      fixTitle: 'نحتاج صورة أوضح', fixLede: 'حسابك لم يُرفض. نحتاج فقط تصحيح وثيقة واحدة وتكمل من حيث توقّفت.',
+      problem: 'ما المشكلة', todo: 'ما عليك فعله',
+      problems: ['الزاوية السفلية من الوثيقة خارج الصورة، وتاريخ الانتهاء غير ظاهر.', 'انعكاس ضوء على الختم يمنع قراءته.'],
+      fixes: ['ضع الوثيقة على سطح مستوٍ وصوّر من فوقها مباشرة.', 'ابتعد عن الضوء المباشر أو أطفئ الفلاش.'],
+      reshoot: 'صوّر الوثيقة من جديد', support: 'تواصل مع الدعم',
+      done: {
+        importer: ['صرت مستورداً مُتحقَّقاً', 'تقدر دابا تنشر رحلة وتستقبل طلبات التجّار.', 'أنشئ رحلتك الأولى', ['نشر رحلة واستقبال طلبات', 'الظهور في نتائج المطابقة', 'رؤية لوحة الطلب كاملة', 'الدفتر المبسّط ومولّد الوسم'], 'رخصتك سارية حتى جوان 2027. سننبّهك قبل شهر من انتهائها.'],
+        trader: ['صرت تاجراً مُتحقَّقاً', 'تقدر دابا تعرض منتجاتك للجمهور في السوق.', 'أضف منتجك الأول', ['عرض منتجات للجمهور', 'ملف متجر عام', 'الالتزام بعربون', 'الظهور في نتائج البحث'], 'سجلّك التجاري مُتحقَّق منه. سننبّهك إن تغيّر وضعه.']
+      },
+      later: 'لاحقاً',
+      expiredTitle: 'انتهت صلاحية رخصتك', expiredLede: 'انتهت في 30 جوان 2026. رحلاتك متوقّفة حتى التجديد.',
+      frozen: ['نشر رحلة جديدة', 'استقبال طلبات جديدة', 'إكمال الالتزامات القائمة'],
+      uploadNew: 'ارفع الرخصة الجديدة'
+    },
+
+    fr: {
+      dir: 'ltr', short: 'FR', langLabel: 'Langue', sep: ' ',
+      back: 'Retour', title: 'Vérification', role: 'Rôle', roles: ['Importateur', 'Commerçant'],
+      views: ['Niveaux', 'Document', 'Aperçu', 'Envoi', 'En examen', 'Correction', 'Validé', 'Expiré'],
+      currentLevelName: 'Identité confirmée', currentLevel: 'Votre niveau actuel',
+      oneStep: { importer: 'Une étape vous sépare de la publication d’un voyage.', trader: 'Une étape vous sépare de la mise en vente au public.' },
+      levelsTitle: 'Niveaux', required: 'Requis', unlocks: 'Donne accès à',
+      states: { done: 'Complet', now: 'Incomplet', later: 'Plus tard' },
+      levels: {
+        importer: [
+          ['Compte créé', ['Téléphone confirmé'], ['Parcourir et chercher', 'Enregistrer et écrire']],
+          ['Identité confirmée', ['Carte d’identité nationale', 'Selfie correspondant'], ['Profil public', 'Publier une demande d’approvisionnement']],
+          ['Importateur vérifié', ['Carte d’auto-entrepreneur — faible valeur', 'Autorisation générale', 'Numéro fiscal', 'Affiliation CASNOS'], ['Publier un voyage', 'Apparaître dans l’appariement', 'Recevoir des engagements'], 'Compléter le document manquant'],
+          ['Historique établi', ['10 transactions confirmées', 'Aucun litige ouvert'], ['Badge d’historique', 'Priorité dans le classement']]
+        ],
+        trader: [
+          ['Compte créé', ['Téléphone confirmé'], ['Parcourir et chercher', 'Enregistrer et écrire']],
+          ['Identité confirmée', ['Carte d’identité nationale', 'Selfie correspondant'], ['Publier une demande d’approvisionnement', 'Contacter les importateurs']],
+          ['Commerçant vérifié', ['Registre de commerce', 'Numéro fiscal', 'Adresse de l’activité'], ['Vendre au public sur la place', 'Fiche boutique publique', 'S’engager avec des arrhes'], 'Déposer le registre de commerce'],
+          ['Historique établi', ['10 transactions confirmées', 'Aucun litige ouvert'], ['Badge d’historique', 'Priorité dans les résultats']]
+        ]
+      },
+      noteA: 'Maabar vérifie vos documents et leur validité.', noteB: 'La plateforme ne vous accorde pas le droit d’importer', noteC: '— ce droit vient des autorités ; nous vérifions seulement que vous le détenez.',
+      docs: {
+        importer: ['Autorisation générale', 'Le document délivré par le ministère du Commerce extérieur qui vous permet d’exercer l’importation de faible valeur.', 'Pour que le commerçant voie que vous êtes réellement habilité avant de s’engager, et pour vous prévenir avant expiration.'],
+        trader: ['Registre de commerce', 'L’extrait qui prouve votre inscription au registre et vous permet de vendre au public.', 'Parce que vendre au consommateur exige la qualité de commerçant inscrit. Sans lui, vous pouvez acheter et échanger, mais pas publier un produit sur la place.']
+      },
+      why: 'Pourquoi nous le demandons', photoRules: 'Règles de prise de vue',
+      tips: ['Le document entier dans le cadre', 'Texte net, sans reflet', 'Aucune ombre sur les informations', 'Photo en couleur, pas en noir et blanc'],
+      shoot: 'Photographier le document', pickPhoto: 'Choisir une photo sur l’appareil',
+      storage: 'Vos documents sont stockés en Algérie et ne sont visibles par aucun autre utilisateur. Ils servent uniquement à la vérification.',
+      checkPhoto: 'Vérifiez la photo', docImage: 'Photo du document',
+      checks: ['Document entier sur la photo', 'Texte lisible', 'Éclairage suffisant'],
+      sendReview: 'Envoyer pour examen', retake: 'Reprendre',
+      sending: 'Envoi en cours', progress: (a, b) => a + ' sur ' + b + ' Mo',
+      resume: 'Si la connexion est coupée, l’envoi reprend automatiquement à son retour. Vous pouvez fermer l’écran.', cancel: 'Annuler',
+      reviewTitle: 'Vos documents sont en examen', reviewLede: 'En général sous un jour ouvré. Vous serez notifié dès la décision.',
+      submitted: [['Carte d’identité nationale', 'Acceptée'], ['Carte d’auto-entrepreneur', 'Acceptée'], ['Autorisation générale', 'En examen'], ['Affiliation CASNOS', 'Acceptée']],
+      whatNow: 'Que puis-je faire en attendant ?',
+      fixTitle: 'Il nous faut une photo plus nette', fixLede: 'Votre compte n’est pas refusé. Il suffit de corriger un document et vous reprenez où vous en étiez.',
+      problem: 'Le problème', todo: 'Ce que vous devez faire',
+      problems: ['Le coin inférieur du document est hors cadre et la date d’expiration n’apparaît pas.', 'Un reflet sur le cachet empêche de le lire.'],
+      fixes: ['Posez le document à plat et photographiez-le directement du dessus.', 'Évitez la lumière directe ou éteignez le flash.'],
+      reshoot: 'Photographier à nouveau', support: 'Contacter l’assistance',
+      done: {
+        importer: ['Vous êtes importateur vérifié', 'Vous pouvez maintenant publier un voyage et recevoir les demandes des commerçants.', 'Créer votre premier voyage', ['Publier un voyage et recevoir des demandes', 'Apparaître dans les résultats d’appariement', 'Voir le tableau de la demande en entier', 'Registre simplifié et générateur d’étiquette'], 'Votre autorisation est valide jusqu’en juin 2027. Nous vous prévenons un mois avant expiration.'],
+        trader: ['Vous êtes commerçant vérifié', 'Vous pouvez maintenant proposer vos produits au public sur la place.', 'Ajouter votre premier produit', ['Vendre au public', 'Fiche boutique publique', 'S’engager avec des arrhes', 'Apparaître dans les résultats'], 'Votre registre de commerce est vérifié. Nous vous prévenons si son statut change.']
+      },
+      later: 'Plus tard',
+      expiredTitle: 'Votre autorisation a expiré', expiredLede: 'Expirée le 30 juin 2026. Vos voyages sont suspendus jusqu’au renouvellement.',
+      frozen: ['Publier un nouveau voyage', 'Recevoir de nouvelles demandes', 'Terminer les engagements en cours'],
+      uploadNew: 'Déposer la nouvelle autorisation'
+    },
+
+    en: {
+      dir: 'ltr', short: 'EN', langLabel: 'Language', sep: ',',
+      back: 'Back', title: 'Verification', role: 'Role', roles: ['Importer', 'Trader'],
+      views: ['Levels', 'Document', 'Preview', 'Uploading', 'Under review', 'Correction', 'Approved', 'Expired'],
+      currentLevelName: 'Identity confirmed', currentLevel: 'Your current level',
+      oneStep: { importer: 'One step away from publishing a trip.', trader: 'One step away from listing products to the public.' },
+      levelsTitle: 'Levels', required: 'Required', unlocks: 'Unlocks',
+      states: { done: 'Complete', now: 'Incomplete', later: 'Later' },
+      levels: {
+        importer: [
+          ['Registered account', ['Confirmed phone number'], ['Browse and search', 'Save and message']],
+          ['Identity confirmed', ['National ID card', 'Matching live selfie'], ['Public profile', 'Post a sourcing request']],
+          ['Verified importer', ['Auto-entrepreneur card — low-value import', 'General authorisation', 'Tax number', 'CASNOS affiliation'], ['Publish a trip', 'Appear in matching', 'Receive commitments'], 'Complete the missing document'],
+          ['Established record', ['10 confirmed transactions', 'No open dispute'], ['Record badge', 'Ranking priority']]
+        ],
+        trader: [
+          ['Registered account', ['Confirmed phone number'], ['Browse and search', 'Save and message']],
+          ['Identity confirmed', ['National ID card', 'Matching live selfie'], ['Post a sourcing request', 'Contact importers']],
+          ['Verified trader', ['Commercial register', 'Tax number', 'Business address'], ['List products to the public', 'Public shop profile', 'Commit with a deposit'], 'Upload the commercial register'],
+          ['Established record', ['10 confirmed transactions', 'No open dispute'], ['Record badge', 'Search priority']]
+        ]
+      },
+      noteA: 'Maabar checks your documents and that they are valid.', noteB: 'The platform does not grant you the right to import', noteC: '— that right comes from the authorities; we only confirm you hold it.',
+      docs: {
+        importer: ['General authorisation', 'The document issued by the Ministry of Foreign Trade that allows you to practise low-value importing.', 'So traders can see you are genuinely qualified before committing, and so we can warn you before it expires.'],
+        trader: ['Commercial register', 'The extract proving your registration, which allows you to sell to the public.', 'Because selling to consumers requires registered-trader status. Without it you can buy and message, but not list a product on the marketplace.']
+      },
+      why: 'Why we ask for it', photoRules: 'Photo requirements',
+      tips: ['The whole document inside the frame', 'Text sharp, no glare', 'No shadow over the details', 'In colour, not black and white'],
+      shoot: 'Photograph the document', pickPhoto: 'Choose a photo from the device',
+      storage: 'Your documents are stored inside Algeria and never shown to any other user. They are used for verification only.',
+      checkPhoto: 'Check the photo', docImage: 'Document photo',
+      checks: ['Whole document in the photo', 'Text readable', 'Lighting sufficient'],
+      sendReview: 'Send for review', retake: 'Retake',
+      sending: 'Uploading', progress: (a, b) => a + ' of ' + b + ' MB',
+      resume: 'If the connection drops, the upload resumes automatically when it’s back. You can close the screen.', cancel: 'Cancel',
+      reviewTitle: 'Your documents are under review', reviewLede: 'Usually within one working day. You’ll be notified as soon as there’s a decision.',
+      submitted: [['National ID card', 'Accepted'], ['Auto-entrepreneur card', 'Accepted'], ['General authorisation', 'Under review'], ['CASNOS affiliation', 'Accepted']],
+      whatNow: 'What can I do meanwhile?',
+      fixTitle: 'We need a clearer photo', fixLede: 'Your account has not been rejected. Just correct one document and continue where you left off.',
+      problem: 'The problem', todo: 'What to do',
+      problems: ['The bottom corner of the document is cut off and the expiry date isn’t visible.', 'Glare on the stamp makes it unreadable.'],
+      fixes: ['Lay the document flat and photograph it from directly above.', 'Move away from direct light or turn off the flash.'],
+      reshoot: 'Photograph it again', support: 'Contact support',
+      done: {
+        importer: ['You’re a verified importer', 'You can now publish a trip and receive traders’ requests.', 'Create your first trip', ['Publish trips and receive requests', 'Appear in matching results', 'See the full demand board', 'Simplified ledger and label generator'], 'Your authorisation is valid until June 2027. We’ll remind you a month before it expires.'],
+        trader: ['You’re a verified trader', 'You can now list your products to the public on the marketplace.', 'Add your first product', ['List products to the public', 'Public shop profile', 'Commit with a deposit', 'Appear in search results'], 'Your commercial register is verified. We’ll tell you if its status changes.']
+      },
+      later: 'Later',
+      expiredTitle: 'Your authorisation has expired', expiredLede: 'Expired on 30 June 2026. Your trips are paused until renewal.',
+      frozen: ['Publish a new trip', 'Receive new requests', 'Complete existing commitments'],
+      uploadNew: 'Upload the new authorisation'
+    }
+  };
 
   // The trader ladder ends in the one capability the importer can never have:
   // publishing a consumer-facing listing. That boundary is the whole legal model.
-  TRADER_LEVELS = [
-    { id: 1, title: 'حساب مسجَّل', state: 'مكتمل', kind: 'done',
-      needs: [['رقم هاتف مؤكَّد', true]],
-      unlocks: ['تصفّح السوق والبحث', 'الحفظ والمراسلة'] },
-    { id: 2, title: 'هوية مؤكَّدة', state: 'مكتمل', kind: 'done',
-      needs: [['بطاقة التعريف الوطنية', true], ['صورة حيّة مطابقة', true]],
-      unlocks: ['نشر طلب توريد', 'التواصل مع المستوردين'] },
-    { id: 3, title: 'تاجر مُتحقَّق', state: 'ناقص', kind: 'now',
-      needs: [['السجل التجاري', false], ['الرقم الجبائي', true], ['عنوان النشاط', true]],
-      unlocks: ['عرض منتجات للجمهور في السوق', 'ملف متجر عام', 'الالتزام بعربون'],
-      cta: 'ارفع السجل التجاري' },
-    { id: 4, title: 'سجل مُثبَت', state: 'لاحقاً', kind: 'later',
-      needs: [['10 معاملات مؤكَّدة', false], ['بلا نزاع مفتوح', true]],
-      unlocks: ['شارة السجل', 'أولوية في نتائج البحث'] }
-  ];
-
-  TRADER_DOC = {
-    title: 'السجل التجاري',
-    lede: 'المستخرج الذي يثبت قيدك في السجل التجاري ويسمح لك بالبيع للجمهور.',
-    why: 'لأن العرض للمستهلك يتطلّب صفة تاجر مقيَّد. بدونه يمكنك الشراء والتواصل، لكن لا يمكنك نشر منتج في السوق.'
+  LEVEL_KIND = ['done', 'done', 'now', 'later'];
+  NEED_OK = {
+    importer: [[true], [true, true], [true, false, true, true], [false, true]],
+    trader: [[true], [true, true], [false, true, true], [false, true]]
   };
-
-  IMPORTER_DOC = {
-    title: 'الرخصة العامة',
-    lede: 'الوثيقة التي تسلّمها وزارة التجارة الخارجية وتسمح لك بممارسة الاستيراد المصغّر.',
-    why: 'حتى يرى التاجر أنك مؤهّل فعلاً قبل أن يلتزم معك، ولتنبيهك قبل انتهاء صلاحيتها.'
-  };
-
-  VIEWS = [
-    ['ladder', 'السلّم'], ['need', 'الوثيقة'], ['preview', 'المعاينة'],
-    ['uploading', 'الإرسال'], ['review', 'قيد المراجعة'], ['fix', 'تصحيح'],
-    ['done', 'مقبول'], ['expired', 'منتهية']
-  ];
-
-  LEVELS = [
-    { id: 1, title: 'حساب مسجَّل', state: 'مكتمل', kind: 'done',
-      needs: [['رقم هاتف مؤكَّد', true]],
-      unlocks: ['تصفّح السوق والبحث', 'الحفظ والمراسلة'] },
-    { id: 2, title: 'هوية مؤكَّدة', state: 'مكتمل', kind: 'done',
-      needs: [['بطاقة التعريف الوطنية', true], ['صورة حيّة مطابقة', true]],
-      unlocks: ['ملف عام', 'نشر طلب توريد'] },
-    { id: 3, title: 'مستورد مُتحقَّق', state: 'ناقص', kind: 'now',
-      needs: [['بطاقة المقاول الذاتي — استيراد مصغّر', true], ['الرخصة العامة', false], ['الرقم الجبائي', true], ['الانتساب إلى CASNOS', true]],
-      unlocks: ['نشر رحلة', 'الظهور في المطابقة', 'استقبال التزامات'],
-      cta: 'أكمل الوثيقة الناقصة' },
-    { id: 4, title: 'سجل مُثبَت', state: 'لاحقاً', kind: 'later',
-      needs: [['10 معاملات مؤكَّدة', false], ['بلا نزاع مفتوح', true]],
-      unlocks: ['شارة السجل', 'أولوية في الترتيب'] }
-  ];
-
-  TIPS = ['الوثيقة كاملة داخل الإطار', 'النص واضح وغير منعكس', 'بلا ظلّ يغطّي المعلومات', 'الصورة ملوّنة لا بالأبيض والأسود'];
-
-  CHECKS = [
-    ['الوثيقة كاملة في الصورة', true],
-    ['النص مقروء', true],
-    ['الإضاءة كافية', false]
-  ];
-
-  SUBMITTED = [
-    ['بطاقة التعريف الوطنية', 'مقبولة', true],
-    ['بطاقة المقاول الذاتي', 'مقبولة', true],
-    ['الرخصة العامة', 'قيد المراجعة', null],
-    ['الانتساب إلى CASNOS', 'مقبولة', true]
-  ];
-
-  PROBLEMS = [
-    'الزاوية السفلية من الوثيقة خارج الصورة، وتاريخ الانتهاء غير ظاهر.',
-    'انعكاس ضوء على الختم يمنع قراءته.'
-  ];
-
-  FIXES = [
-    'ضع الوثيقة على سطح مستوٍ وصوّر من فوقها مباشرة.',
-    'ابتعد عن الضوء المباشر أو أطفئ الفلاش.'
-  ];
-
-  NEW_UNLOCKS = ['نشر رحلة واستقبال طلبات', 'الظهور في نتائج المطابقة', 'رؤية لوحة الطلب كاملة', 'الدفتر المبسّط ومولّد الوسم'];
-
-  FROZEN = [
-    ['نشر رحلة جديدة', false],
-    ['استقبال طلبات جديدة', false],
-    ['إكمال الالتزامات القائمة', true]
-  ];
+  VIEW_IDS = ['ladder', 'need', 'preview', 'uploading', 'review', 'fix', 'done', 'expired'];
+  CHECK_OK = [true, true, false];
+  SUBMITTED_OK = [true, true, null, true];
+  FROZEN_OK = [false, false, true];
 
   renderVals() {
-    const v = this.state.view;
+    const s = this.state, t = this.L[s.lang], v = s.view;
     const go = (x) => () => this.setState({ view: x });
-    const isTrader = this.state.role === 'trader';
-    const LV = isTrader ? this.TRADER_LEVELS : this.LEVELS;
-    const DOC = isTrader ? this.TRADER_DOC : this.IMPORTER_DOC;
+    const role = s.role;
+    const doc = t.docs[role];
+    const dn = t.done[role];
 
     return {
-      roles: this.ROLES.map(([id, label]) => ({
-        label, on: this.state.role === id,
-        bd: this.state.role === id ? 'var(--ink)' : 'transparent',
-        fg: this.state.role === id ? 'var(--ink)' : 'var(--ink-3)',
-        fw: this.state.role === id ? 600 : 400,
+      rootRef: this.root, t, langs: this.langsFor(s.lang),
+      backFlip: t.dir === 'rtl' ? -1 : 1,
+      oneStep: t.oneStep[role],
+      requiredLabel: t.required, unlocksLabel: t.unlocks,
+      progressText: this.iso(t.progress('1.2', '2.4')),
+      doneTitle: dn[0], doneLede: dn[1], doneCta: dn[2], validity: dn[4],
+      expiredLede: this.iso(t.expiredLede),
+
+      roles: ['importer', 'trader'].map((id, i) => ({
+        label: t.roles[i], on: role === id,
+        bd: role === id ? 'var(--ink)' : 'transparent',
+        fg: role === id ? 'var(--ink)' : 'var(--ink-3)',
+        fw: role === id ? 600 : 400,
         pick: () => this.setState({ role: id })
       })),
-      docTitle: DOC.title, docLede: DOC.lede, docWhy: DOC.why,
+      docTitle: doc[0], docLede: doc[1], docWhy: doc[2],
 
-      views: this.VIEWS.map(([id, label]) => ({
-        label, on: v === id,
+      views: this.VIEW_IDS.map((id, i) => ({
+        label: t.views[i], on: v === id,
         bg: v === id ? 'var(--ink)' : 'var(--surface)',
         fg: v === id ? 'var(--ink-on)' : 'var(--ink-2)',
         bd: v === id ? 'var(--ink)' : 'var(--rule-strong)',
@@ -398,55 +540,52 @@ class Component extends DCLogic {
 
       goDoc: go('need'), goNeed: go('need'), goCapture: go('preview'), goUploading: go('uploading'),
 
-      levels: LV.map(l => {
-        const done = l.kind === 'done', now = l.kind === 'now';
+      levels: t.levels[role].map(([title, needs, unlocks, cta], i) => {
+        const kind = this.LEVEL_KIND[i];
+        const done = kind === 'done', now = kind === 'now';
         return {
-          title: l.title, state: l.state,
+          title, state: t.states[kind],
           expanded: now,
           gap: now ? 12 : 0,
           fw: now ? 600 : 500,
           bd: now ? 'var(--brand)' : 'var(--rule)',
           bw: now ? 2 : 1,
           dotBg: done ? 'var(--allowed)' : 'var(--surface)',
-          dotBd: done ? 'var(--allowed)' : now ? 'var(--allowed)' : 'var(--rule-strong)',
+          dotBd: done ? 'var(--allowed)' : now ? 'var(--brand)' : 'var(--rule-strong)',
           dotFg: done ? '#fff' : 'var(--ink-2)',
-          glyph: done ? '✓' : String(l.id),
+          glyph: done ? '✓' : String(i + 1),
           chip: done ? 'chip-verified' : now ? 'chip-conditional' : 'chip-neutral',
-          needs: l.needs.map(([label, ok]) => ({
-            label,
-            glyph: ok ? '✓' : '·',
-            bg: ok ? 'var(--allowed-bg)' : 'var(--conditional-bg)',
-            fg: ok ? 'var(--allowed-ink)' : 'var(--conditional-ink)',
-            tone: ok ? 'var(--ink-2)' : 'var(--ink)'
-          })),
-          unlocks: l.unlocks,
-          hasCta: !!l.cta, cta: l.cta
+          needs: needs.map((label, k) => {
+            const ok = this.NEED_OK[role][i][k];
+            return {
+              label,
+              glyph: ok ? '✓' : '·',
+              bg: ok ? 'var(--allowed-bg)' : 'var(--conditional-bg)',
+              fg: ok ? 'var(--allowed-ink)' : 'var(--conditional-ink)',
+              tone: ok ? 'var(--ink-2)' : 'var(--ink)'
+            };
+          }),
+          unlocks,
+          hasCta: !!cta, cta: cta || ''
         };
       }),
 
-      tips: this.TIPS,
-      checks: this.CHECKS.map(([label, ok]) => ({
-        label,
-        glyph: ok ? '✓' : '!',
-        bg: ok ? 'var(--allowed-bg)' : 'var(--conditional-bg)',
-        fg: ok ? 'var(--allowed-ink)' : 'var(--conditional-ink)'
-      })),
-      submitted: this.SUBMITTED.map(([label, state, ok]) => ({
-        label, state,
-        glyph: ok === true ? '✓' : '⏱',
-        bg: ok === true ? 'var(--allowed-bg)' : 'var(--conditional-bg)',
-        fg: ok === true ? 'var(--allowed-ink)' : 'var(--conditional-ink)'
-      })),
-      problems: this.PROBLEMS,
-      fixes: this.FIXES,
-      newUnlocks: this.NEW_UNLOCKS,
-      frozen: this.FROZEN.map(([label, ok]) => ({
-        label,
-        glyph: ok ? '✓' : '✕',
-        bg: ok ? 'var(--allowed-bg)' : 'var(--prohibited-bg)',
-        fg: ok ? 'var(--allowed-ink)' : 'var(--prohibited-ink)',
-        tone: ok ? 'var(--ink-2)' : 'var(--ink)'
-      }))
+      tips: t.tips,
+      checks: t.checks.map((label, i) => {
+        const ok = this.CHECK_OK[i];
+        return { label, glyph: ok ? '✓' : '!', bg: ok ? 'var(--allowed-bg)' : 'var(--conditional-bg)', fg: ok ? 'var(--allowed-ink)' : 'var(--conditional-ink)' };
+      }),
+      submitted: t.submitted.map(([label, state], i) => {
+        const ok = this.SUBMITTED_OK[i];
+        return { label, state, glyph: ok === true ? '✓' : '⏱', bg: ok === true ? 'var(--allowed-bg)' : 'var(--conditional-bg)', fg: ok === true ? 'var(--allowed-ink)' : 'var(--conditional-ink)' };
+      }),
+      problems: t.problems,
+      fixes: t.fixes,
+      newUnlocks: dn[3],
+      frozen: t.frozen.map((label, i) => {
+        const ok = this.FROZEN_OK[i];
+        return { label, glyph: ok ? '✓' : '✕', bg: ok ? 'var(--allowed-bg)' : 'var(--prohibited-bg)', fg: ok ? 'var(--allowed-ink)' : 'var(--prohibited-ink)', tone: ok ? 'var(--ink-2)' : 'var(--ink)' };
+      })
     };
   }
 }
