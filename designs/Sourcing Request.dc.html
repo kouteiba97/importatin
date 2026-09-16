@@ -22,14 +22,19 @@
 </style>
 </helmet>
 
-<div dir="rtl" lang="ar" class="tier-op" style="min-height:100vh;display:flex;justify-content:center">
+<div ref="{{ rootRef }}" dir="rtl" lang="ar" class="tier-op" style="min-height:100vh;display:flex;justify-content:center">
 <div style="width:100%;max-width:430px;min-height:100vh;display:flex;flex-direction:column;background:var(--paper);border-inline:1px solid var(--rule)">
 
 <header style="display:flex;align-items:center;gap:10px;padding:11px 14px;background:var(--surface);border-bottom:1px solid var(--rule)">
-<button type="button" aria-label="رجوع" style="width:34px;height:34px;border:0;background:transparent;cursor:pointer;display:grid;place-items:center;color:inherit">
-<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 5l-7 7 7 7"/></svg>
+<button type="button" aria-label="{{ t.back }}" style="width:34px;height:34px;border:0;background:transparent;cursor:pointer;display:grid;place-items:center;color:inherit">
+<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="transform:scaleX({{ backFlip }})"><path d="M15 5l-7 7 7 7"/></svg>
 </button>
 <span style="flex:1;font-size:var(--t-h3);font-weight:500">{{ headline }}</span>
+<div role="group" aria-label="{{ t.langLabel }}" style="display:flex;border:1px solid var(--rule-strong);border-radius:var(--r-sm);overflow:hidden;flex:none">
+<sc-for list="{{ langs }}" as="l" hint-placeholder-count="3">
+<button type="button" onClick="{{ l.pick }}" aria-pressed="{{ l.on }}" style="height:24px;padding:0 8px;border:0;background:{{ l.bg }};color:{{ l.fg }};font-size:var(--t-micro);font-weight:500;cursor:pointer">{{ l.short }}</button>
+</sc-for>
+</div>
 </header>
 
 <div class="scrollx" style="display:flex;gap:6px;padding:9px 14px;background:var(--surface-2);border-bottom:1px solid var(--rule-faint)">
@@ -45,11 +50,11 @@
 <div style="display:flex;flex-direction:column;gap:17px">
 
 <div>
-<h1 style="margin:0 0 7px;font-size:23px;font-weight:600">ما الذي تبحث عنه؟</h1>
-<p style="margin:0;font-size:var(--t-body);line-height:1.7;color:var(--ink-2)">كلّما دقّت المواصفة، قلّ الخلاف عند التسليم.</p>
+<h1 style="margin:0 0 7px;font-size:23px;font-weight:600">{{ t.composeTitle }}</h1>
+<p style="margin:0;font-size:var(--t-body);line-height:1.7;color:var(--ink-2)">{{ t.composeLede }}</p>
 </div>
 
-<div><span class="fld">الفئة</span>
+<div><span class="fld">{{ t.category }}</span>
 <div class="scrollx" style="display:flex;gap:7px">
 <sc-for list="{{ cats }}" as="c" hint-placeholder-count="5">
 <button type="button" onClick="{{ c.pick }}" aria-pressed="{{ c.on }}" style="flex:none;height:38px;padding:0 14px;border:1px solid {{ c.bd }};border-radius:var(--r-pill);background:{{ c.bg }};color:{{ c.fg }};font-size:var(--t-sm);cursor:pointer">{{ c.label }}</button>
@@ -57,11 +62,11 @@
 </div>
 </div>
 
-<div><label class="fld" for="nm">اسم السلعة</label>
-<input id="nm" class="inp" value="قمصان قطنية رجالية"></div>
+<div><label class="fld" for="nm">{{ t.itemName }}</label>
+<input id="nm" class="inp" value="{{ t.item }}"></div>
 
-<div><label class="fld" for="sp">المواصفة</label>
-<textarea id="sp" class="ta" placeholder="القماش، المقاسات، الألوان، أي تفصيل يهمّك">قطن 100%. المقاسات ⁦M · L · XL⁩. الألوان: أبيض، أزرق فاتح، رمادي. أكمام طويلة.</textarea>
+<div><label class="fld" for="sp">{{ t.spec }}</label>
+<textarea id="sp" class="ta" placeholder="{{ t.specPh }}" value="{{ t.specVal }}"></textarea>
 <div style="display:flex;gap:7px;margin-top:8px">
 <sc-for list="{{ specHints }}" as="h" hint-placeholder-count="3">
 <button type="button" class="sw">+ {{ h }}</button>
@@ -70,28 +75,28 @@
 </div>
 
 <div style="display:flex;gap:11px">
-<div style="flex:1"><label class="fld" for="qt">الكمية</label>
+<div style="flex:1"><label class="fld" for="qt">{{ t.qty }}</label>
 <input id="qt" class="inp num" inputMode="numeric" value="120"></div>
-<div style="flex:1"><label class="fld" for="dl">الأجل</label>
-<select id="dl" class="inp"><option>خلال شهر</option><option>خلال أسبوعين</option><option>مرن</option></select></div>
+<div style="flex:1"><label class="fld" for="dl">{{ t.deadline }}</label>
+<select id="dl" class="inp"><option>{{ t.dl1 }}</option><option>{{ t.dl2 }}</option><option>{{ t.dl3 }}</option></select></div>
 </div>
 
 <div>
-<span class="fld">النطاق السعري المستهدف — للوحدة</span>
+<span class="fld">{{ t.targetRange }}</span>
 <div style="display:flex;align-items:center;gap:9px">
-<input class="inp num" inputMode="numeric" value="1 800" style="flex:1">
+<input class="inp num" inputMode="numeric" value="{{ lo }}" style="flex:1">
 <span style="flex:none;color:var(--ink-3)">—</span>
-<input class="inp num" inputMode="numeric" value="2 400" style="flex:1">
-<span class="num" style="flex:none;font-size:var(--t-sm);color:var(--ink-2)"><bdi>دج</bdi></span>
+<input class="inp num" inputMode="numeric" value="{{ hi }}" style="flex:1">
+<span class="num" style="flex:none;font-size:var(--t-sm);color:var(--ink-2)"><bdi>{{ t.cur }}</bdi></span>
 </div>
-<p style="margin:8px 0 0;font-size:var(--t-xs);color:var(--ink-3);line-height:1.65">يُعرض كنطاق، لا كرقم واحد. سقفك الأعلى لا يظهر قبل أن يقترح المستورد.</p>
+<p style="margin:8px 0 0;font-size:var(--t-xs);color:var(--ink-3);line-height:1.65">{{ t.rangeHint }}</p>
 </div>
 
-<div><label class="fld" for="wl">ولاية الاستلام</label>
-<select id="wl" class="inp"><option>سطيف</option><option>الجزائر</option><option>وهران</option></select></div>
+<div><label class="fld" for="wl">{{ t.wilaya }}</label>
+<select id="wl" class="inp"><option>{{ t.w1 }}</option><option>{{ t.w2 }}</option><option>{{ t.w3 }}</option></select></div>
 
 <div>
-<span class="fld">من يرى هذا الطلب</span>
+<span class="fld">{{ t.whoSees }}</span>
 <div style="display:flex;flex-direction:column;gap:9px">
 <sc-for list="{{ visibility }}" as="v" hint-placeholder-count="2">
 <button type="button" onClick="{{ v.pick }}" aria-pressed="{{ v.on }}" class="card" style="padding:13px;display:flex;gap:11px;align-items:flex-start;text-align:start;cursor:pointer;color:inherit;border-color:{{ v.bd }};border-width:{{ v.bw }}px">
@@ -105,8 +110,8 @@
 </div>
 </div>
 
-<button type="button" onClick="{{ goSent }}" class="cta">انشر الطلب</button>
-<p style="margin:0;font-size:var(--t-xs);color:var(--ink-3);line-height:1.7">النشر يفتح محادثات مع مستوردين مُتحقَّقين. لا ينشأ أي اتفاق إلا بموافقتك الصريحة في خطوة لاحقة.</p>
+<button type="button" onClick="{{ goSent }}" class="cta">{{ t.publish }}</button>
+<p style="margin:0;font-size:var(--t-xs);color:var(--ink-3);line-height:1.7">{{ t.publishNote }}</p>
 
 </div>
 </sc-if>
@@ -116,10 +121,10 @@
 <div style="display:flex;flex-direction:column;gap:16px">
 <div class="card" style="padding:15px">
 <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
-<span class="chip chip-verified">منشور</span>
-<span class="num" style="margin-inline-start:auto;font-size:var(--t-xs);color:var(--ink-3)"><bdi>منذ 3 ساعات</bdi></span>
+<span class="chip chip-verified">{{ t.published }}</span>
+<span class="num" style="margin-inline-start:auto;font-size:var(--t-xs);color:var(--ink-3)"><bdi>{{ sinceHrs }}</bdi></span>
 </div>
-<h2 style="margin:0 0 9px;font-size:var(--t-h2);font-weight:600">قمصان قطنية رجالية</h2>
+<h2 style="margin:0 0 9px;font-size:var(--t-h2);font-weight:600">{{ t.item }}</h2>
 <sc-for list="{{ summary }}" as="s" hint-placeholder-count="4">
 <div style="display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:9px 0;border-bottom:1px solid var(--rule-faint)">
 <span style="font-size:var(--t-sm);color:var(--ink-2)">{{ s.k }}</span>
@@ -130,13 +135,13 @@
 
 <div class="card" style="padding:15px;text-align:center">
 <div class="num" style="font-size:32px;font-weight:600;line-height:1"><bdi>7</bdi></div>
-<div style="font-size:var(--t-sm);color:var(--ink-2);margin-top:5px">مستوردين مُتحقَّقين طابقوا طلبك</div>
-<div style="font-size:var(--t-xs);color:var(--ink-3);margin-top:8px">عادةً تصل أول العروض خلال يوم.</div>
+<div style="font-size:var(--t-sm);color:var(--ink-2);margin-top:5px">{{ t.matched }}</div>
+<div style="font-size:var(--t-xs);color:var(--ink-3);margin-top:8px">{{ t.firstOffers }}</div>
 </div>
 
 <div style="display:flex;gap:9px">
-<button type="button" onClick="{{ goOffers }}" class="cta" style="flex:1;background:var(--brand)">شاهد العروض</button>
-<button type="button" style="flex:none;padding:0 16px;height:52px;border:1px solid var(--rule-strong);border-radius:var(--r);background:var(--surface);color:inherit;font-size:14px;cursor:pointer">عدّل</button>
+<button type="button" onClick="{{ goOffers }}" class="cta" style="flex:1;background:var(--brand)">{{ t.seeOffers }}</button>
+<button type="button" style="flex:none;padding:0 16px;height:52px;border:1px solid var(--rule-strong);border-radius:var(--r);background:var(--surface);color:inherit;font-size:14px;cursor:pointer">{{ t.edit }}</button>
 </div>
 </div>
 </sc-if>
@@ -145,8 +150,8 @@
 <sc-if value="{{ isOffers }}" hint-placeholder-val="{{ false }}">
 <div style="display:flex;flex-direction:column;gap:13px">
 <div style="display:flex;align-items:baseline;gap:8px">
-<span style="flex:1;font-size:var(--t-h2);font-weight:500">العروض</span>
-<span class="num" style="font-size:var(--t-xs);color:var(--ink-3)"><bdi>مرتّبة بالسجل</bdi></span>
+<span style="flex:1;font-size:var(--t-h2);font-weight:500">{{ t.offers }}</span>
+<span class="num" style="font-size:var(--t-xs);color:var(--ink-3)"><bdi>{{ t.byRecord }}</bdi></span>
 </div>
 
 <sc-for list="{{ offers }}" as="o" hint-placeholder-count="3">
@@ -175,7 +180,7 @@
 
 <div style="display:flex;gap:8px">
 <button type="button" onClick="{{ goAgree }}" style="flex:1;height:42px;border:0;border-radius:var(--r-sm);background:{{ o.ctaBg }};color:{{ o.ctaFg }};font-size:var(--t-sm);font-weight:600;cursor:pointer">{{ o.cta }}</button>
-<button type="button" style="flex:none;padding:0 14px;height:42px;border:1px solid var(--rule-strong);border-radius:var(--r-sm);background:var(--surface);color:inherit;font-size:var(--t-sm);cursor:pointer">راسل</button>
+<button type="button" style="flex:none;padding:0 14px;height:42px;border:1px solid var(--rule-strong);border-radius:var(--r-sm);background:var(--surface);color:inherit;font-size:var(--t-sm);cursor:pointer">{{ messageLabel }}</button>
 </div>
 </article>
 </sc-for>
@@ -186,38 +191,38 @@
 <sc-if value="{{ isAgree }}" hint-placeholder-val="{{ false }}">
 <div style="display:flex;flex-direction:column;gap:16px">
 <div>
-<h1 style="margin:0 0 7px;font-size:22px;font-weight:600">راجع الاتفاق</h1>
-<p style="margin:0;font-size:var(--t-body);line-height:1.7;color:var(--ink-2)">هذا توثيق لما اتّفقتما عليه. يصير ملزماً بينكما عند موافقة الطرفين.</p>
+<h1 style="margin:0 0 7px;font-size:22px;font-weight:600">{{ t.agreeTitle }}</h1>
+<p style="margin:0;font-size:var(--t-body);line-height:1.7;color:var(--ink-2)">{{ t.agreeLede }}</p>
 </div>
 
 <div class="card" style="padding:15px">
 <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
-<span aria-hidden="true" style="flex:none;width:34px;height:34px;border-radius:50%;background:var(--role-trader-bg);display:grid;place-items:center;font-size:11px;font-weight:600;color:var(--role-trader-ink)">ك ح</span>
+<span aria-hidden="true" style="flex:none;width:34px;height:34px;border-radius:50%;background:var(--role-importer-bg);display:grid;place-items:center;font-size:11px;font-weight:600;color:var(--role-importer-ink)">{{ t.cpInitials }}</span>
 <div style="flex:1;min-width:0">
-<div style="font-size:var(--t-sm);font-weight:600">كريمة ح.</div>
-<div class="num" style="font-size:var(--t-micro);color:var(--ink-2);margin-top:1px"><bdi>رحلة إسطنبول · تصل 18 أكتوبر</bdi></div>
+<div style="font-size:var(--t-sm);font-weight:600">{{ t.cpName }}</div>
+<div class="num" style="font-size:var(--t-micro);color:var(--ink-2);margin-top:1px"><bdi>{{ cpMeta }}</bdi></div>
 </div>
 </div>
-<sc-for list="{{ terms }}" as="t" hint-placeholder-count="6">
+<sc-for list="{{ terms }}" as="tm" hint-placeholder-count="6">
 <div style="display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:10px 0;border-bottom:1px solid var(--rule-faint)">
-<span style="font-size:var(--t-sm);color:var(--ink-2);flex:none">{{ t.k }}</span>
-<span class="num" style="font-size:var(--t-sm);font-weight:{{ t.fw }};text-align:end"><bdi>{{ t.v }}</bdi></span>
+<span style="font-size:var(--t-sm);color:var(--ink-2);flex:none">{{ tm.k }}</span>
+<span class="num" style="font-size:var(--t-sm);font-weight:{{ tm.fw }};text-align:end"><bdi>{{ tm.v }}</bdi></span>
 </div>
 </sc-for>
 </div>
 
 <div class="card" style="padding:15px">
-<div style="font-size:var(--t-sm);font-weight:600;margin-bottom:10px">إن تغيّر السعر</div>
-<p style="margin:0;font-size:var(--t-sm);line-height:1.75;color:var(--ink-2)">إذا خرج السعر النهائي عن النطاق المتّفق عليه، يُعلمك المستورد قبل الشراء ولك أن تقبل أو تنسحب بلا التزام.</p>
+<div style="font-size:var(--t-sm);font-weight:600;margin-bottom:10px">{{ t.ifPrice }}</div>
+<p style="margin:0;font-size:var(--t-sm);line-height:1.75;color:var(--ink-2)">{{ t.ifPriceBody }}</p>
 </div>
 
 <div style="display:flex;gap:10px;padding:13px 14px;border:1px solid var(--rule);border-radius:var(--r);background:var(--surface-2)">
 <span aria-hidden="true" style="flex:none;color:var(--ink-3)">i</span>
-<p style="margin:0;font-size:var(--t-xs);line-height:1.7;color:var(--ink-2)">أي مبلغ بينكما يُصرَّح به من الطرفين للتوثيق فقط. مَعْبَر لا تستلمه ولا تحتفظ به ولا تضمنه ولا تردّه.</p>
+<p style="margin:0;font-size:var(--t-xs);line-height:1.7;color:var(--ink-2)">{{ t.moneyNote }}</p>
 </div>
 
-<button type="button" class="cta" style="background:var(--brand)">أوافق على الاتفاق</button>
-<button type="button" style="width:100%;height:48px;border:1px solid var(--rule-strong);border-radius:var(--r);background:transparent;color:inherit;font-size:15px;cursor:pointer">اقترح تعديلاً</button>
+<button type="button" class="cta" style="background:var(--brand)">{{ t.accept }}</button>
+<button type="button" style="width:100%;height:48px;border:1px solid var(--rule-strong);border-radius:var(--r);background:transparent;color:inherit;font-size:15px;cursor:pointer">{{ t.propose }}</button>
 </div>
 </sc-if>
 
@@ -227,67 +232,173 @@
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:430,&quot;height&quot;:1480}}">
 class Component extends DCLogic {
-  state = { view: 'compose', cat: 'clothes', vis: 'open' };
+  /* Locale is browser-detected. French is the fallback — Algeria's commercial
+     lingua franca and the neutral middle between Arabic and English. One value. */
+  static FALLBACK = 'fr';
+  static detect() {
+    const tag = (typeof navigator !== 'undefined' && (navigator.language || '')).slice(0, 2).toLowerCase();
+    return ['ar', 'fr', 'en'].includes(tag) ? tag : Component.FALLBACK;
+  }
 
-  VIEWS = [['compose', 'إنشاء'], ['sent', 'منشور'], ['offers', 'العروض'], ['agree', 'الاتفاق']];
-  HEAD = { compose: 'طلب توريد جديد', sent: 'طلبك', offers: 'العروض', agree: 'الاتفاق' };
+  state = { view: 'compose', cat: 'clothes', vis: 'open', lang: Component.detect() };
+  root = React.createRef();
+  componentDidMount() { this._apply(); }
+  componentDidUpdate() { this._apply(); }
+  _apply() {
+    const el = this.root.current;
+    if (el) { el.setAttribute('dir', this.L[this.state.lang].dir); el.setAttribute('lang', this.state.lang); }
+  }
 
-  CATS = [['clothes', 'ألبسة'], ['bags', 'حقائب'], ['shoes', 'أحذية'], ['cosm', 'تجميل'], ['home', 'منزل']];
-  SPEC_HINTS = ['المقاسات', 'الألوان', 'الخامة'];
+  /* Text runs take a first-strong isolate so Arabic stays RTL and Latin stays LTR;
+     inside Arabic, each digit group is pinned LTR so "4 800" never reads "800 4". */
+  iso(s) { if (/[\u0600-\u06FF]/.test(s)) s = s.replace(/\d[\d ,.:]*\d%?|\d%?/g, m => '\u2066' + m + '\u2069'); return '\u2068' + s + '\u2069'; }
+  fmt(n, sep) { return '⁦' + String(n).replace(/\B(?=(\d{3})+(?!\d))/g, sep === undefined ? ' ' : sep) + '⁩'; }
+  /* Arabic counts nouns in four forms (one / two / 3–10 / 11+); French and English in two.
+     f = { one, two, few, many } for Arabic, { one, many } otherwise. */
+  count(n, t, f) {
+    if (t.dir === 'rtl') {
+      const m = n % 100;
+      if (n === 1) return f.one;
+      if (n === 2) return f.two;
+      if (m >= 3 && m <= 10) return this.fmt(n, t.sep) + ' ' + f.few;
+      return this.fmt(n, t.sep) + ' ' + f.many;
+    }
+    return this.fmt(n, t.sep) + ' ' + (n === 1 ? f.one : f.many);
+  }
+  langsFor(cur) {
+    return ['ar', 'fr', 'en'].map(id => ({
+      short: this.L[id].short, on: cur === id,
+      bg: cur === id ? 'var(--ink)' : 'var(--surface)',
+      fg: cur === id ? 'var(--ink-on)' : 'var(--ink-2)',
+      pick: () => this.setState({ lang: id })
+    }));
+  }
 
-  VIS = [
-    { id: 'open', title: 'كل المستوردين المُتحقَّقين', body: 'أوسع وصول وأسرع عروض.' },
-    { id: 'picked', title: 'من أختارهم فقط', body: 'ترسله لمستوردين تعاملت معهم من قبل.' }
+  L = {
+    ar: {
+      dir: 'rtl', short: 'ع', langLabel: 'اللغة', sep: ' ', cur: 'دج',
+      back: 'رجوع', views: ['إنشاء', 'منشور', 'العروض', 'الاتفاق'],
+      heads: { compose: 'طلب توريد جديد', sent: 'طلبك', offers: 'العروض', agree: 'الاتفاق' },
+      composeTitle: 'ما الذي تبحث عنه؟', composeLede: 'كلّما دقّت المواصفة، قلّ الخلاف عند التسليم.',
+      category: 'الفئة', cats: ['ألبسة', 'حقائب', 'أحذية', 'تجميل', 'منزل'],
+      itemName: 'اسم السلعة', item: 'قمصان قطنية رجالية',
+      spec: 'المواصفة', specPh: 'القماش، المقاسات، الألوان، أي تفصيل يهمّك', specVal: 'قطن 100%. المقاسات M · L · XL. الألوان: أبيض، أزرق فاتح، رمادي. أكمام طويلة.',
+      specHints: ['المقاسات', 'الألوان', 'الخامة'],
+      qty: 'الكمية', deadline: 'الأجل', dl1: 'خلال شهر', dl2: 'خلال أسبوعين', dl3: 'مرن',
+      targetRange: 'النطاق السعري المستهدف — للوحدة', rangeHint: 'يُعرض كنطاق، لا كرقم واحد. سقفك الأعلى لا يظهر قبل أن يقترح المستورد.',
+      wilaya: 'ولاية الاستلام', w1: 'سطيف', w2: 'الجزائر', w3: 'وهران',
+      whoSees: 'من يرى هذا الطلب', vis: [['كل المستوردين المُتحقَّقين', 'أوسع وصول وأسرع عروض.'], ['من أختارهم فقط', 'ترسله لمستوردين تعاملت معهم من قبل.']],
+      publish: 'انشر الطلب', publishNote: 'النشر يفتح محادثات مع مستوردين مُتحقَّقين. لا ينشأ أي اتفاق إلا بموافقتك الصريحة في خطوة لاحقة.',
+      published: 'منشور', sinceHrs: 'منذ 3 ساعات',
+      summary: [['الكمية', '120 وحدة'], ['النطاق المستهدف', '1 800 – 2 400 دج'], ['الأجل', 'خلال شهر'], ['الاستلام', 'سطيف']],
+      matched: 'مستوردين مُتحقَّقين طابقوا طلبك', firstOffers: 'عادةً تصل أول العروض خلال يوم.', seeOffers: 'شاهد العروض', edit: 'عدّل',
+      offers: 'العروض', byRecord: 'مرتّبة بالسجل', message: 'راسل',
+      offerList: [
+        ['كريمة ح.', 'ك ح', '84 معاملة مؤكَّدة · 97% إتمام', ['2 100 دج', '18 أكتوبر', '120'], 'تغطّي الكمية كاملة ضمن رحلة إسطنبول. اقترحت سعراً داخل نطاقك.', 'اقبل هذا العرض'],
+        ['ن. مرابط', 'ن م', '46 معاملة مؤكَّدة · 92% إتمام', ['1 950 دج', '9 نوفمبر', '80'], 'سعر أقلّ لكن الكمية جزئية والوصول بعد أجلك بأسبوعين.', 'ناقش التفاصيل'],
+        ['سفيان ب.', 'س ب', '12 معاملة مؤكَّدة · مستورد جديد', ['2 250 دج', '25 أكتوبر', '120'], 'يغطّي الكمية والأجل، لكن سجلّه قصير — اطلب صور عيّنة قبل الالتزام.', 'ناقش التفاصيل']
+      ],
+      cellKeys: ['السعر المقترح', 'تاريخ الوصول', 'الكمية'],
+      agreeTitle: 'راجع الاتفاق', agreeLede: 'هذا توثيق لما اتّفقتما عليه. يصير ملزماً بينكما عند موافقة الطرفين.',
+      cpInitials: 'ك ح', cpName: 'كريمة ح.', cpMeta: 'رحلة إسطنبول · تصل 18 أكتوبر',
+      terms: [['السلعة', 'قمصان قطنية رجالية'], ['المواصفة', 'قطن 100% · M · L · XL'], ['الكمية', '120 وحدة'], ['نطاق السعر', '2 100 دج ± 8%'], ['صلاحية النطاق', 'حتى 14 أكتوبر'], ['الاستلام', 'سطيف · 20 أكتوبر']],
+      ifPrice: 'إن تغيّر السعر', ifPriceBody: 'إذا خرج السعر النهائي عن النطاق المتّفق عليه، يُعلمك المستورد قبل الشراء ولك أن تقبل أو تنسحب بلا التزام.',
+      moneyNote: 'أي مبلغ بينكما يُصرَّح به من الطرفين للتوثيق فقط. مَعْبَر لا تستلمه ولا تحتفظ به ولا تضمنه ولا تردّه.',
+      accept: 'أوافق على الاتفاق', propose: 'اقترح تعديلاً'
+    },
+
+    fr: {
+      dir: 'ltr', short: 'FR', langLabel: 'Langue', sep: ' ', cur: 'DA',
+      back: 'Retour', views: ['Création', 'Publiée', 'Offres', 'Accord'],
+      heads: { compose: 'Nouvelle demande d’approvisionnement', sent: 'Votre demande', offers: 'Offres', agree: 'Accord' },
+      composeTitle: 'Que recherchez-vous ?', composeLede: 'Plus la spécification est précise, moins il y a de désaccord à la remise.',
+      category: 'Catégorie', cats: ['Vêtements', 'Sacs', 'Chaussures', 'Beauté', 'Maison'],
+      itemName: 'Article', item: 'Chemises coton homme',
+      spec: 'Spécification', specPh: 'Tissu, tailles, coloris, tout détail qui compte', specVal: 'Coton 100 %. Tailles M · L · XL. Coloris : blanc, bleu clair, gris. Manches longues.',
+      specHints: ['Tailles', 'Coloris', 'Matière'],
+      qty: 'Quantité', deadline: 'Délai', dl1: 'Sous un mois', dl2: 'Sous deux semaines', dl3: 'Flexible',
+      targetRange: 'Fourchette de prix visée — à l’unité', rangeHint: 'Affichée comme fourchette, pas comme un chiffre unique. Votre plafond n’est pas visible avant que l’importateur propose.',
+      wilaya: 'Wilaya de remise', w1: 'Sétif', w2: 'Alger', w3: 'Oran',
+      whoSees: 'Qui voit cette demande', vis: [['Tous les importateurs vérifiés', 'La plus large audience, les offres les plus rapides.'], ['Seulement ceux que je choisis', 'Envoyée aux importateurs avec qui vous avez déjà traité.']],
+      publish: 'Publier la demande', publishNote: 'La publication ouvre des conversations avec des importateurs vérifiés. Aucun accord n’existe sans votre consentement explicite, à une étape ultérieure.',
+      published: 'Publiée', sinceHrs: 'il y a 3 heures',
+      summary: [['Quantité', '120 unités'], ['Fourchette visée', '1 800 – 2 400 DA'], ['Délai', 'sous un mois'], ['Remise', 'Sétif']],
+      matched: 'importateurs vérifiés correspondent à votre demande', firstOffers: 'Les premières offres arrivent généralement sous un jour.', seeOffers: 'Voir les offres', edit: 'Modifier',
+      offers: 'Offres', byRecord: 'classées par historique', message: 'Écrire',
+      offerList: [
+        ['Karima H.', 'KH', '84 transactions confirmées · 97 % d’achèvement', ['2 100 DA', '18 octobre', '120'], 'Couvre toute la quantité dans le voyage d’Istanbul, avec un prix dans votre fourchette.', 'Accepter cette offre'],
+        ['N. Merabet', 'NM', '46 transactions confirmées · 92 % d’achèvement', ['1 950 DA', '9 novembre', '80'], 'Prix plus bas, mais quantité partielle et arrivée deux semaines après votre délai.', 'Discuter des détails'],
+        ['Sofiane B.', 'SB', '12 transactions confirmées · nouvel importateur', ['2 250 DA', '25 octobre', '120'], 'Couvre quantité et délai, mais l’historique est court — demandez des photos d’échantillon avant de vous engager.', 'Discuter des détails']
+      ],
+      cellKeys: ['Prix proposé', 'Arrivée', 'Quantité'],
+      agreeTitle: 'Vérifiez l’accord', agreeLede: 'Ceci consigne ce que vous avez convenu. Il vous engage tous deux une fois accepté par chacun.',
+      cpInitials: 'KH', cpName: 'Karima H.', cpMeta: 'Voyage Istanbul · arrivée le 18 octobre',
+      terms: [['Article', 'Chemises coton homme'], ['Spécification', 'Coton 100 % · M · L · XL'], ['Quantité', '120 unités'], ['Fourchette de prix', '2 100 DA ± 8 %'], ['Validité de la fourchette', 'jusqu’au 14 octobre'], ['Remise', 'Sétif · 20 octobre']],
+      ifPrice: 'Si le prix change', ifPriceBody: 'Si le prix final sort de la fourchette convenue, l’importateur vous prévient avant l’achat ; vous pouvez accepter ou vous retirer sans engagement.',
+      moneyNote: 'Tout montant entre vous est déclaré par les deux parties, pour mémoire uniquement. Maabar ne le reçoit pas, ne le conserve pas, ne le garantit pas et ne le rembourse pas.',
+      accept: 'J’accepte l’accord', propose: 'Proposer une modification'
+    },
+
+    en: {
+      dir: 'ltr', short: 'EN', langLabel: 'Language', sep: ',', cur: 'DA',
+      back: 'Back', views: ['Compose', 'Published', 'Offers', 'Agreement'],
+      heads: { compose: 'New sourcing request', sent: 'Your request', offers: 'Offers', agree: 'Agreement' },
+      composeTitle: 'What are you looking for?', composeLede: 'The more precise the specification, the fewer disagreements at handover.',
+      category: 'Category', cats: ['Clothing', 'Bags', 'Shoes', 'Beauty', 'Home'],
+      itemName: 'Item', item: 'Men’s cotton shirts',
+      spec: 'Specification', specPh: 'Fabric, sizes, colours, any detail that matters', specVal: '100% cotton. Sizes M · L · XL. Colours: white, light blue, grey. Long sleeves.',
+      specHints: ['Sizes', 'Colours', 'Material'],
+      qty: 'Quantity', deadline: 'Deadline', dl1: 'Within a month', dl2: 'Within two weeks', dl3: 'Flexible',
+      targetRange: 'Target price range — per unit', rangeHint: 'Shown as a range, not a single number. Your upper limit isn’t visible until an importer proposes.',
+      wilaya: 'Handover wilaya', w1: 'Sétif', w2: 'Algiers', w3: 'Oran',
+      whoSees: 'Who sees this request', vis: [['All verified importers', 'Widest reach, fastest offers.'], ['Only those I choose', 'Sent to importers you’ve dealt with before.']],
+      publish: 'Publish the request', publishNote: 'Publishing opens conversations with verified importers. No agreement exists without your explicit consent at a later step.',
+      published: 'Published', sinceHrs: '3 hours ago',
+      summary: [['Quantity', '120 units'], ['Target range', '1,800 – 2,400 DA'], ['Deadline', 'within a month'], ['Handover', 'Sétif']],
+      matched: 'verified importers matched your request', firstOffers: 'First offers usually arrive within a day.', seeOffers: 'See offers', edit: 'Edit',
+      offers: 'Offers', byRecord: 'sorted by record', message: 'Message',
+      offerList: [
+        ['Karima H.', 'KH', '84 confirmed transactions · 97% completion', ['2,100 DA', '18 October', '120'], 'Covers the full quantity on the Istanbul trip, with a price inside your range.', 'Accept this offer'],
+        ['N. Merabet', 'NM', '46 confirmed transactions · 92% completion', ['1,950 DA', '9 November', '80'], 'Lower price, but partial quantity and arrival two weeks after your deadline.', 'Discuss details'],
+        ['Sofiane B.', 'SB', '12 confirmed transactions · new importer', ['2,250 DA', '25 October', '120'], 'Covers quantity and deadline, but the record is short — ask for sample photos before committing.', 'Discuss details']
+      ],
+      cellKeys: ['Proposed price', 'Arrival', 'Quantity'],
+      agreeTitle: 'Review the agreement', agreeLede: 'This records what you agreed. It binds you both once each party accepts.',
+      cpInitials: 'KH', cpName: 'Karima H.', cpMeta: 'Istanbul trip · arrives 18 October',
+      terms: [['Item', 'Men’s cotton shirts'], ['Specification', '100% cotton · M · L · XL'], ['Quantity', '120 units'], ['Price range', '2,100 DA ± 8%'], ['Range valid until', '14 October'], ['Handover', 'Sétif · 20 October']],
+      ifPrice: 'If the price changes', ifPriceBody: 'If the final price falls outside the agreed range, the importer tells you before buying — you can accept or withdraw with no obligation.',
+      moneyNote: 'Any amount between you is declared by both parties for the record only. Maabar does not receive, hold, guarantee or refund it.',
+      accept: 'I accept the agreement', propose: 'Propose a change'
+    }
+  };
+
+  VIEW_IDS = ['compose', 'sent', 'offers', 'agree'];
+  CAT_IDS = ['clothes', 'bags', 'shoes', 'cosm', 'home'];
+  VIS_IDS = ['open', 'picked'];
+  // Offers are from importers; the cell tints flag where an offer falls short of the request.
+  OFFER_META = [
+    { fg: ['var(--ink)', 'var(--ink)', 'var(--allowed-ink)'], best: true },
+    { fg: ['var(--allowed-ink)', 'var(--conditional-ink)', 'var(--conditional-ink)'], best: false },
+    { fg: ['var(--ink)', 'var(--ink)', 'var(--allowed-ink)'], best: false }
   ];
-
-  SUMMARY = [
-    { k: 'الكمية', v: '120 وحدة' },
-    { k: 'النطاق المستهدف', v: '1 800 – 2 400 دج' },
-    { k: 'الأجل', v: 'خلال شهر' },
-    { k: 'الاستلام', v: 'سطيف' }
-  ];
-
-  OFFERS = [
-    { name: 'كريمة ح.', initials: 'ك ح', tone: 0,
-      record: '84 معاملة مؤكَّدة · 97% إتمام',
-      cells: [['2 100 دج', 'السعر المقترح', 'var(--ink)'], ['18 أكتوبر', 'تاريخ الوصول', 'var(--ink)'], ['120', 'الكمية', 'var(--allowed-ink)']],
-      note: 'تغطّي الكمية كاملة ضمن رحلة إسطنبول. اقترحت سعراً داخل نطاقك.',
-      cta: 'اقبل هذا العرض', best: true },
-    { name: 'ن. مرابط', initials: 'ن م', tone: 1,
-      record: '46 معاملة مؤكَّدة · 92% إتمام',
-      cells: [['1 950 دج', 'السعر المقترح', 'var(--allowed-ink)'], ['9 نوفمبر', 'تاريخ الوصول', 'var(--conditional-ink)'], ['80', 'الكمية', 'var(--conditional-ink)']],
-      note: 'سعر أقلّ لكن الكمية جزئية والوصول بعد أجلك بأسبوعين.',
-      cta: 'ناقش التفاصيل', best: false },
-    { name: 'سفيان ب.', initials: 'س ب', tone: 2,
-      record: '12 معاملة مؤكَّدة · مستورد جديد',
-      cells: [['2 250 دج', 'السعر المقترح', 'var(--ink)'], ['25 أكتوبر', 'تاريخ الوصول', 'var(--ink)'], ['120', 'الكمية', 'var(--allowed-ink)']],
-      note: 'يغطّي الكمية والأجل، لكن سجلّه قصير — اطلب صور عيّنة قبل الالتزام.',
-      cta: 'ناقش التفاصيل', best: false }
-  ];
-
-  TERMS = [
-    { k: 'السلعة', v: 'قمصان قطنية رجالية', fw: 600 },
-    { k: 'المواصفة', v: 'قطن 100% · ⁦M · L · XL⁩', fw: 400 },
-    { k: 'الكمية', v: '120 وحدة', fw: 600 },
-    { k: 'نطاق السعر', v: '2 100 دج ± 8%', fw: 600 },
-    { k: 'صلاحية النطاق', v: 'حتى 14 أكتوبر', fw: 400 },
-    { k: 'الاستلام', v: 'سطيف · 20 أكتوبر', fw: 400 }
-  ];
-
-  TONE = [
-    ['var(--role-consumer-bg)', 'var(--role-consumer-ink)'],
-    ['var(--role-trader-bg)', 'var(--role-trader-ink)'],
-    ['var(--role-importer-bg)', 'var(--role-importer-ink)']
-  ];
+  TERM_FW = [600, 400, 600, 600, 400, 400];
 
   renderVals() {
-    const s = this.state;
+    const s = this.state, t = this.L[s.lang];
     const go = (v) => () => this.setState({ view: v });
+    const plain = n => String(n).replace(/\B(?=(\d{3})+(?!\d))/g, t.sep);
 
     return {
-      headline: this.HEAD[s.view],
-      views: this.VIEWS.map(([id, label]) => ({
-        label, on: s.view === id,
+      rootRef: this.root, t, langs: this.langsFor(s.lang),
+      backFlip: t.dir === 'rtl' ? -1 : 1,
+      lo: plain(1800), hi: plain(2400),
+      sinceHrs: this.iso(t.sinceHrs),
+      messageLabel: t.message,
+      cpMeta: this.iso(t.cpMeta),
+
+      headline: t.heads[s.view],
+      views: this.VIEW_IDS.map((id, i) => ({
+        label: t.views[i], on: s.view === id,
         bg: s.view === id ? 'var(--ink)' : 'var(--surface)',
         fg: s.view === id ? 'var(--ink-on)' : 'var(--ink-2)',
         bd: s.view === id ? 'var(--ink)' : 'var(--rule-strong)',
@@ -297,41 +408,42 @@ class Component extends DCLogic {
       isOffers: s.view === 'offers', isAgree: s.view === 'agree',
       goSent: go('sent'), goOffers: go('offers'), goAgree: go('agree'),
 
-      cats: this.CATS.map(([id, label]) => ({
-        label, on: s.cat === id,
+      cats: this.CAT_IDS.map((id, i) => ({
+        label: t.cats[i], on: s.cat === id,
         bd: s.cat === id ? 'var(--ink)' : 'var(--rule-strong)',
         bg: s.cat === id ? 'var(--ink)' : 'var(--surface)',
         fg: s.cat === id ? 'var(--ink-on)' : 'var(--ink)',
         pick: () => this.setState({ cat: id })
       })),
-      specHints: this.SPEC_HINTS,
+      specHints: t.specHints,
 
-      visibility: this.VIS.map(v => {
-        const on = s.vis === v.id;
+      visibility: this.VIS_IDS.map((id, i) => {
+        const on = s.vis === id;
         return {
-          ...v, on,
+          title: t.vis[i][0], body: t.vis[i][1], on,
           bd: on ? 'var(--brand)' : 'var(--rule-faint)',
           bw: on ? 2 : 1,
           dotBd: on ? 'var(--brand)' : 'var(--rule-strong)',
           dotBg: on ? 'var(--brand)' : 'transparent',
           check: on ? '✓' : '',
-          pick: () => this.setState({ vis: v.id })
+          pick: () => this.setState({ vis: id })
         };
       }),
 
-      summary: this.SUMMARY,
+      summary: t.summary.map(([k, v]) => ({ k, v: this.iso(v) })),
 
-      offers: this.OFFERS.map(o => {
-        const [avBg, avFg] = this.TONE[o.tone];
+      offers: t.offerList.map(([name, initials, record, cells, note, cta], i) => {
+        const m = this.OFFER_META[i];
         return {
-          ...o, avBg, avFg,
-          cells: o.cells.map(([v, k, fg]) => ({ v, k, fg })),
-          ctaBg: o.best ? 'var(--brand)' : 'var(--surface)',
-          ctaFg: o.best ? 'var(--ink-on)' : 'var(--ink)'
+          name, initials, record: this.iso(record), note, cta,
+          avBg: 'var(--role-importer-bg)', avFg: 'var(--role-importer-ink)',
+          cells: cells.map((v, k) => ({ v: this.iso(v), k: t.cellKeys[k], fg: m.fg[k] })),
+          ctaBg: m.best ? 'var(--brand)' : 'var(--surface)',
+          ctaFg: m.best ? 'var(--ink-on)' : 'var(--ink)'
         };
       }),
 
-      terms: this.TERMS
+      terms: t.terms.map(([k, v], i) => ({ k, v: this.iso(v), fw: this.TERM_FW[i] }))
     };
   }
 }
