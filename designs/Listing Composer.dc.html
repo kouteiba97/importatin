@@ -22,14 +22,19 @@
 </style>
 </helmet>
 
-<div dir="rtl" lang="ar" class="tier-op" style="min-height:100vh;display:flex;justify-content:center">
+<div ref="{{ rootRef }}" dir="rtl" lang="ar" class="tier-op" style="min-height:100vh;display:flex;justify-content:center">
 <div style="width:100%;max-width:430px;min-height:100vh;display:flex;flex-direction:column;background:var(--paper);border-inline:1px solid var(--rule)">
 
 <header style="display:flex;align-items:center;gap:10px;padding:11px 14px;background:var(--surface);border-bottom:1px solid var(--rule)">
-<button type="button" aria-label="رجوع" style="width:34px;height:34px;border:0;background:transparent;cursor:pointer;display:grid;place-items:center;color:inherit">
-<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 5l-7 7 7 7"/></svg>
+<button type="button" aria-label="{{ t.back }}" style="width:34px;height:34px;border:0;background:transparent;cursor:pointer;display:grid;place-items:center;color:inherit">
+<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="transform:scaleX({{ backFlip }})"><path d="M15 5l-7 7 7 7"/></svg>
 </button>
 <span style="flex:1;font-size:var(--t-h3);font-weight:500">{{ headline }}</span>
+<div role="group" aria-label="{{ t.langLabel }}" style="display:flex;border:1px solid var(--rule-strong);border-radius:var(--r-sm);overflow:hidden;flex:none">
+<sc-for list="{{ langs }}" as="l" hint-placeholder-count="3">
+<button type="button" onClick="{{ l.pick }}" aria-pressed="{{ l.on }}" style="height:24px;padding:0 8px;border:0;background:{{ l.bg }};color:{{ l.fg }};font-size:var(--t-micro);font-weight:500;cursor:pointer">{{ l.short }}</button>
+</sc-for>
+</div>
 </header>
 
 <div class="scrollx" style="display:flex;gap:6px;padding:9px 14px;background:var(--surface-2);border-bottom:1px solid var(--rule-faint)">
@@ -46,12 +51,12 @@
 <div style="display:flex;gap:12px;padding:15px;border:1px solid var(--conditional-bd);border-radius:var(--r);background:var(--conditional-bg)">
 <span aria-hidden="true" style="flex:none;width:32px;height:32px;border-radius:50%;background:var(--conditional);color:#fff;display:grid;place-items:center;font-size:15px;font-weight:600">!</span>
 <div style="flex:1;min-width:0">
-<div style="font-size:var(--t-h3);font-weight:600;margin-bottom:5px">هذه الميزة للتجّار</div>
-<p style="margin:0;font-size:var(--t-sm);line-height:1.7;color:var(--ink-2)">العرض للجمهور في السوق يحتاج سجلاً تجارياً. صفة المستورد المصغّر وحدها لا تكفي.</p>
+<div style="font-size:var(--t-h3);font-weight:600;margin-bottom:5px">{{ t.blockedTitle }}</div>
+<p style="margin:0;font-size:var(--t-sm);line-height:1.7;color:var(--ink-2)">{{ t.blockedBody }}</p>
 </div>
 </div>
 <div class="card" style="padding:15px">
-<div style="font-size:var(--t-sm);font-weight:600;margin-bottom:10px">ما تقدر تديره بصفتك مستورداً</div>
+<div style="font-size:var(--t-sm);font-weight:600;margin-bottom:10px">{{ t.canDoTitle }}</div>
 <sc-for list="{{ canDo }}" as="c" hint-placeholder-count="3">
 <div style="display:flex;align-items:center;gap:9px;padding:7px 0">
 <span aria-hidden="true" style="flex:none;width:17px;height:17px;border-radius:50%;background:var(--allowed-bg);display:grid;place-items:center;font-size:9px;color:var(--allowed-ink)">✓</span>
@@ -59,8 +64,8 @@
 </div>
 </sc-for>
 </div>
-<button type="button" class="cta" style="background:var(--brand)">أضف صفة تاجر</button>
-<button type="button" style="width:100%;height:48px;border:1px solid var(--rule-strong);border-radius:var(--r);background:transparent;color:inherit;font-size:15px;cursor:pointer">ارجع للوحة الطلب</button>
+<button type="button" class="cta" style="background:var(--brand)">{{ t.addTrader }}</button>
+<button type="button" style="width:100%;height:48px;border:1px solid var(--rule-strong);border-radius:var(--r);background:transparent;color:inherit;font-size:15px;cursor:pointer">{{ t.backToBoard }}</button>
 </div>
 </sc-if>
 
@@ -69,28 +74,28 @@
 <div style="display:flex;flex-direction:column;gap:17px">
 
 <div>
-<span class="fld">الصور</span>
+<span class="fld">{{ t.photos }}</span>
 <div class="scrollx" style="display:flex;gap:9px">
 <button type="button" style="flex:none;width:92px;height:116px;border:1.5px dashed var(--rule-strong);border-radius:var(--r-sm);background:var(--surface-2);cursor:pointer;color:var(--ink-2);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;font-size:var(--t-micro)">
 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 8h3l1.5-2h7L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="3.4"/></svg>
-أضف صورة
+{{ t.addPhoto }}
 </button>
 <sc-for list="{{ photos }}" as="p" hint-placeholder-count="2">
 <div style="flex:none;width:92px;height:116px;position:relative">
 <span class="img ph {{ p.ph }}" style="width:100%;height:100%;border-radius:var(--r-sm);display:block"></span>
 <sc-if value="{{ p.first }}" hint-placeholder-val="{{ false }}">
-<span style="position:absolute;inset-block-end:6px;inset-inline-start:6px;height:19px;padding:0 7px;display:inline-flex;align-items:center;border-radius:var(--r-pill);background:var(--ink);color:var(--ink-on);font-size:9.5px">الغلاف</span>
+<span style="position:absolute;inset-block-end:6px;inset-inline-start:6px;height:19px;padding:0 7px;display:inline-flex;align-items:center;border-radius:var(--r-pill);background:var(--ink);color:var(--ink-on);font-size:9.5px">{{ cover }}</span>
 </sc-if>
-<button type="button" aria-label="احذف" style="position:absolute;inset-block-start:5px;inset-inline-end:5px;width:21px;height:21px;border:0;border-radius:50%;background:oklch(1 0 0 / 0.9);cursor:pointer;font-size:10px;color:var(--ink-2)">✕</button>
+<button type="button" aria-label="{{ remove }}" style="position:absolute;inset-block-start:5px;inset-inline-end:5px;width:21px;height:21px;border:0;border-radius:50%;background:oklch(1 0 0 / 0.9);cursor:pointer;font-size:10px;color:var(--ink-2)">✕</button>
 </div>
 </sc-for>
 </div>
-<p style="margin:9px 0 0;font-size:var(--t-xs);color:var(--ink-3);line-height:1.65">صوّر القطعة الفعلية بضوء طبيعي. الصور تمرّ على المراجعة قبل الظهور.</p>
+<p style="margin:9px 0 0;font-size:var(--t-xs);color:var(--ink-3);line-height:1.65">{{ t.photoHint }}</p>
 </div>
 
-<div><label class="fld" for="ti">اسم المنتج</label><input id="ti" class="inp" value="معطف نسائي شتوي — صوف مخلوط"></div>
+<div><label class="fld" for="ti">{{ t.name }}</label><input id="ti" class="inp" value="{{ t.nameVal }}"></div>
 
-<div><span class="fld">الفئة</span>
+<div><span class="fld">{{ t.category }}</span>
 <div class="scrollx" style="display:flex;gap:7px">
 <sc-for list="{{ cats }}" as="c" hint-placeholder-count="5">
 <button type="button" onClick="{{ c.pick }}" aria-pressed="{{ c.on }}" style="flex:none;height:38px;padding:0 14px;border:1px solid {{ c.bd }};border-radius:var(--r-pill);background:{{ c.bg }};color:{{ c.fg }};font-size:var(--t-sm);cursor:pointer">{{ c.label }}</button>
@@ -98,23 +103,23 @@
 </div>
 </div>
 
-<div><label class="fld" for="ds">الوصف</label>
-<textarea id="ds" class="ta">قصّة مستقيمة، بطانة داخلية، جيبان جانبيان وأزرار معدنية.</textarea></div>
+<div><label class="fld" for="ds">{{ t.desc }}</label>
+<textarea id="ds" class="ta" value="{{ t.descVal }}"></textarea></div>
 
 <div style="display:flex;gap:11px">
-<div style="flex:1"><label class="fld" for="pr">السعر للوحدة</label><input id="pr" class="inp num" inputMode="numeric" value="7 400"></div>
-<div style="flex:1"><label class="fld" for="qt">الكمية</label><input id="qt" class="inp num" inputMode="numeric" value="14"></div>
+<div style="flex:1"><label class="fld" for="pr">{{ t.unitPrice }}</label><input id="pr" class="inp num" inputMode="numeric" value="{{ priceVal }}"></div>
+<div style="flex:1"><label class="fld" for="qt">{{ t.qty }}</label><input id="qt" class="inp num" inputMode="numeric" value="14"></div>
 </div>
 
 <div>
-<span class="fld">التفاصيل</span>
+<span class="fld">{{ t.details }}</span>
 <div class="card" style="padding:4px 14px">
 <sc-for list="{{ attrs }}" as="a" hint-placeholder-count="3">
 <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;padding:11px 0;border-bottom:1px solid var(--rule-faint)">
 <span style="font-size:var(--t-sm);color:var(--ink-2)">{{ a.k }}</span>
 <span style="display:flex;align-items:center;gap:7px">
 <span class="num" style="font-size:var(--t-sm);font-weight:500"><bdi>{{ a.v }}</bdi></span>
-<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--ink-3)" stroke-width="2"><path d="M15 5l-7 7 7 7"/></svg>
+<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--ink-3)" stroke-width="2" style="transform:scaleX({{ arrow }})"><path d="M15 5l-7 7 7 7"/></svg>
 </span>
 </div>
 </sc-for>
@@ -122,19 +127,19 @@
 </div>
 
 <div>
-<span class="fld">المصدر</span>
+<span class="fld">{{ t.source }}</span>
 <div class="card" style="padding:13px;display:flex;align-items:center;gap:11px">
-<span aria-hidden="true" style="flex:none;width:32px;height:32px;border-radius:50%;background:var(--role-trader-bg);display:grid;place-items:center;font-size:10px;font-weight:600;color:var(--role-trader-ink)">ك ح</span>
+<span aria-hidden="true" style="flex:none;width:32px;height:32px;border-radius:50%;background:var(--role-importer-bg);display:grid;place-items:center;font-size:10px;font-weight:600;color:var(--role-importer-ink)">{{ t.srcInitials }}</span>
 <div style="flex:1;min-width:0">
-<div style="font-size:var(--t-sm);font-weight:500">من رحلة كريمة ح. — إسطنبول</div>
-<div class="num" style="font-size:var(--t-micro);color:var(--ink-2);margin-top:2px"><bdi>اشتريتَ 18 وحدة · وصلت 18 أكتوبر</bdi></div>
+<div style="font-size:var(--t-sm);font-weight:500">{{ t.srcTrip }}</div>
+<div class="num" style="font-size:var(--t-micro);color:var(--ink-2);margin-top:2px"><bdi>{{ srcMeta }}</bdi></div>
 </div>
 </div>
-<p style="margin:9px 0 0;font-size:var(--t-xs);color:var(--ink-3);line-height:1.65">يظهر للمشتري «المصدر: تركيا» فقط. لا يُعرض اسم المستورد ولا سعر شرائك.</p>
+<p style="margin:9px 0 0;font-size:var(--t-xs);color:var(--ink-3);line-height:1.65">{{ t.srcHint }}</p>
 </div>
 
 <div>
-<span class="fld">التسليم</span>
+<span class="fld">{{ t.delivery }}</span>
 <div style="display:flex;flex-wrap:wrap;gap:7px">
 <sc-for list="{{ delivery }}" as="d" hint-placeholder-count="3">
 <button type="button" onClick="{{ d.pick }}" aria-pressed="{{ d.on }}" style="height:38px;padding:0 13px;border:1px solid {{ d.bd }};border-radius:var(--r-pill);background:{{ d.bg }};color:{{ d.fg }};font-size:var(--t-sm);cursor:pointer;display:flex;align-items:center;gap:6px">
@@ -145,23 +150,23 @@
 </div>
 </div>
 
-<button type="button" onClick="{{ goReview }}" class="cta">معاينة ونشر</button>
+<button type="button" onClick="{{ goReview }}" class="cta">{{ t.previewPublish }}</button>
 </div>
 </sc-if>
 
 <!-- ══ REVIEW ══ -->
 <sc-if value="{{ isReview }}" hint-placeholder-val="{{ false }}">
 <div style="display:flex;flex-direction:column;gap:16px">
-<h1 style="margin:0;font-size:22px;font-weight:600">هكذا يراه المشتري</h1>
+<h1 style="margin:0;font-size:22px;font-weight:600">{{ t.buyerSees }}</h1>
 
 <div class="tier-public" style="padding:14px;border-radius:var(--r);background:var(--paper-public)">
 <article class="card" style="width:170px;overflow:hidden;box-shadow:var(--e1)">
 <span class="img img-card ph ph-coat" style="border-radius:0;display:block"></span>
 <div style="padding:10px 11px 12px;display:flex;flex-direction:column;gap:6px">
-<span style="font-size:var(--t-sm);line-height:1.45">معطف نسائي شتوي — صوف مخلوط</span>
-<span class="num" style="font-size:16px;font-weight:600;color:var(--ink)"><bdi>7 400 دج</bdi></span>
+<span style="font-size:var(--t-sm);line-height:1.45">{{ t.nameVal }}</span>
+<span class="num" style="font-size:16px;font-weight:600;color:var(--ink)"><bdi>{{ priceShown }}</bdi></span>
 <span style="display:flex;align-items:center;gap:5px;padding-top:6px;border-top:1px solid var(--rule-faint)">
-<span style="flex:1;font-size:var(--t-micro);color:var(--ink-2)">بوتيك نادية</span>
+<span style="flex:1;font-size:var(--t-micro);color:var(--ink-2)">{{ t.shop }}</span>
 <svg width="12" height="12" viewBox="0 0 24 24" style="flex:none" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="var(--allowed)"/><path d="M7.4 12.4l3 3 6.2-6.6" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
 </span>
 </div>
@@ -177,8 +182,8 @@
 </sc-for>
 </div>
 
-<button type="button" onClick="{{ goDone }}" class="cta" style="background:var(--brand)">انشر في السوق</button>
-<button type="button" style="width:100%;height:48px;border:1px solid var(--rule-strong);border-radius:var(--r);background:transparent;color:inherit;font-size:15px;cursor:pointer">احفظ كمسوّدة</button>
+<button type="button" onClick="{{ goDone }}" class="cta" style="background:var(--brand)">{{ t.publish }}</button>
+<button type="button" style="width:100%;height:48px;border:1px solid var(--rule-strong);border-radius:var(--r);background:transparent;color:inherit;font-size:15px;cursor:pointer">{{ t.saveDraft }}</button>
 </div>
 </sc-if>
 
@@ -187,8 +192,8 @@
 <div style="display:flex;flex-direction:column;gap:17px;padding-top:14px">
 <div style="text-align:center">
 <span aria-hidden="true" style="display:inline-grid;place-items:center;width:58px;height:58px;border-radius:50%;background:var(--conditional-bg);color:var(--conditional-ink);font-size:24px;margin-bottom:13px">⏱</span>
-<h1 style="margin:0 0 8px;font-size:22px;font-weight:600">قيد المراجعة</h1>
-<p style="margin:0;font-size:var(--t-body);line-height:1.7;color:var(--ink-2)">الصور والوصف يمرّان على مراجعة سريعة قبل الظهور للجمهور. عادةً خلال ساعات.</p>
+<h1 style="margin:0 0 8px;font-size:22px;font-weight:600">{{ t.pendingTitle }}</h1>
+<p style="margin:0;font-size:var(--t-body);line-height:1.7;color:var(--ink-2)">{{ t.pendingBody }}</p>
 </div>
 <div class="card" style="padding:4px 14px">
 <sc-for list="{{ after }}" as="a" hint-placeholder-count="3">
@@ -198,7 +203,7 @@
 </div>
 </sc-for>
 </div>
-<button type="button" class="cta">أضف منتجاً آخر</button>
+<button type="button" class="cta">{{ t.addAnother }}</button>
 </div>
 </sc-if>
 
@@ -208,51 +213,144 @@
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:430,&quot;height&quot;:1240}}">
 class Component extends DCLogic {
-  state = { view: 'compose', cat: 'clothes', del: { shop: true, wilaya: true } };
+  /* Locale is browser-detected. French is the fallback — Algeria's commercial
+     lingua franca and the neutral middle between Arabic and English. One value. */
+  static FALLBACK = 'fr';
+  static detect() {
+    const tag = (typeof navigator !== 'undefined' && (navigator.language || '')).slice(0, 2).toLowerCase();
+    return ['ar', 'fr', 'en'].includes(tag) ? tag : Component.FALLBACK;
+  }
 
-  VIEWS = [['compose','إنشاء'],['review','معاينة'],['done','قيد المراجعة'],['blocked','بلا صلاحية']];
-  HEAD = { compose: 'منتج جديد', review: 'معاينة', done: 'منتج جديد', blocked: 'منتج جديد' };
+  state = { view: 'compose', cat: 'clothes', del: { shop: true, wilaya: true }, lang: Component.detect() };
+  root = React.createRef();
+  componentDidMount() { this._apply(); }
+  componentDidUpdate() { this._apply(); }
+  _apply() {
+    const el = this.root.current;
+    if (el) { el.setAttribute('dir', this.L[this.state.lang].dir); el.setAttribute('lang', this.state.lang); }
+  }
 
-  CATS = [['clothes','ألبسة'],['bags','حقائب'],['shoes','أحذية'],['cosm','تجميل'],['watch','ساعات']];
+  /* Text runs take a first-strong isolate so Arabic stays RTL and Latin stays LTR;
+     inside Arabic, each digit group is pinned LTR so "4 800" never reads "800 4". */
+  iso(s) { if (/[\u0600-\u06FF]/.test(s)) s = s.replace(/\d[\d ,.:]*\d%?|\d%?/g, m => '\u2066' + m + '\u2069'); return '\u2068' + s + '\u2069'; }
+  fmt(n, sep) { return '⁦' + String(n).replace(/\B(?=(\d{3})+(?!\d))/g, sep === undefined ? ' ' : sep) + '⁩'; }
+  /* Arabic counts nouns in four forms (one / two / 3–10 / 11+); French and English in two.
+     f = { one, two, few, many } for Arabic, { one, many } otherwise. */
+  count(n, t, f) {
+    if (t.dir === 'rtl') {
+      const m = n % 100;
+      if (n === 1) return f.one;
+      if (n === 2) return f.two;
+      if (m >= 3 && m <= 10) return this.fmt(n, t.sep) + ' ' + f.few;
+      return this.fmt(n, t.sep) + ' ' + f.many;
+    }
+    return this.fmt(n, t.sep) + ' ' + (n === 1 ? f.one : f.many);
+  }
+  langsFor(cur) {
+    return ['ar', 'fr', 'en'].map(id => ({
+      short: this.L[id].short, on: cur === id,
+      bg: cur === id ? 'var(--ink)' : 'var(--surface)',
+      fg: cur === id ? 'var(--ink-on)' : 'var(--ink-2)',
+      pick: () => this.setState({ lang: id })
+    }));
+  }
 
+  L = {
+    ar: {
+      dir: 'rtl', short: 'ع', langLabel: 'اللغة', sep: ' ', cur: 'دج',
+      back: 'رجوع', views: ['إنشاء', 'معاينة', 'قيد المراجعة', 'بلا صلاحية'], newProduct: 'منتج جديد', preview: 'معاينة',
+      blockedTitle: 'هذه الميزة للتجّار', blockedBody: 'العرض للجمهور في السوق يحتاج سجلاً تجارياً. صفة المستورد المصغّر وحدها لا تكفي.',
+      canDoTitle: 'ما تقدر تديره بصفتك مستورداً', addTrader: 'أضف صفة تاجر', backToBoard: 'ارجع للوحة الطلب',
+      canDo: ['نشر رحلة واستقبال طلبات التجّار', 'عرض ما تجلبه في لوحة الطلب للتجّار', 'بيع البضاعة لتاجر يعرضها بدوره للجمهور'],
+      photos: 'الصور', addPhoto: 'أضف صورة', cover: 'الغلاف', remove: 'احذف',
+      photoHint: 'صوّر القطعة الفعلية بضوء طبيعي. الصور تمرّ على المراجعة قبل الظهور.',
+      name: 'اسم المنتج', nameVal: 'معطف نسائي شتوي — صوف مخلوط', category: 'الفئة',
+      cats: ['ألبسة', 'حقائب', 'أحذية', 'تجميل', 'ساعات'],
+      desc: 'الوصف', descVal: 'قصّة مستقيمة، بطانة داخلية، جيبان جانبيان وأزرار معدنية.',
+      unitPrice: 'السعر للوحدة', qty: 'الكمية', details: 'التفاصيل',
+      attrs: [['المقاسات', 'S · M · L · XL'], ['الألوان', 'أسود · بيج · كحلي'], ['الخامة', 'صوف مخلوط 60%']],
+      source: 'المصدر', srcInitials: 'ك ح', srcTrip: 'من رحلة كريمة ح. — إسطنبول', srcMeta: 'اشتريتَ 18 وحدة · وصلت 18 أكتوبر',
+      srcHint: 'يظهر للمشتري «المصدر: تركيا» فقط. لا يُعرض اسم المستورد ولا سعر شرائك.',
+      delivery: 'التسليم', deliveryOpts: ['استلام من المحل', 'توصيل داخل الولاية', 'شحن خارج الولاية'],
+      previewPublish: 'معاينة ونشر', buyerSees: 'هكذا يراه المشتري', shop: 'بوتيك نادية',
+      checks: ['صورتان مرفوعتان — الحدّ الأدنى واحدة', 'السعر والكمية محدّدان', 'المقاسات والألوان مذكورة', 'لم تُذكر بيانات المستورد — جيّد'],
+      publish: 'انشر في السوق', saveDraft: 'احفظ كمسوّدة',
+      pendingTitle: 'قيد المراجعة', pendingBody: 'الصور والوصف يمرّان على مراجعة سريعة قبل الظهور للجمهور. عادةً خلال ساعات.',
+      after: ['سيصلك إشعار عند الموافقة أو عند طلب تعديل.', 'تقدر تعدّل المنتج أو تخفيه في أي وقت.', 'المنتج يظهر تلقائياً في ملف متجرك بعد الموافقة.'],
+      addAnother: 'أضف منتجاً آخر'
+    },
+
+    fr: {
+      dir: 'ltr', short: 'FR', langLabel: 'Langue', sep: ' ', cur: 'DA',
+      back: 'Retour', views: ['Création', 'Aperçu', 'En modération', 'Sans autorisation'], newProduct: 'Nouveau produit', preview: 'Aperçu',
+      blockedTitle: 'Fonction réservée aux commerçants', blockedBody: 'La mise en vente au public exige un registre de commerce. Le statut de micro-importateur seul ne suffit pas.',
+      canDoTitle: 'Ce que vous pouvez faire en tant qu’importateur', addTrader: 'Ajouter le statut de commerçant', backToBoard: 'Retour au tableau de la demande',
+      canDo: ['Publier un voyage et recevoir les demandes des commerçants', 'Montrer ce que vous rapportez aux commerçants sur le tableau de la demande', 'Vendre la marchandise à un commerçant, qui la propose ensuite au public'],
+      photos: 'Photos', addPhoto: 'Ajouter une photo', cover: 'Couverture', remove: 'Supprimer',
+      photoHint: 'Photographiez la pièce réelle en lumière naturelle. Les photos sont vérifiées avant publication.',
+      name: 'Nom du produit', nameVal: 'Manteau femme hiver — laine mélangée', category: 'Catégorie',
+      cats: ['Vêtements', 'Sacs', 'Chaussures', 'Beauté', 'Montres'],
+      desc: 'Description', descVal: 'Coupe droite, doublure intérieure, deux poches latérales et boutons métalliques.',
+      unitPrice: 'Prix unitaire', qty: 'Quantité', details: 'Détails',
+      attrs: [['Tailles', 'S · M · L · XL'], ['Coloris', 'Noir · beige · bleu marine'], ['Matière', 'Laine mélangée 60 %']],
+      source: 'Provenance', srcInitials: 'KH', srcTrip: 'Du voyage de Karima H. — Istanbul', srcMeta: 'Vous avez acheté 18 unités · arrivées le 18 octobre',
+      srcHint: 'L’acheteur voit uniquement « Origine : Turquie ». Ni le nom de l’importateur ni votre prix d’achat ne sont affichés.',
+      delivery: 'Remise', deliveryOpts: ['Retrait en boutique', 'Livraison dans la wilaya', 'Expédition hors wilaya'],
+      previewPublish: 'Aperçu et publication', buyerSees: 'Ce que voit l’acheteur', shop: 'Boutique Nadia',
+      checks: ['Deux photos déposées — minimum une', 'Prix et quantité renseignés', 'Tailles et coloris indiqués', 'Aucune donnée de l’importateur mentionnée — bien'],
+      publish: 'Publier sur la place', saveDraft: 'Enregistrer comme brouillon',
+      pendingTitle: 'En modération', pendingBody: 'Les photos et la description passent une vérification rapide avant d’être visibles. En général, quelques heures.',
+      after: ['Vous serez notifié à l’approbation ou si une modification est demandée.', 'Vous pouvez modifier ou masquer le produit à tout moment.', 'Une fois approuvé, le produit apparaît automatiquement sur votre fiche boutique.'],
+      addAnother: 'Ajouter un autre produit'
+    },
+
+    en: {
+      dir: 'ltr', short: 'EN', langLabel: 'Language', sep: ',', cur: 'DA',
+      back: 'Back', views: ['Compose', 'Preview', 'In moderation', 'Not permitted'], newProduct: 'New product', preview: 'Preview',
+      blockedTitle: 'This feature is for traders', blockedBody: 'Listing to the public requires a commercial register. Micro-importer status alone is not enough.',
+      canDoTitle: 'What you can do as an importer', addTrader: 'Add trader status', backToBoard: 'Back to the demand board',
+      canDo: ['Publish a trip and receive traders’ requests', 'Show traders what you’re bringing on the demand board', 'Sell goods to a trader, who then lists them to the public'],
+      photos: 'Photos', addPhoto: 'Add a photo', cover: 'Cover', remove: 'Remove',
+      photoHint: 'Photograph the actual piece in natural light. Photos are reviewed before they appear.',
+      name: 'Product name', nameVal: 'Women’s winter coat — wool blend', category: 'Category',
+      cats: ['Clothing', 'Bags', 'Shoes', 'Beauty', 'Watches'],
+      desc: 'Description', descVal: 'Straight cut, full lining, two side pockets and metal buttons.',
+      unitPrice: 'Unit price', qty: 'Quantity', details: 'Details',
+      attrs: [['Sizes', 'S · M · L · XL'], ['Colours', 'Black · beige · navy'], ['Material', 'Wool blend 60%']],
+      source: 'Source', srcInitials: 'KH', srcTrip: 'From Karima H.’s trip — Istanbul', srcMeta: 'You bought 18 units · arrived 18 October',
+      srcHint: 'Buyers see only “Origin: Türkiye”. Neither the importer’s name nor your purchase price is shown.',
+      delivery: 'Handover', deliveryOpts: ['Collect in store', 'Delivery within the wilaya', 'Shipping outside the wilaya'],
+      previewPublish: 'Preview and publish', buyerSees: 'What the buyer sees', shop: 'Boutique Nadia',
+      checks: ['Two photos uploaded — minimum is one', 'Price and quantity set', 'Sizes and colours listed', 'No importer details mentioned — good'],
+      publish: 'Publish to the marketplace', saveDraft: 'Save as draft',
+      pendingTitle: 'In moderation', pendingBody: 'Photos and description get a quick review before going public. Usually within hours.',
+      after: ['You’ll be notified on approval, or if a change is requested.', 'You can edit or hide the product at any time.', 'Once approved, the product appears on your shop profile automatically.'],
+      addAnother: 'Add another product'
+    }
+  };
+
+  VIEW_IDS = ['compose', 'review', 'done', 'blocked'];
+  CAT_IDS = ['clothes', 'bags', 'shoes', 'cosm', 'watch'];
+  DEL_IDS = ['shop', 'wilaya', 'out'];
   PHOTOS = [{ ph: 'ph-coat', first: true }, { ph: 'ph-coat', first: false }];
 
-  ATTRS = [
-    { k: 'المقاسات', v: '⁦S · M · L · XL⁩' },
-    { k: 'الألوان', v: 'أسود · بيج · كحلي' },
-    { k: 'الخامة', v: 'صوف مخلوط ⁦60%⁩' }
-  ];
-
-  DELIVERY = [['shop','استلام من المحل'],['wilaya','توصيل داخل الولاية'],['out','شحن خارج الولاية']];
-
-  CHECKS = [
-    ['صورتان مرفوعتان — الحدّ الأدنى واحدة', true],
-    ['السعر والكمية محدّدان', true],
-    ['المقاسات والألوان مذكورة', true],
-    ['لم تُذكر بيانات المستورد — جيّد', true]
-  ];
-
-  CAN_DO = [
-    'نشر رحلة واستقبال طلبات التجّار',
-    'عرض ما تجلبه في لوحة الطلب للتجّار',
-    'بيع البضاعة لتاجر يعرضها بدوره للجمهور'
-  ];
-
-  AFTER = [
-    'سيصلك إشعار عند الموافقة أو عند طلب تعديل.',
-    'تقدر تعدّل المنتج أو تخفيه في أي وقت.',
-    'المنتج يظهر تلقائياً في ملف متجرك بعد الموافقة.'
-  ];
-
   renderVals() {
-    const s = this.state;
+    const s = this.state, t = this.L[s.lang];
     const go = (v) => () => this.setState({ view: v });
     const v = s.view;
 
     return {
-      headline: this.HEAD[v],
-      views: this.VIEWS.map(([id, label]) => ({
-        label, on: v === id,
+      rootRef: this.root, t, langs: this.langsFor(s.lang),
+      arrow: t.dir === 'rtl' ? 1 : -1,
+      backFlip: t.dir === 'rtl' ? -1 : 1,
+      cover: t.cover, remove: t.remove,
+      priceVal: String(7400).replace(/\B(?=(\d{3})+(?!\d))/g, t.sep),
+      priceShown: this.fmt(7400, t.sep) + ' ' + t.cur,
+      srcMeta: this.iso(t.srcMeta),
+
+      headline: v === 'review' ? t.preview : t.newProduct,
+      views: this.VIEW_IDS.map((id, i) => ({
+        label: t.views[i], on: v === id,
         bg: v === id ? 'var(--ink)' : 'var(--surface)',
         fg: v === id ? 'var(--ink-on)' : 'var(--ink-2)',
         bd: v === id ? 'var(--ink)' : 'var(--rule-strong)',
@@ -263,21 +361,22 @@ class Component extends DCLogic {
       goReview: go('review'), goDone: go('done'),
 
       photos: this.PHOTOS,
-      cats: this.CATS.map(([id, label]) => ({
-        label, on: s.cat === id,
+      cats: this.CAT_IDS.map((id, i) => ({
+        label: t.cats[i], on: s.cat === id,
         bd: s.cat === id ? 'var(--ink)' : 'var(--rule-strong)',
         bg: s.cat === id ? 'var(--ink)' : 'var(--surface)',
         fg: s.cat === id ? 'var(--ink-on)' : 'var(--ink)',
         pick: () => this.setState({ cat: id })
       })),
-      attrs: this.ATTRS,
-      delivery: this.DELIVERY.map(([id, label]) => {
+      attrs: t.attrs.map(([k, val]) => ({ k, v: this.iso(val) })),
+      // a selected delivery option is chrome, not a verdict
+      delivery: this.DEL_IDS.map((id, i) => {
         const on = !!s.del[id];
         return {
-          label, on,
+          label: t.deliveryOpts[i], on,
           bd: on ? 'var(--brand)' : 'var(--rule-strong)',
-          bg: on ? 'var(--allowed-bg)' : 'var(--surface)',
-          fg: on ? 'var(--allowed-ink)' : 'var(--ink)',
+          bg: on ? 'var(--brand-bg)' : 'var(--surface)',
+          fg: on ? 'var(--brand-ink)' : 'var(--ink)',
           pick: () => this.setState(x => {
             const del = { ...x.del };
             if (del[id]) delete del[id]; else del[id] = true;
@@ -285,15 +384,12 @@ class Component extends DCLogic {
           })
         };
       }),
-      checks: this.CHECKS.map(([label, ok]) => ({
-        label,
-        glyph: ok ? '✓' : '!',
-        bg: ok ? 'var(--allowed-bg)' : 'var(--conditional-bg)',
-        fg: ok ? 'var(--allowed-ink)' : 'var(--conditional-ink)',
-        tone: ok ? 'var(--ink-2)' : 'var(--ink)'
+      checks: t.checks.map(label => ({
+        label, glyph: '✓',
+        bg: 'var(--allowed-bg)', fg: 'var(--allowed-ink)', tone: 'var(--ink-2)'
       })),
-      canDo: this.CAN_DO,
-      after: this.AFTER
+      canDo: t.canDo,
+      after: t.after
     };
   }
 }
