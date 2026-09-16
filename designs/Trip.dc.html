@@ -302,7 +302,7 @@ class Component extends DCLogic {
         const fg = ratio >= 1 ? 'var(--prohibited)' : ratio >= 0.9 ? 'var(--conditional)' : 'var(--allowed)';
         return {
           label, pct, fg,
-          text: '⁦' + this.fmtD(m.cap - m.used, m.d, t.sep, t.dec) + ' ' + unit + '⁩',
+          text: this.iso(this.fmtD(m.cap - m.used, m.d, t.sep, t.dec) + ' ' + unit),
           sub: this.iso(t.of + ' ' + this.fmtD(m.cap, m.d, t.sep, t.dec) + ' ' + unit + ' · ' + note)
         };
       }),
