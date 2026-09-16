@@ -10,7 +10,7 @@
 <helmet>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="./tokens.css">
 <style>
 .scrollx{overflow-x:auto;scrollbar-width:none}
@@ -18,7 +18,7 @@
 .sec{margin-bottom:18px}
 .sech{display:flex;justify-content:space-between;align-items:baseline;padding:0 16px 10px}
 .sech h2{margin:0;font-size:var(--t-h2);font-weight:500}
-.more{border:0;background:transparent;font-size:var(--t-sm);color:var(--allowed-ink);cursor:pointer;padding:0}
+.more{border:0;background:transparent;font-size:var(--t-sm);color:var(--brand-ink);cursor:pointer;padding:0}
 .tap{cursor:pointer}
 .meter{height:7px;border-radius:4px;background:oklch(1 0 0 / 0.22);overflow:hidden}
 .meter>i{display:block;height:100%;border-radius:4px;background:#fff}
@@ -46,7 +46,7 @@
 
 <!-- ══ THE TRIP — the whole job in one card ══ -->
 <section class="sec" style="padding:0 16px">
-<div style="border-radius:var(--r-lg);background:linear-gradient(155deg, oklch(0.34 0.055 155), oklch(0.26 0.045 160));color:#fff;padding:17px;box-shadow:var(--e1)">
+<div style="border-radius:var(--r-lg);background:linear-gradient(155deg, oklch(0.330 0.080 254), oklch(0.240 0.060 257));color:#fff;padding:17px;box-shadow:var(--e1)">
 
 <div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:16px">
 <div style="flex:1;min-width:0">
@@ -74,7 +74,7 @@
 
 <div style="display:flex;align-items:center;gap:10px;margin-top:15px;padding-top:14px;border-top:1px solid oklch(1 0 0 / 0.16)">
 <span class="num" style="flex:1;font-size:var(--t-xs);opacity:0.82"><bdi>{{ tripCounter }}</bdi></span>
-<button type="button" style="height:38px;padding:0 16px;border:0;border-radius:var(--r-sm);background:#fff;color:oklch(0.28 0.05 158);font-size:var(--t-sm);font-weight:600;cursor:pointer">افتح قائمة الشراء</button>
+<button type="button" style="height:38px;padding:0 16px;border:0;border-radius:var(--r-sm);background:#fff;color:oklch(0.275 0.070 256);font-size:var(--t-sm);font-weight:600;cursor:pointer">افتح قائمة الشراء</button>
 </div>
 </div>
 </section>
@@ -152,11 +152,11 @@
 </section>
 
 <!-- ══ ONE NEXT STEP ══ -->
-<section style="margin:2px 16px 0;padding:15px;border:1px solid var(--allowed-bd);border-radius:var(--r);background:var(--allowed-bg)">
-<div style="font-size:var(--t-xs);color:var(--allowed-ink);margin-bottom:6px">الخطوة التالية</div>
+<section style="margin:2px 16px 0;padding:15px;border:1px solid var(--brand-bd);border-radius:var(--r);background:var(--brand-bg)">
+<div style="font-size:var(--t-xs);color:var(--brand-ink);margin-bottom:6px">الخطوة التالية</div>
 <div style="font-size:var(--t-h3);font-weight:500;margin-bottom:6px">{{ next.title }}</div>
 <p style="margin:0 0 12px;font-size:var(--t-sm);line-height:1.65;color:var(--ink-2)">{{ next.body }}</p>
-<button type="button" style="height:44px;padding:0 20px;border:0;border-radius:var(--r-sm);background:var(--allowed);color:var(--ink-on);font-size:var(--t-sm);font-weight:500;cursor:pointer">{{ next.cta }}</button>
+<button type="button" style="height:44px;padding:0 20px;border:0;border-radius:var(--r-sm);background:var(--brand);color:var(--ink-on);font-size:var(--t-sm);font-weight:500;cursor:pointer">{{ next.cta }}</button>
 </section>
 
 </main>

@@ -10,13 +10,13 @@
 <helmet>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="./tokens.css">
 <style>
 .scrollx{overflow-x:auto;scrollbar-width:none}
 .scrollx::-webkit-scrollbar{display:none}
 .bar{display:flex;align-items:flex-end;gap:4px;height:44px}
-.bar>i{flex:1;border-radius:2px 2px 0 0;background:var(--allowed);min-height:2px}
+.bar>i{flex:1;border-radius:2px 2px 0 0;background:var(--viz-2);min-height:2px}
 .sh{margin:0 0 10px;font-size:var(--t-h2);font-weight:500}
 </style>
 </helmet>
@@ -38,7 +38,7 @@
 
 <!-- ══ IDENTITY ══ -->
 <section style="display:flex;align-items:flex-start;gap:13px">
-<span aria-hidden="true" style="flex:none;width:62px;height:62px;border-radius:50%;background:oklch(0.92 0.03 150);display:grid;place-items:center;font-size:19px;font-weight:600;color:var(--allowed-ink)">{{ initials }}</span>
+<span aria-hidden="true" style="flex:none;width:62px;height:62px;border-radius:50%;background:var(--role-trader-bg);display:grid;place-items:center;font-size:19px;font-weight:600;color:var(--role-trader-ink)">{{ initials }}</span>
 <div style="flex:1;min-width:0;padding-block-start:3px">
 <div style="display:flex;align-items:center;gap:7px">
 <h1 style="margin:0;font-size:21px;font-weight:600">{{ name }}</h1>
@@ -163,13 +163,13 @@
 </main>
 
 <div style="position:fixed;inset-block-end:0;inset-inline:0;margin:0 auto;max-width:430px;display:flex;gap:9px;padding:11px 16px 15px;background:var(--surface);border-top:1px solid var(--rule)">
-<button type="button" style="flex:1;height:50px;border:0;border-radius:var(--r);background:var(--allowed);color:var(--ink-on);font-size:15px;font-weight:500;cursor:pointer">راسل</button>
+<button type="button" style="flex:1;height:50px;border:0;border-radius:var(--r);background:var(--brand);color:var(--ink-on);font-size:15px;font-weight:500;cursor:pointer">راسل</button>
 <button type="button" style="flex:1;height:50px;border:1px solid var(--rule-strong);border-radius:var(--r);background:var(--surface);color:inherit;font-size:15px;cursor:pointer">اطلب عرضاً</button>
 </div>
 
 <!-- ══ HOW A NUMBER IS COMPUTED ══ -->
 <sc-if value="{{ sheetOpen }}" hint-placeholder-val="{{ false }}">
-<div role="dialog" aria-label="تفصيل الرقم" style="position:fixed;inset:0;background:oklch(0.20 0.02 60 / 0.42);display:flex;align-items:flex-end;justify-content:center;z-index:40">
+<div role="dialog" aria-label="تفصيل الرقم" style="position:fixed;inset:0;background:oklch(0.24 0.06 257 / 0.42);display:flex;align-items:flex-end;justify-content:center;z-index:40">
 <div style="width:100%;max-width:430px;background:var(--surface);border-radius:var(--r-lg) var(--r-lg) 0 0;padding:17px 16px 24px;box-shadow:var(--e2)">
 <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:11px">
 <h3 style="margin:0;font-size:var(--t-h2);font-weight:500">{{ sheetTitle }}</h3>
@@ -268,7 +268,7 @@ class Component extends DCLogic {
 
       months: this.MONTHS.map((v, i) => ({
         h: Math.round(v / max * 100),
-        fg: i >= 9 ? 'var(--allowed)' : 'oklch(0.78 0.04 150)',
+        fg: i >= 9 ? 'var(--allowed)' : 'var(--allowed-bd)',
         t: v + ' معاملة'
       })),
       monthFrom: 'أكتوبر 2025',

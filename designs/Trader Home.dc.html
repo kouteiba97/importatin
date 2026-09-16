@@ -10,7 +10,7 @@
 <helmet>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="./tokens.css">
 <style>
 .scrollx{overflow-x:auto;scrollbar-width:none}
@@ -18,7 +18,7 @@
 .sec{margin:0 0 var(--gap-op)}
 .sech{display:flex;justify-content:space-between;align-items:baseline;padding:0 16px 9px}
 .sech h2{margin:0;font-size:var(--t-h2);font-weight:500}
-.more{border:0;background:transparent;font-size:var(--t-sm);color:var(--allowed-ink);cursor:pointer}
+.more{border:0;background:transparent;font-size:var(--t-sm);color:var(--brand-ink);cursor:pointer}
 .tap{cursor:pointer}
 </style>
 </helmet>
@@ -63,7 +63,7 @@
 <span style="flex:1;min-width:0;font-size:var(--t-xs);color:var(--ink-2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ o.who }}</span>
 <span class="num" style="font-size:var(--t-micro);color:var(--ink-3)"><bdi>{{ o.tx }}</bdi></span>
 </div>
-<button type="button" style="height:38px;border:0;border-radius:var(--r-sm);background:var(--allowed);color:var(--ink-on);font-size:var(--t-sm);font-weight:500;cursor:pointer">{{ o.cta }}</button>
+<button type="button" style="height:38px;border:0;border-radius:var(--r-sm);background:var(--brand);color:var(--ink-on);font-size:var(--t-sm);font-weight:500;cursor:pointer">{{ o.cta }}</button>
 </article>
 </sc-for>
 </div>
@@ -178,11 +178,11 @@
 </section>
 
 <!-- ── 7. ONE NEXT STEP ── -->
-<section style="margin:4px 16px 0;padding:14px;border:1px solid var(--allowed-bd);border-radius:var(--r);background:var(--allowed-bg)">
-<div style="font-size:var(--t-xs);color:var(--allowed-ink);margin-bottom:5px">الخطوة التالية</div>
+<section style="margin:4px 16px 0;padding:14px;border:1px solid var(--brand-bd);border-radius:var(--r);background:var(--brand-bg)">
+<div style="font-size:var(--t-xs);color:var(--brand-ink);margin-bottom:5px">الخطوة التالية</div>
 <div style="font-size:var(--t-h3);font-weight:500;margin-bottom:6px">{{ next.title }}</div>
 <p style="margin:0 0 11px;font-size:var(--t-sm);line-height:1.65;color:var(--ink-2)">{{ next.body }}</p>
-<button type="button" style="height:42px;padding:0 18px;border:0;border-radius:var(--r-sm);background:var(--allowed);color:var(--ink-on);font-size:var(--t-sm);font-weight:500;cursor:pointer">{{ next.cta }}</button>
+<button type="button" style="height:42px;padding:0 18px;border:0;border-radius:var(--r-sm);background:var(--brand);color:var(--ink-on);font-size:var(--t-sm);font-weight:500;cursor:pointer">{{ next.cta }}</button>
 </section>
 
 </main>
@@ -256,9 +256,9 @@ class Component extends DCLogic {
   ];
 
   TONE = [
-    ['oklch(0.93 0.03 28)', 'var(--accent-ink)'],
-    ['oklch(0.93 0.03 250)', 'oklch(0.35 0.06 250)'],
-    ['oklch(0.92 0.03 150)', 'var(--allowed-ink)']
+    ['var(--role-importer-bg)', 'var(--role-importer-ink)'],
+    ['var(--role-trader-bg)', 'var(--role-trader-ink)'],
+    ['var(--role-consumer-bg)', 'var(--role-consumer-ink)']
   ];
 
   ICON = {

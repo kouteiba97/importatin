@@ -10,12 +10,12 @@
 <helmet>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="./tokens.css">
 <style>
 .sech{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px}
 .sech h2{margin:0;font-size:var(--t-h2);font-weight:500}
-.more{border:0;background:transparent;font-size:var(--t-sm);color:var(--allowed-ink);cursor:pointer;padding:0}
+.more{border:0;background:transparent;font-size:var(--t-sm);color:var(--brand-ink);cursor:pointer;padding:0}
 </style>
 </helmet>
 
@@ -135,7 +135,7 @@
 </sc-if>
 
 <div style="display:flex;gap:9px">
-<button type="button" style="flex:1;height:50px;border:0;border-radius:var(--r);background:var(--allowed);color:var(--ink-on);font-size:15px;font-weight:600;cursor:pointer">{{ printLabel }}</button>
+<button type="button" style="flex:1;height:50px;border:0;border-radius:var(--r);background:var(--brand);color:var(--ink-on);font-size:15px;font-weight:600;cursor:pointer">{{ printLabel }}</button>
 <button type="button" style="flex:none;padding:0 16px;height:50px;border:1px solid var(--rule-strong);border-radius:var(--r);background:var(--surface);color:inherit;font-size:var(--t-sm);cursor:pointer">PDF</button>
 </div>
 
@@ -152,7 +152,7 @@
 <span style="font-size:var(--t-body);color:var(--ink-2)">يوماً متبقّياً</span>
 </div>
 <div style="font-size:var(--t-sm);color:var(--ink-2)">{{ planName }}</div>
-<div style="height:6px;border-radius:3px;background:var(--neutral-bg);overflow:hidden;margin-top:12px"><i style="display:block;height:100%;width:{{ planPct }}%;background:var(--allowed);border-radius:3px"></i></div>
+<div style="height:6px;border-radius:3px;background:var(--neutral-bg);overflow:hidden;margin-top:12px"><i style="display:block;height:100%;width:{{ planPct }}%;background:var(--brand);border-radius:3px"></i></div>
 <div class="num" style="font-size:var(--t-xs);color:var(--ink-3);margin-top:6px"><bdi>{{ planUntil }}</bdi></div>
 </section>
 
@@ -161,7 +161,7 @@
 <div class="card">
 <sc-for list="{{ plans }}" as="p" hint-placeholder-count="3">
 <label style="display:flex;align-items:center;gap:12px;padding:13px;border-bottom:1px solid var(--rule-faint);cursor:pointer">
-<input type="radio" name="plan" checked="{{ p.on }}" style="accent-color:var(--allowed);width:18px;height:18px;flex:none">
+<input type="radio" name="plan" checked="{{ p.on }}" style="accent-color:var(--brand);width:18px;height:18px;flex:none">
 <span style="flex:1;min-width:0">
 <span style="display:block;font-size:var(--t-body);font-weight:500">{{ p.label }}</span>
 <span class="num" style="display:block;font-size:var(--t-xs);color:var(--ink-2);margin-top:2px"><bdi>{{ p.note }}</bdi></span>
@@ -260,8 +260,8 @@ class Component extends DCLogic {
   ];
 
   METHODS = [
-    { id: 'ccp', tag: 'CCP', label: 'تحويل CCP أو بريدي موب', note: 'ارفع الوصل ويُفعَّل خلال يوم عمل', iconBg: 'oklch(0.93 0.03 250)', iconFg: 'oklch(0.35 0.06 250)' },
-    { id: 'cib', tag: 'CIB', label: 'بطاقة CIB أو الذهبية', note: 'تفعيل فوري', iconBg: 'oklch(0.92 0.03 150)', iconFg: 'var(--allowed-ink)' }
+    { id: 'ccp', tag: 'CCP', label: 'تحويل CCP أو بريدي موب', note: 'ارفع الوصل ويُفعَّل خلال يوم عمل', iconBg: 'var(--brand-bg)', iconFg: 'var(--brand-ink)' },
+    { id: 'cib', tag: 'CIB', label: 'بطاقة CIB أو الذهبية', note: 'تفعيل فوري', iconBg: 'var(--neutral-bg)', iconFg: 'var(--ink-2)' }
   ];
 
   renderVals() {
@@ -292,7 +292,7 @@ class Component extends DCLogic {
         ...x, on: x.id === s.item,
         fw: x.id === s.item ? 600 : 400,
         bg: x.id === s.item ? 'var(--allowed-bg)' : 'transparent',
-        bar: x.id === s.item ? 'var(--allowed)' : 'transparent',
+        bar: x.id === s.item ? 'var(--brand)' : 'transparent',
         meta: this.counted(x.q, this.UNIT_N) + ' · ' + x.origin,
         pick: () => this.setState({ item: x.id })
       })),

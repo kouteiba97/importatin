@@ -10,7 +10,7 @@
 <helmet>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="./tokens.css">
 <style>
 .fld{display:block;font-size:var(--t-sm);color:var(--ink-2);margin-bottom:7px}
@@ -59,7 +59,7 @@
 </div>
 </sc-for>
 </div>
-<button type="button" class="cta" style="background:var(--allowed)">أضف صفة تاجر</button>
+<button type="button" class="cta" style="background:var(--brand)">أضف صفة تاجر</button>
 <button type="button" style="width:100%;height:48px;border:1px solid var(--rule-strong);border-radius:var(--r);background:transparent;color:inherit;font-size:15px;cursor:pointer">ارجع للوحة الطلب</button>
 </div>
 </sc-if>
@@ -124,7 +124,7 @@
 <div>
 <span class="fld">المصدر</span>
 <div class="card" style="padding:13px;display:flex;align-items:center;gap:11px">
-<span aria-hidden="true" style="flex:none;width:32px;height:32px;border-radius:50%;background:oklch(0.92 0.03 150);display:grid;place-items:center;font-size:10px;font-weight:600;color:var(--allowed-ink)">ك ح</span>
+<span aria-hidden="true" style="flex:none;width:32px;height:32px;border-radius:50%;background:var(--role-trader-bg);display:grid;place-items:center;font-size:10px;font-weight:600;color:var(--role-trader-ink)">ك ح</span>
 <div style="flex:1;min-width:0">
 <div style="font-size:var(--t-sm);font-weight:500">من رحلة كريمة ح. — إسطنبول</div>
 <div class="num" style="font-size:var(--t-micro);color:var(--ink-2);margin-top:2px"><bdi>اشتريتَ 18 وحدة · وصلت 18 أكتوبر</bdi></div>
@@ -159,7 +159,7 @@
 <span class="img img-card ph ph-coat" style="border-radius:0;display:block"></span>
 <div style="padding:10px 11px 12px;display:flex;flex-direction:column;gap:6px">
 <span style="font-size:var(--t-sm);line-height:1.45">معطف نسائي شتوي — صوف مخلوط</span>
-<span class="num" style="font-size:16px;font-weight:600;color:var(--accent-ink)"><bdi>7 400 دج</bdi></span>
+<span class="num" style="font-size:16px;font-weight:600;color:var(--ink)"><bdi>7 400 دج</bdi></span>
 <span style="display:flex;align-items:center;gap:5px;padding-top:6px;border-top:1px solid var(--rule-faint)">
 <span style="flex:1;font-size:var(--t-micro);color:var(--ink-2)">بوتيك نادية</span>
 <svg width="12" height="12" viewBox="0 0 24 24" style="flex:none" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="var(--allowed)"/><path d="M7.4 12.4l3 3 6.2-6.6" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -177,7 +177,7 @@
 </sc-for>
 </div>
 
-<button type="button" onClick="{{ goDone }}" class="cta" style="background:var(--allowed)">انشر في السوق</button>
+<button type="button" onClick="{{ goDone }}" class="cta" style="background:var(--brand)">انشر في السوق</button>
 <button type="button" style="width:100%;height:48px;border:1px solid var(--rule-strong);border-radius:var(--r);background:transparent;color:inherit;font-size:15px;cursor:pointer">احفظ كمسوّدة</button>
 </div>
 </sc-if>
@@ -275,7 +275,7 @@ class Component extends DCLogic {
         const on = !!s.del[id];
         return {
           label, on,
-          bd: on ? 'var(--allowed)' : 'var(--rule-strong)',
+          bd: on ? 'var(--brand)' : 'var(--rule-strong)',
           bg: on ? 'var(--allowed-bg)' : 'var(--surface)',
           fg: on ? 'var(--allowed-ink)' : 'var(--ink)',
           pick: () => this.setState(x => {

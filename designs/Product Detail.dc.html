@@ -10,7 +10,7 @@
 <helmet>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="./tokens.css">
 <style>
 .scrollx{overflow-x:auto;scrollbar-width:none}
@@ -51,7 +51,7 @@
 <h1 style="margin:0 0 8px;font-size:var(--t-h1);font-weight:500;line-height:1.4">{{ title }}</h1>
 
 <div style="display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;margin-bottom:10px">
-<span class="num" style="font-size:26px;font-weight:600;color:var(--accent-ink)"><bdi>{{ price }} دج</bdi></span>
+<span class="num" style="font-size:26px;font-weight:600;color:var(--ink)"><bdi>{{ price }} دج</bdi></span>
 <span class="num" style="font-size:var(--t-sm);color:var(--ink-3)"><bdi>{{ perUnit }}</bdi></span>
 </div>
 
@@ -65,7 +65,7 @@
 <!-- ── 2 + 3. WHO SELLS IT, ARE THEY TRUSTWORTHY ── -->
 <section style="margin:0 16px 16px">
 <button type="button" class="card" style="width:100%;display:flex;align-items:center;gap:12px;padding:13px;text-align:start;cursor:pointer;color:inherit">
-<span aria-hidden="true" style="flex:none;width:44px;height:44px;border-radius:50%;background:oklch(0.93 0.03 28);display:grid;place-items:center;font-size:14px;font-weight:600;color:var(--accent-ink)">{{ initials }}</span>
+<span aria-hidden="true" style="flex:none;width:44px;height:44px;border-radius:50%;background:var(--role-trader-bg);display:grid;place-items:center;font-size:14px;font-weight:600;color:var(--ink)">{{ initials }}</span>
 <span style="flex:1;min-width:0">
 <span style="display:flex;align-items:center;gap:5px">
 <span style="font-size:var(--t-h3);font-weight:500">{{ seller }}</span>
@@ -101,7 +101,7 @@
 <section style="margin:0 16px 16px">
 <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:9px">
 <h2 style="margin:0;font-size:var(--t-h2);font-weight:500">آراء المشترين</h2>
-<button type="button" style="border:0;background:transparent;font-size:var(--t-sm);color:var(--allowed-ink);cursor:pointer">الكل ←</button>
+<button type="button" style="border:0;background:transparent;font-size:var(--t-sm);color:var(--brand-ink);cursor:pointer">الكل ←</button>
 </div>
 <div class="card" style="padding:13px">
 <sc-for list="{{ reviews }}" as="r" hint-placeholder-count="2">
@@ -151,7 +151,7 @@
 <span class="img img-card ph {{ p.ph }}" style="border-radius:0;display:block"></span>
 <span style="display:block;padding:9px 10px 11px">
 <span style="display:block;font-size:var(--t-xs);line-height:1.45;height:33px;overflow:hidden">{{ p.title }}</span>
-<span class="num" style="display:block;font-size:var(--t-sm);font-weight:600;color:var(--accent-ink);margin-top:5px"><bdi>{{ p.price }} دج</bdi></span>
+<span class="num" style="display:block;font-size:var(--t-sm);font-weight:600;color:var(--ink);margin-top:5px"><bdi>{{ p.price }} دج</bdi></span>
 </span>
 </article>
 </sc-for>
@@ -161,11 +161,11 @@
 </main>
 
 <!-- ── STICKY ACTION BAR — contact is the conversion, not "buy" ── -->
-<div style="position:fixed;inset-block-end:0;inset-inline:0;margin:0 auto;max-width:430px;display:flex;gap:9px;padding:11px 16px 15px;background:var(--surface);border-top:1px solid var(--rule);box-shadow:0 -2px 12px oklch(0.20 0.02 60 / 0.05)">
+<div style="position:fixed;inset-block-end:0;inset-inline:0;margin:0 auto;max-width:430px;display:flex;gap:9px;padding:11px 16px 15px;background:var(--surface);border-top:1px solid var(--rule);box-shadow:0 -2px 12px oklch(0.24 0.06 257 / 0.05)">
 <button type="button" onClick="{{ save }}" aria-label="{{ saveLabel }}" style="flex:none;width:50px;height:50px;border:1px solid var(--rule-strong);border-radius:var(--r);background:var(--surface);display:grid;place-items:center;cursor:pointer">
 <svg width="20" height="20" viewBox="0 0 24 24" fill="{{ heartFill }}" stroke="{{ heartStroke }}" stroke-width="1.9"><path d="M12 20s-7-4.4-7-9.3A4.2 4.2 0 0 1 12 8a4.2 4.2 0 0 1 7 2.7c0 4.9-7 9.3-7 9.3z"/></svg>
 </button>
-<button type="button" style="flex:1;height:50px;border:0;border-radius:var(--r);background:var(--accent);color:var(--ink-on);font-size:16px;font-weight:500;cursor:pointer">راسل البائع</button>
+<button type="button" style="flex:1;height:50px;border:0;border-radius:var(--r);background:var(--brand);color:var(--ink-on);font-size:16px;font-weight:500;cursor:pointer">راسل البائع</button>
 <button type="button" style="flex:none;padding:0 16px;height:50px;border:1px solid var(--rule-strong);border-radius:var(--r);background:var(--surface);color:inherit;font-size:var(--t-sm);cursor:pointer">اسأل عن التوفّر</button>
 </div>
 
@@ -244,8 +244,8 @@ class Component extends DCLogic {
       price: this.fmt(P.price),
       saved: s.saved,
       saveLabel: s.saved ? 'إزالة من المحفوظات' : 'احفظ المنتج',
-      heartFill: s.saved ? 'var(--accent)' : 'none',
-      heartStroke: s.saved ? 'var(--accent)' : 'var(--ink-2)',
+      heartFill: s.saved ? 'var(--brand)' : 'none',
+      heartStroke: s.saved ? 'var(--brand)' : 'var(--ink-2)',
       save: () => this.setState(st => ({ saved: !st.saved })),
 
       availChip: 'chip-verified',

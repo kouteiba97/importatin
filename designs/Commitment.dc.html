@@ -10,7 +10,7 @@
 <helmet>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="./tokens.css">
 <style>
 .scrollx{overflow-x:auto;scrollbar-width:none}.scrollx::-webkit-scrollbar{display:none}
@@ -84,7 +84,7 @@
 
 <!-- ══ COUNTERPARTY ══ -->
 <section class="card" style="padding:13px;display:flex;align-items:center;gap:11px">
-<span aria-hidden="true" style="flex:none;width:40px;height:40px;border-radius:50%;background:oklch(0.92 0.03 150);display:grid;place-items:center;font-size:11px;font-weight:600;color:var(--allowed-ink)">ك ح</span>
+<span aria-hidden="true" style="flex:none;width:40px;height:40px;border-radius:50%;background:var(--role-trader-bg);display:grid;place-items:center;font-size:11px;font-weight:600;color:var(--role-trader-ink)">ك ح</span>
 <div style="flex:1;min-width:0">
 <div style="display:flex;align-items:center;gap:6px">
 <span style="font-size:var(--t-body);font-weight:500">كريمة ح.</span>
@@ -200,7 +200,7 @@ class Component extends DCLogic {
 
       st: {
         ...st, bg, bd, dot,
-        ctaBg: st.tone === 'risk' ? 'var(--prohibited)' : st.tone === 'neutral' ? 'var(--ink)' : 'var(--allowed)',
+        ctaBg: st.tone === 'risk' ? 'var(--prohibited)' : st.tone === 'neutral' ? 'var(--ink)' : 'var(--brand)',
         ctaFg: 'var(--ink-on)',
         hasAlt: !!st.alt
       },

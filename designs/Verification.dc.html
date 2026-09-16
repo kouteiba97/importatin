@@ -10,7 +10,7 @@
 <helmet>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="./tokens.css">
 <style>
 .cta{width:100%;height:50px;border:0;border-radius:var(--r);background:var(--ink);color:var(--ink-on);font-size:15px;font-weight:600;cursor:pointer}
@@ -60,7 +60,7 @@
 <div style="font-size:var(--t-xs);color:var(--ink-2);margin-top:2px">مستواك الحالي</div>
 </div>
 </div>
-<div style="height:6px;border-radius:3px;background:var(--neutral-bg);overflow:hidden"><i style="display:block;height:100%;width:50%;background:var(--allowed);border-radius:3px"></i></div>
+<div style="height:6px;border-radius:3px;background:var(--neutral-bg);overflow:hidden"><i style="display:block;height:100%;width:50%;background:var(--brand);border-radius:3px"></i></div>
 <div style="font-size:var(--t-xs);color:var(--ink-2);margin-top:8px">خطوة واحدة تفصلك عن نشر رحلة.</div>
 </section>
 
@@ -88,7 +88,7 @@
 <div style="font-size:var(--t-sm);color:var(--ink-2);padding:3px 0">• {{ u }}</div>
 </sc-for>
 <sc-if value="{{ l.hasCta }}" hint-placeholder-val="{{ false }}">
-<button type="button" onClick="{{ goDoc }}" style="height:42px;padding:0 18px;margin-top:13px;border:0;border-radius:var(--r-sm);background:var(--allowed);color:var(--ink-on);font-size:var(--t-sm);font-weight:600;cursor:pointer">{{ l.cta }}</button>
+<button type="button" onClick="{{ goDoc }}" style="height:42px;padding:0 18px;margin-top:13px;border:0;border-radius:var(--r-sm);background:var(--brand);color:var(--ink-on);font-size:var(--t-sm);font-weight:600;cursor:pointer">{{ l.cta }}</button>
 </sc-if>
 </div>
 </sc-if>
@@ -126,7 +126,7 @@
 </div>
 
 <div style="display:flex;flex-direction:column;gap:9px">
-<button type="button" onClick="{{ goCapture }}" class="cta" style="background:var(--allowed);display:flex;align-items:center;justify-content:center;gap:9px">
+<button type="button" onClick="{{ goCapture }}" class="cta" style="background:var(--brand);display:flex;align-items:center;justify-content:center;gap:9px">
 <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8"><path d="M4 8h3l1.5-2h7L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="3.4"/></svg>
 صوّر الوثيقة
 </button>
@@ -141,7 +141,7 @@
 <sc-if value="{{ isPreview }}" hint-placeholder-val="{{ false }}">
 <div style="display:flex;flex-direction:column;gap:16px">
 <h1 style="margin:0;font-size:22px;font-weight:600">تأكّد من الصورة</h1>
-<div style="aspect-ratio:1.45;border-radius:var(--r);background:linear-gradient(135deg, oklch(0.88 0.015 80), oklch(0.82 0.02 75));border:1px solid var(--rule);display:grid;place-items:center">
+<div style="aspect-ratio:1.45;border-radius:var(--r);background:linear-gradient(135deg, var(--rule-strong), var(--neutral-bd));border:1px solid var(--rule);display:grid;place-items:center">
 <span style="font-size:var(--t-sm);color:var(--ink-2)">صورة الوثيقة</span>
 </div>
 <div class="card" style="padding:4px 14px">
@@ -153,7 +153,7 @@
 </sc-for>
 </div>
 <div style="display:flex;gap:9px">
-<button type="button" onClick="{{ goUploading }}" class="cta" style="flex:1;background:var(--allowed)">أرسل للمراجعة</button>
+<button type="button" onClick="{{ goUploading }}" class="cta" style="flex:1;background:var(--brand)">أرسل للمراجعة</button>
 <button type="button" onClick="{{ goCapture }}" style="flex:none;padding:0 18px;height:50px;border:1px solid var(--rule-strong);border-radius:var(--r);background:var(--surface);color:inherit;font-size:14px;cursor:pointer">أعد التصوير</button>
 </div>
 </div>
@@ -166,7 +166,7 @@
 <div style="font-size:20px;font-weight:600;margin-bottom:8px">جارٍ الإرسال</div>
 <p class="num" style="margin:0;font-size:var(--t-sm);color:var(--ink-2)"><bdi>1.2 من 2.4 ميغا</bdi></p>
 </div>
-<div style="height:7px;border-radius:4px;background:var(--neutral-bg);overflow:hidden"><i style="display:block;height:100%;width:52%;background:var(--allowed);border-radius:4px"></i></div>
+<div style="height:7px;border-radius:4px;background:var(--neutral-bg);overflow:hidden"><i style="display:block;height:100%;width:52%;background:var(--brand);border-radius:4px"></i></div>
 <p style="margin:0;font-size:var(--t-xs);color:var(--ink-3);line-height:1.7">إذا انقطع الاتصال سنُكمل الإرسال تلقائياً عند عودته. تقدر تغلق الشاشة.</p>
 <button type="button" class="ghost">ألغِ</button>
 </div>
@@ -221,7 +221,7 @@
 </sc-for>
 </div>
 
-<button type="button" onClick="{{ goCapture }}" class="cta" style="background:var(--allowed)">صوّر الوثيقة من جديد</button>
+<button type="button" onClick="{{ goCapture }}" class="cta" style="background:var(--brand)">صوّر الوثيقة من جديد</button>
 <button type="button" class="ghost">تواصل مع الدعم</button>
 </div>
 </sc-if>
@@ -243,7 +243,7 @@
 </sc-for>
 </div>
 <div style="display:flex;gap:9px">
-<button type="button" class="cta" style="flex:1;background:var(--allowed)">أنشئ رحلتك الأولى</button>
+<button type="button" class="cta" style="flex:1;background:var(--brand)">أنشئ رحلتك الأولى</button>
 <button type="button" style="flex:none;padding:0 18px;height:50px;border:1px solid var(--rule-strong);border-radius:var(--r);background:var(--surface);color:inherit;font-size:14px;cursor:pointer">لاحقاً</button>
 </div>
 <p style="margin:0;font-size:var(--t-xs);color:var(--ink-3);line-height:1.7">رخصتك سارية حتى جوان 2027. سننبّهك قبل شهر من انتهائها.</p>
@@ -405,7 +405,7 @@ class Component extends DCLogic {
           expanded: now,
           gap: now ? 12 : 0,
           fw: now ? 600 : 500,
-          bd: now ? 'var(--allowed)' : 'var(--rule)',
+          bd: now ? 'var(--brand)' : 'var(--rule)',
           bw: now ? 2 : 1,
           dotBg: done ? 'var(--allowed)' : 'var(--surface)',
           dotBd: done ? 'var(--allowed)' : now ? 'var(--allowed)' : 'var(--rule-strong)',

@@ -15,8 +15,34 @@ Maabar connects the micro-importer, the trader, and the consumer through discove
 | | |
 |---|---|
 | **[`DESIGN-AUDIT.md`](DESIGN-AUDIT.md)** | The audit. Verdict, role/capability matrix, screen inventory, user journeys, state coverage, legal holds. **Read this first.** |
-| **`designs/`** | 24 product screens + `tokens.css` |
+| **`designs/`** | 24 product screens + `tokens.css` (the token layer) + `Logo.dc.html` (the brand kit) + `Dashboards.html` (the three-role deck) |
 | **`preview/`** | Local server for viewing the screens |
+
+---
+
+## Brand
+
+**Maabar** — مَعْبَر, *crossing point*. The name is the product.
+
+The mark is an **M built from two arches**: two passages meeting on one line. Monoline geometric — one stroke weight, round caps, no gradient, no fill, no depth. That is a constraint rather than a style: the Article 14 label is a legal obligation, frequently printed on single-colour thermal paper, and the mark has to survive there and at 16px as a favicon. The full kit is `designs/Logo.dc.html`.
+
+**The logo is Latin in all three interfaces.** `مَعْبَر` is a localised wordmark variant used only inside the Arabic interface — never a second line under the Latin.
+
+| | |
+|---|---|
+| **Brand** | Blue `--brand`, navy `--brand-dark` |
+| **Status** | Green / amber / red — compliance verdicts **only** |
+| **Roles** | Purple importer · blue trader · neutral consumer |
+| **Charts** | Teal `--viz-1` — never text, never a button, never the logo |
+| **Type** | Sora (wordmark, display) · Inter (Latin UI) · IBM Plex Sans Arabic (Arabic UI) |
+
+Brand colour and status colour are deliberately disjoint. On a product whose core feature is a compliance verdict, a green brand would mean *"this is Maabar"* and *"this good is legally permitted"* at the same time. **No brand element uses `--allowed`; no verdict uses `--brand`.** Every text pairing clears WCAG AA 4.5:1, verified by script against the token file.
+
+---
+
+## Languages
+
+**Three equals: English, French, Arabic.** Arabic is not the source language and not the default. Locale is browser-detected with **French as the fallback**; direction derives from the locale rather than being hardcoded.
 
 ---
 
@@ -38,7 +64,7 @@ Boards with a chip row at the top or bottom are **state-switchable** — click t
 
 **Design complete. No application code yet.**
 
-24 screens, one token layer, Arabic-first RTL throughout. Every P0 user journey is drawn end to end.
+24 screens, one token layer, both directions supported throughout. Every P0 user journey is drawn end to end.
 
 **One module is held pending Algerian legal review:** the deposit declaration in `Commitment` — see `DESIGN-AUDIT.md` §9.2. Everything else is buildable.
 
@@ -63,6 +89,6 @@ Ten decisions were settled during design. Do not re-open them while implementing
 
 ## Known gaps
 
-- French and English copy exists on 2 of 24 screens. The RTL/LTR architecture is proven; the rest is an i18n content task.
-- Desktop layouts exist only for the admin console. Everything else is mobile-first.
+- French and English copy is drawn on 2 of 24 screens (`Landing`, `Compliance Checker`). The bidirectional architecture is proven — direction flips cleanly, no component has a fixed width, French runs ~20% longer and is absorbed. The remaining 22 screens carry Arabic strings only; that is an i18n content task, not a design decision.
+- Desktop layouts exist for the admin console and `Demand Board`, which proves the responsive shell — bottom tabs below 1140px, a persistent rail above it. The remaining screens still need the same treatment, and that is **P0 for a web-first launch**.
 - Product imagery uses designed category placeholders, not real photography.

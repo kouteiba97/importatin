@@ -10,7 +10,7 @@
 <helmet>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="./tokens.css">
 <style>
 .gridwrap{container-type:inline-size}
@@ -82,7 +82,7 @@
 <div>
 <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:12px">
 <span class="num" style="font-size:var(--t-sm);color:var(--ink-2)"><bdi>{{ resultLine }}</bdi></span>
-<button type="button" style="border:0;background:transparent;font-size:var(--t-sm);color:var(--allowed-ink);cursor:pointer;display:flex;align-items:center;gap:5px">الأحدث
+<button type="button" style="border:0;background:transparent;font-size:var(--t-sm);color:var(--brand-ink);cursor:pointer;display:flex;align-items:center;gap:5px">الأحدث
 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
 </button>
 </div>
@@ -92,7 +92,7 @@
 <span class="img img-card ph {{ p.ph }}" style="border-radius:0;display:block"></span>
 <div style="padding:10px 11px 12px;display:flex;flex-direction:column;gap:6px;flex:1">
 <h3 class="clamp2" style="margin:0;font-size:var(--t-sm);font-weight:400;line-height:1.45;min-height:37px">{{ p.title }}</h3>
-<div class="num" style="font-size:16px;font-weight:600;color:var(--accent-ink)"><bdi>{{ p.price }} دج</bdi></div>
+<div class="num" style="font-size:16px;font-weight:600;color:var(--ink)"><bdi>{{ p.price }} دج</bdi></div>
 <div style="display:flex;align-items:center;gap:5px;padding-top:6px;border-top:1px solid var(--rule-faint)">
 <span style="flex:1;min-width:0;font-size:var(--t-micro);color:var(--ink-2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ p.seller }}</span>
 <svg width="12" height="12" viewBox="0 0 24 24" style="flex:none" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="var(--allowed)"/><path d="M7.4 12.4l3 3 6.2-6.6" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -159,7 +159,7 @@
 <button type="button" style="height:34px;padding:0 13px;border:1px solid var(--rule-strong);border-radius:var(--r-pill);background:var(--surface);font-size:var(--t-sm);cursor:pointer;color:inherit">{{ s }}</button>
 </sc-for>
 </div>
-<button type="button" style="height:48px;padding:0 22px;border:0;border-radius:var(--r);background:var(--accent);color:var(--ink-on);font-size:15px;font-weight:600;cursor:pointer">انشر طلب توريد</button>
+<button type="button" style="height:48px;padding:0 22px;border:0;border-radius:var(--r);background:var(--brand);color:var(--ink-on);font-size:15px;font-weight:600;cursor:pointer">انشر طلب توريد</button>
 </div>
 </sc-if>
 
@@ -236,9 +236,9 @@ class Component extends DCLogic {
 
   SUGGESTIONS = ['معاطف', 'ألبسة نسائية', 'شتوي'];
   TONE = [
-    ['oklch(0.93 0.03 28)', 'var(--accent-ink)'],
-    ['oklch(0.93 0.03 250)', 'oklch(0.35 0.06 250)'],
-    ['oklch(0.92 0.03 150)', 'var(--allowed-ink)']
+    ['var(--role-importer-bg)', 'var(--role-importer-ink)'],
+    ['var(--role-trader-bg)', 'var(--role-trader-ink)'],
+    ['var(--role-consumer-bg)', 'var(--role-consumer-ink)']
   ];
 
   renderVals() {

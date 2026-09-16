@@ -10,7 +10,7 @@
 <helmet>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="./tokens.css">
 <style>
 .fld{display:block;font-size:var(--t-sm);color:var(--ink-2);margin-bottom:7px}
@@ -135,7 +135,7 @@
 </div>
 
 <div style="display:flex;gap:9px">
-<button type="button" onClick="{{ goOffers }}" class="cta" style="flex:1;background:var(--allowed)">شاهد العروض</button>
+<button type="button" onClick="{{ goOffers }}" class="cta" style="flex:1;background:var(--brand)">شاهد العروض</button>
 <button type="button" style="flex:none;padding:0 16px;height:52px;border:1px solid var(--rule-strong);border-radius:var(--r);background:var(--surface);color:inherit;font-size:14px;cursor:pointer">عدّل</button>
 </div>
 </div>
@@ -192,7 +192,7 @@
 
 <div class="card" style="padding:15px">
 <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
-<span aria-hidden="true" style="flex:none;width:34px;height:34px;border-radius:50%;background:oklch(0.92 0.03 150);display:grid;place-items:center;font-size:11px;font-weight:600;color:var(--allowed-ink)">ك ح</span>
+<span aria-hidden="true" style="flex:none;width:34px;height:34px;border-radius:50%;background:var(--role-trader-bg);display:grid;place-items:center;font-size:11px;font-weight:600;color:var(--role-trader-ink)">ك ح</span>
 <div style="flex:1;min-width:0">
 <div style="font-size:var(--t-sm);font-weight:600">كريمة ح.</div>
 <div class="num" style="font-size:var(--t-micro);color:var(--ink-2);margin-top:1px"><bdi>رحلة إسطنبول · تصل 18 أكتوبر</bdi></div>
@@ -216,7 +216,7 @@
 <p style="margin:0;font-size:var(--t-xs);line-height:1.7;color:var(--ink-2)">أي مبلغ بينكما يُصرَّح به من الطرفين للتوثيق فقط. مَعْبَر لا تستلمه ولا تحتفظ به ولا تضمنه ولا تردّه.</p>
 </div>
 
-<button type="button" class="cta" style="background:var(--allowed)">أوافق على الاتفاق</button>
+<button type="button" class="cta" style="background:var(--brand)">أوافق على الاتفاق</button>
 <button type="button" style="width:100%;height:48px;border:1px solid var(--rule-strong);border-radius:var(--r);background:transparent;color:inherit;font-size:15px;cursor:pointer">اقترح تعديلاً</button>
 </div>
 </sc-if>
@@ -275,9 +275,9 @@ class Component extends DCLogic {
   ];
 
   TONE = [
-    ['oklch(0.92 0.03 150)', 'var(--allowed-ink)'],
-    ['oklch(0.93 0.03 250)', 'oklch(0.35 0.06 250)'],
-    ['oklch(0.93 0.03 28)', 'var(--accent-ink)']
+    ['var(--role-consumer-bg)', 'var(--role-consumer-ink)'],
+    ['var(--role-trader-bg)', 'var(--role-trader-ink)'],
+    ['var(--role-importer-bg)', 'var(--role-importer-ink)']
   ];
 
   renderVals() {
@@ -310,10 +310,10 @@ class Component extends DCLogic {
         const on = s.vis === v.id;
         return {
           ...v, on,
-          bd: on ? 'var(--allowed)' : 'var(--rule-faint)',
+          bd: on ? 'var(--brand)' : 'var(--rule-faint)',
           bw: on ? 2 : 1,
-          dotBd: on ? 'var(--allowed)' : 'var(--rule-strong)',
-          dotBg: on ? 'var(--allowed)' : 'transparent',
+          dotBd: on ? 'var(--brand)' : 'var(--rule-strong)',
+          dotBg: on ? 'var(--brand)' : 'transparent',
           check: on ? '✓' : '',
           pick: () => this.setState({ vis: v.id })
         };
@@ -326,7 +326,7 @@ class Component extends DCLogic {
         return {
           ...o, avBg, avFg,
           cells: o.cells.map(([v, k, fg]) => ({ v, k, fg })),
-          ctaBg: o.best ? 'var(--allowed)' : 'var(--surface)',
+          ctaBg: o.best ? 'var(--brand)' : 'var(--surface)',
           ctaFg: o.best ? 'var(--ink-on)' : 'var(--ink)'
         };
       }),

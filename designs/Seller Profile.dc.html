@@ -10,7 +10,7 @@
 <helmet>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="./tokens.css">
 <style>
 .gridwrap{container-type:inline-size}
@@ -39,7 +39,7 @@
 <!-- ══ IDENTITY ══ -->
 <section style="padding:18px 16px 16px;background:var(--surface);border-bottom:1px solid var(--rule)">
 <div style="display:flex;align-items:flex-start;gap:13px">
-<span aria-hidden="true" style="flex:none;width:64px;height:64px;border-radius:var(--r-lg);background:oklch(0.93 0.03 28);display:grid;place-items:center;font-size:19px;font-weight:600;color:var(--accent-ink)">{{ initials }}</span>
+<span aria-hidden="true" style="flex:none;width:64px;height:64px;border-radius:var(--r-lg);background:var(--role-trader-bg);display:grid;place-items:center;font-size:19px;font-weight:600;color:var(--ink)">{{ initials }}</span>
 <div style="flex:1;min-width:0;padding-block-start:2px">
 <div style="display:flex;align-items:center;gap:7px">
 <h1 style="margin:0;font-size:22px;font-weight:600">{{ name }}</h1>
@@ -99,7 +99,7 @@
 <div style="padding:10px 11px 12px;display:flex;flex-direction:column;gap:6px;flex:1">
 <h3 class="clamp2" style="margin:0;font-size:var(--t-sm);font-weight:400;line-height:1.45;min-height:37px">{{ p.title }}</h3>
 <div style="display:flex;align-items:baseline;gap:5px">
-<span class="num" style="font-size:16px;font-weight:600;color:var(--accent-ink)"><bdi>{{ p.price }}</bdi></span>
+<span class="num" style="font-size:16px;font-weight:600;color:var(--ink)"><bdi>{{ p.price }}</bdi></span>
 <span class="num" style="font-size:var(--t-micro);color:var(--ink-3)"><bdi>دج</bdi></span>
 </div>
 </div>
@@ -137,7 +137,7 @@
 </main>
 
 <div style="position:fixed;inset-block-end:0;inset-inline:0;margin:0 auto;max-width:430px;display:flex;gap:9px;padding:11px 16px 15px;background:var(--surface);border-top:1px solid var(--rule)">
-<button type="button" style="flex:1;height:50px;border:0;border-radius:var(--r);background:var(--accent);color:var(--ink-on);font-size:16px;font-weight:500;cursor:pointer">راسل المتجر</button>
+<button type="button" style="flex:1;height:50px;border:0;border-radius:var(--r);background:var(--brand);color:var(--ink-on);font-size:16px;font-weight:500;cursor:pointer">راسل المتجر</button>
 <button type="button" style="flex:none;padding:0 16px;height:50px;border:1px solid var(--rule-strong);border-radius:var(--r);background:var(--surface);color:inherit;font-size:var(--t-sm);cursor:pointer">اسأل عن توفّر</button>
 </div>
 
@@ -210,8 +210,8 @@ class Component extends DCLogic {
       since: this.ltr(this.S.since),
       saved,
       saveLabel: saved ? 'إزالة من المحفوظات' : 'احفظ المتجر',
-      heartFill: saved ? 'var(--accent)' : 'none',
-      heartStroke: saved ? 'var(--accent)' : 'var(--ink-2)',
+      heartFill: saved ? 'var(--brand)' : 'none',
+      heartStroke: saved ? 'var(--brand)' : 'var(--ink-2)',
       save: () => this.setState(s => ({ saved: !s.saved })),
 
       cats: this.CATS,

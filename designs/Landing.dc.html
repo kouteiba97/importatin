@@ -10,7 +10,7 @@
 <helmet>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600&family=IBM+Plex+Sans:wght@500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600&family=IBM+Plex+Sans:wght@500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="./tokens.css">
 <style>
 /* ============================================================
@@ -25,7 +25,7 @@
 .sec{padding-block:38px}
 .sech{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:16px}
 .sech h2{margin:0;font-size:var(--t-h1);font-weight:600}
-.more{border:0;background:transparent;font-size:var(--t-sm);color:var(--accent-ink);cursor:pointer;padding:0}
+.more{border:0;background:transparent;font-size:var(--t-sm);color:var(--brand);cursor:pointer;padding:0}
 .clamp2{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .pgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:13px}
 .cgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:11px}
@@ -38,7 +38,7 @@
         border:1px solid var(--rule-strong);border-radius:var(--r-lg);background:var(--surface);
         box-shadow:var(--e1);max-width:560px;margin:0 auto}
 .biz{background:var(--ink);color:#fff}
-.bizcard{background:oklch(.26 .02 60);border:1px solid oklch(.34 .02 60);border-radius:var(--r);padding:19px}
+.bizcard{background:oklch(0.240 0.060 257);border:1px solid oklch(0.320 0.075 255);border-radius:var(--r);padding:19px}
 </style>
 </helmet>
 
@@ -47,9 +47,9 @@
 <!-- ══ HEADER — one clear business door ══ -->
 <header style="position:sticky;top:0;z-index:30;background:var(--surface);border-bottom:1px solid var(--rule)">
 <div class="wrap" style="display:flex;align-items:center;gap:14px;padding-block:13px">
-<span style="display:flex;align-items:center;gap:10px;color:var(--allowed);flex:none">
-<svg width="30" height="30" viewBox="0 0 48 48" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="4.3" stroke-linecap="round"><path d="M11 38V23a13 13 0 0 1 26 0v15"/><path d="M3 38h42"/></g></svg>
-<span style="font-weight:600;font-size:21px;color:var(--ink)">{{ brand }}</span>
+<span style="display:flex;align-items:center;gap:10px;color:var(--brand);flex:none">
+<svg width="30" height="30" viewBox="0 0 48 48" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="4.3" stroke-linecap="round" stroke-linejoin="round"><path d="M8 36V23a8 8 0 0 1 16 0v13"/><path d="M24 23a8 8 0 0 1 16 0v13"/></g></svg>
+<span style="font-family:var(--font-display);letter-spacing:-.02em;font-weight:600;font-size:21px;color:var(--ink)">{{ brand }}</span>
 </span>
 <div style="flex:1"></div>
 <button type="button" style="flex:none;height:38px;padding:0 14px;border:1px solid var(--rule-strong);border-radius:var(--r-sm);background:var(--surface);color:inherit;font-size:var(--t-sm);font-weight:500;cursor:pointer">{{ bizLink }}</button>
@@ -69,7 +69,7 @@
 <div class="search">
 <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="var(--ink-3)" stroke-width="2" style="flex:none"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
 <input placeholder="{{ searchPh }}" aria-label="{{ searchPh }}" style="flex:1;min-width:0;border:0;background:transparent;font-size:16px;color:inherit;outline:none">
-<button type="button" style="flex:none;height:42px;padding:0 18px;border:0;border-radius:var(--r-sm);background:var(--accent);color:var(--ink-on);font-size:var(--t-sm);font-weight:600;cursor:pointer">{{ searchCta }}</button>
+<button type="button" style="flex:none;height:42px;padding:0 18px;border:0;border-radius:var(--r-sm);background:var(--brand);color:var(--ink-on);font-size:var(--t-sm);font-weight:600;cursor:pointer">{{ searchCta }}</button>
 </div>
 <div class="scrollx" style="display:flex;gap:8px;justify-content:center;margin-top:16px;padding-bottom:4px">
 <sc-for list="{{ quick }}" as="q" hint-placeholder-count="5">
@@ -106,7 +106,7 @@
 </div>
 <div style="padding:10px 11px 12px;display:flex;flex-direction:column;gap:6px;flex:1">
 <h3 class="clamp2" style="margin:0;font-size:var(--t-sm);font-weight:400;line-height:1.45;min-height:37px">{{ p.title }}</h3>
-<div class="num" style="font-size:16px;font-weight:600;color:var(--accent-ink)"><bdi>{{ p.price }} {{ cur }}</bdi></div>
+<div class="num" style="font-size:16px;font-weight:600;color:var(--ink)"><bdi>{{ p.price }} {{ cur }}</bdi></div>
 <div style="display:flex;align-items:center;gap:5px;padding-top:6px;border-top:1px solid var(--rule-faint);margin-top:auto">
 <span style="flex:1;min-width:0;font-size:var(--t-micro);color:var(--ink-2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ p.seller }}</span>
 <svg width="12" height="12" viewBox="0 0 24 24" style="flex:none" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="var(--allowed)"/><path d="M7.4 12.4l3 3 6.2-6.6" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>

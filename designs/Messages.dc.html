@@ -10,7 +10,7 @@
 <helmet>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="./tokens.css">
 <style>
 .scrollx{overflow-x:auto;scrollbar-width:none}.scrollx::-webkit-scrollbar{display:none}
@@ -29,7 +29,7 @@
 <button type="button" aria-label="رجوع" style="width:34px;height:34px;border:0;background:transparent;cursor:pointer;display:grid;place-items:center;color:inherit">
 <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 5l-7 7 7 7"/></svg>
 </button>
-<span aria-hidden="true" style="flex:none;width:36px;height:36px;border-radius:50%;background:oklch(0.92 0.03 150);display:grid;place-items:center;font-size:12px;font-weight:600;color:var(--allowed-ink)">ي ب</span>
+<span aria-hidden="true" style="flex:none;width:36px;height:36px;border-radius:50%;background:var(--role-trader-bg);display:grid;place-items:center;font-size:12px;font-weight:600;color:var(--role-trader-ink)">ي ب</span>
 <div style="flex:1;min-width:0">
 <div style="display:flex;align-items:center;gap:5px">
 <span style="font-size:var(--t-h3);font-weight:500">ياسين ب.</span>
@@ -71,7 +71,7 @@
 </sc-for>
 <sc-if value="{{ m.hasCta }}" hint-placeholder-val="{{ false }}">
 <div style="display:flex;gap:8px;margin-top:12px">
-<button type="button" style="flex:1;height:40px;border:0;border-radius:var(--r-sm);background:var(--allowed);color:var(--ink-on);font-size:var(--t-sm);font-weight:600;cursor:pointer">{{ m.cta1 }}</button>
+<button type="button" style="flex:1;height:40px;border:0;border-radius:var(--r-sm);background:var(--brand);color:var(--ink-on);font-size:var(--t-sm);font-weight:600;cursor:pointer">{{ m.cta1 }}</button>
 <button type="button" style="flex:none;padding:0 14px;height:40px;border:1px solid var(--rule-strong);border-radius:var(--r-sm);background:var(--surface);color:inherit;font-size:var(--t-sm);cursor:pointer">{{ m.cta2 }}</button>
 </div>
 </sc-if>
@@ -100,7 +100,7 @@
 <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3.5" y="5" width="17" height="14" rx="2.5"/><circle cx="9" cy="10" r="1.6"/><path d="M4 17l5-4 4 3 3-2 4 3"/></svg>
 </button>
 <input placeholder="اكتب رسالة" aria-label="رسالة" style="flex:1;min-width:0;height:42px;padding:0 14px;border:1px solid var(--rule-strong);border-radius:var(--r-pill);background:var(--surface);font-size:15px;color:inherit">
-<button type="button" aria-label="أرسل" style="flex:none;width:42px;height:42px;border:0;border-radius:50%;background:var(--allowed);display:grid;place-items:center;cursor:pointer">
+<button type="button" aria-label="أرسل" style="flex:none;width:42px;height:42px;border:0;border-radius:50%;background:var(--brand);display:grid;place-items:center;cursor:pointer">
 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M21 3L3 10.5l7 3 3 7z"/></svg>
 </button>
 </div>

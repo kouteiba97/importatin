@@ -10,7 +10,7 @@
 <helmet>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="./tokens.css">
 <style>
 .scrollx{overflow-x:auto;scrollbar-width:none}
@@ -100,7 +100,7 @@
 </button>
 
 <div style="display:flex;gap:8px;margin-top:12px">
-<button type="button" style="flex:1;height:42px;border:0;border-radius:var(--r-sm);background:var(--allowed);color:var(--ink-on);font-size:var(--t-sm);font-weight:500;cursor:pointer">اطلب عرضاً لهذه الرحلة</button>
+<button type="button" style="flex:1;height:42px;border:0;border-radius:var(--r-sm);background:var(--brand);color:var(--ink-on);font-size:var(--t-sm);font-weight:500;cursor:pointer">اطلب عرضاً لهذه الرحلة</button>
 <button type="button" onClick="{{ t.follow }}" aria-pressed="{{ t.followed }}" aria-label="{{ t.followLabel }}" style="flex:none;width:42px;height:42px;border:1px solid var(--rule-strong);border-radius:var(--r-sm);background:var(--surface);display:grid;place-items:center;cursor:pointer">
 <svg width="17" height="17" viewBox="0 0 24 24" fill="{{ t.bellFill }}" stroke="{{ t.bellStroke }}" stroke-width="1.8"><path d="M6 9a6 6 0 0 1 12 0c0 5 2 6 2 6H4s2-1 2-6z"/><path d="M10.5 19.5a2 2 0 0 0 3 0" fill="none"/></svg>
 </button>
@@ -160,7 +160,7 @@
 <sc-if value="{{ isProducts }}" hint-placeholder-val="{{ false }}">
 <div style="padding:34px 16px;text-align:center">
 <p style="margin:0 0 14px;font-size:var(--t-body);color:var(--ink-2);line-height:1.7">تصفّح المنتجات المعروضة من التجّار المُتحقَّقين في السوق.</p>
-<button type="button" style="height:46px;padding:0 22px;border:0;border-radius:var(--r);background:var(--accent);color:var(--ink-on);font-size:var(--t-body);font-weight:500;cursor:pointer">افتح السوق</button>
+<button type="button" style="height:46px;padding:0 22px;border:0;border-radius:var(--r);background:var(--brand);color:var(--ink-on);font-size:var(--t-body);font-weight:500;cursor:pointer">افتح السوق</button>
 </div>
 </sc-if>
 
@@ -199,9 +199,9 @@ class Component extends DCLogic {
   };
 
   TONE = [
-    ['oklch(0.93 0.03 28)', 'var(--accent-ink)'],
-    ['oklch(0.93 0.03 250)', 'oklch(0.35 0.06 250)'],
-    ['oklch(0.92 0.03 150)', 'var(--allowed-ink)']
+    ['var(--role-importer-bg)', 'var(--role-importer-ink)'],
+    ['var(--role-trader-bg)', 'var(--role-trader-ink)'],
+    ['var(--role-consumer-bg)', 'var(--role-consumer-ink)']
   ];
 
   // Weight and volume only. The value meter is the importer's legal cap

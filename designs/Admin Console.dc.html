@@ -10,11 +10,11 @@
 <helmet>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="./tokens.css">
 <style>
 .q{width:100%;display:flex;align-items:center;gap:9px;padding:9px 11px;border:0;background:transparent;color:inherit;text-align:start;cursor:pointer;border-radius:var(--r-sm);font-size:var(--t-sm)}
-.q:hover{background:oklch(0.93 0.008 80)}
+.q:hover{background:var(--surface-3)}
 .row{width:100%;display:flex;gap:10px;padding:10px 12px;border:0;border-bottom:1px solid var(--rule-faint);background:transparent;color:inherit;text-align:start;cursor:pointer}
 .row:hover{background:var(--surface-2)}
 .fld{font-size:var(--t-xs);color:var(--ink-3);margin-bottom:3px}
@@ -49,7 +49,7 @@
 </div>
 
 <div style="padding:11px 14px;border-top:1px solid var(--rule);display:flex;align-items:center;gap:8px">
-<span aria-hidden="true" style="width:26px;height:26px;border-radius:50%;background:oklch(0.92 0.03 250);display:grid;place-items:center;font-size:10px;font-weight:600;color:oklch(0.35 0.06 250)">أ ب</span>
+<span aria-hidden="true" style="width:26px;height:26px;border-radius:50%;background:var(--role-trader-bg);display:grid;place-items:center;font-size:10px;font-weight:600;color:var(--role-trader-ink)">أ ب</span>
 <div style="flex:1;min-width:0">
 <div style="font-size:var(--t-xs);font-weight:500">أمين ب.</div>
 <div style="font-size:var(--t-micro);color:var(--ink-3)">الثقة والسلامة</div>
@@ -290,7 +290,7 @@ class Component extends DCLogic {
         label: g.label,
         items: g.items.map(x => ({
           ...x, on: x.id === s.q,
-          bg: x.id === s.q ? 'oklch(0.91 0.01 80)' : 'transparent',
+          bg: x.id === s.q ? 'var(--neutral-bg)' : 'transparent',
           fw: x.id === s.q ? 600 : 400,
           dot: x.risk,
           n: this.fmt(x.n),
@@ -305,7 +305,7 @@ class Component extends DCLogic {
 
       rows: rows.map((r, i) => ({
         ...r, on: i === s.row,
-        bg: i === s.row ? 'oklch(0.94 0.012 80)' : 'transparent',
+        bg: i === s.row ? 'var(--surface-2)' : 'transparent',
         fw: i === s.row ? 600 : 400,
         risk: this.RISK[r.risk],
         ageFg: r.risk === 'high' ? 'var(--prohibited)' : 'var(--ink-3)',

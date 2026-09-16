@@ -10,7 +10,7 @@
 <helmet>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="./tokens.css">
 <style>
 /* ============================================================
@@ -48,14 +48,14 @@
 <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 5l-7 7 7 7"/></svg>
 </button>
 </sc-if>
-<span style="display:flex;align-items:center;gap:9px;color:var(--allowed);flex:1">
-<svg width="24" height="24" viewBox="0 0 48 48" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="4.4" stroke-linecap="round"><path d="M11 38V23a13 13 0 0 1 26 0v15"/><path d="M3 38h42"/></g></svg>
-<span style="font-weight:600;font-size:17px;color:var(--ink)">مَعْبَر</span>
+<span style="display:flex;align-items:center;gap:9px;color:var(--brand);flex:1">
+<svg width="24" height="24" viewBox="0 0 48 48" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="4.4" stroke-linecap="round" stroke-linejoin="round"><path d="M8 36V23a8 8 0 0 1 16 0v13"/><path d="M24 23a8 8 0 0 1 16 0v13"/></g></svg>
+<span style="font-family:var(--font-display);font-weight:600;font-size:17px;color:var(--ink)">مَعْبَر</span>
 </span>
 <span class="num" style="font-size:var(--t-xs);color:var(--ink-3)"><bdi>{{ stepLabel }}</bdi></span>
 </header>
 
-<div style="height:3px;background:var(--neutral-bg)"><i style="display:block;height:100%;width:{{ progress }}%;background:var(--allowed);transition:width .2s ease"></i></div>
+<div style="height:3px;background:var(--neutral-bg)"><i style="display:block;height:100%;width:{{ progress }}%;background:var(--brand);transition:width .2s ease"></i></div>
 
 <main style="flex:1;padding:24px 18px 22px;display:flex;flex-direction:column;gap:20px">
 
@@ -96,7 +96,7 @@
 <p style="margin:0;font-size:var(--t-xs);line-height:1.75;color:var(--ink-2)">{{ el.note }}</p>
 </div>
 
-<button type="button" onClick="{{ next }}" class="cta" style="background:var(--allowed)">{{ el.cta }}</button>
+<button type="button" onClick="{{ next }}" class="cta" style="background:var(--brand)">{{ el.cta }}</button>
 <button type="button" class="ghost">ما عنديش هذه الوثائق بعد</button>
 </div>
 </sc-if>
@@ -188,7 +188,7 @@
 </div>
 
 <div style="display:flex;flex-direction:column;gap:9px">
-<button type="button" class="cta" style="background:var(--allowed)">{{ dn.cta1 }}</button>
+<button type="button" class="cta" style="background:var(--brand)">{{ dn.cta1 }}</button>
 <button type="button" class="ghost">{{ dn.cta2 }}</button>
 </div>
 </div>

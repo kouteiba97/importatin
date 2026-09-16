@@ -10,7 +10,7 @@
 <helmet>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="./tokens.css">
 <style>
 .gridwrap{container-type:inline-size}
@@ -45,7 +45,7 @@
 <div style="position:relative">
 <span class="img img-card ph {{ p.ph }}" style="border-radius:0;display:block"></span>
 <button type="button" aria-label="إزالة من المحفوظات" style="position:absolute;inset-block-start:8px;inset-inline-end:8px;width:31px;height:31px;border:0;border-radius:50%;background:oklch(1 0 0 / 0.9);display:grid;place-items:center;cursor:pointer;box-shadow:var(--e1)">
-<svg width="15" height="15" viewBox="0 0 24 24" fill="var(--accent)" stroke="var(--accent)" stroke-width="1.9"><path d="M12 20s-7-4.4-7-9.3A4.2 4.2 0 0 1 12 8a4.2 4.2 0 0 1 7 2.7c0 4.9-7 9.3-7 9.3z"/></svg>
+<svg width="15" height="15" viewBox="0 0 24 24" fill="var(--brand)" stroke="var(--brand)" stroke-width="1.9"><path d="M12 20s-7-4.4-7-9.3A4.2 4.2 0 0 1 12 8a4.2 4.2 0 0 1 7 2.7c0 4.9-7 9.3-7 9.3z"/></svg>
 </button>
 <sc-if value="{{ p.gone }}" hint-placeholder-val="{{ false }}">
 <span style="position:absolute;inset:0;background:oklch(1 0 0 / 0.62);display:grid;place-items:center">
@@ -88,7 +88,7 @@
 </sc-if>
 </div>
 <button type="button" aria-label="إزالة" style="flex:none;width:32px;height:32px;border:0;background:transparent;cursor:pointer;display:grid;place-items:center">
-<svg width="17" height="17" viewBox="0 0 24 24" fill="var(--accent)" stroke="var(--accent)" stroke-width="1.9"><path d="M12 20s-7-4.4-7-9.3A4.2 4.2 0 0 1 12 8a4.2 4.2 0 0 1 7 2.7c0 4.9-7 9.3-7 9.3z"/></svg>
+<svg width="17" height="17" viewBox="0 0 24 24" fill="var(--brand)" stroke="var(--brand)" stroke-width="1.9"><path d="M12 20s-7-4.4-7-9.3A4.2 4.2 0 0 1 12 8a4.2 4.2 0 0 1 7 2.7c0 4.9-7 9.3-7 9.3z"/></svg>
 </button>
 </article>
 </sc-for>
@@ -125,7 +125,7 @@
 </span>
 <h2 style="margin:0 0 8px;font-size:var(--t-h2);font-weight:600">ما عندك والو محفوظ</h2>
 <p style="margin:0 0 18px;font-size:var(--t-body);line-height:1.7;color:var(--ink-2)">اضغط القلب على أي منتج أو متجر باش ترجع له بسهولة، ونعلمك إذا تغيّر سعره أو خلص.</p>
-<button type="button" style="height:48px;padding:0 22px;border:0;border-radius:var(--r);background:var(--accent);color:var(--ink-on);font-size:15px;font-weight:600;cursor:pointer">تصفّح السوق</button>
+<button type="button" style="height:48px;padding:0 22px;border:0;border-radius:var(--r);background:var(--brand);color:var(--ink-on);font-size:15px;font-weight:600;cursor:pointer">تصفّح السوق</button>
 </div>
 </sc-if>
 
@@ -172,9 +172,9 @@ class Component extends DCLogic {
   ];
 
   TONE = [
-    ['oklch(0.93 0.03 28)', 'var(--accent-ink)'],
-    ['oklch(0.93 0.03 250)', 'oklch(0.35 0.06 250)'],
-    ['oklch(0.92 0.03 150)', 'var(--allowed-ink)']
+    ['var(--role-importer-bg)', 'var(--role-importer-ink)'],
+    ['var(--role-trader-bg)', 'var(--role-trader-ink)'],
+    ['var(--role-consumer-bg)', 'var(--role-consumer-ink)']
   ];
 
   renderVals() {
@@ -207,7 +207,7 @@ class Component extends DCLogic {
         price: this.fmt(p.price),
         was: p.was ? this.fmt(p.was) + ' دج' : '',
         op: p.gone ? 0.75 : 1,
-        priceFg: p.gone ? 'var(--ink-3)' : p.dropped ? 'var(--allowed-ink)' : 'var(--accent-ink)',
+        priceFg: p.gone ? 'var(--ink-3)' : p.dropped ? 'var(--allowed-ink)' : 'var(--ink)',
         hasNote: !!p.note,
         noteFg: p.kind === 'good' ? 'var(--allowed-ink)' : 'var(--conditional-ink)',
         dropped: !!p.dropped, gone: !!p.gone

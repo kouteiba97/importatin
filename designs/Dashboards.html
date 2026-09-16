@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>مَعْبَر — لوحات الأدوار الثلاثة</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600&family=IBM+Plex+Sans:wght@500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600&family=IBM+Plex+Sans:wght@500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="./tokens.css">
 <style>
   html,body{background:var(--paper);min-height:100%}
@@ -13,9 +13,9 @@
   .wrap{max-width:1420px;margin:0 auto}
 
   header{display:flex;align-items:flex-end;gap:22px;flex-wrap:wrap;padding-bottom:26px;border-bottom:1px solid var(--rule);margin-bottom:34px}
-  .logo{display:flex;align-items:center;gap:15px;color:var(--allowed)}
-  .wm{font-weight:600;font-size:33px;line-height:1.05;color:var(--ink)}
-  .wm-la{font-family:"IBM Plex Sans";font-weight:600;font-size:12px;letter-spacing:.16em;color:var(--ink-2)}
+  .logo{display:flex;align-items:center;gap:15px;color:var(--brand)}
+  .wm{font-family:"Sora",system-ui,sans-serif;font-weight:600;letter-spacing:-.02em;font-size:34px;line-height:1.05;color:var(--ink)}
+  .wm-ar{font-weight:500;font-size:14px;color:var(--ink-2)}
   .tag{flex:1;min-width:280px;font-size:15px;line-height:1.75;color:var(--ink-2);max-width:60ch}
 
   .row{display:flex;gap:26px;align-items:flex-start;justify-content:center;flex-wrap:wrap}
@@ -29,7 +29,7 @@
 
   /* phone shell */
   .phone{position:relative;border-radius:34px;background:var(--ink);padding:9px;
-         box-shadow:0 16px 40px oklch(.2 .02 60/.13), 0 3px 10px oklch(.2 .02 60/.07)}
+         box-shadow:0 16px 40px oklch(.24 .06 257/.15), 0 3px 10px oklch(.24 .06 257/.08)}
   .screen{position:relative;border-radius:26px;overflow:hidden;background:#fff;height:760px}
   .screen iframe{position:absolute;inset:0;width:430px;height:880px;border:0;
                  transform:scale(.870);transform-origin:top right}
@@ -51,14 +51,14 @@
 
   <header>
     <div class="logo">
-      <svg width="52" height="52" viewBox="0 0 48 48" role="img" aria-label="مَعْبَر">
-        <g fill="none" stroke="currentColor" stroke-width="4.2" stroke-linecap="round">
-          <path d="M11 38V23a13 13 0 0 1 26 0v15"/><path d="M3 38h42"/>
+      <svg width="52" height="52" viewBox="0 0 48 48" role="img" aria-label="Maabar">
+        <g fill="none" stroke="currentColor" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M8 36V23a8 8 0 0 1 16 0v13"/><path d="M24 23a8 8 0 0 1 16 0v13"/>
         </g>
       </svg>
       <div>
-        <div class="wm">مَعْبَر</div>
-        <div class="wm-la">MAABAR</div>
+        <div class="wm" dir="ltr">Maabar</div>
+        <div class="wm-ar">مَعْبَر — شبكة الاستيراد المصغّر في الجزائر</div>
       </div>
     </div>
     <p class="tag">شبكة تجارية تربط المستورد المصغّر بالتاجر بالمستهلك. ثلاثة أدوار، حساب واحد، وثلاث لوحات مختلفة عمداً — لأن ما يحتاجه كلّ طرف ليس ما يحتاجه الآخر.</p>
@@ -68,7 +68,7 @@
 
     <section class="col">
       <div class="head">
-        <span class="role" style="background:var(--allowed-bg);color:var(--allowed-ink)">المستورد المصغّر</span>
+        <span class="role" style="background:var(--role-importer-bg);color:var(--role-importer-ink)">المستورد المصغّر</span>
         <h3 class="h3">لوحة الرحلة</h3>
         <p class="sub">الرحلة القادمة وسعتها الثلاثية، ما يحتاج انتباهه، وما يطلبه السوق — في شاشة واحدة.</p>
       </div>
@@ -81,7 +81,7 @@
 
     <section class="col">
       <div class="head">
-        <span class="role" style="background:var(--accent-bg);color:var(--accent-ink)">التاجر</span>
+        <span class="role" style="background:var(--role-trader-bg);color:var(--role-trader-ink)">التاجر</span>
         <h3 class="h3">لوحة التوريد</h3>
         <p class="sub">الفرص أولاً، ثم الرحلات القادمة، ثم ما يحتاج قراره — يجد ما يفعله حتى بلا طلب مفتوح.</p>
       </div>
@@ -94,7 +94,7 @@
 
     <section class="col">
       <div class="head">
-        <span class="role" style="background:oklch(.93 .03 250);color:oklch(.35 .06 250)">المستهلك</span>
+        <span class="role" style="background:var(--role-consumer-bg);color:var(--role-consumer-ink)">المستهلك</span>
         <h3 class="h3">الواجهة العامة</h3>
         <p class="sub">كثافة منخفضة وصور أولاً. لا يرى المستهلك أي تعقيد تنظيمي أو تشغيلي.</p>
       </div>

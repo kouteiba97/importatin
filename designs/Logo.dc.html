@@ -10,70 +10,69 @@
 <helmet>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Sans+Arabic:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="./tokens.css">
 <style>
-.page{max-width:900px;margin:0 auto;padding:30px 24px 70px}
+.page{max-width:920px;margin:0 auto;padding:30px 24px 70px}
 .sec{padding-block:28px;border-top:1px solid var(--rule)}
 .sec:first-of-type{border-top:0;padding-block-start:0}
-h2.sh{margin:0 0 5px;font-size:var(--t-h1);font-weight:500}
-.lede{margin:0 0 20px;font-size:var(--t-body);color:var(--ink-2);max-width:62ch;line-height:1.75}
+h2.sh{margin:0 0 5px;font-size:var(--t-h1);font-weight:600}
+.lede{margin:0 0 20px;font-size:var(--t-body);color:var(--ink-2);max-width:64ch;line-height:1.75}
 .grid{display:grid;gap:14px}
 .g2{grid-template-columns:repeat(2,1fr)}
 .g3{grid-template-columns:repeat(3,1fr)}
 .g4{grid-template-columns:repeat(4,1fr)}
 @media (max-width:700px){.g2,.g3,.g4{grid-template-columns:1fr}}
 .tile{border:1px solid var(--rule);border-radius:var(--r);background:var(--surface);padding:22px;display:grid;place-items:center;min-height:132px}
-.cap{font-size:var(--t-xs);color:var(--ink-3);margin-top:8px;text-align:center}
-.wm-ar{font-family:"IBM Plex Sans Arabic";font-weight:600;letter-spacing:0}
-.wm-la{font-family:"IBM Plex Sans";font-weight:600;letter-spacing:-0.01em}
-.dont{border:1px solid var(--prohibited-bd);background:var(--prohibited-bg)}
+.cap{font-size:var(--t-xs);color:var(--ink-3);margin-top:8px;text-align:center;line-height:1.5}
+.wm{font-family:"Sora",system-ui,sans-serif;font-weight:600;letter-spacing:-.02em}
+.wm-ar{font-family:"IBM Plex Sans Arabic",system-ui,sans-serif;font-weight:600;letter-spacing:0}
 .kv{font-family:var(--mono);font-size:10.5px;color:var(--ink-3);direction:ltr;unicode-bidi:isolate}
+.swatch{height:54px;border-radius:var(--r-sm);border:1px solid var(--rule)}
 </style>
 </helmet>
 
-<div dir="rtl" lang="ar" style="min-height:100vh;background:var(--paper)">
+<div dir="ltr" lang="en" style="min-height:100vh;background:var(--paper)">
 <div class="page">
 
 <header style="padding-bottom:26px">
-<div style="font-size:var(--t-xs);color:var(--ink-3);margin-bottom:8px">هوية بصرية · مقترح</div>
-<h1 style="margin:0 0 10px;font-size:32px;font-weight:600;line-height:1.25">مَعْبَر — العلامة</h1>
-<p style="margin:0;font-size:16px;line-height:1.8;color:var(--ink-2);max-width:64ch">«مَعْبَر» تعني نقطة العبور. العلامة قوسٌ وعتبة: القوس هو المعبر الذي تمرّ منه البضاعة، والعتبة خطٌّ يمتدّ إلى الجهتين — لأن المنصّة تربط طرفين ولا تقف في أحدهما. الشكل متماثل، فيقرأ نفسه من اليمين ومن اليسار، وهذا مقصود في علامة تعمل بالعربية والفرنسية والإنجليزية.</p>
+<div style="font-size:var(--t-xs);color:var(--ink-3);margin-bottom:8px">Brand identity · v3</div>
+<h1 class="wm" style="margin:0 0 10px;font-size:33px;font-weight:700;line-height:1.22">Maabar — the mark</h1>
+<p style="margin:0;font-size:16px;line-height:1.8;color:var(--ink-2);max-width:66ch"><em style="font-style:normal;font-weight:600">Maabar</em> (معبر) means <em style="font-style:normal;font-weight:600">crossing point</em>. The mark is an <strong style="font-weight:600">M built from two arches</strong> — two passages meeting on one line. Monoline geometric: one stroke weight, round caps, no gradient, no fill, no depth. That is a requirement rather than a preference — the Article 14 label is a legal obligation, often printed on single-colour thermal paper, and the mark has to survive there and at 16px as a favicon.</p>
 </header>
 
 <!-- ══ PRIMARY LOCKUP ══ -->
 <section class="sec">
-<h2 class="sh">القفل الأساسي</h2>
-<p class="lede">الاستعمال الافتراضي. العربية تتقدّم، واللاتينية تحتها بوزن أخفّ — العلامة عربية أولاً كما المنتج.</p>
-
-<div style="border:1px solid var(--rule);border-radius:var(--r-lg);background:var(--surface);padding:52px 32px;display:grid;place-items:center">
-<div style="display:flex;align-items:center;gap:20px;color:var(--allowed)">
-<svg width="76" height="76" viewBox="0 0 48 48" role="img" aria-label="مَعْبَر">
-<g fill="none" stroke="currentColor" stroke-width="4.2" stroke-linecap="round">
-<path d="M11 38V23a13 13 0 0 1 26 0v15"/>
-<path d="M3 38h42"/>
+<h2 class="sh">Primary lockup</h2>
+<p class="lede">Latin leads. The Arabic wordmark is a localised variant used inside the Arabic interface — not a second line beneath the Latin.</p>
+<div style="border:1px solid var(--rule);border-radius:var(--r-lg);background:var(--surface);padding:56px 32px;display:grid;place-items:center">
+<div style="display:flex;align-items:center;gap:20px;color:var(--brand)">
+<svg width="74" height="74" viewBox="0 0 48 48" role="img" aria-label="Maabar">
+<g fill="none" stroke="currentColor" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round">
+<path d="M8 36V23a8 8 0 0 1 16 0v13"/>
+<path d="M24 23a8 8 0 0 1 16 0v13"/>
 </g>
 </svg>
-<div style="display:flex;flex-direction:column;gap:2px;color:var(--ink)">
-<span class="wm-ar" style="font-size:44px;line-height:1.1">مَعْبَر</span>
-<span class="wm-la" style="font-size:17px;color:var(--ink-2);letter-spacing:0.14em">MAABAR</span>
+<div style="display:flex;flex-direction:column;gap:3px;color:var(--ink)">
+<span class="wm" style="font-size:44px;line-height:1.05">Maabar</span>
+<span style="font-family:Inter,system-ui,sans-serif;font-size:11.5px;letter-spacing:.19em;color:var(--ink-2);text-transform:uppercase">Algeria’s micro-import network</span>
 </div>
 </div>
 </div>
 </section>
 
-<!-- ══ THE MARK ══ -->
+<!-- ══ THE MARK AT SIZE ══ -->
 <section class="sec">
-<h2 class="sh">الرمز</h2>
-<p class="lede">يعمل وحده من <span class="kv">16px</span> إلى لوحة إعلانية. خطّ واحد بسماكة ثابتة، نهايات مدوّرة، بلا تدرّج وبلا ظلّ.</p>
+<h2 class="sh">The mark</h2>
+<p class="lede">Checked at every size it actually ships at — rail icon, favicon, app icon, print. Nothing is added or removed between sizes.</p>
 <div class="grid g4">
-<sc-for list="{{ markSizes }}" as="m" hint-placeholder-count="4">
+<sc-for list="{{ sizes }}" as="m" hint-placeholder-count="4">
 <div>
 <div class="tile" style="background:{{ m.bg }}">
 <span style="color:{{ m.fg }}">
 <svg width="{{ m.px }}" height="{{ m.px }}" viewBox="0 0 48 48" aria-hidden="true">
-<g fill="none" stroke="currentColor" stroke-width="4.2" stroke-linecap="round">
-<path d="M11 38V23a13 13 0 0 1 26 0v15"/><path d="M3 38h42"/>
+<g fill="none" stroke="currentColor" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round">
+<path d="M8 36V23a8 8 0 0 1 16 0v13"/><path d="M24 23a8 8 0 0 1 16 0v13"/>
 </g></svg>
 </span>
 </div>
@@ -83,50 +82,50 @@ h2.sh{margin:0 0 5px;font-size:var(--t-h1);font-weight:500}
 </div>
 </section>
 
-<!-- ══ LOCKUP VARIANTS ══ -->
+<!-- ══ VARIANTS ══ -->
 <section class="sec">
-<h2 class="sh">الصيغ</h2>
-<p class="lede">أربع صيغ تغطّي كل استعمال. لا تُنشأ صيغ جديدة.</p>
+<h2 class="sh">Variants</h2>
+<p class="lede">Four, covering every placement. No others are created.</p>
 <div class="grid g2">
 
 <div>
-<div class="tile" style="min-height:118px">
-<div style="display:flex;align-items:center;gap:14px;color:var(--allowed)">
-<svg width="40" height="40" viewBox="0 0 48 48" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="4.2" stroke-linecap="round"><path d="M11 38V23a13 13 0 0 1 26 0v15"/><path d="M3 38h42"/></g></svg>
-<span class="wm-ar" style="font-size:30px;color:var(--ink)">مَعْبَر</span>
+<div class="tile" style="min-height:120px">
+<div style="display:flex;align-items:center;gap:14px;color:var(--brand)">
+<svg width="38" height="38" viewBox="0 0 48 48" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 36V23a8 8 0 0 1 16 0v13"/><path d="M24 23a8 8 0 0 1 16 0v13"/></g></svg>
+<span class="wm" style="font-size:29px;color:var(--ink)">Maabar</span>
 </div>
 </div>
-<div class="cap">أفقي · عربي — الاستعمال الأكثر</div>
-</div>
-
-<div>
-<div class="tile" style="min-height:118px">
-<div style="display:flex;align-items:center;gap:13px;color:var(--allowed)" dir="ltr">
-<svg width="38" height="38" viewBox="0 0 48 48" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="4.2" stroke-linecap="round"><path d="M11 38V23a13 13 0 0 1 26 0v15"/><path d="M3 38h42"/></g></svg>
-<span class="wm-la" style="font-size:27px;color:var(--ink)">Maabar</span>
-</div>
-</div>
-<div class="cap">أفقي · لاتيني — للواجهة الفرنسية والإنجليزية</div>
+<div class="cap">Horizontal · Latin — the default</div>
 </div>
 
 <div>
-<div class="tile" style="min-height:118px">
-<div style="display:flex;flex-direction:column;align-items:center;gap:11px;color:var(--allowed)">
-<svg width="42" height="42" viewBox="0 0 48 48" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="4.2" stroke-linecap="round"><path d="M11 38V23a13 13 0 0 1 26 0v15"/><path d="M3 38h42"/></g></svg>
-<span class="wm-ar" style="font-size:25px;color:var(--ink)">مَعْبَر</span>
+<div class="tile" style="min-height:120px">
+<div dir="rtl" style="display:flex;align-items:center;gap:14px;color:var(--brand)">
+<svg width="38" height="38" viewBox="0 0 48 48" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 36V23a8 8 0 0 1 16 0v13"/><path d="M24 23a8 8 0 0 1 16 0v13"/></g></svg>
+<span class="wm-ar" style="font-size:29px;color:var(--ink)">مَعْبَر</span>
 </div>
 </div>
-<div class="cap">عمودي — للمساحات الضيّقة</div>
+<div class="cap">Horizontal · Arabic — Arabic interface only</div>
 </div>
 
 <div>
-<div class="tile" style="min-height:118px;background:var(--ink)">
+<div class="tile" style="min-height:120px">
+<div style="display:flex;flex-direction:column;align-items:center;gap:11px;color:var(--brand)">
+<svg width="40" height="40" viewBox="0 0 48 48" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 36V23a8 8 0 0 1 16 0v13"/><path d="M24 23a8 8 0 0 1 16 0v13"/></g></svg>
+<span class="wm" style="font-size:24px;color:var(--ink)">Maabar</span>
+</div>
+</div>
+<div class="cap">Stacked — narrow placements</div>
+</div>
+
+<div>
+<div class="tile" style="min-height:120px;background:var(--brand-dark)">
 <div style="display:flex;align-items:center;gap:14px;color:#fff">
-<svg width="40" height="40" viewBox="0 0 48 48" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="4.2" stroke-linecap="round"><path d="M11 38V23a13 13 0 0 1 26 0v15"/><path d="M3 38h42"/></g></svg>
-<span class="wm-ar" style="font-size:30px">مَعْبَر</span>
+<svg width="38" height="38" viewBox="0 0 48 48" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 36V23a8 8 0 0 1 16 0v13"/><path d="M24 23a8 8 0 0 1 16 0v13"/></g></svg>
+<span class="wm" style="font-size:29px">Maabar</span>
 </div>
 </div>
-<div class="cap">معكوس — على الداكن</div>
+<div class="cap">Reversed — on navy</div>
 </div>
 
 </div>
@@ -134,18 +133,27 @@ h2.sh{margin:0 0 5px;font-size:var(--t-h1);font-weight:500}
 
 <!-- ══ COLOUR ══ -->
 <section class="sec">
-<h2 class="sh">اللون</h2>
-<p class="lede">الزيتوني العميق هو لون العلامة — نفس لون «مسموح» في المنتج، فالثقة والهوية لون واحد. الأسود والأبيض صيغتان كاملتان لا بديلتان.</p>
+<h2 class="sh">Colour</h2>
+<p class="lede">The mark is blue, and that blue carries <strong style="font-weight:600">no status meaning</strong>. Green, amber and red are reserved for compliance verdicts, so the logo can never be mistaken for one. Black and white are complete versions, not fallbacks.</p>
 <div class="grid g4">
-<sc-for list="{{ colorways }}" as="c" hint-placeholder-count="4">
+<sc-for list="{{ ways }}" as="c" hint-placeholder-count="4">
 <div>
-<div class="tile" style="background:{{ c.bg }};border-color:{{ c.bd }}">
+<div class="tile" style="background:{{ c.bg }};border-color:{{ c.bd }};min-height:112px">
 <div style="display:flex;align-items:center;gap:11px;color:{{ c.fg }}">
-<svg width="32" height="32" viewBox="0 0 48 48" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="4.2" stroke-linecap="round"><path d="M11 38V23a13 13 0 0 1 26 0v15"/><path d="M3 38h42"/></g></svg>
-<span class="wm-ar" style="font-size:23px;color:{{ c.wm }}">مَعْبَر</span>
+<svg width="30" height="30" viewBox="0 0 48 48" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 36V23a8 8 0 0 1 16 0v13"/><path d="M24 23a8 8 0 0 1 16 0v13"/></g></svg>
+<span class="wm" style="font-size:22px;color:{{ c.wm }}">Maabar</span>
 </div>
 </div>
 <div class="cap">{{ c.label }}<br><span class="kv">{{ c.token }}</span></div>
+</div>
+</sc-for>
+</div>
+
+<div class="grid g4" style="margin-top:18px">
+<sc-for list="{{ palette }}" as="p" hint-placeholder-count="8">
+<div>
+<div class="swatch" style="background:{{ p.v }}"></div>
+<div class="cap" style="text-align:start">{{ p.label }}<br><span class="kv">{{ p.token }}</span></div>
 </div>
 </sc-for>
 </div>
@@ -153,107 +161,138 @@ h2.sh{margin:0 0 5px;font-size:var(--t-h1);font-weight:500}
 
 <!-- ══ IN USE ══ -->
 <section class="sec">
-<h2 class="sh">في الاستعمال</h2>
-<p class="lede">العلامة تعيش في شريط علوي بعرض صغير، وفي أيقونة تطبيق، وعلى ملصق المادة 14. هذه الثلاثة تحكم قراراتها.</p>
+<h2 class="sh">In use</h2>
+<p class="lede">Three placements govern every decision about this mark: a 24px rail icon, an app icon, and a printed Article 14 label.</p>
 <div class="grid g3">
 
 <div>
 <div class="tile" style="padding:0;overflow:hidden;align-items:stretch">
-<div style="width:100%;background:var(--surface);border-bottom:1px solid var(--rule);padding:13px 15px;display:flex;align-items:center;gap:9px">
-<span style="color:var(--allowed);display:grid;place-items:center">
-<svg width="21" height="21" viewBox="0 0 48 48" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="4.6" stroke-linecap="round"><path d="M11 38V23a13 13 0 0 1 26 0v15"/><path d="M3 38h42"/></g></svg>
+<div style="width:100%;background:var(--surface);border-bottom:1px solid var(--rule);padding:13px 15px;display:flex;align-items:center;gap:10px">
+<span style="color:var(--brand);display:grid;place-items:center">
+<svg width="24" height="24" viewBox="0 0 48 48" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 36V23a8 8 0 0 1 16 0v13"/><path d="M24 23a8 8 0 0 1 16 0v13"/></g></svg>
 </span>
-<span class="wm-ar" style="font-size:18px">مَعْبَر</span>
+<span class="wm" style="font-size:18px">Maabar</span>
 <span style="flex:1"></span>
 <span style="width:24px;height:24px;border-radius:var(--r-xs);background:var(--neutral-bg)"></span>
 </div>
 <div style="flex:1;background:var(--paper)"></div>
 </div>
-<div class="cap">شريط التطبيق</div>
+<div class="cap">Application rail</div>
 </div>
 
 <div>
 <div class="tile">
-<div style="width:74px;height:74px;border-radius:17px;background:var(--allowed);display:grid;place-items:center;box-shadow:var(--e1)">
-<svg width="42" height="42" viewBox="0 0 48 48" aria-hidden="true"><g fill="none" stroke="#fff" stroke-width="4.6" stroke-linecap="round"><path d="M11 38V23a13 13 0 0 1 26 0v15"/><path d="M3 38h42"/></g></svg>
+<div style="width:76px;height:76px;border-radius:18px;background:var(--brand-dark);display:grid;place-items:center;box-shadow:var(--e1)">
+<svg width="44" height="44" viewBox="0 0 48 48" aria-hidden="true"><g fill="none" stroke="#fff" stroke-width="4.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 36V23a8 8 0 0 1 16 0v13"/><path d="M24 23a8 8 0 0 1 16 0v13"/></g></svg>
 </div>
 </div>
-<div class="cap">أيقونة التطبيق</div>
+<div class="cap">App icon</div>
 </div>
 
 <div>
 <div class="tile" style="padding:14px">
-<div style="width:100%;border:1.5px dashed var(--rule-strong);border-radius:var(--r-sm);padding:11px;background:var(--surface-2)">
+<div dir="rtl" style="width:100%;border:1.5px dashed var(--rule-strong);border-radius:var(--r-sm);padding:11px;background:var(--surface-2)">
 <div style="display:flex;align-items:center;gap:7px;padding-bottom:8px;border-bottom:1px solid var(--rule);margin-bottom:8px">
 <span style="color:var(--ink);display:grid;place-items:center">
-<svg width="15" height="15" viewBox="0 0 48 48" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round"><path d="M11 38V23a13 13 0 0 1 26 0v15"/><path d="M3 38h42"/></g></svg>
+<svg width="15" height="15" viewBox="0 0 48 48" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="5.4" stroke-linecap="round" stroke-linejoin="round"><path d="M8 36V23a8 8 0 0 1 16 0v13"/><path d="M24 23a8 8 0 0 1 16 0v13"/></g></svg>
 </span>
-<span class="wm-ar" style="font-size:12px">مَعْبَر</span>
+<span class="wm" style="font-size:12px">Maabar</span>
 </div>
-<div style="font-size:9px;color:var(--ink-2);line-height:1.7">سفيان بن عمارة<br>معاطف نسائية · تركيا</div>
+<div class="wm-ar" style="font-size:9px;color:var(--ink-2);line-height:1.8">سفيان بن عمارة<br>معاطف نسائية · تركيا</div>
 </div>
 </div>
-<div class="cap">ملصق المادة 14</div>
+<div class="cap">Article 14 label — one colour, printed</div>
 </div>
 
 </div>
 </section>
 
+<!-- ══ TYPOGRAPHY ══ -->
+<section class="sec">
+<h2 class="sh">Typography</h2>
+<p class="lede">Three scripts, three faces, one stack. Sora and Inter carry no Arabic glyphs, so Arabic resolves to IBM Plex Sans Arabic through normal per-glyph fallback — no <span class="kv">:lang()</span> rule needed.</p>
+<div class="grid g3">
+<div class="tile" style="align-items:start;justify-items:start;min-height:0;padding:18px">
+<div class="wm" style="font-size:31px;margin-bottom:6px">Maabar</div>
+<div class="cap" style="text-align:start"><strong style="font-weight:600">Sora</strong> — wordmark and marketing display. Latin only.</div>
+</div>
+<div class="tile" style="align-items:start;justify-items:start;min-height:0;padding:18px">
+<div style="font-family:Inter,system-ui,sans-serif;font-size:26px;font-weight:500;margin-bottom:6px">Demand board</div>
+<div class="cap" style="text-align:start"><strong style="font-weight:600">Inter</strong> — Latin interface, English and French.</div>
+</div>
+<div class="tile" style="align-items:start;justify-items:start;min-height:0;padding:18px">
+<div class="wm-ar" dir="rtl" style="font-size:26px;font-weight:500;margin-bottom:6px">لوحة الطلب</div>
+<div class="cap" style="text-align:start"><strong style="font-weight:600">IBM Plex Sans Arabic</strong> — Arabic interface. Never letter-spaced, never uppercased.</div>
+</div>
+</div>
+</section>
+
 <!-- ══ RULES ══ -->
 <section class="sec">
-<h2 class="sh">القواعد</h2>
+<h2 class="sh">Rules</h2>
 <div class="grid g2" style="margin-bottom:18px">
-<div style="padding:16px;border:1px solid var(--allowed-bd);border-radius:var(--r);background:var(--allowed-bg)">
-<div style="font-size:var(--t-sm);font-weight:600;margin-bottom:9px">افعل</div>
+<div style="padding:17px;border:1px solid var(--allowed-bd);border-radius:var(--r);background:var(--allowed-bg)">
+<div style="font-size:var(--t-sm);font-weight:600;margin-bottom:10px">Do</div>
 <sc-for list="{{ dos }}" as="d" hint-placeholder-count="4">
 <div style="display:flex;gap:9px;padding:5px 0"><span aria-hidden="true" style="flex:none;color:var(--allowed-ink);font-size:12px">✓</span><span style="flex:1;font-size:var(--t-sm);line-height:1.65">{{ d }}</span></div>
 </sc-for>
 </div>
-<div style="padding:16px;border:1px solid var(--prohibited-bd);border-radius:var(--r);background:var(--prohibited-bg)">
-<div style="font-size:var(--t-sm);font-weight:600;margin-bottom:9px">لا تفعل</div>
-<sc-for list="{{ donts }}" as="d" hint-placeholder-count="5">
+<div style="padding:17px;border:1px solid var(--prohibited-bd);border-radius:var(--r);background:var(--prohibited-bg)">
+<div style="font-size:var(--t-sm);font-weight:600;margin-bottom:10px">Don’t</div>
+<sc-for list="{{ donts }}" as="d" hint-placeholder-count="6">
 <div style="display:flex;gap:9px;padding:5px 0"><span aria-hidden="true" style="flex:none;color:var(--prohibited-ink);font-size:12px">✕</span><span style="flex:1;font-size:var(--t-sm);line-height:1.65">{{ d }}</span></div>
 </sc-for>
 </div>
 </div>
 
-<div style="padding:16px;border:1px solid var(--rule);border-radius:var(--r);background:var(--surface)">
-<div style="font-size:var(--t-sm);font-weight:600;margin-bottom:7px">المساحة الحرّة والحدّ الأدنى</div>
-<p style="margin:0;font-size:var(--t-sm);line-height:1.75;color:var(--ink-2)">اترك حول العلامة مساحة لا تقلّ عن <strong style="font-weight:500">ارتفاع القوس</strong> من كل جهة. الحدّ الأدنى للرمز وحده <span class="kv">16px</span>، وللقفل الكامل <span class="kv">104px</span> عرضاً — تحت ذلك استعمل الرمز وحده.</p>
+<div style="padding:17px;border:1px solid var(--rule);border-radius:var(--r);background:var(--surface)">
+<div style="font-size:var(--t-sm);font-weight:600;margin-bottom:8px">Clear space and minimum size</div>
+<p style="margin:0;font-size:var(--t-sm);line-height:1.8;color:var(--ink-2)">Leave clear space of at least <strong style="font-weight:600">one arch height</strong> on every side. Minimum size for the mark alone is <span class="kv">16px</span>; for the full lockup, <span class="kv">96px</span> wide. Below that, use the mark alone.</p>
 </div>
 </section>
 
 </div>
 </div>
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:920,&quot;height&quot;:1900}}">
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:940,&quot;height&quot;:2000}}">
 class Component extends DCLogic {
   renderVals() {
     return {
-      markSizes: [
-        { px: 64, label: 'أساسي', bg: 'var(--surface)', fg: 'var(--allowed)' },
-        { px: 40, label: 'متوسط', bg: 'var(--surface)', fg: 'var(--allowed)' },
-        { px: 24, label: 'صغير', bg: 'var(--surface)', fg: 'var(--allowed)' },
-        { px: 16, label: 'الحدّ الأدنى · 16px', bg: 'var(--surface)', fg: 'var(--ink)' }
+      sizes: [
+        { px: 64, label: 'Primary', bg: 'var(--surface)', fg: 'var(--brand)' },
+        { px: 40, label: 'Medium', bg: 'var(--surface)', fg: 'var(--brand)' },
+        { px: 24, label: 'Rail icon', bg: 'var(--surface)', fg: 'var(--brand)' },
+        { px: 16, label: 'Minimum · 16px favicon', bg: 'var(--surface)', fg: 'var(--ink)' }
       ],
-      colorways: [
-        { label: 'زيتوني — الأساسي', token: '--allowed', bg: 'var(--surface)', bd: 'var(--rule)', fg: 'var(--allowed)', wm: 'var(--ink)' },
-        { label: 'حبر — أحادي', token: '--ink', bg: 'var(--surface)', bd: 'var(--rule)', fg: 'var(--ink)', wm: 'var(--ink)' },
-        { label: 'أبيض على زيتوني', token: '--allowed', bg: 'oklch(0.34 0.055 155)', bd: 'oklch(0.34 0.055 155)', fg: '#fff', wm: '#fff' },
-        { label: 'أبيض على حبر', token: '--ink', bg: 'var(--ink)', bd: 'var(--ink)', fg: '#fff', wm: '#fff' }
+      ways: [
+        { label: 'Brand blue — primary', token: '--brand', bg: 'var(--surface)', bd: 'var(--rule)', fg: 'var(--brand)', wm: 'var(--ink)' },
+        { label: 'Ink — single colour', token: '--ink', bg: 'var(--surface)', bd: 'var(--rule)', fg: 'var(--ink)', wm: 'var(--ink)' },
+        { label: 'Reversed on navy', token: '--brand-dark', bg: 'var(--brand-dark)', bd: 'var(--brand-dark)', fg: '#fff', wm: '#fff' },
+        { label: 'Reversed on blue', token: '--brand', bg: 'var(--brand)', bd: 'var(--brand)', fg: '#fff', wm: '#fff' }
+      ],
+      palette: [
+        { label: 'Navy', token: '--brand-dark', v: 'var(--brand-dark)' },
+        { label: 'Brand blue', token: '--brand', v: 'var(--brand)' },
+        { label: 'Allowed', token: '--allowed', v: 'var(--allowed)' },
+        { label: 'Conditional', token: '--conditional', v: 'var(--conditional)' },
+        { label: 'Prohibited', token: '--prohibited', v: 'var(--prohibited)' },
+        { label: 'Teal — charts only', token: '--viz-1', v: 'var(--viz-1)' },
+        { label: 'Purple — importer', token: '--viz-3', v: 'var(--viz-3)' },
+        { label: 'Rule', token: '--rule', v: 'var(--rule)' }
       ],
       dos: [
-        'استعمل الصيغة العربية افتراضياً، واللاتينية في الواجهات الأجنبية فقط.',
-        'حافظ على سماكة الخط ونهاياته المدوّرة عند أي حجم.',
-        'استعمل الرمز وحده حين يقلّ العرض عن 104 بكسل.',
-        'على الخلفيات الداكنة استعمل الصيغة البيضاء كاملةً — رمزاً وكلمةً.'
+        'Use the Latin lockup by default; the Arabic lockup only inside the Arabic interface.',
+        'Keep one stroke weight and round caps at every size.',
+        'Use the mark alone below 96px of available width.',
+        'On dark grounds reverse the whole lockup — mark and wordmark together.'
       ],
       donts: [
-        'لا تُضِف تدرّجاً ولا ظلّاً ولا حدّاً خارجياً.',
-        'لا تمدّ الكلمة ولا تضغطها ولا تغيّر تباعد حروفها.',
-        'لا تُدِر القوس ولا تقلبه — العتبة تبقى أفقية دائماً.',
-        'لا تضع العلامة داخل شكل يشبه ختماً أو شعاراً رسمياً.',
-        'لا تستعمل لون الطين التجاري للعلامة — هو للأسعار لا للهوية.'
+        'No gradient, no shadow, no 3D, no outline around the mark.',
+        'Never stretch, condense, or re-track the wordmark.',
+        'Never rotate or mirror the mark — the arches always sit on one line.',
+        'Never place it inside a shape resembling a seal, emblem or official stamp.',
+        'Never render the mark in green, amber or red — those mean compliance outcomes.',
+        'Never use the teal in the mark; it is a chart colour and fails contrast as a logo.'
       ]
     };
   }

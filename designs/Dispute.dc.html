@@ -10,7 +10,7 @@
 <helmet>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="./tokens.css">
 <style>
 .scrollx{overflow-x:auto;scrollbar-width:none}.scrollx::-webkit-scrollbar{display:none}
@@ -133,7 +133,7 @@
 </div>
 </sc-for>
 </div>
-<button type="button" onClick="{{ goReview }}" class="cta" style="background:var(--allowed)">تابع حالة البلاغ</button>
+<button type="button" onClick="{{ goReview }}" class="cta" style="background:var(--brand)">تابع حالة البلاغ</button>
 </div>
 </sc-if>
 
@@ -178,7 +178,7 @@
 <!-- ══ 5 · DECISION ══ -->
 <sc-if value="{{ isDecided }}" hint-placeholder-val="{{ false }}">
 <div style="display:flex;flex-direction:column;gap:15px">
-<div style="display:flex;gap:12px;padding:15px;border:1px solid var(--allowed-bd);border-radius:var(--r);background:var(--allowed-bg)">
+<div style="display:flex;gap:12px;padding:15px;border:1px solid var(--brand-bd);border-radius:var(--r);background:var(--brand-bg)">
 <span aria-hidden="true" style="flex:none;width:32px;height:32px;border-radius:50%;background:var(--allowed);color:#fff;display:grid;place-items:center;font-size:15px;font-weight:600">✓</span>
 <div style="flex:1;min-width:0">
 <div style="font-size:var(--t-h3);font-weight:600;margin-bottom:4px">صدر القرار لصالحك</div>
@@ -283,10 +283,10 @@ class Component extends DCLogic {
         const on = s.kind === k.id;
         return {
           ...k, on,
-          bd: on ? 'var(--allowed)' : 'var(--rule-faint)',
+          bd: on ? 'var(--brand)' : 'var(--rule-faint)',
           bw: on ? 2 : 1,
-          dotBd: on ? 'var(--allowed)' : 'var(--rule-strong)',
-          dotBg: on ? 'var(--allowed)' : 'transparent',
+          dotBd: on ? 'var(--brand)' : 'var(--rule-strong)',
+          dotBg: on ? 'var(--brand)' : 'transparent',
           check: on ? '✓' : '',
           pick: () => this.setState({ kind: k.id })
         };

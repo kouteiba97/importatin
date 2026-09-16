@@ -170,15 +170,19 @@ Roles are **capabilities on one identity**, not separate accounts. A user may ho
 ## 8. RTL / MULTILINGUAL — HONEST STATUS
 
 **Complete:**
-- All 24 screens Arabic-first RTL
+- All 24 screens render correctly in RTL and flip cleanly — direction is a layout property, not a content assumption
 - Zero physical `left`/`right` in layout across the whole deck
 - All 14 number formatters wrap output in `U+2066…U+2069`
 - Arabic plural forms implemented as counted nouns (`صنف واحد` / `صنفان` / `3 أصناف` / `11 صنفاً`)
 - Western digits, tabular figures, non-breaking thousands separators
 - Value axes increase leftward; time-series run right-to-left
 
+**The target:** three equal languages — **EN / FR / AR**. Arabic is not the default and not the source language. Locale selection is browser-detected with **French as the fallback**, Algeria's commercial lingua franca and the neutral middle between the other two. That is one configuration value, trivial to change.
+
+The **logo is Latin in all three interfaces** — `Maabar`. `مَعْبَر` exists as a localised wordmark variant used only inside the Arabic interface, never as a second line beneath the Latin.
+
 **Partial — the one honest gap:**
-French and English copy is drawn on **2 of 24 screens** (`Landing`, `Compliance Checker`). The architecture is proven — `dir` flips correctly, no component has a fixed width, French runs ~20% longer and is absorbed — but the remaining 22 screens have Arabic strings only.
+French and English copy is drawn on **2 of 24 screens** (`Landing`, `Compliance Checker`). The architecture is proven — `dir` derives from locale, no component has a fixed width, French runs ~20% longer and is absorbed — but the remaining 22 screens carry Arabic strings only.
 
 **Assessment:** this is a **P1 content task, not a P0 design task**. The pattern is established and repeatable; no product decision remains. It does not block development, but it does block launch, and the string extraction should happen as part of the i18n layer in the first implementation sprint.
 
@@ -226,10 +230,15 @@ Screens read them at render. `Trip Creation` displays the value cap with its eff
 
 ## 11. DESIGN SYSTEM STATE
 
-- **One token file**, `designs/tokens.css` — every colour, size, spacing, radius, shadow, density value. 24 of 24 screens consume it. Zero screens define their own palette
-- **Four density tiers**: public (low, imagery-led, commercial accent) · operational (medium, cards + rules) · compliance (progressive disclosure, no commercial colour) · admin (high, tables and panels)
+- **One token file**, `designs/tokens.css` v3 — every colour, size, spacing, radius, shadow, density value. 24 of 24 screens consume it. Zero screens define their own palette
+- **Brand and status are separate colour systems.** This is the defining rule of v3 and it fixes a real flaw in v2. Blue `--brand` carries the identity: logo, rail active state, primary CTAs, selection, progress. Green / amber / red carry compliance verdicts *only*. In v2 green did both jobs on a product whose core feature is a compliance verdict — 214 `--allowed` usages of which only 21 were actually verdicts. **No brand element may use `--allowed`, and no verdict may use `--brand`**
+- **Four density tiers**: public (low, imagery-led) · operational (medium, cards + rules) · compliance (progressive disclosure, no brand colour on a verdict) · admin (high, tables and panels)
 - **Cards for comparable entities, rules for data within one entity**
-- **Saturation reserved for status.** Terracotta accent is public-tier only and banned from compliance and admin surfaces
+- **Role tints, not ad-hoc tones.** `--role-importer-*` (purple) · `--role-trader-*` (blue) · `--role-consumer-*` (neutral). These replaced 75 inline `oklch()` values, including avatar tints that were green and therefore read as verdicts
+- **Teal is a chart colour only.** `--viz-1` measures 3.42:1 on white — sufficient as a graphic, insufficient as text. It is never a label, never a button, never in the logo
+- **Terracotta `--accent` is retired.** Prices are ink-strong; product photography carries the colour
+- **Typography**: Sora (wordmark and marketing display, Latin) · Inter (Latin UI) · IBM Plex Sans Arabic (Arabic UI). Sora and Inter carry no Arabic glyphs, so Arabic resolves to Plex Arabic through ordinary per-glyph fallback — no `:lang()` rule required
+- **Every text pairing clears WCAG AA 4.5:1**, verified by script against the token file rather than by eye. Three v3 candidates failed and were corrected: `--ink-3` (3.94 → 4.95), white-on-`--conditional` (4.39 → 4.67), `--viz-1` (2.98 → 3.42)
 - **Imagery system** with fixed aspect ratios and *designed* placeholders per category
 - **Motion**: functional only, ≤200ms, `prefers-reduced-motion` honoured system-wide
 
@@ -239,7 +248,7 @@ Screens read them at render. `Trip Creation` displays the value cap with its eff
 
 | Item | Priority | Note |
 |---|---|---|
-| FR/EN strings on 22 screens | P1 | Content task; architecture proven |
+| FR/EN strings on 22 screens | P1 | Content task; architecture proven on `Landing` and `Compliance Checker` |
 | Desktop layouts for the remaining 22 screens | **P0 for a web-first launch** | The responsive shell is proven on `Demand Board` — rail replaces bottom tabs at 1140px, capacity panel pins beside a two-column list. Admin is already desktop. The rest need the same treatment |
 | Real product photography | P1 | Placeholders are designed but are placeholders. **Needed before the client demo** |
 | Per-queue admin evidence panels | P2 | Layout established; contents differ |

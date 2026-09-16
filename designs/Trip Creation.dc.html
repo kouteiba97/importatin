@@ -10,7 +10,7 @@
 <helmet>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="./tokens.css">
 <style>
 .fld{display:block;font-size:var(--t-sm);color:var(--ink-2);margin-bottom:7px}
@@ -31,7 +31,7 @@
 <span style="flex:1;font-size:var(--t-h3);font-weight:500">رحلة جديدة</span>
 <span class="num" style="font-size:var(--t-xs);color:var(--ink-3)"><bdi>{{ stepLabel }}</bdi></span>
 </header>
-<div style="height:3px;background:var(--neutral-bg)"><i style="display:block;height:100%;width:{{ progress }}%;background:var(--allowed);transition:width .2s ease"></i></div>
+<div style="height:3px;background:var(--neutral-bg)"><i style="display:block;height:100%;width:{{ progress }}%;background:var(--brand);transition:width .2s ease"></i></div>
 
 <main style="flex:1;padding:20px 16px 24px;display:flex;flex-direction:column;gap:18px">
 
@@ -186,7 +186,7 @@
 </div>
 </div>
 
-<button type="button" onClick="{{ next }}" class="cta" style="background:var(--allowed)">انشر الرحلة</button>
+<button type="button" onClick="{{ next }}" class="cta" style="background:var(--brand)">انشر الرحلة</button>
 <button type="button" style="width:100%;height:48px;border:1px solid var(--rule-strong);border-radius:var(--r);background:transparent;color:inherit;font-size:15px;cursor:pointer">احفظ كمسوّدة</button>
 </div>
 </sc-if>
@@ -200,7 +200,7 @@
 <p class="num" style="margin:0;font-size:var(--t-body);line-height:1.7;color:var(--ink-2)"><bdi>14 تاجراً في فئاتك يشوفوها من دابا.</bdi></p>
 </div>
 <div style="display:flex;flex-direction:column;gap:9px">
-<button type="button" class="cta" style="background:var(--allowed)">افتح لوحة الطلب</button>
+<button type="button" class="cta" style="background:var(--brand)">افتح لوحة الطلب</button>
 <button type="button" style="width:100%;height:48px;border:1px solid var(--rule-strong);border-radius:var(--r);background:transparent;color:inherit;font-size:15px;cursor:pointer">شاهد الرحلة</button>
 </div>
 </div>
@@ -260,7 +260,7 @@ class Component extends DCLogic {
         const on = !!s.cats[id];
         return {
           label, on, fw: on ? 600 : 400,
-          bd: on ? 'var(--allowed)' : 'var(--rule-strong)',
+          bd: on ? 'var(--brand)' : 'var(--rule-strong)',
           bg: on ? 'var(--allowed-bg)' : 'var(--surface)',
           fg: on ? 'var(--allowed-ink)' : 'var(--ink)',
           pick: () => this.setState(x => {
@@ -279,10 +279,10 @@ class Component extends DCLogic {
         const on = s.vis === v.id;
         return {
           ...v, on,
-          bd: on ? 'var(--allowed)' : 'var(--rule-faint)',
+          bd: on ? 'var(--brand)' : 'var(--rule-faint)',
           bw: on ? 2 : 1,
-          dotBd: on ? 'var(--allowed)' : 'var(--rule-strong)',
-          dotBg: on ? 'var(--allowed)' : 'transparent',
+          dotBd: on ? 'var(--brand)' : 'var(--rule-strong)',
+          dotBg: on ? 'var(--brand)' : 'transparent',
           check: on ? '✓' : '',
           pick: () => this.setState({ vis: v.id })
         };
