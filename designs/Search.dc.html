@@ -23,25 +23,30 @@
 </style>
 </helmet>
 
-<div dir="rtl" lang="ar" class="tier-public" style="min-height:100vh;display:flex;justify-content:center">
+<div ref="{{ rootRef }}" dir="rtl" lang="ar" class="tier-public" style="min-height:100vh;display:flex;justify-content:center">
 <div style="width:100%;max-width:430px;min-height:100vh;display:flex;flex-direction:column;background:var(--paper-public);border-inline:1px solid var(--rule)">
 
 <header style="position:sticky;top:0;z-index:20;background:var(--surface);border-bottom:1px solid var(--rule)">
 <div style="display:flex;align-items:center;gap:9px;padding:10px 12px">
-<button type="button" aria-label="رجوع" style="flex:none;width:34px;height:34px;border:0;background:transparent;cursor:pointer;display:grid;place-items:center;color:inherit">
-<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 5l-7 7 7 7"/></svg>
+<button type="button" aria-label="{{ t.back }}" style="flex:none;width:34px;height:34px;border:0;background:transparent;cursor:pointer;display:grid;place-items:center;color:inherit">
+<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="transform:scaleX({{ backFlip }})"><path d="M15 5l-7 7 7 7"/></svg>
 </button>
 <div style="flex:1;display:flex;align-items:center;gap:9px;height:42px;padding:0 13px;border:1px solid var(--rule-strong);border-radius:var(--r);background:var(--surface-2)">
 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--ink-3)" stroke-width="2" style="flex:none"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
-<input value="{{ q }}" onChange="{{ onQ }}" aria-label="بحث" placeholder="ابحث" style="flex:1;min-width:0;border:0;background:transparent;font-size:15px;color:inherit;outline:none">
+<input value="{{ q }}" onChange="{{ onQ }}" aria-label="{{ t.search }}" placeholder="{{ t.search }}" style="flex:1;min-width:0;border:0;background:transparent;font-size:15px;color:inherit;outline:none">
 <sc-if value="{{ hasQ }}" hint-placeholder-val="{{ true }}">
-<button type="button" onClick="{{ clear }}" aria-label="امسح" style="flex:none;width:20px;height:20px;border:0;border-radius:50%;background:var(--neutral-bd);color:var(--ink-2);cursor:pointer;font-size:11px;display:grid;place-items:center">✕</button>
+<button type="button" onClick="{{ clear }}" aria-label="{{ t.clear }}" style="flex:none;width:20px;height:20px;border:0;border-radius:50%;background:var(--neutral-bd);color:var(--ink-2);cursor:pointer;font-size:11px;display:grid;place-items:center">✕</button>
 </sc-if>
+</div>
+<div role="group" aria-label="{{ t.langLabel }}" style="display:flex;border:1px solid var(--rule-strong);border-radius:var(--r-sm);overflow:hidden;flex:none">
+<sc-for list="{{ langs }}" as="l" hint-placeholder-count="3">
+<button type="button" onClick="{{ l.pick }}" aria-pressed="{{ l.on }}" style="height:24px;padding:0 8px;border:0;background:{{ l.bg }};color:{{ l.fg }};font-size:var(--t-micro);font-weight:500;cursor:pointer">{{ l.short }}</button>
+</sc-for>
 </div>
 </div>
 
 <!-- scoped tabs: one giant result list would be unusable -->
-<nav aria-label="نطاق البحث" style="display:grid;grid-template-columns:repeat(4,1fr)">
+<nav aria-label="{{ t.scope }}" style="display:grid;grid-template-columns:repeat(4,1fr)">
 <sc-for list="{{ scopes }}" as="s" hint-placeholder-count="4">
 <button type="button" onClick="{{ s.pick }}" aria-current="{{ s.on }}" style="height:40px;border:0;border-bottom:2px solid {{ s.bd }};background:transparent;color:{{ s.fg }};font-size:var(--t-sm);font-weight:{{ s.fw }};cursor:pointer;display:flex;align-items:center;justify-content:center;gap:5px">
 {{ s.label }}
@@ -82,7 +87,7 @@
 <div>
 <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:12px">
 <span class="num" style="font-size:var(--t-sm);color:var(--ink-2)"><bdi>{{ resultLine }}</bdi></span>
-<button type="button" style="border:0;background:transparent;font-size:var(--t-sm);color:var(--brand-ink);cursor:pointer;display:flex;align-items:center;gap:5px">الأحدث
+<button type="button" style="border:0;background:transparent;font-size:var(--t-sm);color:var(--brand-ink);cursor:pointer;display:flex;align-items:center;gap:5px">{{ t.newest }}
 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
 </button>
 </div>
@@ -92,7 +97,7 @@
 <span class="img img-card ph {{ p.ph }}" style="border-radius:0;display:block"></span>
 <div style="padding:10px 11px 12px;display:flex;flex-direction:column;gap:6px;flex:1">
 <h3 class="clamp2" style="margin:0;font-size:var(--t-sm);font-weight:400;line-height:1.45;min-height:37px">{{ p.title }}</h3>
-<div class="num" style="font-size:16px;font-weight:600;color:var(--ink)"><bdi>{{ p.price }} دج</bdi></div>
+<div class="num" style="font-size:16px;font-weight:600;color:var(--ink)"><bdi>{{ p.price }}</bdi></div>
 <div style="display:flex;align-items:center;gap:5px;padding-top:6px;border-top:1px solid var(--rule-faint)">
 <span style="flex:1;min-width:0;font-size:var(--t-micro);color:var(--ink-2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ p.seller }}</span>
 <svg width="12" height="12" viewBox="0 0 24 24" style="flex:none" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="var(--allowed)"/><path d="M7.4 12.4l3 3 6.2-6.6" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -118,7 +123,7 @@
 <div style="font-size:var(--t-xs);color:var(--ink-2);margin-top:3px">{{ p.kind }}</div>
 <div class="num" style="font-size:var(--t-micro);color:var(--ink-3);margin-top:3px"><bdi>{{ p.meta }}</bdi></div>
 </div>
-<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--ink-3)" stroke-width="2" style="flex:none"><path d="M15 5l-7 7 7 7"/></svg>
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--ink-3)" stroke-width="2" style="flex:none;transform:scaleX({{ arrow }})"><path d="M15 5l-7 7 7 7"/></svg>
 </article>
 </sc-for>
 </div>
@@ -152,14 +157,14 @@
 <span aria-hidden="true" style="display:inline-grid;place-items:center;width:56px;height:56px;border-radius:50%;background:var(--neutral-bg);color:var(--ink-3);margin-bottom:14px">
 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
 </span>
-<h2 style="margin:0 0 8px;font-size:var(--t-h2);font-weight:600">ما لقينا والو على «{{ q }}»</h2>
-<p style="margin:0 0 18px;font-size:var(--t-body);line-height:1.7;color:var(--ink-2)">جرّب كلمة أعمّ، أو انشر طلب توريد وخلّي المستوردين يجيبوه لك.</p>
+<h2 style="margin:0 0 8px;font-size:var(--t-h2);font-weight:600">{{ emptyTitle }}</h2>
+<p style="margin:0 0 18px;font-size:var(--t-body);line-height:1.7;color:var(--ink-2)">{{ t.emptyLede }}</p>
 <div style="display:flex;flex-wrap:wrap;gap:7px;justify-content:center;margin-bottom:20px">
 <sc-for list="{{ suggestions }}" as="s" hint-placeholder-count="3">
 <button type="button" style="height:34px;padding:0 13px;border:1px solid var(--rule-strong);border-radius:var(--r-pill);background:var(--surface);font-size:var(--t-sm);cursor:pointer;color:inherit">{{ s }}</button>
 </sc-for>
 </div>
-<button type="button" style="height:48px;padding:0 22px;border:0;border-radius:var(--r);background:var(--brand);color:var(--ink-on);font-size:15px;font-weight:600;cursor:pointer">انشر طلب توريد</button>
+<button type="button" style="height:48px;padding:0 22px;border:0;border-radius:var(--r);background:var(--brand);color:var(--ink-on);font-size:15px;font-weight:600;cursor:pointer">{{ t.postRequest }}</button>
 </div>
 </sc-if>
 
@@ -167,9 +172,9 @@
 <sc-if value="{{ isError }}" hint-placeholder-val="{{ false }}">
 <div style="padding:40px 10px;text-align:center">
 <span aria-hidden="true" style="display:inline-grid;place-items:center;width:56px;height:56px;border-radius:50%;background:var(--prohibited-bg);color:var(--prohibited-ink);font-size:24px;margin-bottom:14px">!</span>
-<h2 style="margin:0 0 8px;font-size:var(--t-h2);font-weight:600">ما قدرناش نكمّل البحث</h2>
-<p style="margin:0 0 18px;font-size:var(--t-body);line-height:1.7;color:var(--ink-2)">الاتصال انقطع. بحثك محفوظ — عاود المحاولة.</p>
-<button type="button" style="height:48px;padding:0 22px;border:0;border-radius:var(--r);background:var(--ink);color:var(--ink-on);font-size:15px;font-weight:600;cursor:pointer">أعد المحاولة</button>
+<h2 style="margin:0 0 8px;font-size:var(--t-h2);font-weight:600">{{ t.errTitle }}</h2>
+<p style="margin:0 0 18px;font-size:var(--t-body);line-height:1.7;color:var(--ink-2)">{{ t.errLede }}</p>
+<button type="button" style="height:48px;padding:0 22px;border:0;border-radius:var(--r);background:var(--ink);color:var(--ink-on);font-size:15px;font-weight:600;cursor:pointer">{{ t.retry }}</button>
 </div>
 </sc-if>
 
@@ -178,7 +183,7 @@
 <div>
 <div style="display:flex;align-items:center;gap:9px;padding:11px 13px;background:var(--neutral-bg);border:1px solid var(--neutral-bd);border-radius:var(--r);margin-bottom:14px">
 <span aria-hidden="true" style="flex:none;width:8px;height:8px;border-radius:50%;background:var(--conditional)"></span>
-<span style="flex:1;font-size:var(--t-sm);line-height:1.6">غير متصل — هذي آخر نتائج محفوظة على جهازك.</span>
+<span style="flex:1;font-size:var(--t-sm);line-height:1.6">{{ t.offline }}</span>
 </div>
 <div class="gridwrap"><div class="grid2">
 <sc-for list="{{ products }}" as="p" hint-placeholder-count="2">
@@ -186,7 +191,7 @@
 <span class="img img-card ph {{ p.ph }}" style="border-radius:0;display:block"></span>
 <div style="padding:10px 11px 12px">
 <h3 class="clamp2" style="margin:0;font-size:var(--t-sm);line-height:1.45;min-height:37px">{{ p.title }}</h3>
-<div class="num" style="font-size:16px;font-weight:600;margin-top:6px"><bdi>{{ p.price }} دج</bdi></div>
+<div class="num" style="font-size:16px;font-weight:600;margin-top:6px"><bdi>{{ p.price }}</bdi></div>
 </div>
 </article>
 </sc-for>
@@ -208,73 +213,159 @@
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:430,&quot;height&quot;:960}}">
 class Component extends DCLogic {
-  state = { scope: 'prod', view: 'results', chip: 'all' };
+  /* Locale is browser-detected. French is the fallback — Algeria's commercial
+     lingua franca and the neutral middle between Arabic and English. One value. */
+  static FALLBACK = 'fr';
+  static detect() {
+    const tag = (typeof navigator !== 'undefined' && (navigator.language || '')).slice(0, 2).toLowerCase();
+    return ['ar', 'fr', 'en'].includes(tag) ? tag : Component.FALLBACK;
+  }
 
-  fmt(n) { return '⁦' + String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + '⁩'; }
+  state = { scope: 'prod', view: 'results', chip: 'all', lang: Component.detect() };
+  root = React.createRef();
+  componentDidMount() { this._apply(); }
+  componentDidUpdate() { this._apply(); }
+  _apply() {
+    const el = this.root.current;
+    if (el) { el.setAttribute('dir', this.L[this.state.lang].dir); el.setAttribute('lang', this.state.lang); }
+  }
 
-  SCOPES = [['prod', 'منتجات', 128], ['trader', 'متاجر', 14], ['imp', 'مستوردون', 9], ['trip', 'رحلات', 4]];
-  STATES = [['results', 'نتائج'], ['loading', 'تحميل'], ['empty', 'بلا نتائج'], ['error', 'خطأ'], ['offline', 'بلا اتصال']];
-  CHIPS = [['all','الكل'],['now','متوفر الآن'],['setif','سطيف'],['alger','الجزائر'],['tr','من تركيا']];
+  /* Text runs take a first-strong isolate so Arabic stays RTL and Latin stays LTR;
+     inside Arabic, each digit group is pinned LTR so "4 800" never reads "800 4". */
+  iso(s) { if (/[\u0600-\u06FF]/.test(s)) s = s.replace(/\d[\d ,.:]*\d%?|\d%?/g, m => '\u2066' + m + '\u2069'); return '\u2068' + s + '\u2069'; }
+  fmt(n, sep) { return '⁦' + String(n).replace(/\B(?=(\d{3})+(?!\d))/g, sep === undefined ? ' ' : sep) + '⁩'; }
+  langsFor(cur) {
+    return ['ar', 'fr', 'en'].map(id => ({
+      short: this.L[id].short, on: cur === id,
+      bg: cur === id ? 'var(--ink)' : 'var(--surface)',
+      fg: cur === id ? 'var(--ink-on)' : 'var(--ink-2)',
+      pick: () => this.setState({ lang: id })
+    }));
+  }
 
-  PRODUCTS = [
-    { ph: 'ph-coat', title: 'معطف نسائي شتوي — صوف مخلوط', price: 7400, seller: 'بوتيك نادية' },
-    { ph: 'ph-coat', title: 'معطف نسائي — جلد صناعي', price: 8900, seller: 'دار الأناقة' },
-    { ph: 'ph-coat', title: 'معطف قصير بقبّة فرو', price: 6200, seller: 'محل ياسين' },
-    { ph: 'ph-bag', title: 'حقيبة يد بحزام كتف', price: 5900, seller: 'دار الأناقة' }
-  ];
+  L = {
+    ar: {
+      dir: 'rtl', short: 'ع', langLabel: 'اللغة', sep: ' ', cur: 'دج',
+      back: 'رجوع', search: 'ابحث', clear: 'امسح', scope: 'نطاق البحث', newest: 'الأحدث',
+      scopes: ['منتجات', 'متاجر', 'مستوردون', 'رحلات'],
+      states: ['نتائج', 'تحميل', 'بلا نتائج', 'خطأ', 'بلا اتصال'],
+      chips: ['الكل', 'متوفر الآن', 'سطيف', 'الجزائر', 'من تركيا'],
+      q: 'معاطف نسائية', qEmpty: 'معطف جلد أحمر مقاس 48',
+      emptyTitle: q => 'ما لقينا والو على «' + q + '»',
+      emptyLede: 'جرّب كلمة أعمّ، أو انشر طلب توريد وخلّي المستوردين يجيبوه لك.',
+      postRequest: 'انشر طلب توريد',
+      errTitle: 'ما قدرناش نكمّل البحث', errLede: 'الاتصال انقطع. بحثك محفوظ — عاود المحاولة.', retry: 'أعد المحاولة',
+      offline: 'غير متصل — هذي آخر نتائج محفوظة على جهازك.',
+      results: n => n + ' منتجاً',
+      products: [['معطف نسائي شتوي — صوف مخلوط', 'بوتيك نادية'], ['معطف نسائي — جلد صناعي', 'دار الأناقة'], ['معطف قصير بقبّة فرو', 'محل ياسين'], ['حقيبة يد بحزام كتف', 'دار الأناقة']],
+      people: [
+        ['بوتيك نادية', 'ب ن', 'تاجرة مُتحقَّقة · قسنطينة', '63 معاملة مؤكَّدة · ترد خلال ساعتين'],
+        ['دار الأناقة', 'د أ', 'تاجر مُتحقَّق · وهران', '118 معاملة مؤكَّدة · ترد خلال ساعة'],
+        ['محل ياسين', 'م ي', 'تاجر مُتحقَّق · سطيف', '241 معاملة مؤكَّدة']
+      ],
+      trips: [
+        ['إسطنبول', '12 – 16 أكتوبر', 'ألبسة · حقائب', 'سعة متاحة', 'كريمة ح. · 84 معاملة'],
+        ['دبي', '19 – 23 أكتوبر', 'عطور · ساعات', 'سعة محدودة', 'سفيان ب. · 12 معاملة']
+      ],
+      suggestions: ['معاطف', 'ألبسة نسائية', 'شتوي']
+    },
 
-  PEOPLE = [
-    { name: 'بوتيك نادية', initials: 'ب ن', kind: 'تاجرة مُتحقَّقة · قسنطينة', meta: '63 معاملة مؤكَّدة · ترد خلال ساعتين', tone: 0 },
-    { name: 'دار الأناقة', initials: 'د أ', kind: 'تاجر مُتحقَّق · وهران', meta: '118 معاملة مؤكَّدة · ترد خلال ساعة', tone: 1 },
-    { name: 'محل ياسين', initials: 'م ي', kind: 'تاجر مُتحقَّق · سطيف', meta: '241 معاملة مؤكَّدة', tone: 2 }
-  ];
+    fr: {
+      dir: 'ltr', short: 'FR', langLabel: 'Langue', sep: ' ', cur: 'DA',
+      back: 'Retour', search: 'Rechercher', clear: 'Effacer', scope: 'Portée de la recherche', newest: 'Plus récents',
+      scopes: ['Produits', 'Boutiques', 'Importateurs', 'Voyages'],
+      states: ['Résultats', 'Chargement', 'Aucun résultat', 'Erreur', 'Hors ligne'],
+      chips: ['Tout', 'Disponible', 'Sétif', 'Alger', 'De Turquie'],
+      q: 'manteaux femme', qEmpty: 'manteau cuir rouge taille 48',
+      emptyTitle: q => 'Aucun résultat pour « ' + q + ' »',
+      emptyLede: 'Essayez un terme plus large, ou publiez une demande d’approvisionnement et laissez les importateurs vous l’apporter.',
+      postRequest: 'Publier une demande',
+      errTitle: 'La recherche n’a pas pu aboutir', errLede: 'La connexion a été coupée. Votre recherche est conservée — réessayez.', retry: 'Réessayer',
+      offline: 'Hors ligne — voici les derniers résultats enregistrés sur votre appareil.',
+      results: n => n + ' produits',
+      products: [['Manteau femme hiver — laine mélangée', 'Boutique Nadia'], ['Manteau femme — cuir synthétique', 'Dar El Anaqa'], ['Manteau court à capuche fourrée', 'Chez Yacine'], ['Sac à main avec bandoulière', 'Dar El Anaqa']],
+      people: [
+        ['Boutique Nadia', 'BN', 'Commerçante vérifiée · Constantine', '63 transactions confirmées · répond en 2 h'],
+        ['Dar El Anaqa', 'DA', 'Commerçant vérifié · Oran', '118 transactions confirmées · répond en 1 h'],
+        ['Chez Yacine', 'CY', 'Commerçant vérifié · Sétif', '241 transactions confirmées']
+      ],
+      trips: [
+        ['Istanbul', '12 – 16 octobre', 'Vêtements · sacs', 'Capacité disponible', 'Karima H. · 84 transactions'],
+        ['Dubaï', '19 – 23 octobre', 'Parfums · montres', 'Capacité limitée', 'Sofiane B. · 12 transactions']
+      ],
+      suggestions: ['manteaux', 'vêtements femme', 'hiver']
+    },
 
-  TRIPS = [
-    { cc: 'TR', dest: 'إسطنبول', dates: '12 – 16 أكتوبر', cats: 'ألبسة · حقائب', cap: 'سعة متاحة', chip: 'chip-verified', who: 'كريمة ح. · 84 معاملة', tone: 2 },
-    { cc: 'AE', dest: 'دبي', dates: '19 – 23 أكتوبر', cats: 'عطور · ساعات', cap: 'سعة محدودة', chip: 'chip-conditional', who: 'سفيان ب. · 12 معاملة', tone: 0 }
-  ];
+    en: {
+      dir: 'ltr', short: 'EN', langLabel: 'Language', sep: ',', cur: 'DA',
+      back: 'Back', search: 'Search', clear: 'Clear', scope: 'Search scope', newest: 'Newest',
+      scopes: ['Products', 'Shops', 'Importers', 'Trips'],
+      states: ['Results', 'Loading', 'No results', 'Error', 'Offline'],
+      chips: ['All', 'In stock', 'Sétif', 'Algiers', 'From Türkiye'],
+      q: 'women’s coats', qEmpty: 'red leather coat size 48',
+      emptyTitle: q => 'Nothing found for “' + q + '”',
+      emptyLede: 'Try a broader word, or post a sourcing request and let importers bring it to you.',
+      postRequest: 'Post a sourcing request',
+      errTitle: 'The search couldn’t finish', errLede: 'The connection dropped. Your search is kept — try again.', retry: 'Try again',
+      offline: 'Offline — these are the last results saved on your device.',
+      results: n => n + ' products',
+      products: [['Women’s winter coat — wool blend', 'Boutique Nadia'], ['Women’s coat — synthetic leather', 'Dar El Anaqa'], ['Short coat with fur-lined hood', 'Chez Yacine'], ['Handbag with shoulder strap', 'Dar El Anaqa']],
+      people: [
+        ['Boutique Nadia', 'BN', 'Verified trader · Constantine', '63 confirmed transactions · replies within 2 h'],
+        ['Dar El Anaqa', 'DA', 'Verified trader · Oran', '118 confirmed transactions · replies within 1 h'],
+        ['Chez Yacine', 'CY', 'Verified trader · Sétif', '241 confirmed transactions']
+      ],
+      trips: [
+        ['Istanbul', '12 – 16 October', 'Clothing · bags', 'Capacity available', 'Karima H. · 84 transactions'],
+        ['Dubai', '19 – 23 October', 'Perfumes · watches', 'Limited capacity', 'Sofiane B. · 12 transactions']
+      ],
+      suggestions: ['coats', 'women’s clothing', 'winter']
+    }
+  };
 
-  SUGGESTIONS = ['معاطف', 'ألبسة نسائية', 'شتوي'];
+  SCOPE_IDS = ['prod', 'trader', 'imp', 'trip'];
+  SCOPE_N = [128, 14, 9, 4];
+  STATE_IDS = ['results', 'loading', 'empty', 'error', 'offline'];
+  CHIP_IDS = ['all', 'now', 'setif', 'alger', 'tr'];
+  PRODUCTS = [{ ph: 'ph-coat', price: 7400 }, { ph: 'ph-coat', price: 8900 }, { ph: 'ph-coat', price: 6200 }, { ph: 'ph-bag', price: 5900 }];
+  PEOPLE_TONE = [0, 1, 2];
+  TRIPS = [{ cc: 'TR', chip: 'chip-verified', tone: 2 }, { cc: 'AE', chip: 'chip-conditional', tone: 0 }];
   TONE = [
     ['var(--role-importer-bg)', 'var(--role-importer-ink)'],
     ['var(--role-trader-bg)', 'var(--role-trader-ink)'],
     ['var(--role-consumer-bg)', 'var(--role-consumer-ink)']
   ];
 
+  pill(on, idle) {
+    return { bd: on ? 'var(--ink)' : 'var(--rule-strong)', bg: on ? 'var(--ink)' : 'var(--surface)', fg: on ? 'var(--ink-on)' : idle };
+  }
+
   renderVals() {
-    const s = this.state;
+    const s = this.state, t = this.L[s.lang];
     const scope = s.scope, view = s.view;
-    const q = view === 'empty' ? 'معطف جلد أحمر مقاس 48' : 'معاطف نسائية';
+    const q = view === 'empty' ? t.qEmpty : t.q;
     const showResults = view === 'results';
 
     return {
+      rootRef: this.root, t, langs: this.langsFor(s.lang),
+      arrow: t.dir === 'rtl' ? 1 : -1,
+      backFlip: t.dir === 'rtl' ? -1 : 1,
+
       q, hasQ: true, onQ: () => {}, clear: () => {},
+      emptyTitle: t.emptyTitle(q),
       showFilters: showResults && scope === 'prod',
 
-      scopes: this.SCOPES.map(([id, label, n]) => ({
-        label, on: scope === id, hasN: showResults,
-        n: this.fmt(n),
+      scopes: this.SCOPE_IDS.map((id, i) => ({
+        label: t.scopes[i], on: scope === id, hasN: showResults,
+        n: this.fmt(this.SCOPE_N[i], t.sep),
         bd: scope === id ? 'var(--ink)' : 'transparent',
         fg: scope === id ? 'var(--ink)' : 'var(--ink-3)',
         fw: scope === id ? 600 : 400,
         pick: () => this.setState({ scope: id })
       })),
 
-      chips: this.CHIPS.map(([id, label]) => ({
-        label, on: s.chip === id,
-        bd: s.chip === id ? 'var(--ink)' : 'var(--rule-strong)',
-        bg: s.chip === id ? 'var(--ink)' : 'var(--surface)',
-        fg: s.chip === id ? 'var(--ink-on)' : 'var(--ink)',
-        pick: () => this.setState({ chip: id })
-      })),
-
-      states: this.STATES.map(([id, label]) => ({
-        label, on: view === id,
-        bd: view === id ? 'var(--ink)' : 'var(--rule-strong)',
-        bg: view === id ? 'var(--ink)' : 'var(--surface)',
-        fg: view === id ? 'var(--ink-on)' : 'var(--ink-2)',
-        pick: () => this.setState({ view: id })
-      })),
+      chips: this.CHIP_IDS.map((id, i) => ({ label: t.chips[i], on: s.chip === id, ...this.pill(s.chip === id, 'var(--ink)'), pick: () => this.setState({ chip: id }) })),
+      states: this.STATE_IDS.map((id, i) => ({ label: t.states[i], on: view === id, ...this.pill(view === id, 'var(--ink-2)'), pick: () => this.setState({ view: id }) })),
 
       isLoading: view === 'loading',
       isEmpty: view === 'empty',
@@ -285,17 +376,18 @@ class Component extends DCLogic {
       isTrips: showResults && scope === 'trip',
 
       skeletons: [1, 2, 3, 4],
-      resultLine: this.fmt(128) + ' منتجاً',
-      products: this.PRODUCTS.map(p => ({ ...p, price: this.fmt(p.price) })),
-      people: this.PEOPLE.map(p => {
-        const [avBg, avFg] = this.TONE[p.tone];
-        return { ...p, avBg, avFg };
+      resultLine: this.iso(t.results(this.fmt(128, t.sep))),
+      products: this.PRODUCTS.map((p, i) => ({ ph: p.ph, title: t.products[i][0], seller: t.products[i][1], price: this.fmt(p.price, t.sep) + ' ' + t.cur })),
+      people: t.people.map(([name, initials, kind, meta], i) => {
+        const [avBg, avFg] = this.TONE[this.PEOPLE_TONE[i]];
+        return { name, initials, kind, meta: this.iso(meta), avBg, avFg };
       }),
-      trips: this.TRIPS.map(t => {
-        const [bg, fg] = this.TONE[t.tone];
-        return { ...t, bg, fg };
+      trips: t.trips.map(([dest, dates, cats, cap, who], i) => {
+        const m = this.TRIPS[i];
+        const [bg, fg] = this.TONE[m.tone];
+        return { cc: m.cc, chip: m.chip, dest, dates: this.iso(dates), cats, cap, who: this.iso(who), bg, fg };
       }),
-      suggestions: this.SUGGESTIONS
+      suggestions: t.suggestions
     };
   }
 }

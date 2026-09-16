@@ -27,15 +27,20 @@
 </style>
 </helmet>
 
-<div dir="rtl" lang="ar" class="tier-public" style="min-height:100vh;display:flex;justify-content:center">
+<div ref="{{ rootRef }}" dir="rtl" lang="ar" class="tier-public" style="min-height:100vh;display:flex;justify-content:center">
 <div style="width:100%;max-width:430px;min-height:100vh;display:flex;flex-direction:column;background:var(--paper-public);border-inline:1px solid var(--rule)">
 
 <!-- ── HEADER: search is the primary affordance, not a buried icon ── -->
 <header style="position:sticky;top:0;z-index:20;background:var(--surface);border-bottom:1px solid var(--rule)">
 <div style="display:flex;align-items:center;gap:10px;padding:12px 16px 10px">
-<span style="font-weight:600;font-size:18px;flex:none">مَعْبَر</span>
+<span style="font-family:var(--font-display);font-weight:600;font-size:18px;flex:none">{{ t.brand }}</span>
 <div style="flex:1"></div>
-<button type="button" aria-label="الرسائل" style="position:relative;width:38px;height:38px;border:1px solid var(--rule);border-radius:var(--r-sm);background:var(--surface);cursor:pointer;display:grid;place-items:center">
+<div role="group" aria-label="{{ t.langLabel }}" style="display:flex;border:1px solid var(--rule-strong);border-radius:var(--r-sm);overflow:hidden;flex:none">
+<sc-for list="{{ langs }}" as="l" hint-placeholder-count="3">
+<button type="button" onClick="{{ l.pick }}" aria-pressed="{{ l.on }}" style="height:24px;padding:0 8px;border:0;background:{{ l.bg }};color:{{ l.fg }};font-size:var(--t-micro);font-weight:500;cursor:pointer">{{ l.short }}</button>
+</sc-for>
+</div>
+<button type="button" aria-label="{{ t.messages }}" style="position:relative;width:38px;height:38px;border:1px solid var(--rule);border-radius:var(--r-sm);background:var(--surface);cursor:pointer;display:grid;place-items:center">
 <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 9 9 0 0 1-3.3-.6L3 21l1.7-5a8.2 8.2 0 0 1-.7-3.4 8.4 8.4 0 0 1 8.5-8.5 8.4 8.4 0 0 1 8.5 8.4z"/></svg>
 <span aria-hidden="true" style="position:absolute;inset-block-start:6px;inset-inline-end:6px;width:7px;height:7px;border-radius:50%;background:var(--brand)"></span>
 </button>
@@ -43,7 +48,7 @@
 <div style="padding:0 16px 12px">
 <div style="display:flex;align-items:center;gap:9px;height:44px;padding:0 13px;border:1px solid var(--rule-strong);border-radius:var(--r);background:var(--surface-2)">
 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--ink-3)" stroke-width="2" style="flex:none"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
-<input value="{{ q }}" onChange="{{ onQ }}" placeholder="ابحث عن منتج، فئة، أو متجر" aria-label="بحث" style="flex:1;min-width:0;border:0;background:transparent;font-size:15px;color:inherit;outline:none">
+<input value="{{ q }}" onChange="{{ onQ }}" placeholder="{{ t.searchPh }}" aria-label="{{ t.search }}" style="flex:1;min-width:0;border:0;background:transparent;font-size:15px;color:inherit;outline:none">
 </div>
 </div>
 </header>
@@ -53,7 +58,7 @@
 <!-- ── CATEGORIES: imagery-led, the commercial entry point ── -->
 <section style="padding:16px 0 4px">
 <div style="display:flex;justify-content:space-between;align-items:baseline;padding:0 16px 10px">
-<h2 style="margin:0;font-size:var(--t-h2);font-weight:500">تصفّح حسب الفئة</h2>
+<h2 style="margin:0;font-size:var(--t-h2);font-weight:500">{{ t.byCat }}</h2>
 </div>
 <div class="scrollx" style="display:flex;gap:10px;padding:0 16px 4px">
 <sc-for list="{{ cats }}" as="c" hint-placeholder-count="5">
@@ -72,7 +77,7 @@
 <div style="position:sticky;top:96px;z-index:15;display:flex;gap:8px;padding:12px 16px;background:var(--paper-public);border-bottom:1px solid var(--rule-faint)">
 <button type="button" onClick="{{ openFilter }}" style="display:flex;align-items:center;gap:6px;height:34px;padding:0 12px;border:1px solid var(--rule-strong);border-radius:var(--r-pill);background:var(--surface);font-size:var(--t-sm);cursor:pointer;color:inherit">
 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M6 12h12M10 18h4"/></svg>
-تصفية
+{{ t.filter }}
 <sc-if value="{{ hasFilters }}" hint-placeholder-val="{{ true }}"><span class="num" style="display:inline-grid;place-items:center;min-width:17px;height:17px;padding:0 4px;border-radius:var(--r-pill);background:var(--ink);color:var(--ink-on);font-size:10px"><bdi>{{ filterCount }}</bdi></span></sc-if>
 </button>
 <button type="button" onClick="{{ openSort }}" style="display:flex;align-items:center;gap:6px;height:34px;padding:0 12px;border:1px solid var(--rule-strong);border-radius:var(--r-pill);background:var(--surface);font-size:var(--t-sm);cursor:pointer;color:inherit">{{ sortLabel }}
@@ -108,7 +113,7 @@
 <div style="display:flex;align-items:center;gap:6px;padding-top:7px;border-top:1px solid var(--rule-faint)">
 <span aria-hidden="true" style="flex:none;width:20px;height:20px;border-radius:50%;background:{{ p.avBg }};display:grid;place-items:center;font-size:9px;font-weight:600;color:{{ p.avFg }}">{{ p.initials }}</span>
 <span style="flex:1;min-width:0;font-size:var(--t-micro);color:var(--ink-2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ p.seller }}</span>
-<svg width="13" height="13" viewBox="0 0 24 24" style="flex:none" role="img" aria-label="متجر مُتحقَّق"><circle cx="12" cy="12" r="10" fill="var(--allowed)"/><path d="M7.4 12.4l3 3 6.2-6.6" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<svg width="13" height="13" viewBox="0 0 24 24" style="flex:none" role="img" aria-label="{{ t.verifiedShop }}"><circle cx="12" cy="12" r="10" fill="var(--allowed)"/><path d="M7.4 12.4l3 3 6.2-6.6" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
 </div>
 <div class="num" style="font-size:var(--t-micro);color:var(--ink-3)"><bdi>{{ p.trust }}</bdi></div>
 </div>
@@ -118,7 +123,7 @@
 </section>
 
 <!-- ── BOTTOM NAV — consumer ── -->
-<nav aria-label="التنقّل" style="position:fixed;inset-block-end:0;inset-inline:0;margin:0 auto;max-width:430px;display:grid;grid-template-columns:repeat(5,1fr);background:var(--surface);border-top:1px solid var(--rule);padding-block:6px 8px">
+<nav aria-label="{{ t.navLabel }}" style="position:fixed;inset-block-end:0;inset-inline:0;margin:0 auto;max-width:430px;display:grid;grid-template-columns:repeat(5,1fr);background:var(--surface);border-top:1px solid var(--rule);padding-block:6px 8px">
 <sc-for list="{{ nav }}" as="n" hint-placeholder-count="5">
 <button type="button" onClick="{{ n.pick }}" aria-current="{{ n.on }}" style="display:flex;flex-direction:column;align-items:center;gap:3px;border:0;background:transparent;padding:5px 0;cursor:pointer;color:{{ n.fg }}">
 <span aria-hidden="true" style="width:21px;height:21px;display:grid;place-items:center">{{ n.icon }}</span>
@@ -129,11 +134,11 @@
 
 <!-- ── FILTER SHEET ── -->
 <sc-if value="{{ filterOpen }}" hint-placeholder-val="{{ false }}">
-<div role="dialog" aria-label="تصفية" style="position:fixed;inset:0;background:oklch(0.24 0.06 257 / 0.42);display:flex;align-items:flex-end;justify-content:center;z-index:40">
+<div role="dialog" aria-label="{{ t.filter }}" style="position:fixed;inset:0;background:oklch(0.24 0.06 257 / 0.42);display:flex;align-items:flex-end;justify-content:center;z-index:40">
 <div style="width:100%;max-width:430px;background:var(--surface);border-radius:var(--r-lg) var(--r-lg) 0 0;padding:16px 16px 22px;box-shadow:var(--e2)">
 <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:14px">
-<h3 style="margin:0;font-size:var(--t-h2);font-weight:500">تصفية</h3>
-<button type="button" onClick="{{ closeSheets }}" style="border:0;background:transparent;font-size:var(--t-sm);color:var(--ink-2);cursor:pointer">إغلاق</button>
+<h3 style="margin:0;font-size:var(--t-h2);font-weight:500">{{ t.filter }}</h3>
+<button type="button" onClick="{{ closeSheets }}" style="border:0;background:transparent;font-size:var(--t-sm);color:var(--ink-2);cursor:pointer">{{ t.close }}</button>
 </div>
 <sc-for list="{{ filterGroups }}" as="g" hint-placeholder-count="3">
 <div style="padding:12px 0;border-top:1px solid var(--rule-faint)">
@@ -145,20 +150,20 @@
 </div>
 </div>
 </sc-for>
-<button type="button" onClick="{{ closeSheets }}" style="width:100%;height:48px;margin-top:14px;border:0;border-radius:var(--r);background:var(--ink);color:var(--ink-on);font-size:15px;font-weight:500;cursor:pointer">أظهر <bdi>{{ resultCount }}</bdi></button>
+<button type="button" onClick="{{ closeSheets }}" style="width:100%;height:48px;margin-top:14px;border:0;border-radius:var(--r);background:var(--ink);color:var(--ink-on);font-size:15px;font-weight:500;cursor:pointer">{{ t.show }} <bdi>{{ resultCount }}</bdi></button>
 </div>
 </div>
 </sc-if>
 
 <!-- ── SORT SHEET ── -->
 <sc-if value="{{ sortOpen }}" hint-placeholder-val="{{ false }}">
-<div role="dialog" aria-label="ترتيب" style="position:fixed;inset:0;background:oklch(0.24 0.06 257 / 0.42);display:flex;align-items:flex-end;justify-content:center;z-index:40">
+<div role="dialog" aria-label="{{ t.sort }}" style="position:fixed;inset:0;background:oklch(0.24 0.06 257 / 0.42);display:flex;align-items:flex-end;justify-content:center;z-index:40">
 <div style="width:100%;max-width:430px;background:var(--surface);border-radius:var(--r-lg) var(--r-lg) 0 0;padding:16px 0 22px;box-shadow:var(--e2)">
-<h3 style="margin:0 16px 8px;font-size:var(--t-h2);font-weight:500">ترتيب</h3>
+<h3 style="margin:0 16px 8px;font-size:var(--t-h2);font-weight:500">{{ t.sort }}</h3>
 <sc-for list="{{ sorts }}" as="s" hint-placeholder-count="4">
 <button type="button" onClick="{{ s.pick }}" style="width:100%;display:flex;justify-content:space-between;align-items:center;gap:12px;padding:14px 16px;border:0;border-top:1px solid var(--rule-faint);background:transparent;color:inherit;font-size:var(--t-body);text-align:start;cursor:pointer">
 <span style="font-weight:{{ s.fw }}">{{ s.label }}</span>
-<sc-if value="{{ s.on }}" hint-placeholder-val="{{ false }}"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--allowed)" stroke-width="2.4"><path d="M5 13l4.5 4.5L19 7"/></svg></sc-if>
+<sc-if value="{{ s.on }}" hint-placeholder-val="{{ false }}"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--brand)" stroke-width="2.4"><path d="M5 13l4.5 4.5L19 7"/></svg></sc-if>
 </button>
 </sc-for>
 </div>
@@ -170,41 +175,156 @@
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:430,&quot;height&quot;:1460}}">
 class Component extends DCLogic {
-  state = { q: '', cat: 'all', sort: 'recent', saved: { p3: true }, sheet: null, filters: { wilaya: 'all', avail: 'all', origin: 'all' } };
+  /* Locale is browser-detected. French is the fallback — Algeria's commercial
+     lingua franca and the neutral middle between Arabic and English. One value. */
+  static FALLBACK = 'fr';
+  static detect() {
+    const tag = (typeof navigator !== 'undefined' && (navigator.language || '')).slice(0, 2).toLowerCase();
+    return ['ar', 'fr', 'en'].includes(tag) ? tag : Component.FALLBACK;
+  }
+
+  state = { q: '', cat: 'all', sort: 'recent', saved: { p3: true }, sheet: null, filters: { wilaya: 'all', avail: 'all', origin: 'all' }, lang: Component.detect() };
+  root = React.createRef();
+  componentDidMount() { this._apply(); }
+  componentDidUpdate() { this._apply(); }
+  _apply() {
+    const el = this.root.current;
+    if (el) { el.setAttribute('dir', this.L[this.state.lang].dir); el.setAttribute('lang', this.state.lang); }
+  }
+
+  /* Text runs take a first-strong isolate so Arabic stays RTL and Latin stays LTR;
+     inside Arabic, each digit group is pinned LTR so "4 800" never reads "800 4". */
+  iso(s) { if (/[\u0600-\u06FF]/.test(s)) s = s.replace(/\d[\d ,.:]*\d%?|\d%?/g, m => '\u2066' + m + '\u2069'); return '\u2068' + s + '\u2069'; }
+  fmt(n, sep) { return '⁦' + String(n).replace(/\B(?=(\d{3})+(?!\d))/g, sep === undefined ? ' ' : sep) + '⁩'; }
+  /* Arabic counts nouns in four forms (one / two / 3–10 / 11+); French and English in two.
+     f = { one, two, few, many } for Arabic, { one, many } otherwise. */
+  count(n, t, f) {
+    if (t.dir === 'rtl') {
+      const m = n % 100;
+      if (n === 1) return f.one;
+      if (n === 2) return f.two;
+      if (m >= 3 && m <= 10) return this.fmt(n, t.sep) + ' ' + f.few;
+      return this.fmt(n, t.sep) + ' ' + f.many;
+    }
+    return this.fmt(n, t.sep) + ' ' + (n === 1 ? f.one : f.many);
+  }
+  langsFor(cur) {
+    return ['ar', 'fr', 'en'].map(id => ({
+      short: this.L[id].short, on: cur === id,
+      bg: cur === id ? 'var(--ink)' : 'var(--surface)',
+      fg: cur === id ? 'var(--ink-on)' : 'var(--ink-2)',
+      pick: () => this.setState({ lang: id })
+    }));
+  }
+
+  L = {
+    ar: {
+      dir: 'rtl', short: 'ع', langLabel: 'اللغة', sep: ' ', cur: 'دج',
+      brand: 'مَعْبَر', messages: 'الرسائل', search: 'بحث', searchPh: 'ابحث عن منتج، فئة، أو متجر',
+      byCat: 'تصفّح حسب الفئة', filter: 'تصفية', sort: 'ترتيب', close: 'إغلاق', show: 'أظهر',
+      verifiedShop: 'متجر مُتحقَّق', navLabel: 'التنقّل',
+      saveOn: 'إزالة من المحفوظات', saveOff: 'احفظ المنتج',
+      unitCat: 'منتج',
+      tx:   { one: 'معاملة واحدة مؤكَّدة', two: 'معاملتان مؤكَّدتان', few: 'معاملات مؤكَّدة', many: 'معاملة مؤكَّدة' },
+      item: { one: 'منتج واحد', two: 'منتجان', few: 'منتجات', many: 'منتجاً' },
+      cats: ['ألبسة', 'حقائب', 'تجميل وعطور', 'أحذية', 'ساعات', 'منزل', 'إلكترونيات'],
+      items: [
+        ['معطف نسائي شتوي — صوف مخلوط، مقاسات S–XL', 'بوتيك نادية · قسنطينة', 'ب ن'],
+        ['حقيبة يد جلدية بحزام كتف', 'دار الأناقة · وهران', 'د أ'],
+        ['عطر نسائي 100 مل — شرقي', 'بوتيك نادية · قسنطينة', 'ب ن'],
+        ['حذاء رياضي رجالي — جلد صناعي', 'محل ياسين · سطيف', 'م ي'],
+        ['ساعة يد رجالية — ستانلس ستيل', 'دار الأناقة · وهران', 'د أ'],
+        ['طقم أواني منزلية — 12 قطعة', 'محل ياسين · سطيف', 'م ي']
+      ],
+      flags: { new: 'وصل حديثاً', low: 'كمية محدودة', order: 'بالطلب' },
+      sorts: ['الأحدث وصولاً', 'الأكثر معاملات مؤكَّدة', 'السعر: من الأقل', 'السعر: من الأعلى'],
+      filters: [
+        ['الولاية', ['كل الولايات', 'الجزائر', 'سطيف', 'وهران', 'قسنطينة']],
+        ['التوفّر', ['الكل', 'متوفر الآن', 'يصل قريباً', 'بالطلب']],
+        ['المصدر', ['الكل', 'تركيا', 'الإمارات', 'الصين']]
+      ],
+      nav: ['الرئيسية', 'السوق', 'المحفوظات', 'الرسائل', 'حسابي']
+    },
+
+    fr: {
+      dir: 'ltr', short: 'FR', langLabel: 'Langue', sep: ' ', cur: 'DA',
+      brand: 'Maabar', messages: 'Messages', search: 'Recherche', searchPh: 'Chercher un produit, une catégorie ou une boutique',
+      byCat: 'Parcourir par catégorie', filter: 'Filtrer', sort: 'Trier', close: 'Fermer', show: 'Afficher',
+      verifiedShop: 'Boutique vérifiée', navLabel: 'Navigation',
+      saveOn: 'Retirer des enregistrements', saveOff: 'Enregistrer le produit',
+      unitCat: 'produits',
+      tx:   { one: 'transaction confirmée', many: 'transactions confirmées' },
+      item: { one: 'produit', many: 'produits' },
+      cats: ['Vêtements', 'Sacs', 'Beauté et parfums', 'Chaussures', 'Montres', 'Maison', 'Électronique'],
+      items: [
+        ['Manteau femme hiver — laine mélangée, tailles S–XL', 'Boutique Nadia · Constantine', 'BN'],
+        ['Sac à main cuir avec bandoulière', 'Dar El Anaqa · Oran', 'DA'],
+        ['Parfum femme 100 ml — oriental', 'Boutique Nadia · Constantine', 'BN'],
+        ['Basket homme — cuir synthétique', 'Chez Yacine · Sétif', 'CY'],
+        ['Montre homme — acier inoxydable', 'Dar El Anaqa · Oran', 'DA'],
+        ['Batterie de cuisine — 12 pièces', 'Chez Yacine · Sétif', 'CY']
+      ],
+      flags: { new: 'Nouveauté', low: 'Quantité limitée', order: 'Sur commande' },
+      sorts: ['Arrivées récentes', 'Le plus de transactions confirmées', 'Prix croissant', 'Prix décroissant'],
+      filters: [
+        ['Wilaya', ['Toutes les wilayas', 'Alger', 'Sétif', 'Oran', 'Constantine']],
+        ['Disponibilité', ['Tout', 'Disponible', 'Arrive bientôt', 'Sur commande']],
+        ['Origine', ['Tout', 'Turquie', 'Émirats', 'Chine']]
+      ],
+      nav: ['Accueil', 'Place', 'Enregistrés', 'Messages', 'Compte']
+    },
+
+    en: {
+      dir: 'ltr', short: 'EN', langLabel: 'Language', sep: ',', cur: 'DA',
+      brand: 'Maabar', messages: 'Messages', search: 'Search', searchPh: 'Search for a product, category or shop',
+      byCat: 'Browse by category', filter: 'Filter', sort: 'Sort', close: 'Close', show: 'Show',
+      verifiedShop: 'Verified shop', navLabel: 'Navigation',
+      saveOn: 'Remove from saved', saveOff: 'Save this product',
+      unitCat: 'products',
+      tx:   { one: 'confirmed transaction', many: 'confirmed transactions' },
+      item: { one: 'product', many: 'products' },
+      cats: ['Clothing', 'Bags', 'Beauty & perfume', 'Shoes', 'Watches', 'Home', 'Electronics'],
+      items: [
+        ['Women’s winter coat — wool blend, sizes S–XL', 'Boutique Nadia · Constantine', 'BN'],
+        ['Leather handbag with shoulder strap', 'Dar El Anaqa · Oran', 'DA'],
+        ['Women’s perfume 100 ml — oriental', 'Boutique Nadia · Constantine', 'BN'],
+        ['Men’s trainers — synthetic leather', 'Chez Yacine · Sétif', 'CY'],
+        ['Men’s watch — stainless steel', 'Dar El Anaqa · Oran', 'DA'],
+        ['Cookware set — 12 pieces', 'Chez Yacine · Sétif', 'CY']
+      ],
+      flags: { new: 'Just arrived', low: 'Limited stock', order: 'Made to order' },
+      sorts: ['Newest arrivals', 'Most confirmed transactions', 'Price: low to high', 'Price: high to low'],
+      filters: [
+        ['Wilaya', ['All wilayas', 'Algiers', 'Sétif', 'Oran', 'Constantine']],
+        ['Availability', ['All', 'In stock', 'Arriving soon', 'To order']],
+        ['Origin', ['All', 'Türkiye', 'UAE', 'China']]
+      ],
+      nav: ['Home', 'Marketplace', 'Saved', 'Messages', 'Account']
+    }
+  };
 
   CATS = [
-    { id: 'clothes', label: 'ألبسة',      ph: 'ph-coat',    n: 1240 },
-    { id: 'bags',    label: 'حقائب',      ph: 'ph-bag',     n: 486 },
-    { id: 'cosm',    label: 'تجميل وعطور', ph: 'ph-perfume', n: 913 },
-    { id: 'shoes',   label: 'أحذية',      ph: 'ph-shoe',    n: 702 },
-    { id: 'watches', label: 'ساعات',      ph: 'ph-watch',   n: 188 },
-    { id: 'home',    label: 'منزل',       ph: 'ph-home',    n: 355 },
-    { id: 'elec',    label: 'إلكترونيات',  ph: 'ph-elec',    n: 264 }
+    { id: 'clothes', ph: 'ph-coat', n: 1240 }, { id: 'bags', ph: 'ph-bag', n: 486 }, { id: 'cosm', ph: 'ph-perfume', n: 913 },
+    { id: 'shoes', ph: 'ph-shoe', n: 702 }, { id: 'watches', ph: 'ph-watch', n: 188 }, { id: 'home', ph: 'ph-home', n: 355 }, { id: 'elec', ph: 'ph-elec', n: 264 }
   ];
 
   // Every seller is a TRADER with a verified commercial register.
   // A micro-importer can never appear here — Décret 25-170 art.4 exempts them
   // from the RC, while Law 18-05 requires it of an e-supplier.
   ITEMS = [
-    { id: 'p1', ph: 'ph-coat',    title: 'معطف نسائي شتوي — صوف مخلوط، مقاسات S–XL', price: 7400, unit: 'دج', seller: 'بوتيك نادية · قسنطينة', initials: 'ب ن', tx: 63, flag: 'وصل حديثاً', flagKind: 'new' },
-    { id: 'p2', ph: 'ph-bag',     title: 'حقيبة يد جلدية بحزام كتف', price: 5900, unit: 'دج', seller: 'دار الأناقة · وهران', initials: 'د أ', tx: 118, flag: '', flagKind: '' },
-    { id: 'p3', ph: 'ph-perfume', title: 'عطر نسائي 100 مل — شرقي', price: 4200, unit: 'دج', seller: 'بوتيك نادية · قسنطينة', initials: 'ب ن', tx: 63, flag: 'كمية محدودة', flagKind: 'low' },
-    { id: 'p4', ph: 'ph-shoe',    title: 'حذاء رياضي رجالي — جلد صناعي', price: 6300, unit: 'دج', seller: 'محل ياسين · سطيف', initials: 'م ي', tx: 241, flag: '', flagKind: '' },
-    { id: 'p5', ph: 'ph-watch',   title: 'ساعة يد رجالية — ستانلس ستيل', price: 11500, unit: 'دج', seller: 'دار الأناقة · وهران', initials: 'د أ', tx: 118, flag: '', flagKind: '' },
-    { id: 'p6', ph: 'ph-home',    title: 'طقم أواني منزلية — 12 قطعة', price: 8900, unit: 'دج', seller: 'محل ياسين · سطيف', initials: 'م ي', tx: 241, flag: 'بالطلب', flagKind: 'order' }
+    { id: 'p1', ph: 'ph-coat', price: 7400, tx: 63, flagKind: 'new' },
+    { id: 'p2', ph: 'ph-bag', price: 5900, tx: 118, flagKind: '' },
+    { id: 'p3', ph: 'ph-perfume', price: 4200, tx: 63, flagKind: 'low' },
+    { id: 'p4', ph: 'ph-shoe', price: 6300, tx: 241, flagKind: '' },
+    { id: 'p5', ph: 'ph-watch', price: 11500, tx: 118, flagKind: '' },
+    { id: 'p6', ph: 'ph-home', price: 8900, tx: 241, flagKind: 'order' }
   ];
 
-  SORTS = [
-    { id: 'recent', label: 'الأحدث وصولاً' },
-    { id: 'trust',  label: 'الأكثر معاملات مؤكَّدة' },
-    { id: 'low',    label: 'السعر: من الأقل' },
-    { id: 'high',   label: 'السعر: من الأعلى' }
-  ];
-
-  FILTERS = [
-    { id: 'wilaya', label: 'الولاية', opts: [['all','كل الولايات'],['alger','الجزائر'],['setif','سطيف'],['oran','وهران'],['const','قسنطينة']] },
-    { id: 'avail',  label: 'التوفّر',  opts: [['all','الكل'],['now','متوفر الآن'],['soon','يصل قريباً'],['order','بالطلب']] },
-    { id: 'origin', label: 'المصدر',   opts: [['all','الكل'],['tr','تركيا'],['ae','الإمارات'],['cn','الصين']] }
+  SORT_IDS = ['recent', 'trust', 'low', 'high'];
+  FILTER_META = [
+    { id: 'wilaya', opts: ['all', 'alger', 'setif', 'oran', 'const'] },
+    { id: 'avail', opts: ['all', 'now', 'soon', 'order'] },
+    { id: 'origin', opts: ['all', 'tr', 'ae', 'cn'] }
   ];
 
   FLAG = {
@@ -215,19 +335,6 @@ class Component extends DCLogic {
 
   AV = [['var(--role-consumer-bg)', 'var(--role-consumer-ink)'], ['var(--role-importer-bg)', 'var(--role-importer-ink)'], ['var(--role-trader-bg)', 'var(--role-trader-ink)']];
 
-  fmt(n) { return '⁦' + String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + '⁩'; }
-
-  // Arabic counted nouns: one / two / few (3-10) / many (11+)
-  counted(n, f) {
-    const m = n % 100;
-    if (n === 1) return f.one;
-    if (n === 2) return f.two;
-    if (m >= 3 && m <= 10) return this.fmt(n) + ' ' + f.few;
-    return this.fmt(n) + ' ' + f.many;
-  }
-  TX = { one: 'معاملة واحدة مؤكَّدة', two: 'معاملتان مؤكَّدتان', few: 'معاملات مؤكَّدة', many: 'معاملة مؤكَّدة' };
-  ITEM_N = { one: 'منتج واحد', two: 'منتجان', few: 'منتجات', many: 'منتجاً' };
-
   ICON = {
     home:   React.createElement('svg', { width: 20, height: 20, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 1.8 }, React.createElement('path', { d: 'M4 11l8-7 8 7v8a1 1 0 0 1-1 1h-4v-6H9v6H5a1 1 0 0 1-1-1z' })),
     shop:   React.createElement('svg', { width: 20, height: 20, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 1.8 }, React.createElement('path', { d: 'M4 8h16l-1.2 11a1 1 0 0 1-1 .9H6.2a1 1 0 0 1-1-.9z' }), React.createElement('path', { d: 'M8.5 8a3.5 3.5 0 0 1 7 0' })),
@@ -237,56 +344,52 @@ class Component extends DCLogic {
   };
 
   // Consumer nav is five, not six. Messages earns a slot (contacting a seller
-  // is the primary conversion action); "طلباتي" lives under حسابي because an
-  // availability request is far lower frequency than a conversation.
-  NAV = [
-    { id: 'home',  label: 'الرئيسية',  icon: 'home' },
-    { id: 'shop',  label: 'السوق',     icon: 'shop' },
-    { id: 'saved', label: 'المحفوظات', icon: 'heart' },
-    { id: 'msg',   label: 'الرسائل',   icon: 'msg' },
-    { id: 'me',    label: 'حسابي',     icon: 'user' }
-  ];
+  // is the primary conversion action); availability requests live under the
+  // account because they are far lower frequency than a conversation.
+  NAV_IDS = ['home', 'shop', 'saved', 'msg', 'me'];
+  NAV_ICONS = ['home', 'shop', 'heart', 'msg', 'user'];
 
   renderVals() {
-    const s = this.state;
+    const s = this.state, t = this.L[s.lang];
     const nFilters = Object.values(s.filters).filter(v => v !== 'all').length;
-    const sort = this.SORTS.find(x => x.id === s.sort);
 
     return {
+      rootRef: this.root, t, langs: this.langsFor(s.lang),
       q: s.q, onQ: () => {},
-      resultCount: this.counted(this.ITEMS.length, this.ITEM_N),
+      resultCount: this.count(this.ITEMS.length, t, t.item),
       hasFilters: nFilters > 0,
       filterCount: String(nFilters),
-      sortLabel: sort.label,
+      sortLabel: t.sorts[this.SORT_IDS.indexOf(s.sort)],
       filterOpen: s.sheet === 'filter',
       sortOpen: s.sheet === 'sort',
       openFilter: () => this.setState({ sheet: 'filter' }),
       openSort: () => this.setState({ sheet: 'sort' }),
       closeSheets: () => this.setState({ sheet: null }),
 
-      cats: this.CATS.map(c => ({
-        ...c,
+      cats: this.CATS.map((c, i) => ({
+        ph: c.ph, label: t.cats[i],
         on: s.cat === c.id,
         fw: s.cat === c.id ? 600 : 400,
         bd: s.cat === c.id ? 'var(--ink)' : 'var(--rule-faint)',
         sh: s.cat === c.id ? 'var(--e2)' : 'var(--e1)',
-        count: this.fmt(c.n) + ' منتج',
+        count: this.fmt(c.n, t.sep) + ' ' + t.unitCat,
         pick: () => this.setState({ cat: c.id })
       })),
 
       items: this.ITEMS.map((p, i) => {
+        const [title, seller, initials] = t.items[i];
         const isSaved = !!s.saved[p.id];
         const [avBg, avFg] = this.AV[i % this.AV.length];
         const [flagBg, flagFg] = p.flagKind ? this.FLAG[p.flagKind] : ['', ''];
         return {
-          ...p,
-          price: this.fmt(p.price),
-          trust: this.counted(p.tx, this.TX),
+          ph: p.ph, title, seller, initials,
+          price: this.fmt(p.price, t.sep), unit: t.cur,
+          trust: this.count(p.tx, t, t.tx),
           saved: isSaved,
-          saveLabel: isSaved ? 'إزالة من المحفوظات' : 'احفظ المنتج',
+          saveLabel: isSaved ? t.saveOn : t.saveOff,
           heartFill: isSaved ? 'var(--brand)' : 'none',
           heartStroke: isSaved ? 'var(--brand)' : 'var(--ink-2)',
-          hasFlag: !!p.flagKind, flagBg, flagFg,
+          hasFlag: !!p.flagKind, flag: p.flagKind ? t.flags[p.flagKind] : '', flagBg, flagFg,
           avBg, avFg,
           save: () => this.setState(st => {
             const saved = { ...st.saved };
@@ -296,12 +399,12 @@ class Component extends DCLogic {
         };
       }),
 
-      filterGroups: this.FILTERS.map(g => ({
-        label: g.label,
-        opts: g.opts.map(([id, label]) => {
+      filterGroups: this.FILTER_META.map((g, gi) => ({
+        label: t.filters[gi][0],
+        opts: g.opts.map((id, oi) => {
           const on = s.filters[g.id] === id;
           return {
-            label, on,
+            label: t.filters[gi][1][oi], on,
             bd: on ? 'var(--ink)' : 'var(--rule-strong)',
             bg: on ? 'var(--ink)' : 'var(--surface)',
             fg: on ? 'var(--ink-on)' : 'var(--ink)',
@@ -310,17 +413,17 @@ class Component extends DCLogic {
         })
       })),
 
-      sorts: this.SORTS.map(x => ({
-        ...x, on: x.id === s.sort, fw: x.id === s.sort ? 500 : 400,
-        pick: () => this.setState({ sort: x.id, sheet: null })
+      sorts: this.SORT_IDS.map((id, i) => ({
+        label: t.sorts[i], on: id === s.sort, fw: id === s.sort ? 500 : 400,
+        pick: () => this.setState({ sort: id, sheet: null })
       })),
 
-      nav: this.NAV.map(n => ({
-        ...n,
-        on: n.id === 'shop',
-        fg: n.id === 'shop' ? 'var(--ink)' : 'var(--ink-3)',
-        fw: n.id === 'shop' ? 600 : 400,
-        icon: this.ICON[n.icon],
+      nav: this.NAV_IDS.map((id, i) => ({
+        label: t.nav[i],
+        on: id === 'shop',
+        fg: id === 'shop' ? 'var(--ink)' : 'var(--ink-3)',
+        fw: id === 'shop' ? 600 : 400,
+        icon: this.ICON[this.NAV_ICONS[i]],
         pick: () => {}
       }))
     };
