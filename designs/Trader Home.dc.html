@@ -23,19 +23,24 @@
 </style>
 </helmet>
 
-<div dir="rtl" lang="ar" class="tier-op" style="min-height:100vh;display:flex;justify-content:center">
+<div ref="{{ rootRef }}" dir="rtl" lang="ar" class="tier-op" style="min-height:100vh;display:flex;justify-content:center">
 <div style="width:100%;max-width:430px;min-height:100vh;display:flex;flex-direction:column;background:var(--paper);border-inline:1px solid var(--rule)">
 
 <header style="position:sticky;top:0;z-index:20;background:var(--surface);border-bottom:1px solid var(--rule)">
 <div style="display:flex;align-items:center;gap:10px;padding:11px 16px">
-<span style="font-weight:600;font-size:18px">مَعْبَر</span>
-<div role="group" aria-label="سياق الحساب" style="display:flex;border:1px solid var(--rule-strong);border-radius:var(--r-sm);overflow:hidden;margin-inline-start:6px">
+<span style="font-family:var(--font-display);font-weight:600;font-size:18px">{{ t.brand }}</span>
+<div role="group" aria-label="{{ t.context }}" style="display:flex;border:1px solid var(--rule-strong);border-radius:var(--r-sm);overflow:hidden;margin-inline-start:6px">
 <sc-for list="{{ ctx }}" as="c" hint-placeholder-count="2">
 <button type="button" onClick="{{ c.pick }}" aria-pressed="{{ c.on }}" style="height:28px;padding:0 10px;border:0;background:{{ c.bg }};color:{{ c.fg }};font-size:var(--t-xs);font-weight:500;cursor:pointer">{{ c.label }}</button>
 </sc-for>
 </div>
 <div style="flex:1"></div>
-<button type="button" aria-label="بحث" style="width:34px;height:34px;border:1px solid var(--rule);border-radius:var(--r-sm);background:var(--surface);cursor:pointer;display:grid;place-items:center;color:inherit">
+<div role="group" aria-label="{{ t.langLabel }}" style="display:flex;border:1px solid var(--rule-strong);border-radius:var(--r-sm);overflow:hidden;flex:none">
+<sc-for list="{{ langs }}" as="l" hint-placeholder-count="3">
+<button type="button" onClick="{{ l.pick }}" aria-pressed="{{ l.on }}" style="height:24px;padding:0 8px;border:0;background:{{ l.bg }};color:{{ l.fg }};font-size:var(--t-micro);font-weight:500;cursor:pointer">{{ l.short }}</button>
+</sc-for>
+</div>
+<button type="button" aria-label="{{ t.search }}" style="width:34px;height:34px;border:1px solid var(--rule);border-radius:var(--r-sm);background:var(--surface);cursor:pointer;display:grid;place-items:center;color:inherit">
 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
 </button>
 </div>
@@ -46,8 +51,8 @@
 <!-- ── 1. OPPORTUNITIES — the answer to "I have no active request" ── -->
 <section class="sec">
 <div class="sech">
-<h2>فرص تناسبك</h2>
-<span class="num" style="font-size:var(--t-xs);color:var(--ink-3)"><bdi>مبنيّة على فئاتك وولايتك</bdi></span>
+<h2>{{ t.oppsTitle }}</h2>
+<span class="num" style="font-size:var(--t-xs);color:var(--ink-3)"><bdi>{{ t.oppsNote }}</bdi></span>
 </div>
 <div class="scrollx" style="display:flex;gap:12px;padding:0 16px 4px">
 <sc-for list="{{ opps }}" as="o" hint-placeholder-count="3">
@@ -72,25 +77,25 @@
 <!-- ── 2. UPCOMING TRIPS — "who is travelling where and when" ── -->
 <section class="sec">
 <div class="sech">
-<h2>رحلات قادمة تخصّك</h2>
-<button type="button" class="more">كل الرحلات ←</button>
+<h2>{{ t.tripsTitle }}</h2>
+<button type="button" class="more">{{ t.allTrips }}</button>
 </div>
 <div style="margin:0 16px" class="card">
-<sc-for list="{{ trips }}" as="t" hint-placeholder-count="3">
+<sc-for list="{{ trips }}" as="tr" hint-placeholder-count="3">
 <button type="button" class="tap" style="width:100%;display:flex;align-items:center;gap:11px;padding:12px 13px;border:0;border-bottom:1px solid var(--rule-faint);background:transparent;color:inherit;text-align:start">
-<span aria-hidden="true" style="flex:none;width:40px;height:40px;border-radius:var(--r-sm);background:{{ t.flagBg }};display:grid;place-items:center;font-size:var(--t-xs);font-weight:600;color:{{ t.flagFg }}">{{ t.cc }}</span>
+<span aria-hidden="true" style="flex:none;width:40px;height:40px;border-radius:var(--r-sm);background:{{ tr.flagBg }};display:grid;place-items:center;font-size:var(--t-xs);font-weight:600;color:{{ tr.flagFg }}">{{ tr.cc }}</span>
 <span style="flex:1;min-width:0">
 <span style="display:flex;align-items:center;gap:6px">
-<span style="font-size:var(--t-h3);font-weight:500">{{ t.dest }}</span>
-<span class="num" style="font-size:var(--t-xs);color:var(--ink-3)"><bdi>{{ t.dates }}</bdi></span>
+<span style="font-size:var(--t-h3);font-weight:500">{{ tr.dest }}</span>
+<span class="num" style="font-size:var(--t-xs);color:var(--ink-3)"><bdi>{{ tr.dates }}</bdi></span>
 </span>
-<span style="display:block;font-size:var(--t-xs);color:var(--ink-2);margin-top:3px">{{ t.cats }}</span>
+<span style="display:block;font-size:var(--t-xs);color:var(--ink-2);margin-top:3px">{{ tr.cats }}</span>
 <span style="display:flex;align-items:center;gap:6px;margin-top:5px">
-<span class="chip {{ t.capChip }}" style="height:19px;font-size:var(--t-micro)">{{ t.cap }}</span>
-<span class="num" style="font-size:var(--t-micro);color:var(--ink-3)"><bdi>{{ t.who }} · {{ t.tx }}</bdi></span>
+<span class="chip {{ tr.capChip }}" style="height:19px;font-size:var(--t-micro)">{{ tr.cap }}</span>
+<span class="num" style="font-size:var(--t-micro);color:var(--ink-3)"><bdi>{{ tr.whoLine }}</bdi></span>
 </span>
 </span>
-<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--ink-3)" stroke-width="2" style="flex:none"><path d="M15 5l-7 7 7 7"/></svg>
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--ink-3)" stroke-width="2" style="flex:none;transform:scaleX({{ arrow }})"><path d="M15 5l-7 7 7 7"/></svg>
 </button>
 </sc-for>
 </div>
@@ -99,8 +104,8 @@
 <!-- ── 3. NEEDS YOUR DECISION — ranked by expiry ── -->
 <section class="sec">
 <div class="sech">
-<h2>يحتاج قرارك</h2>
-<span class="num" style="font-size:var(--t-xs);color:var(--ink-3)"><bdi>مرتّبة بأقرب انتهاء</bdi></span>
+<h2>{{ t.decTitle }}</h2>
+<span class="num" style="font-size:var(--t-xs);color:var(--ink-3)"><bdi>{{ t.decNote }}</bdi></span>
 </div>
 <div style="margin:0 16px" class="card">
 <sc-for list="{{ decisions }}" as="d" hint-placeholder-count="3">
@@ -125,8 +130,8 @@
 <!-- ── 4. MY REQUESTS — compact, because discovery now leads ── -->
 <section class="sec">
 <div class="sech">
-<h2>طلباتي</h2>
-<button type="button" class="more">الكل ←</button>
+<h2>{{ t.reqTitle }}</h2>
+<button type="button" class="more">{{ t.all }}</button>
 </div>
 <div style="margin:0 16px" class="card">
 <sc-for list="{{ reqs }}" as="r" hint-placeholder-count="3">
@@ -136,15 +141,15 @@
 <span class="num" style="flex:none;font-size:var(--t-micro);color:var(--ink-3)"><bdi>{{ r.meta }}</bdi></span>
 </div>
 </sc-for>
-<button type="button" style="width:100%;height:44px;border:0;background:transparent;color:var(--allowed-ink);font-size:var(--t-sm);font-weight:500;cursor:pointer">+ طلب توريد جديد</button>
+<button type="button" style="width:100%;height:44px;border:0;background:transparent;color:var(--brand-ink);font-size:var(--t-sm);font-weight:500;cursor:pointer">{{ t.newReq }}</button>
 </div>
 </section>
 
 <!-- ── 5. NEW IN MY CATEGORIES — commerce, with imagery ── -->
 <section class="sec">
 <div class="sech">
-<h2>وصل حديثاً في فئاتك</h2>
-<button type="button" class="more">السوق ←</button>
+<h2>{{ t.freshTitle }}</h2>
+<button type="button" class="more">{{ t.market }}</button>
 </div>
 <div class="scrollx" style="display:flex;gap:11px;padding:0 16px 4px">
 <sc-for list="{{ fresh }}" as="p" hint-placeholder-count="4">
@@ -152,7 +157,7 @@
 <span class="img img-card ph {{ p.ph }}" style="border-radius:0;display:block"></span>
 <span style="display:block;padding:8px 9px 10px">
 <span style="display:block;font-size:var(--t-xs);line-height:1.45;height:32px;overflow:hidden">{{ p.title }}</span>
-<span class="num" style="display:block;font-size:var(--t-sm);font-weight:600;margin-top:4px"><bdi>{{ p.price }} دج</bdi></span>
+<span class="num" style="display:block;font-size:var(--t-sm);font-weight:600;margin-top:4px"><bdi>{{ p.price }}</bdi></span>
 </span>
 </article>
 </sc-for>
@@ -163,8 +168,8 @@
 <section class="sec">
 <div style="margin:0 16px" class="card" style="margin:0 16px;padding:13px">
 <div style="display:flex;align-items:center;gap:10px;margin-bottom:11px">
-<span style="font-size:var(--t-h3);font-weight:500;flex:1">سجلّك</span>
-<button type="button" class="more">التفاصيل ←</button>
+<span style="font-size:var(--t-h3);font-weight:500;flex:1">{{ t.recordTitle }}</span>
+<button type="button" class="more">{{ t.details }}</button>
 </div>
 <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--rule);border:1px solid var(--rule);border-radius:var(--r-sm);overflow:hidden">
 <sc-for list="{{ rep }}" as="s" hint-placeholder-count="3">
@@ -179,7 +184,7 @@
 
 <!-- ── 7. ONE NEXT STEP ── -->
 <section style="margin:4px 16px 0;padding:14px;border:1px solid var(--brand-bd);border-radius:var(--r);background:var(--brand-bg)">
-<div style="font-size:var(--t-xs);color:var(--brand-ink);margin-bottom:5px">الخطوة التالية</div>
+<div style="font-size:var(--t-xs);color:var(--brand-ink);margin-bottom:5px">{{ t.nextStep }}</div>
 <div style="font-size:var(--t-h3);font-weight:500;margin-bottom:6px">{{ next.title }}</div>
 <p style="margin:0 0 11px;font-size:var(--t-sm);line-height:1.65;color:var(--ink-2)">{{ next.body }}</p>
 <button type="button" style="height:42px;padding:0 18px;border:0;border-radius:var(--r-sm);background:var(--brand);color:var(--ink-on);font-size:var(--t-sm);font-weight:500;cursor:pointer">{{ next.cta }}</button>
@@ -187,7 +192,7 @@
 
 </main>
 
-<nav aria-label="التنقّل" style="position:fixed;inset-block-end:0;inset-inline:0;margin:0 auto;max-width:430px;display:grid;grid-template-columns:repeat(6,1fr);background:var(--surface);border-top:1px solid var(--rule);padding-block:6px 8px">
+<nav aria-label="{{ t.navLabel }}" style="position:fixed;inset-block-end:0;inset-inline:0;margin:0 auto;max-width:430px;display:grid;grid-template-columns:repeat(6,1fr);background:var(--surface);border-top:1px solid var(--rule);padding-block:6px 8px">
 <sc-for list="{{ nav }}" as="n" hint-placeholder-count="6">
 <button type="button" aria-current="{{ n.on }}" style="display:flex;flex-direction:column;align-items:center;gap:3px;border:0;background:transparent;padding:4px 0;cursor:pointer;color:{{ n.fg }}">
 <span aria-hidden="true" style="width:20px;height:20px;display:grid;place-items:center">{{ n.icon }}</span>
@@ -201,59 +206,141 @@
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:430,&quot;height&quot;:1760}}">
 class Component extends DCLogic {
-  state = { ctx: 'buy' };
+  /* Locale is browser-detected. French is the fallback — Algeria's commercial
+     lingua franca and the neutral middle between Arabic and English. One value. */
+  static FALLBACK = 'fr';
+  static detect() {
+    const tag = (typeof navigator !== 'undefined' && (navigator.language || '')).slice(0, 2).toLowerCase();
+    return ['ar', 'fr', 'en'].includes(tag) ? tag : Component.FALLBACK;
+  }
 
-  fmt(n) { return '⁦' + String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + '⁩'; }
-  LRI = '⁦'; PDI = '⁩';
-  ltr(s) { return this.LRI + s + this.PDI; }
+  state = { ctx: 'buy', lang: Component.detect() };
+  root = React.createRef();
+  componentDidMount() { this._apply(); }
+  componentDidUpdate() { this._apply(); }
+  _apply() {
+    const el = this.root.current;
+    if (el) { el.setAttribute('dir', this.L[this.state.lang].dir); el.setAttribute('lang', this.state.lang); }
+  }
+
+  /* Text runs take a first-strong isolate so Arabic stays RTL and Latin stays LTR;
+     inside Arabic, each digit group is pinned LTR so "4 800" never reads "800 4". */
+  iso(s) { if (/[\u0600-\u06FF]/.test(s)) s = s.replace(/\d[\d ,.:]*\d%?|\d%?/g, m => '\u2066' + m + '\u2069'); return '\u2068' + s + '\u2069'; }
+  fmt(n, sep) { return '⁦' + String(n).replace(/\B(?=(\d{3})+(?!\d))/g, sep === undefined ? ' ' : sep) + '⁩'; }
+  /* Arabic counts nouns in four forms (one / two / 3–10 / 11+); French and English in two.
+     f = { one, two, few, many } for Arabic, { one, many } otherwise. */
+  count(n, t, f) {
+    if (t.dir === 'rtl') {
+      const m = n % 100;
+      if (n === 1) return f.one;
+      if (n === 2) return f.two;
+      if (m >= 3 && m <= 10) return this.fmt(n, t.sep) + ' ' + f.few;
+      return this.fmt(n, t.sep) + ' ' + f.many;
+    }
+    return this.fmt(n, t.sep) + ' ' + (n === 1 ? f.one : f.many);
+  }
+  langsFor(cur) {
+    return ['ar', 'fr', 'en'].map(id => ({
+      short: this.L[id].short, on: cur === id,
+      bg: cur === id ? 'var(--ink)' : 'var(--surface)',
+      fg: cur === id ? 'var(--ink-on)' : 'var(--ink-2)',
+      pick: () => this.setState({ lang: id })
+    }));
+  }
+
+  L = {
+    ar: {
+      dir: 'rtl', short: 'ع', langLabel: 'اللغة', sep: ' ', cur: 'دج',
+      brand: 'مَعْبَر', context: 'سياق الحساب', ctx: ['أنا أستورد', 'أنا أشتري'], search: 'بحث',
+      oppsTitle: 'فرص تناسبك', oppsNote: 'مبنيّة على فئاتك وولايتك',
+      opps: [
+        ['رحلة مطابقة', 'تغادر بعد 6 أيام', 'إسطنبول · ألبسة نسائية', 'يغطّي فئتك الأولى، وله سعة تكفي 120 قطعة، ويسلّم في سطيف.', 'كريمة ح. · مستوردة مُتحقَّقة', 'ك ح', '84 معاملة', 'اطلب عرضاً'],
+        ['طلب مشترك', 'يُغلق بعد 3 أيام', 'انضمّ إلى طلب جماعي — عطور', '7 تجّار في وهران يجمعون 210 وحدة للوصول إلى سعر أفضل.', 'طلب مفتوح · 7 تجّار', '7', 'متوسط 61 معاملة', 'اطّلع وانضمّ'],
+        ['سعر مرجعي', 'تحديث اليوم', 'الأحذية الرجالية: النطاق نزل 8%', 'النطاق في سطيف صار 3 500 – 4 900 دج. راجع تسعيرك قبل الالتزام القادم.', 'مبنيّ على 34 معاملة مؤكَّدة', '%', 'آخر 90 يوماً', 'افتح المؤشّر']
+      ],
+      tripsTitle: 'رحلات قادمة تخصّك', allTrips: 'كل الرحلات ←',
+      trips: [['إسطنبول', '12–16 أكتوبر', 'ألبسة · حقائب · إكسسوار', 'سعة متاحة', 'كريمة ح. · 84 معاملة'], ['دبي', '19–23 أكتوبر', 'عطور · ساعات', 'سعة محدودة', 'سفيان ب. · 12 معاملة'], ['غازي عنتاب', '2–7 نوفمبر', 'منسوجات منزلية', 'سعة متاحة', 'ن. مرابط · 46 معاملة']],
+      decTitle: 'يحتاج قرارك', decNote: 'مرتّبة بأقرب انتهاء',
+      decisions: [
+        ['عرض على «قمصان قطنية رجالية»', 'ينتهي بعد 19 ساعة', 'ثلاثة مستوردين اقترحوا نطاقاً. قارن بعدد المعاملات المؤكَّدة لا بالسعر وحده.', 'قارن العروض', 'مدّد المهلة'],
+        ['أكّد المواصفة قبل إغلاق رحلة أكتوبر', 'يُفضَّل خلال يومين', 'القماش والمقاسات غير محدّدين. كل يوم تأخير يقلّل احتمال إدراجك في الرحلة.', 'أكّد المواصفة', 'لاحقاً'],
+        ['استلام بضاعة وصلت — معاطف', 'خلال 4 أيام', 'وصلت وجُمركت. حدّد موعد الاستلام وأكّد المطابقة عند التسليم.', 'حدّد الموعد', 'راسل']
+      ],
+      reqTitle: 'طلباتي', all: 'الكل ←', newReq: '+ طلب توريد جديد',
+      reqs: [['مطابَق', 'قمصان قطنية رجالية — 120 وحدة', '3 عروض'], ['مفتوح', 'أحذية رياضية — 80 زوجاً', 'بلا عروض · 5 أيام'], ['ملتزَم', 'معاطف نسائية — 40 قطعة', 'في الطريق']],
+      freshTitle: 'وصل حديثاً في فئاتك', market: 'السوق ←',
+      fresh: ['معطف نسائي صوف', 'حذاء رياضي رجالي', 'حقيبة يد جلدية', 'ساعة ستانلس'],
+      recordTitle: 'سجلّك', details: 'التفاصيل ←',
+      rep: [['معاملة مؤكَّدة', '52'], ['نسبة الاستلام', '96%'], ['متوسط الردّ', 'ساعتان']],
+      nextStep: 'الخطوة التالية',
+      next: ['ثبّت سعرك قبل رحلة أكتوبر', 'رحلتان تغطّيان فئتك تغادران خلال أسبوع. الالتزام بنطاق سعر الآن يرفع فرصة إدراجك في قائمة الشراء.', 'راجع العروض الثلاثة'],
+      navLabel: 'التنقّل', nav: ['الرئيسية', 'اكتشف', 'طلباتي', 'التزاماتي', 'الرسائل', 'حسابي']
+    },
+
+    fr: {
+      dir: 'ltr', short: 'FR', langLabel: 'Langue', sep: ' ', cur: 'DA',
+      brand: 'Maabar', context: 'Contexte du compte', ctx: ['J’importe', 'J’achète'], search: 'Recherche',
+      oppsTitle: 'Opportunités pour vous', oppsNote: 'selon vos catégories et votre wilaya',
+      opps: [
+        ['Voyage compatible', 'départ dans 6 jours', 'Istanbul · vêtements femme', 'Couvre votre première catégorie, avec une capacité de 120 pièces et une remise à Sétif.', 'Karima H. · importatrice vérifiée', 'KH', '84 transactions', 'Demander une offre'],
+        ['Demande groupée', 'clôture dans 3 jours', 'Rejoindre une demande groupée — parfums', '7 commerçants d’Oran réunissent 210 unités pour obtenir un meilleur prix.', 'Demande ouverte · 7 commerçants', '7', 'moy. 61 transactions', 'Voir et rejoindre'],
+        ['Prix de référence', 'mis à jour aujourd’hui', 'Chaussures homme : fourchette en baisse de 8 %', 'À Sétif, la fourchette est désormais de 3 500 – 4 900 DA. Revoyez vos prix avant le prochain engagement.', 'Basé sur 34 transactions confirmées', '%', '90 derniers jours', 'Ouvrir l’indicateur']
+      ],
+      tripsTitle: 'Voyages à venir pour vous', allTrips: 'Tous les voyages →',
+      trips: [['Istanbul', '12–16 octobre', 'Vêtements · sacs · accessoires', 'Capacité disponible', 'Karima H. · 84 transactions'], ['Dubaï', '19–23 octobre', 'Parfums · montres', 'Capacité limitée', 'Sofiane B. · 12 transactions'], ['Gaziantep', '2–7 novembre', 'Linge de maison', 'Capacité disponible', 'N. Merabet · 46 transactions']],
+      decTitle: 'En attente de votre décision', decNote: 'par échéance la plus proche',
+      decisions: [
+        ['Offres sur « chemises coton homme »', 'expire dans 19 h', 'Trois importateurs ont proposé une fourchette. Comparez au nombre de transactions confirmées, pas au prix seul.', 'Comparer les offres', 'Prolonger le délai'],
+        ['Confirmez la spécification avant la clôture du voyage d’octobre', 'de préférence sous 2 jours', 'Tissu et tailles non précisés. Chaque jour de retard réduit vos chances d’être inclus.', 'Confirmer la spécification', 'Plus tard'],
+        ['Réception de marchandise arrivée — manteaux', 'sous 4 jours', 'Arrivée et dédouanée. Fixez le rendez-vous et confirmez la conformité à la remise.', 'Fixer le rendez-vous', 'Écrire']
+      ],
+      reqTitle: 'Mes demandes', all: 'Tout →', newReq: '+ Nouvelle demande d’approvisionnement',
+      reqs: [['Appariée', 'Chemises coton homme — 120 unités', '3 offres'], ['Ouverte', 'Baskets — 80 paires', 'sans offre · 5 jours'], ['Engagée', 'Manteaux femme — 40 pièces', 'en route']],
+      freshTitle: 'Nouveautés dans vos catégories', market: 'Place →',
+      fresh: ['Manteau femme laine', 'Basket homme', 'Sac à main cuir', 'Montre acier'],
+      recordTitle: 'Votre historique', details: 'Détails →',
+      rep: [['Transactions confirmées', '52'], ['Taux de réception', '96 %'], ['Délai de réponse', '2 h']],
+      nextStep: 'Étape suivante',
+      next: ['Fixez votre prix avant le voyage d’octobre', 'Deux voyages couvrant votre catégorie partent cette semaine. S’engager sur une fourchette maintenant augmente vos chances d’être inclus dans la liste d’achat.', 'Voir les trois offres'],
+      navLabel: 'Navigation', nav: ['Accueil', 'Découvrir', 'Demandes', 'Engagements', 'Messages', 'Compte']
+    },
+
+    en: {
+      dir: 'ltr', short: 'EN', langLabel: 'Language', sep: ',', cur: 'DA',
+      brand: 'Maabar', context: 'Account context', ctx: ['I import', 'I buy'], search: 'Search',
+      oppsTitle: 'Opportunities for you', oppsNote: 'based on your categories and wilaya',
+      opps: [
+        ['Matching trip', 'leaves in 6 days', 'Istanbul · women’s clothing', 'Covers your top category, has capacity for 120 pieces, and hands over in Sétif.', 'Karima H. · verified importer', 'KH', '84 transactions', 'Request an offer'],
+        ['Group request', 'closes in 3 days', 'Join a group request — perfumes', '7 traders in Oran are pooling 210 units to reach a better price.', 'Open request · 7 traders', '7', 'avg 61 transactions', 'View and join'],
+        ['Reference price', 'updated today', 'Men’s shoes: range down 8%', 'In Sétif the range is now 3,500 – 4,900 DA. Review your pricing before your next commitment.', 'Based on 34 confirmed transactions', '%', 'last 90 days', 'Open the index']
+      ],
+      tripsTitle: 'Upcoming trips for you', allTrips: 'All trips →',
+      trips: [['Istanbul', '12–16 October', 'Clothing · bags · accessories', 'Capacity available', 'Karima H. · 84 transactions'], ['Dubai', '19–23 October', 'Perfumes · watches', 'Limited capacity', 'Sofiane B. · 12 transactions'], ['Gaziantep', '2–7 November', 'Home textiles', 'Capacity available', 'N. Merabet · 46 transactions']],
+      decTitle: 'Needs your decision', decNote: 'sorted by nearest expiry',
+      decisions: [
+        ['Offers on “men’s cotton shirts”', 'expires in 19 h', 'Three importers proposed a range. Compare by confirmed transactions, not price alone.', 'Compare offers', 'Extend deadline'],
+        ['Confirm the specification before the October trip closes', 'ideally within 2 days', 'Fabric and sizes are not set. Each day of delay lowers your chance of being included.', 'Confirm specification', 'Later'],
+        ['Collect goods that arrived — coats', 'within 4 days', 'Arrived and cleared customs. Set a collection time and confirm conformity at handover.', 'Set the time', 'Message']
+      ],
+      reqTitle: 'My requests', all: 'All →', newReq: '+ New sourcing request',
+      reqs: [['Matched', 'Men’s cotton shirts — 120 units', '3 offers'], ['Open', 'Trainers — 80 pairs', 'no offers · 5 days'], ['Committed', 'Women’s coats — 40 pieces', 'in transit']],
+      freshTitle: 'New in your categories', market: 'Marketplace →',
+      fresh: ['Women’s wool coat', 'Men’s trainers', 'Leather handbag', 'Steel watch'],
+      recordTitle: 'Your record', details: 'Details →',
+      rep: [['Confirmed transactions', '52'], ['Collection rate', '96%'], ['Response time', '2 h']],
+      nextStep: 'Next step',
+      next: ['Lock in your price before the October trip', 'Two trips covering your category leave within a week. Committing to a price range now raises your chance of making the buying list.', 'Review the three offers'],
+      navLabel: 'Navigation', nav: ['Home', 'Discover', 'Requests', 'Commitments', 'Messages', 'Account']
+    }
+  };
 
   // v1 put "my requests" first, so a trader with no open request met an empty
   // screen. Discovery now leads: opportunities, trips, then the pipeline.
-  OPPS = [
-    { kind: 'رحلة مطابقة', kindChip: 'chip-verified', when: 'تغادر بعد 6 أيام',
-      title: 'إسطنبول · ألبسة نسائية', why: 'يغطّي فئتك الأولى، وله سعة تكفي 120 قطعة، ويسلّم في سطيف.',
-      who: 'كريمة ح. · مستوردة مُتحقَّقة', initials: 'ك ح', tx: '84 معاملة', cta: 'اطلب عرضاً' },
-    { kind: 'طلب مشترك', kindChip: 'chip-neutral', when: 'يُغلق بعد 3 أيام',
-      title: 'انضمّ إلى طلب جماعي — عطور', why: '7 تجّار في وهران يجمعون 210 وحدة للوصول إلى سعر أفضل.',
-      who: 'طلب مفتوح · 7 تجّار', initials: '٧', tx: 'متوسط 61 معاملة', cta: 'اطّلع وانضمّ' },
-    { kind: 'سعر مرجعي', kindChip: 'chip-conditional', when: 'تحديث اليوم',
-      title: 'الأحذية الرجالية: النطاق نزل ⁦8%⁩', why: 'النطاق في سطيف صار 3 500 – 4 900 دج. راجع تسعيرك قبل الالتزام القادم.',
-      who: 'مبنيّ على 34 معاملة مؤكَّدة', initials: '٪', tx: 'آخر 90 يوماً', cta: 'افتح المؤشّر' }
-  ];
-
-  TRIPS = [
-    { cc: 'TR', dest: 'إسطنبول', dates: '12–16 أكتوبر', cats: 'ألبسة · حقائب · إكسسوار', cap: 'سعة متاحة', capChip: 'chip-verified', who: 'كريمة ح.', tx: '84 معاملة', tone: 0 },
-    { cc: 'AE', dest: 'دبي', dates: '19–23 أكتوبر', cats: 'عطور · ساعات', cap: 'سعة محدودة', capChip: 'chip-conditional', who: 'سفيان ب.', tx: '12 معاملة', tone: 1 },
-    { cc: 'TR', dest: 'غازي عنتاب', dates: '2–7 نوفمبر', cats: 'منسوجات منزلية', cap: 'سعة متاحة', capChip: 'chip-verified', who: 'ن. مرابط', tx: '46 معاملة', tone: 2 }
-  ];
-
-  DECISIONS = [
-    { title: 'عرض على «قمصان قطنية رجالية»', subtitle: '3 عروض', timer: 'ينتهي بعد 19 ساعة', urgent: true,
-      sub: 'ثلاثة مستوردين اقترحوا نطاقاً. قارن بعدد المعاملات المؤكَّدة لا بالسعر وحده.', primary: 'قارن العروض', secondary: 'مدّد المهلة' },
-    { title: 'أكّد المواصفة قبل إغلاق رحلة أكتوبر', timer: 'يُفضَّل خلال يومين', urgent: false,
-      sub: 'القماش والمقاسات غير محدّدين. كل يوم تأخير يقلّل احتمال إدراجك في الرحلة.', primary: 'أكّد المواصفة', secondary: 'لاحقاً' },
-    { title: 'استلام بضاعة وصلت — معاطف', timer: 'خلال 4 أيام', urgent: false,
-      sub: 'وصلت وجُمركت. حدّد موعد الاستلام وأكّد المطابقة عند التسليم.', primary: 'حدّد الموعد', secondary: 'راسل' }
-  ];
-
-  REQS = [
-    { state: 'مطابَق', chip: 'chip-verified', title: 'قمصان قطنية رجالية — 120 وحدة', meta: '3 عروض' },
-    { state: 'مفتوح', chip: 'chip-neutral', title: 'أحذية رياضية — 80 زوجاً', meta: 'بلا عروض · 5 أيام' },
-    { state: 'ملتزَم', chip: 'chip-conditional', title: 'معاطف نسائية — 40 قطعة', meta: 'في الطريق' }
-  ];
-
-  FRESH = [
-    { ph: 'ph-coat', title: 'معطف نسائي صوف', price: 7400 },
-    { ph: 'ph-shoe', title: 'حذاء رياضي رجالي', price: 6300 },
-    { ph: 'ph-bag', title: 'حقيبة يد جلدية', price: 5900 },
-    { ph: 'ph-watch', title: 'ساعة ستانلس', price: 11500 }
-  ];
-
-  REP = [
-    { k: 'معاملة مؤكَّدة', v: '52' },
-    { k: 'نسبة الاستلام', v: '96%' },
-    { k: 'متوسط الردّ', v: 'ساعتان' }
-  ];
+  OPP_CHIP = ['chip-verified', 'chip-neutral', 'chip-conditional'];
+  TRIPS = [{ cc: 'TR', capChip: 'chip-verified', tone: 0 }, { cc: 'AE', capChip: 'chip-conditional', tone: 1 }, { cc: 'TR', capChip: 'chip-verified', tone: 2 }];
+  URGENT = [true, false, false];
+  REQ_CHIP = ['chip-verified', 'chip-neutral', 'chip-conditional'];
+  FRESH = [{ ph: 'ph-coat', price: 7400 }, { ph: 'ph-shoe', price: 6300 }, { ph: 'ph-bag', price: 5900 }, { ph: 'ph-watch', price: 11500 }];
 
   TONE = [
     ['var(--role-importer-bg)', 'var(--role-importer-ink)'],
@@ -269,58 +356,50 @@ class Component extends DCLogic {
     msg: React.createElement('svg', { width: 19, height: 19, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 1.8 }, React.createElement('path', { d: 'M21 11.5a8.4 8.4 0 0 1-9 8.4 9 9 0 0 1-3.3-.6L3 21l1.7-5a8.2 8.2 0 0 1-.7-3.4 8.4 8.4 0 0 1 8.5-8.5 8.4 8.4 0 0 1 8.5 8.4z' })),
     me: React.createElement('svg', { width: 19, height: 19, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 1.8 }, React.createElement('circle', { cx: 12, cy: 8.5, r: 3.7 }), React.createElement('path', { d: 'M4.8 20a7.4 7.4 0 0 1 14.4 0' }))
   };
-
-  NAV = [
-    { id: 'home', label: 'الرئيسية', icon: 'home' },
-    { id: 'disc', label: 'اكتشف', icon: 'disc' },
-    { id: 'req', label: 'طلباتي', icon: 'req' },
-    { id: 'cmt', label: 'التزاماتي', icon: 'cmt' },
-    { id: 'msg', label: 'الرسائل', icon: 'msg' },
-    { id: 'me', label: 'حسابي', icon: 'me' }
-  ];
+  NAV_IDS = ['home', 'disc', 'req', 'cmt', 'msg', 'me'];
 
   renderVals() {
-    const ctx = this.state.ctx;
+    const s = this.state, t = this.L[s.lang];
+
     return {
-      ctx: [['import', 'أنا أستورد'], ['buy', 'أنا أشتري']].map(([id, label]) => ({
-        label, on: ctx === id,
-        bg: ctx === id ? 'var(--ink)' : 'var(--surface)',
-        fg: ctx === id ? 'var(--ink-on)' : 'var(--ink-2)',
+      rootRef: this.root, t, langs: this.langsFor(s.lang),
+      arrow: t.dir === 'rtl' ? 1 : -1,
+
+      ctx: ['import', 'buy'].map((id, i) => ({
+        label: t.ctx[i], on: s.ctx === id,
+        bg: s.ctx === id ? 'var(--ink)' : 'var(--surface)',
+        fg: s.ctx === id ? 'var(--ink-on)' : 'var(--ink-2)',
         pick: () => this.setState({ ctx: id })
       })),
 
-      opps: this.OPPS.map((o, i) => {
+      opps: t.opps.map(([kind, when, title, why, who, initials, tx, cta], i) => {
         const [avBg, avFg] = this.TONE[i % 3];
-        return { ...o, avBg, avFg };
+        return { kind, kindChip: this.OPP_CHIP[i], when: this.iso(when), title: this.iso(title), why: this.iso(why), who, initials, tx: this.iso(tx), cta, avBg, avFg };
       }),
 
-      trips: this.TRIPS.map(t => {
-        const [flagBg, flagFg] = this.TONE[t.tone];
-        return { ...t, flagBg, flagFg, dates: this.ltr(t.dates) };
+      trips: this.TRIPS.map((m, i) => {
+        const [dest, dates, cats, cap, whoLine] = t.trips[i];
+        const [flagBg, flagFg] = this.TONE[m.tone];
+        return { cc: m.cc, capChip: m.capChip, dest, dates: this.iso(dates), cats, cap, whoLine: this.iso(whoLine), flagBg, flagFg };
       }),
 
-      decisions: this.DECISIONS.map(d => ({
-        ...d,
-        bar: d.urgent ? 'var(--conditional)' : 'var(--rule-strong)',
-        timerFg: d.urgent ? 'var(--conditional-ink)' : 'var(--ink-3)'
+      decisions: t.decisions.map(([title, timer, sub, primary, secondary], i) => ({
+        title, timer: this.iso(timer), sub, primary, secondary,
+        bar: this.URGENT[i] ? 'var(--conditional)' : 'var(--rule-strong)',
+        timerFg: this.URGENT[i] ? 'var(--conditional-ink)' : 'var(--ink-3)'
       })),
 
-      reqs: this.REQS,
-      fresh: this.FRESH.map(p => ({ ...p, price: this.fmt(p.price) })),
-      rep: this.REP,
+      reqs: t.reqs.map(([state, title, meta], i) => ({ state, title, meta: this.iso(meta), chip: this.REQ_CHIP[i] })),
+      fresh: this.FRESH.map((p, i) => ({ ph: p.ph, title: t.fresh[i], price: this.fmt(p.price, t.sep) + ' ' + t.cur })),
+      rep: t.rep.map(([k, v]) => ({ k, v: this.iso(v) })),
 
-      next: {
-        title: 'ثبّت سعرك قبل رحلة أكتوبر',
-        body: 'رحلتان تغطّيان فئتك تغادران خلال أسبوع. الالتزام بنطاق سعر الآن يرفع فرصة إدراجك في قائمة الشراء.',
-        cta: 'راجع العروض الثلاثة'
-      },
+      next: { title: t.next[0], body: t.next[1], cta: t.next[2] },
 
-      nav: this.NAV.map(n => ({
-        ...n,
-        on: n.id === 'home',
-        fg: n.id === 'home' ? 'var(--ink)' : 'var(--ink-3)',
-        fw: n.id === 'home' ? 600 : 400,
-        icon: this.ICON[n.icon]
+      nav: this.NAV_IDS.map((id, i) => ({
+        label: t.nav[i], on: id === 'home',
+        fg: id === 'home' ? 'var(--ink)' : 'var(--ink-3)',
+        fw: id === 'home' ? 600 : 400,
+        icon: this.ICON[id]
       }))
     };
   }
