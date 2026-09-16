@@ -21,14 +21,19 @@
 </style>
 </helmet>
 
-<div dir="rtl" lang="ar" class="tier-public" style="min-height:100vh;display:flex;justify-content:center">
+<div ref="{{ rootRef }}" dir="rtl" lang="ar" class="tier-public" style="min-height:100vh;display:flex;justify-content:center">
 <div style="width:100%;max-width:430px;min-height:100vh;display:flex;flex-direction:column;background:var(--paper-public);border-inline:1px solid var(--rule)">
 
 <header style="position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--surface);border-bottom:1px solid var(--rule)">
-<button type="button" aria-label="رجوع" style="width:36px;height:36px;border:0;background:transparent;cursor:pointer;display:grid;place-items:center;color:inherit">
-<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 5l-7 7 7 7"/></svg>
+<button type="button" aria-label="{{ t.back }}" style="width:36px;height:36px;border:0;background:transparent;cursor:pointer;display:grid;place-items:center;color:inherit">
+<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="transform:scaleX({{ arrow }})"><path d="M15 5l-7 7 7 7"/></svg>
 </button>
-<span style="flex:1;font-size:var(--t-h3);font-weight:500">{{ name }}</span>
+<span style="flex:1;min-width:0;font-size:var(--t-h3);font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ name }}</span>
+<div role="group" aria-label="{{ t.langLabel }}" style="display:flex;border:1px solid var(--rule-strong);border-radius:var(--r-sm);overflow:hidden;flex:none">
+<sc-for list="{{ langs }}" as="l" hint-placeholder-count="3">
+<button type="button" onClick="{{ l.pick }}" aria-pressed="{{ l.on }}" style="height:24px;padding:0 8px;border:0;background:{{ l.bg }};color:{{ l.fg }};font-size:var(--t-micro);font-weight:500;cursor:pointer">{{ l.short }}</button>
+</sc-for>
+</div>
 <button type="button" onClick="{{ save }}" aria-pressed="{{ saved }}" aria-label="{{ saveLabel }}" style="width:36px;height:36px;border:0;background:transparent;cursor:pointer;display:grid;place-items:center">
 <svg width="19" height="19" viewBox="0 0 24 24" fill="{{ heartFill }}" stroke="{{ heartStroke }}" stroke-width="1.9"><path d="M12 20s-7-4.4-7-9.3A4.2 4.2 0 0 1 12 8a4.2 4.2 0 0 1 7 2.7c0 4.9-7 9.3-7 9.3z"/></svg>
 </button>
@@ -43,7 +48,7 @@
 <div style="flex:1;min-width:0;padding-block-start:2px">
 <div style="display:flex;align-items:center;gap:7px">
 <h1 style="margin:0;font-size:22px;font-weight:600">{{ name }}</h1>
-<svg width="17" height="17" viewBox="0 0 24 24" style="flex:none" role="img" aria-label="متجر مُتحقَّق"><circle cx="12" cy="12" r="10" fill="var(--allowed)"/><path d="M7.4 12.4l3 3 6.2-6.6" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<svg width="17" height="17" viewBox="0 0 24 24" style="flex:none" role="img" aria-label="{{ t.verifiedShop }}"><circle cx="12" cy="12" r="10" fill="var(--allowed)"/><path d="M7.4 12.4l3 3 6.2-6.6" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
 </div>
 <div style="font-size:var(--t-sm);color:var(--ink-2);margin-top:4px">{{ kind }}</div>
 <div class="num" style="font-size:var(--t-xs);color:var(--ink-3);margin-top:3px"><bdi>{{ since }}</bdi></div>
@@ -77,14 +82,14 @@
 <span style="flex:1;min-width:0;font-size:var(--t-sm)">{{ v }}</span>
 </div>
 </sc-for>
-<p style="margin:10px 0;font-size:var(--t-xs);color:var(--ink-3);line-height:1.6">تحقّق من الوثائق — ليس اعتماداً حكومياً.</p>
+<p style="margin:10px 0;font-size:var(--t-xs);color:var(--ink-3);line-height:1.6">{{ t.notEndorsement }}</p>
 </div>
 </section>
 
 <!-- ══ LISTINGS ══ -->
 <section style="padding:0 16px 20px">
 <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:11px">
-<h2 style="margin:0;font-size:var(--t-h2);font-weight:500">المعروض حالياً</h2>
+<h2 style="margin:0;font-size:var(--t-h2);font-weight:500">{{ t.listings }}</h2>
 <span class="num" style="font-size:var(--t-xs);color:var(--ink-3)"><bdi>{{ listingCount }}</bdi></span>
 </div>
 <div class="gridwrap"><div class="grid2">
@@ -100,7 +105,7 @@
 <h3 class="clamp2" style="margin:0;font-size:var(--t-sm);font-weight:400;line-height:1.45;min-height:37px">{{ p.title }}</h3>
 <div style="display:flex;align-items:baseline;gap:5px">
 <span class="num" style="font-size:16px;font-weight:600;color:var(--ink)"><bdi>{{ p.price }}</bdi></span>
-<span class="num" style="font-size:var(--t-micro);color:var(--ink-3)"><bdi>دج</bdi></span>
+<span class="num" style="font-size:var(--t-micro);color:var(--ink-3)"><bdi>{{ t.cur }}</bdi></span>
 </div>
 </div>
 </article>
@@ -111,7 +116,7 @@
 <!-- ══ REVIEWS ══ -->
 <section style="padding:0 16px 22px">
 <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:11px">
-<h2 style="margin:0;font-size:var(--t-h2);font-weight:500">آراء المشترين</h2>
+<h2 style="margin:0;font-size:var(--t-h2);font-weight:500">{{ t.reviewsTitle }}</h2>
 <span class="num" style="font-size:var(--t-xs);color:var(--ink-3)"><bdi>{{ reviewCount }}</bdi></span>
 </div>
 <div class="card" style="padding:14px">
@@ -119,13 +124,13 @@
 <div style="padding:10px 0;border-bottom:1px solid var(--rule-faint)">
 <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
 <span style="font-size:var(--t-sm);font-weight:500">{{ r.by }}</span>
-<span class="chip chip-verified" style="height:19px;font-size:var(--t-micro)">شراء مؤكَّد</span>
+<span class="chip chip-verified" style="height:19px;font-size:var(--t-micro)">{{ t.confirmedBuy }}</span>
 <span class="num" style="margin-inline-start:auto;font-size:var(--t-micro);color:var(--ink-3)"><bdi>{{ r.when }}</bdi></span>
 </div>
 <p style="margin:0;font-size:var(--t-sm);line-height:1.7;color:var(--ink-2)">{{ r.text }}</p>
 <sc-if value="{{ r.hasReply }}" hint-placeholder-val="{{ false }}">
 <div style="margin-top:9px;padding:10px 12px;background:var(--surface-2);border-radius:var(--r-sm);border-inline-start:2px solid var(--rule-strong)">
-<div style="font-size:var(--t-micro);color:var(--ink-3);margin-bottom:4px">ردّ {{ name }}</div>
+<div style="font-size:var(--t-micro);color:var(--ink-3);margin-bottom:4px">{{ replyFrom }}</div>
 <p style="margin:0;font-size:var(--t-sm);line-height:1.65;color:var(--ink-2)">{{ r.reply }}</p>
 </div>
 </sc-if>
@@ -137,8 +142,8 @@
 </main>
 
 <div style="position:fixed;inset-block-end:0;inset-inline:0;margin:0 auto;max-width:430px;display:flex;gap:9px;padding:11px 16px 15px;background:var(--surface);border-top:1px solid var(--rule)">
-<button type="button" style="flex:1;height:50px;border:0;border-radius:var(--r);background:var(--brand);color:var(--ink-on);font-size:16px;font-weight:500;cursor:pointer">راسل المتجر</button>
-<button type="button" style="flex:none;padding:0 16px;height:50px;border:1px solid var(--rule-strong);border-radius:var(--r);background:var(--surface);color:inherit;font-size:var(--t-sm);cursor:pointer">اسأل عن توفّر</button>
+<button type="button" style="flex:1;height:50px;border:0;border-radius:var(--r);background:var(--brand);color:var(--ink-on);font-size:16px;font-weight:500;cursor:pointer">{{ t.message }}</button>
+<button type="button" style="flex:none;padding:0 16px;height:50px;border:1px solid var(--rule-strong);border-radius:var(--r);background:var(--surface);color:inherit;font-size:var(--t-sm);cursor:pointer">{{ t.askStock }}</button>
 </div>
 
 </div>
@@ -146,48 +151,136 @@
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:430,&quot;height&quot;:1560}}">
 class Component extends DCLogic {
-  state = { saved: false };
-  LRI = '⁦'; PDI = '⁩';
-  ltr(s) { return this.LRI + s + this.PDI; }
-  fmt(n) { return '⁦' + String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + '⁩'; }
-  counted(n, f) {
-    const m = n % 100;
-    if (n === 1) return f.one;
-    if (n === 2) return f.two;
-    if (m >= 3 && m <= 10) return this.fmt(n) + ' ' + f.few;
-    return this.fmt(n) + ' ' + f.many;
+  /* Locale is browser-detected. French is the fallback — Algeria's commercial
+     lingua franca and the neutral middle between Arabic and English. One value. */
+  static FALLBACK = 'fr';
+  static detect() {
+    const tag = (typeof navigator !== 'undefined' && (navigator.language || '')).slice(0, 2).toLowerCase();
+    return ['ar', 'fr', 'en'].includes(tag) ? tag : Component.FALLBACK;
   }
-  PROD_N = { one: 'منتج واحد', two: 'منتجان', few: 'منتجات', many: 'منتجاً' };
-  REV_N = { one: 'مراجعة واحدة', two: 'مراجعتان', few: 'مراجعات', many: 'مراجعة' };
+
+  state = { saved: false, lang: Component.detect() };
+  root = React.createRef();
+  componentDidMount() { this._apply(); }
+  componentDidUpdate() { this._apply(); }
+  _apply() {
+    const el = this.root.current;
+    if (el) { el.setAttribute('dir', this.L[this.state.lang].dir); el.setAttribute('lang', this.state.lang); }
+  }
+
+  iso(s) { return '⁦' + s + '⁩'; }
+  fmt(n, sep) { return '⁦' + String(n).replace(/\B(?=(\d{3})+(?!\d))/g, sep) + '⁩'; }
+
+  /* Arabic counts nouns in five categories; French and English in two.
+     The count lives with the locale, not with the component. */
+  count(n, t, key) {
+    const f = t.plural[key];
+    if (t.dir === 'rtl') {
+      const m = n % 100;
+      if (n === 1) return f.one;
+      if (n === 2) return f.two;
+      if (m >= 3 && m <= 10) return this.fmt(n, t.sep) + ' ' + f.few;
+      return this.fmt(n, t.sep) + ' ' + f.many;
+    }
+    return this.fmt(n, t.sep) + ' ' + (n === 1 ? f.one : f.many);
+  }
+
+  L = {
+    ar: {
+      dir: 'rtl', short: 'ع', langLabel: 'اللغة', sep: ' ', cur: 'دج',
+      back: 'رجوع', verifiedShop: 'متجر مُتحقَّق',
+      saveOn: 'إزالة من المحفوظات', saveOff: 'احفظ المتجر',
+      notEndorsement: 'تحقّق من الوثائق — ليس اعتماداً حكومياً.',
+      listings: 'المعروض حالياً', reviewsTitle: 'آراء المشترين',
+      confirmedBuy: 'شراء مؤكَّد', replyPrefix: 'ردّ',
+      message: 'راسل المتجر', askStock: 'اسأل عن توفّر',
+      plural: {
+        prod: { one: 'منتج واحد', two: 'منتجان', few: 'منتجات', many: 'منتجاً' },
+        rev:  { one: 'مراجعة واحدة', two: 'مراجعتان', few: 'مراجعات', many: 'مراجعة' }
+      },
+      name: 'بوتيك نادية', initials: 'ب ن',
+      kind: 'تاجرة مُتحقَّقة · قسنطينة',
+      since: 'على مَعْبَر منذ ماي 2025',
+      bio: 'ألبسة وإكسسوارات نسائية مستوردة، دفعات صغيرة ومتجدّدة. الاستلام من المحل أو توصيل داخل الولاية.',
+      cats: ['ألبسة نسائية', 'حقائب', 'عطور', 'إكسسوار'],
+      statLabels: ['معاملة مؤكَّدة', 'نسبة الردّ', 'متوسط الردّ'],
+      statValues: ['63', '94%', 'ساعتان'],
+      verified: ['السجل التجاري مُتحقَّق منه', 'الهوية مُتحقَّق منها', 'عنوان النشاط مُؤكَّد'],
+      prodTitles: ['معطف نسائي شتوي — صوف مخلوط', 'عطر نسائي 100 مل — شرقي', 'حقيبة يد بحزام كتف', 'معطف نسائي — جلد صناعي'],
+      flags: ['وصل حديثاً', 'كمية محدودة'],
+      reviews: [
+        { by: 'سمية ل.', when: 'قبل 9 أيام',
+          text: 'المقاس مطابق للوصف والخامة ثقيلة كما في الصور. التسليم في المحل بلا تأخير.', reply: '' },
+        { by: 'ر. بوزيد', when: 'قبل 3 أسابيع',
+          text: 'اللون الكحلي أغمق قليلاً ممّا ظهر في الصورة.',
+          reply: 'صحيح، الإضاءة في الصورة فتّحت اللون. بدّلت الصور بأخرى بضوء طبيعي.' }
+      ]
+    },
+
+    fr: {
+      dir: 'ltr', short: 'FR', langLabel: 'Langue', sep: ' ', cur: 'DA',
+      back: 'Retour', verifiedShop: 'Boutique vérifiée',
+      saveOn: 'Retirer des enregistrements', saveOff: 'Enregistrer la boutique',
+      notEndorsement: 'Vérification de documents — pas un agrément de l’État.',
+      listings: 'En vente actuellement', reviewsTitle: 'Avis des acheteurs',
+      confirmedBuy: 'Achat confirmé', replyPrefix: 'Réponse de',
+      message: 'Écrire à la boutique', askStock: 'Demander la disponibilité',
+      plural: { prod: { one: 'produit', many: 'produits' }, rev: { one: 'avis', many: 'avis' } },
+      name: 'Boutique Nadia', initials: 'BN',
+      kind: 'Commerçante vérifiée · Constantine',
+      since: 'Sur Maabar depuis mai 2025',
+      bio: 'Vêtements et accessoires femme importés, en petits lots renouvelés. Retrait en boutique ou livraison dans la wilaya.',
+      cats: ['Vêtements femme', 'Sacs', 'Parfums', 'Accessoires'],
+      statLabels: ['Transactions confirmées', 'Taux de réponse', 'Délai de réponse'],
+      statValues: ['63', '94 %', '2 h'],
+      verified: ['Registre de commerce vérifié', 'Identité vérifiée', 'Adresse de l’activité confirmée'],
+      prodTitles: ['Manteau femme hiver — laine mélangée', 'Parfum femme 100 ml — oriental', 'Sac à main avec bandoulière', 'Manteau femme — cuir synthétique'],
+      flags: ['Nouveauté', 'Quantité limitée'],
+      reviews: [
+        { by: 'Soumia L.', when: 'Il y a 9 jours',
+          text: 'La taille correspond à la description et la matière est épaisse, comme sur les photos. Retrait en boutique sans attente.', reply: '' },
+        { by: 'R. Bouzid', when: 'Il y a 3 semaines',
+          text: 'Le bleu marine est un peu plus foncé que sur la photo.',
+          reply: 'C’est exact, l’éclairage de la photo éclaircissait la couleur. J’ai remplacé les photos par des prises en lumière naturelle.' }
+      ]
+    },
+
+    en: {
+      dir: 'ltr', short: 'EN', langLabel: 'Language', sep: ',', cur: 'DA',
+      back: 'Back', verifiedShop: 'Verified shop',
+      saveOn: 'Remove from saved', saveOff: 'Save this shop',
+      notEndorsement: 'Document verification — not a government endorsement.',
+      listings: 'Currently listed', reviewsTitle: 'Buyer reviews',
+      confirmedBuy: 'Confirmed purchase', replyPrefix: 'Reply from',
+      message: 'Message the shop', askStock: 'Ask about availability',
+      plural: { prod: { one: 'product', many: 'products' }, rev: { one: 'review', many: 'reviews' } },
+      name: 'Boutique Nadia', initials: 'BN',
+      kind: 'Verified trader · Constantine',
+      since: 'On Maabar since May 2025',
+      bio: 'Imported women’s clothing and accessories in small, regularly renewed batches. Collection in store or delivery within the wilaya.',
+      cats: ['Women’s clothing', 'Bags', 'Perfumes', 'Accessories'],
+      statLabels: ['Confirmed transactions', 'Response rate', 'Response time'],
+      statValues: ['63', '94%', '2 h'],
+      verified: ['Commercial register verified', 'Identity verified', 'Business address confirmed'],
+      prodTitles: ['Women’s winter coat — wool blend', 'Women’s perfume 100 ml — oriental', 'Handbag with shoulder strap', 'Women’s coat — synthetic leather'],
+      flags: ['Just arrived', 'Limited stock'],
+      reviews: [
+        { by: 'Soumia L.', when: '9 days ago',
+          text: 'The size matches the description and the fabric is heavy, just as in the photos. Collected in store with no wait.', reply: '' },
+        { by: 'R. Bouzid', when: '3 weeks ago',
+          text: 'The navy is slightly darker than it looked in the photo.',
+          reply: 'That’s right — the lighting in the photo lifted the colour. I’ve replaced the photos with natural-light shots.' }
+      ]
+    }
+  };
 
   // The public storefront always belongs to a TRADER with a verified
   // commercial register. A micro-importer never appears here.
-  S = {
-    name: 'بوتيك نادية', initials: 'ب ن',
-    kind: 'تاجرة مُتحقَّقة · قسنطينة',
-    since: 'على مَعْبَر منذ ماي 2025',
-    bio: 'ألبسة وإكسسوارات نسائية مستوردة، دفعات صغيرة ومتجدّدة. الاستلام من المحل أو توصيل داخل الولاية.'
-  };
-
-  CATS = ['ألبسة نسائية', 'حقائب', 'عطور', 'إكسسوار'];
-
-  STATS = [
-    { k: 'معاملة مؤكَّدة', v: '63', fg: 'var(--ink)' },
-    { k: 'نسبة الردّ', v: '94%', fg: 'var(--allowed-ink)' },
-    { k: 'متوسط الردّ', v: 'ساعتان', fg: 'var(--ink)' }
-  ];
-
-  VERIFIED = [
-    'السجل التجاري مُتحقَّق منه',
-    'الهوية مُتحقَّق منها',
-    'عنوان النشاط مُؤكَّد'
-  ];
-
   PRODUCTS = [
-    { ph: 'ph-coat', title: 'معطف نسائي شتوي — صوف مخلوط', price: 7400, flag: 'وصل حديثاً', flagKind: 'new' },
-    { ph: 'ph-perfume', title: 'عطر نسائي 100 مل — شرقي', price: 4200, flag: 'كمية محدودة', flagKind: 'low' },
-    { ph: 'ph-bag', title: 'حقيبة يد بحزام كتف', price: 5900, flag: '', flagKind: '' },
-    { ph: 'ph-coat', title: 'معطف نسائي — جلد صناعي', price: 8900, flag: '', flagKind: '' }
+    { ph: 'ph-coat', price: 7400, flagKind: 'new' },
+    { ph: 'ph-perfume', price: 4200, flagKind: 'low' },
+    { ph: 'ph-bag', price: 5900, flagKind: '' },
+    { ph: 'ph-coat', price: 8900, flagKind: '' }
   ];
 
   FLAG = {
@@ -195,37 +288,49 @@ class Component extends DCLogic {
     low: ['var(--conditional-bg)', 'var(--conditional-ink)']
   };
 
-  REVIEWS = [
-    { by: 'سمية ل.', when: 'قبل 9 أيام',
-      text: 'المقاس مطابق للوصف والخامة ثقيلة كما في الصور. التسليم في المحل بلا تأخير.', reply: '' },
-    { by: 'ر. بوزيد', when: 'قبل 3 أسابيع',
-      text: 'اللون الكحلي أغمق قليلاً ممّا ظهر في الصورة.',
-      reply: 'صحيح، الإضاءة في الصورة فتّحت اللون. بدّلت الصور بأخرى بضوء طبيعي.' }
-  ];
+  STAT_FG = ['var(--ink)', 'var(--allowed-ink)', 'var(--ink)'];
 
   renderVals() {
-    const saved = this.state.saved;
+    const saved = this.state.saved, t = this.L[this.state.lang];
+
     return {
-      ...this.S,
-      since: this.ltr(this.S.since),
+      rootRef: this.root,
+      t,
+      arrow: t.dir === 'rtl' ? 1 : -1,
+
+      langs: ['ar', 'fr', 'en'].map(id => ({
+        short: this.L[id].short, on: this.state.lang === id,
+        bg: this.state.lang === id ? 'var(--ink)' : 'var(--surface)',
+        fg: this.state.lang === id ? 'var(--ink-on)' : 'var(--ink-2)',
+        pick: () => this.setState({ lang: id })
+      })),
+
+      name: t.name, initials: t.initials, kind: t.kind, bio: t.bio,
+      since: this.iso(t.since),
+      replyFrom: t.replyPrefix + ' ' + t.name,
+
       saved,
-      saveLabel: saved ? 'إزالة من المحفوظات' : 'احفظ المتجر',
+      saveLabel: saved ? t.saveOn : t.saveOff,
       heartFill: saved ? 'var(--brand)' : 'none',
       heartStroke: saved ? 'var(--brand)' : 'var(--ink-2)',
       save: () => this.setState(s => ({ saved: !s.saved })),
 
-      cats: this.CATS,
-      stats: this.STATS,
-      verified: this.VERIFIED,
+      cats: t.cats,
+      stats: t.statLabels.map((k, i) => ({ k, v: this.iso(t.statValues[i]), fg: this.STAT_FG[i] })),
+      verified: t.verified,
 
-      listingCount: this.counted(this.PRODUCTS.length, this.PROD_N),
-      products: this.PRODUCTS.map(p => {
+      listingCount: this.count(this.PRODUCTS.length, t, 'prod'),
+      products: this.PRODUCTS.map((p, i) => {
         const [flagBg, flagFg] = p.flagKind ? this.FLAG[p.flagKind] : ['', ''];
-        return { ...p, price: this.fmt(p.price), hasFlag: !!p.flagKind, flagBg, flagFg };
+        const flagIdx = p.flagKind === 'new' ? 0 : 1;
+        return {
+          ph: p.ph, title: t.prodTitles[i], price: this.fmt(p.price, t.sep),
+          hasFlag: !!p.flagKind, flag: p.flagKind ? t.flags[flagIdx] : '', flagBg, flagFg
+        };
       }),
 
-      reviewCount: this.counted(38, this.REV_N),
-      reviews: this.REVIEWS.map(r => ({ ...r, hasReply: !!r.reply }))
+      reviewCount: this.count(38, t, 'rev'),
+      reviews: t.reviews.map(r => ({ ...r, when: this.iso(r.when), hasReply: !!r.reply }))
     };
   }
 }

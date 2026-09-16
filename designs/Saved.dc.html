@@ -21,12 +21,17 @@
 </style>
 </helmet>
 
-<div dir="rtl" lang="ar" class="tier-public" style="min-height:100vh;display:flex;justify-content:center">
+<div ref="{{ rootRef }}" dir="rtl" lang="ar" class="tier-public" style="min-height:100vh;display:flex;justify-content:center">
 <div style="width:100%;max-width:430px;min-height:100vh;display:flex;flex-direction:column;background:var(--paper-public);border-inline:1px solid var(--rule)">
 
 <header style="position:sticky;top:0;z-index:20;background:var(--surface);border-bottom:1px solid var(--rule)">
-<div style="padding:12px 16px 9px"><span style="font-size:var(--t-h2);font-weight:600">المحفوظات</span></div>
-<nav aria-label="النوع" style="display:grid;grid-template-columns:repeat(3,1fr)">
+<div style="display:flex;align-items:center;gap:10px;padding:12px 16px 9px"><span style="font-size:var(--t-h2);font-weight:600;flex:1">{{ t.title }}</span>
+<div role="group" aria-label="{{ t.langLabel }}" style="display:flex;border:1px solid var(--rule-strong);border-radius:var(--r-sm);overflow:hidden;flex:none">
+<sc-for list="{{ langs }}" as="l" hint-placeholder-count="3">
+<button type="button" onClick="{{ l.pick }}" aria-pressed="{{ l.on }}" style="height:24px;padding:0 8px;border:0;background:{{ l.bg }};color:{{ l.fg }};font-size:var(--t-micro);font-weight:500;cursor:pointer">{{ l.short }}</button>
+</sc-for>
+</div></div>
+<nav aria-label="{{ t.kind }}" style="display:grid;grid-template-columns:repeat(3,1fr)">
 <sc-for list="{{ tabs }}" as="t" hint-placeholder-count="3">
 <button type="button" onClick="{{ t.pick }}" aria-current="{{ t.on }}" style="height:41px;border:0;border-bottom:2px solid {{ t.bd }};background:transparent;color:{{ t.fg }};font-size:var(--t-sm);font-weight:{{ t.fw }};cursor:pointer;display:flex;align-items:center;justify-content:center;gap:5px">
 {{ t.label }}<span class="num" style="font-size:var(--t-micro);color:var(--ink-3)"><bdi>{{ t.n }}</bdi></span>
@@ -44,7 +49,7 @@
 <article class="card" style="overflow:hidden;display:flex;flex-direction:column;opacity:{{ p.op }}">
 <div style="position:relative">
 <span class="img img-card ph {{ p.ph }}" style="border-radius:0;display:block"></span>
-<button type="button" aria-label="إزالة من المحفوظات" style="position:absolute;inset-block-start:8px;inset-inline-end:8px;width:31px;height:31px;border:0;border-radius:50%;background:oklch(1 0 0 / 0.9);display:grid;place-items:center;cursor:pointer;box-shadow:var(--e1)">
+<button type="button" aria-label="{{ t.unsave }}" style="position:absolute;inset-block-start:8px;inset-inline-end:8px;width:31px;height:31px;border:0;border-radius:50%;background:oklch(1 0 0 / 0.9);display:grid;place-items:center;cursor:pointer;box-shadow:var(--e1)">
 <svg width="15" height="15" viewBox="0 0 24 24" fill="var(--brand)" stroke="var(--brand)" stroke-width="1.9"><path d="M12 20s-7-4.4-7-9.3A4.2 4.2 0 0 1 12 8a4.2 4.2 0 0 1 7 2.7c0 4.9-7 9.3-7 9.3z"/></svg>
 </button>
 <sc-if value="{{ p.gone }}" hint-placeholder-val="{{ false }}">
@@ -56,7 +61,7 @@
 <div style="padding:10px 11px 12px;display:flex;flex-direction:column;gap:6px;flex:1">
 <h3 class="clamp2" style="margin:0;font-size:var(--t-sm);font-weight:400;line-height:1.45;min-height:37px">{{ p.title }}</h3>
 <div style="display:flex;align-items:baseline;gap:6px">
-<span class="num" style="font-size:16px;font-weight:600;color:{{ p.priceFg }}"><bdi>{{ p.price }} دج</bdi></span>
+<span class="num" style="font-size:16px;font-weight:600;color:{{ p.priceFg }}"><bdi>{{ p.price }}</bdi></span>
 <sc-if value="{{ p.dropped }}" hint-placeholder-val="{{ false }}">
 <span class="num" style="font-size:var(--t-micro);color:var(--ink-3);text-decoration:line-through"><bdi>{{ p.was }}</bdi></span>
 </sc-if>
@@ -87,7 +92,7 @@
 <div style="display:inline-flex;align-items:center;gap:5px;margin-top:6px;padding:3px 8px;border-radius:var(--r-pill);background:var(--allowed-bg);color:var(--allowed-ink);font-size:var(--t-micro);font-weight:500">{{ p.news }}</div>
 </sc-if>
 </div>
-<button type="button" aria-label="إزالة" style="flex:none;width:32px;height:32px;border:0;background:transparent;cursor:pointer;display:grid;place-items:center">
+<button type="button" aria-label="{{ t.remove }}" style="flex:none;width:32px;height:32px;border:0;background:transparent;cursor:pointer;display:grid;place-items:center">
 <svg width="17" height="17" viewBox="0 0 24 24" fill="var(--brand)" stroke="var(--brand)" stroke-width="1.9"><path d="M12 20s-7-4.4-7-9.3A4.2 4.2 0 0 1 12 8a4.2 4.2 0 0 1 7 2.7c0 4.9-7 9.3-7 9.3z"/></svg>
 </button>
 </article>
@@ -110,7 +115,7 @@
 <div style="margin-top:6px"><span class="chip {{ t.chip }}" style="height:19px;font-size:var(--t-micro)">{{ t.state }}</span></div>
 </div>
 <sc-if value="{{ t.expired }}" hint-placeholder-val="{{ false }}">
-<button type="button" style="flex:none;height:32px;padding:0 12px;border:1px solid var(--rule-strong);border-radius:var(--r-sm);background:var(--surface);color:inherit;font-size:var(--t-sm);cursor:pointer">أزل</button>
+<button type="button" style="flex:none;height:32px;padding:0 12px;border:1px solid var(--rule-strong);border-radius:var(--r-sm);background:var(--surface);color:inherit;font-size:var(--t-sm);cursor:pointer">{{ t.drop }}</button>
 </sc-if>
 </article>
 </sc-for>
@@ -123,9 +128,9 @@
 <span aria-hidden="true" style="display:inline-grid;place-items:center;width:58px;height:58px;border-radius:50%;background:var(--neutral-bg);color:var(--ink-3);margin-bottom:15px">
 <svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 20s-7-4.4-7-9.3A4.2 4.2 0 0 1 12 8a4.2 4.2 0 0 1 7 2.7c0 4.9-7 9.3-7 9.3z"/></svg>
 </span>
-<h2 style="margin:0 0 8px;font-size:var(--t-h2);font-weight:600">ما عندك والو محفوظ</h2>
-<p style="margin:0 0 18px;font-size:var(--t-body);line-height:1.7;color:var(--ink-2)">اضغط القلب على أي منتج أو متجر باش ترجع له بسهولة، ونعلمك إذا تغيّر سعره أو خلص.</p>
-<button type="button" style="height:48px;padding:0 22px;border:0;border-radius:var(--r);background:var(--brand);color:var(--ink-on);font-size:15px;font-weight:600;cursor:pointer">تصفّح السوق</button>
+<h2 style="margin:0 0 8px;font-size:var(--t-h2);font-weight:600">{{ t.emptyTitle }}</h2>
+<p style="margin:0 0 18px;font-size:var(--t-body);line-height:1.7;color:var(--ink-2)">{{ t.emptyLede }}</p>
+<button type="button" style="height:48px;padding:0 22px;border:0;border-radius:var(--r);background:var(--brand);color:var(--ink-on);font-size:15px;font-weight:600;cursor:pointer">{{ t.browse }}</button>
 </div>
 </sc-if>
 
@@ -142,34 +147,120 @@
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:430,&quot;height&quot;:900}}">
 class Component extends DCLogic {
-  state = { tab: 'prod', view: 'full' };
+  /* Locale is browser-detected. French is the fallback — Algeria's commercial
+     lingua franca and the neutral middle between Arabic and English. One value. */
+  static FALLBACK = 'fr';
+  static detect() {
+    const tag = (typeof navigator !== 'undefined' && (navigator.language || '')).slice(0, 2).toLowerCase();
+    return ['ar', 'fr', 'en'].includes(tag) ? tag : Component.FALLBACK;
+  }
 
-  fmt(n) { return '⁦' + String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + '⁩'; }
+  state = { tab: 'prod', view: 'full', lang: Component.detect() };
+  root = React.createRef();
+  componentDidMount() { this._apply(); }
+  componentDidUpdate() { this._apply(); }
+  _apply() {
+    const el = this.root.current;
+    if (el) { el.setAttribute('dir', this.L[this.state.lang].dir); el.setAttribute('lang', this.state.lang); }
+  }
 
-  TABS = [['prod', 'منتجات', 4], ['people', 'متاجر', 3], ['trip', 'رحلات', 2]];
+  fmt(n, sep) { return '⁦' + String(n).replace(/\B(?=(\d{3})+(?!\d))/g, sep) + '⁩'; }
+  iso(s) { return '⁦' + s + '⁩'; }
+
+  L = {
+    ar: {
+      dir: 'rtl', short: 'ع', langLabel: 'اللغة', sep: ' ', cur: 'دج',
+      title: 'المحفوظات', kind: 'النوع',
+      tabs: ['منتجات', 'متاجر', 'رحلات'],
+      views: ['فيه محفوظات', 'فارغ'],
+      unsave: 'إزالة من المحفوظات', remove: 'إزالة', drop: 'أزل',
+      emptyTitle: 'ما عندك والو محفوظ',
+      emptyLede: 'اضغط القلب على أي منتج أو متجر باش ترجع له بسهولة، ونعلمك إذا تغيّر سعره أو خلص.',
+      browse: 'تصفّح السوق',
+      products: [
+        { title: 'معطف نسائي شتوي — صوف مخلوط', seller: 'بوتيك نادية', note: 'نزل السعر 500 دج' },
+        { title: 'حقيبة يد جلدية بحزام كتف', seller: 'دار الأناقة' },
+        { title: 'عطر نسائي 100 مل — شرقي', seller: 'بوتيك نادية', note: 'بقيت 3 وحدات' },
+        { title: 'حذاء رياضي رجالي', seller: 'محل ياسين', goneLabel: 'لم يعد متوفراً' }
+      ],
+      people: [
+        { name: 'بوتيك نادية', initials: 'ب ن', meta: 'قسنطينة · 63 معاملة مؤكَّدة', news: 'أضافت 4 منتجات' },
+        { name: 'كريمة ح.', initials: 'ك ح', meta: 'مستوردة · 84 معاملة مؤكَّدة', news: 'رحلة جديدة إلى إسطنبول' },
+        { name: 'محل ياسين', initials: 'م ي', meta: 'سطيف · 241 معاملة مؤكَّدة' }
+      ],
+      trips: [
+        { dest: 'إسطنبول', dates: '12 – 16 أكتوبر', who: 'كريمة ح.', state: 'مفتوحة للطلب' },
+        { dest: 'دبي', dates: '2 – 6 سبتمبر', who: 'سفيان ب.', state: 'انتهت' }
+      ]
+    },
+
+    fr: {
+      dir: 'ltr', short: 'FR', langLabel: 'Langue', sep: ' ', cur: 'DA',
+      title: 'Enregistrements', kind: 'Type',
+      tabs: ['Produits', 'Boutiques', 'Voyages'],
+      views: ['Avec contenu', 'Vide'],
+      unsave: 'Retirer des enregistrements', remove: 'Retirer', drop: 'Retirer',
+      emptyTitle: 'Rien d’enregistré pour l’instant',
+      emptyLede: 'Touchez le cœur sur un produit ou une boutique pour le retrouver facilement — nous vous prévenons si le prix change ou si le stock s’épuise.',
+      browse: 'Parcourir la place',
+      products: [
+        { title: 'Manteau femme hiver — laine mélangée', seller: 'Boutique Nadia', note: 'Prix baissé de 500 DA' },
+        { title: 'Sac à main cuir avec bandoulière', seller: 'Dar El Anaqa' },
+        { title: 'Parfum femme 100 ml — oriental', seller: 'Boutique Nadia', note: 'Il reste 3 unités' },
+        { title: 'Basket homme', seller: 'Chez Yacine', goneLabel: 'Plus disponible' }
+      ],
+      people: [
+        { name: 'Boutique Nadia', initials: 'BN', meta: 'Constantine · 63 transactions confirmées', news: 'A ajouté 4 produits' },
+        { name: 'Karima H.', initials: 'KH', meta: 'Importatrice · 84 transactions confirmées', news: 'Nouveau voyage vers Istanbul' },
+        { name: 'Chez Yacine', initials: 'CY', meta: 'Sétif · 241 transactions confirmées' }
+      ],
+      trips: [
+        { dest: 'Istanbul', dates: '12 – 16 octobre', who: 'Karima H.', state: 'Ouvert aux demandes' },
+        { dest: 'Dubaï', dates: '2 – 6 septembre', who: 'Sofiane B.', state: 'Terminé' }
+      ]
+    },
+
+    en: {
+      dir: 'ltr', short: 'EN', langLabel: 'Language', sep: ',', cur: 'DA',
+      title: 'Saved', kind: 'Type',
+      tabs: ['Products', 'Shops', 'Trips'],
+      views: ['With items', 'Empty'],
+      unsave: 'Remove from saved', remove: 'Remove', drop: 'Remove',
+      emptyTitle: 'Nothing saved yet',
+      emptyLede: 'Tap the heart on any product or shop to come back to it easily — we’ll tell you if the price changes or the stock runs out.',
+      browse: 'Browse the marketplace',
+      products: [
+        { title: 'Women’s winter coat — wool blend', seller: 'Boutique Nadia', note: 'Price dropped by 500 DA' },
+        { title: 'Leather handbag with shoulder strap', seller: 'Dar El Anaqa' },
+        { title: 'Women’s perfume 100 ml — oriental', seller: 'Boutique Nadia', note: '3 units left' },
+        { title: 'Men’s trainers', seller: 'Chez Yacine', goneLabel: 'No longer available' }
+      ],
+      people: [
+        { name: 'Boutique Nadia', initials: 'BN', meta: 'Constantine · 63 confirmed transactions', news: 'Added 4 products' },
+        { name: 'Karima H.', initials: 'KH', meta: 'Importer · 84 confirmed transactions', news: 'New trip to Istanbul' },
+        { name: 'Chez Yacine', initials: 'CY', meta: 'Sétif · 241 confirmed transactions' }
+      ],
+      trips: [
+        { dest: 'Istanbul', dates: '12 – 16 October', who: 'Karima H.', state: 'Open to requests' },
+        { dest: 'Dubai', dates: '2 – 6 September', who: 'Sofiane B.', state: 'Ended' }
+      ]
+    }
+  };
+
+  TAB_IDS = ['prod', 'people', 'trip'];
+  TAB_N   = [4, 3, 2];
 
   // Retention primitives, not a social feed: save, and be told when
   // something you saved changes.
   PRODUCTS = [
-    { ph: 'ph-coat', title: 'معطف نسائي شتوي — صوف مخلوط', price: 6900, was: 7400, seller: 'بوتيك نادية',
-      dropped: true, note: 'نزل السعر 500 دج', kind: 'good' },
-    { ph: 'ph-bag', title: 'حقيبة يد جلدية بحزام كتف', price: 5900, seller: 'دار الأناقة' },
-    { ph: 'ph-perfume', title: 'عطر نسائي 100 مل — شرقي', price: 4200, seller: 'بوتيك نادية',
-      note: 'بقيت 3 وحدات', kind: 'warn' },
-    { ph: 'ph-shoe', title: 'حذاء رياضي رجالي', price: 6300, seller: 'محل ياسين',
-      gone: true, goneLabel: 'لم يعد متوفراً' }
+    { ph: 'ph-coat', price: 6900, was: 7400, dropped: true, kind: 'good' },
+    { ph: 'ph-bag', price: 5900 },
+    { ph: 'ph-perfume', price: 4200, kind: 'warn' },
+    { ph: 'ph-shoe', price: 6300, gone: true }
   ];
 
-  PEOPLE = [
-    { name: 'بوتيك نادية', initials: 'ب ن', meta: 'قسنطينة · 63 معاملة مؤكَّدة', tone: 0, news: 'أضافت 4 منتجات' },
-    { name: 'كريمة ح.', initials: 'ك ح', meta: 'مستوردة · 84 معاملة مؤكَّدة', tone: 2, news: 'رحلة جديدة إلى إسطنبول' },
-    { name: 'محل ياسين', initials: 'م ي', meta: 'سطيف · 241 معاملة مؤكَّدة', tone: 1 }
-  ];
-
-  TRIPS = [
-    { cc: 'TR', dest: 'إسطنبول', dates: '12 – 16 أكتوبر', who: 'كريمة ح.', state: 'مفتوحة للطلب', chip: 'chip-verified', tone: 2 },
-    { cc: 'AE', dest: 'دبي', dates: '2 – 6 سبتمبر', who: 'سفيان ب.', state: 'انتهت', chip: 'chip-neutral', tone: 0, expired: true }
-  ];
+  PEOPLE_TONE = [0, 2, 1];
+  TRIPS_META  = [{ cc: 'TR', chip: 'chip-verified', tone: 2 }, { cc: 'AE', chip: 'chip-neutral', tone: 0, expired: true }];
 
   TONE = [
     ['var(--role-importer-bg)', 'var(--role-importer-ink)'],
@@ -178,19 +269,30 @@ class Component extends DCLogic {
   ];
 
   renderVals() {
-    const s = this.state, empty = s.view === 'empty';
+    const s = this.state, t = this.L[s.lang], empty = s.view === 'empty';
+    const money = n => this.fmt(n, t.sep) + ' ' + t.cur;
 
     return {
-      tabs: this.TABS.map(([id, label, n]) => ({
-        label, n: this.fmt(empty ? 0 : n), on: s.tab === id,
+      rootRef: this.root,
+      t,
+
+      langs: ['ar', 'fr', 'en'].map(id => ({
+        short: this.L[id].short, on: s.lang === id,
+        bg: s.lang === id ? 'var(--ink)' : 'var(--surface)',
+        fg: s.lang === id ? 'var(--ink-on)' : 'var(--ink-2)',
+        pick: () => this.setState({ lang: id })
+      })),
+
+      tabs: this.TAB_IDS.map((id, i) => ({
+        label: t.tabs[i], n: this.fmt(empty ? 0 : this.TAB_N[i], t.sep), on: s.tab === id,
         bd: s.tab === id ? 'var(--ink)' : 'transparent',
         fg: s.tab === id ? 'var(--ink)' : 'var(--ink-3)',
         fw: s.tab === id ? 600 : 400,
         pick: () => this.setState({ tab: id })
       })),
 
-      views: [['full', 'فيه محفوظات'], ['empty', 'فارغ']].map(([id, label]) => ({
-        label, on: s.view === id,
+      views: ['full', 'empty'].map((id, i) => ({
+        label: t.views[i], on: s.view === id,
         bd: s.view === id ? 'var(--ink)' : 'var(--rule-strong)',
         bg: s.view === id ? 'var(--ink)' : 'var(--surface)',
         fg: s.view === id ? 'var(--ink-on)' : 'var(--ink-2)',
@@ -202,25 +304,32 @@ class Component extends DCLogic {
       isPeople: !empty && s.tab === 'people',
       isTrips: !empty && s.tab === 'trip',
 
-      products: this.PRODUCTS.map(p => ({
-        ...p,
-        price: this.fmt(p.price),
-        was: p.was ? this.fmt(p.was) + ' دج' : '',
-        op: p.gone ? 0.75 : 1,
-        priceFg: p.gone ? 'var(--ink-3)' : p.dropped ? 'var(--allowed-ink)' : 'var(--ink)',
-        hasNote: !!p.note,
-        noteFg: p.kind === 'good' ? 'var(--allowed-ink)' : 'var(--conditional-ink)',
-        dropped: !!p.dropped, gone: !!p.gone
-      })),
-
-      people: this.PEOPLE.map(p => {
-        const [avBg, avFg] = this.TONE[p.tone];
-        return { ...p, avBg, avFg, hasNews: !!p.news };
+      products: this.PRODUCTS.map((p, i) => {
+        const c = t.products[i];
+        return {
+          ph: p.ph, title: c.title, seller: c.seller, note: c.note || '', goneLabel: c.goneLabel || '',
+          price: money(p.price),
+          was: p.was ? money(p.was) : '',
+          op: p.gone ? 0.75 : 1,
+          priceFg: p.gone ? 'var(--ink-3)' : p.dropped ? 'var(--allowed-ink)' : 'var(--ink)',
+          hasNote: !!c.note,
+          noteFg: p.kind === 'good' ? 'var(--allowed-ink)' : 'var(--conditional-ink)',
+          dropped: !!p.dropped, gone: !!p.gone
+        };
       }),
 
-      trips: this.TRIPS.map(t => {
-        const [bg, fg] = this.TONE[t.tone];
-        return { ...t, bg, fg, op: t.expired ? 0.7 : 1, expired: !!t.expired };
+      people: t.people.map((p, i) => {
+        const [avBg, avFg] = this.TONE[this.PEOPLE_TONE[i]];
+        return { name: p.name, initials: p.initials, meta: this.iso(p.meta), news: p.news || '', hasNews: !!p.news, avBg, avFg };
+      }),
+
+      trips: t.trips.map((x, i) => {
+        const m = this.TRIPS_META[i];
+        const [bg, fg] = this.TONE[m.tone];
+        return {
+          cc: m.cc, chip: m.chip, dest: x.dest, dates: this.iso(x.dates), who: this.iso(x.who), state: x.state,
+          bg, fg, op: m.expired ? 0.7 : 1, expired: !!m.expired
+        };
       })
     };
   }
