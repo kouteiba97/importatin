@@ -21,14 +21,19 @@
 </style>
 </helmet>
 
-<div dir="rtl" lang="ar" class="tier-op" style="min-height:100vh;display:flex;justify-content:center">
+<div ref="{{ rootRef }}" dir="rtl" lang="ar" class="tier-op" style="min-height:100vh;display:flex;justify-content:center">
 <div style="width:100%;max-width:430px;min-height:100vh;display:flex;flex-direction:column;background:var(--paper);border-inline:1px solid var(--rule)">
 
 <header style="display:flex;align-items:center;gap:10px;padding:11px 14px;background:var(--surface);border-bottom:1px solid var(--rule)">
-<button type="button" onClick="{{ back }}" aria-label="رجوع" style="width:34px;height:34px;border:0;background:transparent;cursor:pointer;display:grid;place-items:center;color:inherit">
-<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 5l-7 7 7 7"/></svg>
+<button type="button" onClick="{{ back }}" aria-label="{{ t.back }}" style="width:34px;height:34px;border:0;background:transparent;cursor:pointer;display:grid;place-items:center;color:inherit">
+<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="transform:scaleX({{ backFlip }})"><path d="M15 5l-7 7 7 7"/></svg>
 </button>
-<span style="flex:1;font-size:var(--t-h3);font-weight:500">رحلة جديدة</span>
+<span style="flex:1;font-size:var(--t-h3);font-weight:500">{{ t.title }}</span>
+<div role="group" aria-label="{{ t.langLabel }}" style="display:flex;border:1px solid var(--rule-strong);border-radius:var(--r-sm);overflow:hidden;flex:none">
+<sc-for list="{{ langs }}" as="l" hint-placeholder-count="3">
+<button type="button" onClick="{{ l.pick }}" aria-pressed="{{ l.on }}" style="height:24px;padding:0 8px;border:0;background:{{ l.bg }};color:{{ l.fg }};font-size:var(--t-micro);font-weight:500;cursor:pointer">{{ l.short }}</button>
+</sc-for>
+</div>
 <span class="num" style="font-size:var(--t-xs);color:var(--ink-3)"><bdi>{{ stepLabel }}</bdi></span>
 </header>
 <div style="height:3px;background:var(--neutral-bg)"><i style="display:block;height:100%;width:{{ progress }}%;background:var(--brand);transition:width .2s ease"></i></div>
@@ -39,16 +44,16 @@
 <sc-if value="{{ is0 }}" hint-placeholder-val="{{ true }}">
 <div style="display:flex;flex-direction:column;gap:17px">
 <div>
-<h1 style="margin:0 0 7px;font-size:23px;font-weight:600">وين وامتى؟</h1>
-<p style="margin:0;font-size:var(--t-body);color:var(--ink-2);line-height:1.7">التجّار يبحثون بالوجهة والتاريخ أولاً.</p>
+<h1 style="margin:0 0 7px;font-size:23px;font-weight:600">{{ t.s0Title }}</h1>
+<p style="margin:0;font-size:var(--t-body);color:var(--ink-2);line-height:1.7">{{ t.s0Lede }}</p>
 </div>
 <div>
-<label class="fld" for="dst">الوجهة</label>
+<label class="fld" for="dst">{{ t.destination }}</label>
 <div style="display:flex;align-items:center;gap:9px;height:48px;padding:0 14px;border:1px solid var(--rule-strong);border-radius:var(--r);background:var(--surface)">
 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--ink-3)" stroke-width="2" style="flex:none"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
-<input id="dst" value="{{ destName }}" placeholder="اكتب أي مدينة أو بلد في العالم" style="flex:1;min-width:0;border:0;background:transparent;font-size:15px;color:inherit;outline:none">
+<input id="dst" value="{{ destName }}" placeholder="{{ t.destPh }}" style="flex:1;min-width:0;border:0;background:transparent;font-size:15px;color:inherit;outline:none">
 </div>
-<div style="font-size:var(--t-xs);color:var(--ink-3);margin:9px 0 8px">الأكثر استعمالاً</div>
+<div style="font-size:var(--t-xs);color:var(--ink-3);margin:9px 0 8px">{{ t.mostUsed }}</div>
 <div class="scrollx" style="display:flex;gap:7px">
 <sc-for list="{{ dests }}" as="d" hint-placeholder-count="8">
 <button type="button" onClick="{{ d.pick }}" aria-pressed="{{ d.on }}" style="flex:none;height:36px;padding:0 13px;border:1px solid {{ d.bd }};border-radius:var(--r-pill);background:{{ d.bg }};color:{{ d.fg }};font-size:var(--t-sm);cursor:pointer;white-space:nowrap">{{ d.label }}</button>
@@ -56,21 +61,21 @@
 </div>
 </div>
 <div style="display:flex;gap:11px">
-<div style="flex:1"><label class="fld" for="d1">المغادرة</label><input id="d1" class="inp num" value="12 أكتوبر"></div>
-<div style="flex:1"><label class="fld" for="d2">العودة</label><input id="d2" class="inp num" value="16 أكتوبر"></div>
+<div style="flex:1"><label class="fld" for="d1">{{ t.depart }}</label><input id="d1" class="inp num" value="{{ t.d1 }}"></div>
+<div style="flex:1"><label class="fld" for="d2">{{ t.ret }}</label><input id="d2" class="inp num" value="{{ t.d2 }}"></div>
 </div>
-<div><label class="fld" for="ar">وصول البضاعة المتوقّع</label><input id="ar" class="inp num" value="18 أكتوبر">
-<p style="margin:8px 0 0;font-size:var(--t-xs);color:var(--ink-3);line-height:1.65">هذا التاريخ يحدّد أي طلبات تُطابق رحلتك.</p></div>
+<div><label class="fld" for="ar">{{ t.arrival }}</label><input id="ar" class="inp num" value="{{ t.d3 }}">
+<p style="margin:8px 0 0;font-size:var(--t-xs);color:var(--ink-3);line-height:1.65">{{ t.arrivalHint }}</p></div>
 
 <div class="card" style="padding:13px;display:flex;align-items:center;gap:11px">
 <span aria-hidden="true" style="flex:none;width:30px;height:30px;border-radius:50%;background:var(--allowed-bg);display:grid;place-items:center;font-size:13px;color:var(--allowed-ink)">✓</span>
 <div style="flex:1;min-width:0">
-<div style="font-size:var(--t-sm);font-weight:500">الرحلة 1 من 2 هذا الشهر</div>
-<div style="font-size:var(--t-micro);color:var(--ink-2);margin-top:2px">يبقى لك تنقّل واحد بعد هذه الرحلة</div>
+<div style="font-size:var(--t-sm);font-weight:500">{{ tripOf }}</div>
+<div style="font-size:var(--t-micro);color:var(--ink-2);margin-top:2px">{{ t.tripLeft }}</div>
 </div>
 </div>
 
-<button type="button" onClick="{{ next }}" class="cta">متابعة</button>
+<button type="button" onClick="{{ next }}" class="cta">{{ t.cont }}</button>
 </div>
 </sc-if>
 
@@ -78,8 +83,8 @@
 <sc-if value="{{ is1 }}" hint-placeholder-val="{{ false }}">
 <div style="display:flex;flex-direction:column;gap:17px">
 <div>
-<h1 style="margin:0 0 7px;font-size:23px;font-weight:600">واش تشري عادةً؟</h1>
-<p style="margin:0;font-size:var(--t-body);color:var(--ink-2);line-height:1.7">نعرض لك الطلب في هذه الفئات فقط، ونعرض رحلتك للتجّار المهتمّين بها.</p>
+<h1 style="margin:0 0 7px;font-size:23px;font-weight:600">{{ t.s1Title }}</h1>
+<p style="margin:0;font-size:var(--t-body);color:var(--ink-2);line-height:1.7">{{ t.s1Lede }}</p>
 </div>
 <div style="display:flex;flex-wrap:wrap;gap:8px">
 <sc-for list="{{ cats }}" as="c" hint-placeholder-count="7">
@@ -91,9 +96,9 @@
 </div>
 <div class="card" style="padding:13px;display:flex;gap:11px">
 <span aria-hidden="true" style="flex:none;color:var(--ink-3)">i</span>
-<p style="margin:0;font-size:var(--t-xs);line-height:1.7;color:var(--ink-2)">بعض الفئات ممنوعة أو مشروطة في الاستيراد المصغّر. سنعلمك عند إضافة صنف يحتاج انتباهاً.</p>
+<p style="margin:0;font-size:var(--t-xs);line-height:1.7;color:var(--ink-2)">{{ t.s1Note }}</p>
 </div>
-<button type="button" onClick="{{ next }}" class="cta">متابعة</button>
+<button type="button" onClick="{{ next }}" class="cta">{{ t.cont }}</button>
 </div>
 </sc-if>
 
@@ -101,8 +106,8 @@
 <sc-if value="{{ is2 }}" hint-placeholder-val="{{ false }}">
 <div style="display:flex;flex-direction:column;gap:17px">
 <div>
-<h1 style="margin:0 0 7px;font-size:23px;font-weight:600">شحال تقدر تجيب؟</h1>
-<p style="margin:0;font-size:var(--t-body);color:var(--ink-2);line-height:1.7">ثلاثة حدود مختلفة. واحد فقط منها قانوني.</p>
+<h1 style="margin:0 0 7px;font-size:23px;font-weight:600">{{ t.s2Title }}</h1>
+<p style="margin:0;font-size:var(--t-body);color:var(--ink-2);line-height:1.7">{{ t.s2Lede }}</p>
 </div>
 
 <!-- legal -->
@@ -110,11 +115,11 @@
 <div style="display:flex;align-items:center;gap:9px;margin-bottom:11px">
 <span aria-hidden="true" style="flex:none;width:26px;height:26px;border-radius:50%;background:var(--allowed);color:#fff;display:grid;place-items:center;font-size:12px">§</span>
 <div style="flex:1;min-width:0">
-<div style="font-size:var(--t-h3);font-weight:600">القيمة</div>
-<div class="lock"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg> الحدّ القانوني — لا يمكن تعديله</div>
+<div style="font-size:var(--t-h3);font-weight:600">{{ t.value }}</div>
+<div class="lock"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg> {{ t.legalLock }}</div>
 </div>
 </div>
-<div class="num" style="font-size:26px;font-weight:600"><bdi>{{ maxValue }} دج</bdi></div>
+<div class="num" style="font-size:26px;font-weight:600"><bdi>{{ maxValue }}</bdi></div>
 <div class="num" style="font-size:var(--t-xs);color:var(--ink-2);margin-top:5px"><bdi>{{ valueNote }}</bdi></div>
 </div>
 
@@ -123,13 +128,13 @@
 <div style="display:flex;align-items:center;gap:9px;margin-bottom:13px">
 <span aria-hidden="true" style="flex:none;width:26px;height:26px;border-radius:50%;background:var(--neutral-bg);color:var(--ink-2);display:grid;place-items:center;font-size:12px">✎</span>
 <div style="flex:1;min-width:0">
-<div style="font-size:var(--t-h3);font-weight:600">الوزن والحجم</div>
-<div style="font-size:var(--t-micro);color:var(--ink-3);margin-top:1px">حدودك أنت — حسب سماح الطيران وحقائبك</div>
+<div style="font-size:var(--t-h3);font-weight:600">{{ t.wv }}</div>
+<div style="font-size:var(--t-micro);color:var(--ink-3);margin-top:1px">{{ t.wvHint }}</div>
 </div>
 </div>
 <div style="display:flex;gap:11px">
-<div style="flex:1"><label class="fld" for="wg">الوزن (كغ)</label><input id="wg" class="inp num" inputMode="decimal" value="46"></div>
-<div style="flex:1"><label class="fld" for="vl">الحجم (م³)</label><input id="vl" class="inp num" inputMode="decimal" value="1.20"></div>
+<div style="flex:1"><label class="fld" for="wg">{{ t.weightKg }}</label><input id="wg" class="inp num" inputMode="decimal" value="46"></div>
+<div style="flex:1"><label class="fld" for="vl">{{ t.volM3 }}</label><input id="vl" class="inp num" inputMode="decimal" value="{{ volVal }}"></div>
 </div>
 <div style="display:flex;gap:7px;margin-top:10px">
 <sc-for list="{{ presets }}" as="p" hint-placeholder-count="3">
@@ -138,7 +143,7 @@
 </div>
 </div>
 
-<button type="button" onClick="{{ next }}" class="cta">متابعة</button>
+<button type="button" onClick="{{ next }}" class="cta">{{ t.cont }}</button>
 </div>
 </sc-if>
 
@@ -146,8 +151,8 @@
 <sc-if value="{{ is3 }}" hint-placeholder-val="{{ false }}">
 <div style="display:flex;flex-direction:column;gap:17px">
 <div>
-<h1 style="margin:0 0 7px;font-size:23px;font-weight:600">شكون يشوف رحلتك؟</h1>
-<p style="margin:0;font-size:var(--t-body);color:var(--ink-2);line-height:1.7">لا تُعرض وجهتك التجارية ولا مورّدوك ولا ميزانيتك في أي حالة.</p>
+<h1 style="margin:0 0 7px;font-size:23px;font-weight:600">{{ t.s3Title }}</h1>
+<p style="margin:0;font-size:var(--t-body);color:var(--ink-2);line-height:1.7">{{ t.s3Lede }}</p>
 </div>
 <div style="display:flex;flex-direction:column;gap:10px">
 <sc-for list="{{ visibility }}" as="v" hint-placeholder-count="3">
@@ -160,14 +165,14 @@
 </button>
 </sc-for>
 </div>
-<button type="button" onClick="{{ next }}" class="cta">متابعة</button>
+<button type="button" onClick="{{ next }}" class="cta">{{ t.cont }}</button>
 </div>
 </sc-if>
 
 <!-- ══ 5 · REVIEW ══ -->
 <sc-if value="{{ is4 }}" hint-placeholder-val="{{ false }}">
 <div style="display:flex;flex-direction:column;gap:16px">
-<h1 style="margin:0;font-size:23px;font-weight:600">راجع قبل النشر</h1>
+<h1 style="margin:0;font-size:23px;font-weight:600">{{ t.s4Title }}</h1>
 
 <div class="card" style="padding:4px 15px">
 <sc-for list="{{ review }}" as="r" hint-placeholder-count="6">
@@ -181,13 +186,13 @@
 <div style="display:flex;gap:11px;padding:14px;border:1px solid var(--conditional-bd);border-radius:var(--r);background:var(--conditional-bg)">
 <span aria-hidden="true" style="flex:none;width:26px;height:26px;border-radius:50%;background:var(--conditional);color:#fff;display:grid;place-items:center;font-size:13px;font-weight:600">!</span>
 <div style="flex:1">
-<div style="font-size:var(--t-sm);font-weight:600;margin-bottom:4px">لا تنسَ التصريح المسبق</div>
-<p style="margin:0;font-size:var(--t-xs);line-height:1.7;color:var(--ink-2)">قبل كل سفر، صرّح بالبضاعة على anae.dz. مَعْبَر تذكّرك فقط ولا تقوم بالتصريح نيابةً عنك.</p>
+<div style="font-size:var(--t-sm);font-weight:600;margin-bottom:4px">{{ t.declareTitle }}</div>
+<p style="margin:0;font-size:var(--t-xs);line-height:1.7;color:var(--ink-2)">{{ t.declareBody }}</p>
 </div>
 </div>
 
-<button type="button" onClick="{{ next }}" class="cta" style="background:var(--brand)">انشر الرحلة</button>
-<button type="button" style="width:100%;height:48px;border:1px solid var(--rule-strong);border-radius:var(--r);background:transparent;color:inherit;font-size:15px;cursor:pointer">احفظ كمسوّدة</button>
+<button type="button" onClick="{{ next }}" class="cta" style="background:var(--brand)">{{ t.publish }}</button>
+<button type="button" style="width:100%;height:48px;border:1px solid var(--rule-strong);border-radius:var(--r);background:transparent;color:inherit;font-size:15px;cursor:pointer">{{ t.saveDraft }}</button>
 </div>
 </sc-if>
 
@@ -196,12 +201,12 @@
 <div style="display:flex;flex-direction:column;gap:18px;padding-top:14px">
 <div style="text-align:center">
 <span aria-hidden="true" style="display:inline-grid;place-items:center;width:62px;height:62px;border-radius:50%;background:var(--allowed-bg);color:var(--allowed-ink);font-size:28px;margin-bottom:13px">✓</span>
-<h1 style="margin:0 0 8px;font-size:23px;font-weight:600">رحلتك منشورة</h1>
-<p class="num" style="margin:0;font-size:var(--t-body);line-height:1.7;color:var(--ink-2)"><bdi>14 تاجراً في فئاتك يشوفوها من دابا.</bdi></p>
+<h1 style="margin:0 0 8px;font-size:23px;font-weight:600">{{ t.s5Title }}</h1>
+<p class="num" style="margin:0;font-size:var(--t-body);line-height:1.7;color:var(--ink-2)"><bdi>{{ publishedLede }}</bdi></p>
 </div>
 <div style="display:flex;flex-direction:column;gap:9px">
-<button type="button" class="cta" style="background:var(--brand)">افتح لوحة الطلب</button>
-<button type="button" style="width:100%;height:48px;border:1px solid var(--rule-strong);border-radius:var(--r);background:transparent;color:inherit;font-size:15px;cursor:pointer">شاهد الرحلة</button>
+<button type="button" class="cta" style="background:var(--brand)">{{ t.openBoard }}</button>
+<button type="button" style="width:100%;height:48px;border:1px solid var(--rule-strong);border-radius:var(--r);background:transparent;color:inherit;font-size:15px;cursor:pointer">{{ t.viewTrip }}</button>
 </div>
 </div>
 </sc-if>
@@ -212,57 +217,181 @@
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:430,&quot;height&quot;:900}}">
 class Component extends DCLogic {
-  state = { step: 2, dest: 'ist', cats: { clothes: true, bags: true, cosm: true }, vis: 'all' };
+  /* Locale is browser-detected. French is the fallback — Algeria's commercial
+     lingua franca and the neutral middle between Arabic and English. One value. */
+  static FALLBACK = 'fr';
+  static detect() {
+    const tag = (typeof navigator !== 'undefined' && (navigator.language || '')).slice(0, 2).toLowerCase();
+    return ['ar', 'fr', 'en'].includes(tag) ? tag : Component.FALLBACK;
+  }
+
+  state = { step: 2, dest: 'ist', cats: { clothes: true, bags: true, cosm: true }, vis: 'all', lang: Component.detect() };
+  root = React.createRef();
+  componentDidMount() { this._apply(); }
+  componentDidUpdate() { this._apply(); }
+  _apply() {
+    const el = this.root.current;
+    if (el) { el.setAttribute('dir', this.L[this.state.lang].dir); el.setAttribute('lang', this.state.lang); }
+  }
+
+  /* Text runs take a first-strong isolate so Arabic stays RTL and Latin stays LTR;
+     inside Arabic, each digit group is pinned LTR so "4 800" never reads "800 4". */
+  iso(s) { if (/[\u0600-\u06FF]/.test(s)) s = s.replace(/\d[\d ,.:]*\d%?|\d%?/g, m => '\u2066' + m + '\u2069'); return '\u2068' + s + '\u2069'; }
+  fmt(n, sep) { return '⁦' + String(n).replace(/\B(?=(\d{3})+(?!\d))/g, sep === undefined ? ' ' : sep) + '⁩'; }
+  /* Arabic counts nouns in four forms (one / two / 3–10 / 11+); French and English in two.
+     f = { one, two, few, many } for Arabic, { one, many } otherwise. */
+  count(n, t, f) {
+    if (t.dir === 'rtl') {
+      const m = n % 100;
+      if (n === 1) return f.one;
+      if (n === 2) return f.two;
+      if (m >= 3 && m <= 10) return this.fmt(n, t.sep) + ' ' + f.few;
+      return this.fmt(n, t.sep) + ' ' + f.many;
+    }
+    return this.fmt(n, t.sep) + ' ' + (n === 1 ? f.one : f.many);
+  }
+  langsFor(cur) {
+    return ['ar', 'fr', 'en'].map(id => ({
+      short: this.L[id].short, on: cur === id,
+      bg: cur === id ? 'var(--ink)' : 'var(--surface)',
+      fg: cur === id ? 'var(--ink-on)' : 'var(--ink-2)',
+      pick: () => this.setState({ lang: id })
+    }));
+  }
+
+  L = {
+    ar: {
+      dir: 'rtl', short: 'ع', langLabel: 'اللغة', sep: ' ', dec: '.', cur: 'دج',
+      back: 'رجوع', title: 'رحلة جديدة', step: (i, n) => 'خطوة ' + i + ' من ' + n, cont: 'متابعة',
+      s0Title: 'وين وامتى؟', s0Lede: 'التجّار يبحثون بالوجهة والتاريخ أولاً.',
+      destination: 'الوجهة', destPh: 'اكتب أي مدينة أو بلد في العالم', mostUsed: 'الأكثر استعمالاً',
+      dests: ['إسطنبول', 'دبي', 'قوانغتشو', 'ييوو', 'غازي عنتاب', 'بانكوك', 'ميلانو', 'باريس', 'جدة', 'تونس'],
+      depart: 'المغادرة', ret: 'العودة', arrival: 'وصول البضاعة المتوقّع', d1: '12 أكتوبر', d2: '16 أكتوبر', d3: '18 أكتوبر',
+      arrivalHint: 'هذا التاريخ يحدّد أي طلبات تُطابق رحلتك.',
+      tripOf: (i, n) => 'الرحلة ' + i + ' من ' + n + ' هذا الشهر', tripLeft: 'يبقى لك تنقّل واحد بعد هذه الرحلة',
+      s1Title: 'واش تشري عادةً؟', s1Lede: 'نعرض لك الطلب في هذه الفئات فقط، ونعرض رحلتك للتجّار المهتمّين بها.',
+      cats: ['ألبسة نسائية', 'ألبسة رجالية', 'حقائب', 'أحذية', 'تجميل وعطور', 'ساعات', 'منزل'],
+      s1Note: 'بعض الفئات ممنوعة أو مشروطة في الاستيراد المصغّر. سنعلمك عند إضافة صنف يحتاج انتباهاً.',
+      s2Title: 'شحال تقدر تجيب؟', s2Lede: 'ثلاثة حدود مختلفة. واحد فقط منها قانوني.',
+      value: 'القيمة', legalLock: 'الحدّ القانوني — لا يمكن تعديله', valueNote: e => 'لكل تنقّل · ساري منذ ' + e, effective: '29 جوان 2025',
+      wv: 'الوزن والحجم', wvHint: 'حدودك أنت — حسب سماح الطيران وحقائبك', weightKg: 'الوزن (كغ)', volM3: 'الحجم (م³)',
+      presets: ['حقيبتان 23 كغ', 'حقيبة + يد', 'شحن مرافق'],
+      s3Title: 'شكون يشوف رحلتك؟', s3Lede: 'لا تُعرض وجهتك التجارية ولا مورّدوك ولا ميزانيتك في أي حالة.',
+      vis: [['كل التجّار المُتحقَّقين', 'أوسع وصول وأسرع طلبات.'], ['تجّار فئاتي فقط', 'تظهر لمن يهتمّ بما تشتريه عادةً.'], ['من تعاملت معهم فقط', 'رحلة خاصّة لشبكتك الحالية.']],
+      s4Title: 'راجع قبل النشر',
+      rk: ['الوجهة', 'التواريخ', 'الفئات', 'القيمة', 'الوزن والحجم', 'الظهور'],
+      rDates: '12 – 16 أكتوبر · يصل 18', rValue: ' — الحدّ القانوني', rWv: v => '46 كغ · ' + v + ' م³ — حدودك',
+      declareTitle: 'لا تنسَ التصريح المسبق', declareBody: 'قبل كل سفر، صرّح بالبضاعة على anae.dz. مَعْبَر تذكّرك فقط ولا تقوم بالتصريح نيابةً عنك.',
+      publish: 'انشر الرحلة', saveDraft: 'احفظ كمسوّدة',
+      s5Title: 'رحلتك منشورة', published: '14 تاجراً في فئاتك يشوفوها من دابا.',
+      openBoard: 'افتح لوحة الطلب', viewTrip: 'شاهد الرحلة'
+    },
+
+    fr: {
+      dir: 'ltr', short: 'FR', langLabel: 'Langue', sep: ' ', dec: ',', cur: 'DA',
+      back: 'Retour', title: 'Nouveau voyage', step: (i, n) => 'Étape ' + i + ' sur ' + n, cont: 'Continuer',
+      s0Title: 'Où et quand ?', s0Lede: 'Les commerçants cherchent d’abord par destination et par date.',
+      destination: 'Destination', destPh: 'Saisissez n’importe quelle ville ou pays', mostUsed: 'Les plus utilisées',
+      dests: ['Istanbul', 'Dubaï', 'Canton', 'Yiwu', 'Gaziantep', 'Bangkok', 'Milan', 'Paris', 'Djeddah', 'Tunis'],
+      depart: 'Départ', ret: 'Retour', arrival: 'Arrivée prévue de la marchandise', d1: '12 octobre', d2: '16 octobre', d3: '18 octobre',
+      arrivalHint: 'Cette date détermine quelles demandes correspondent à votre voyage.',
+      tripOf: (i, n) => 'Voyage ' + i + ' sur ' + n + ' ce mois-ci', tripLeft: 'Il vous reste un déplacement après celui-ci',
+      s1Title: 'Qu’achetez-vous d’habitude ?', s1Lede: 'Nous vous montrons la demande dans ces catégories uniquement, et votre voyage aux commerçants qu’elles intéressent.',
+      cats: ['Vêtements femme', 'Vêtements homme', 'Sacs', 'Chaussures', 'Beauté et parfums', 'Montres', 'Maison'],
+      s1Note: 'Certaines catégories sont interdites ou soumises à conditions dans l’importation de faible valeur. Nous vous prévenons quand un article demande attention.',
+      s2Title: 'Combien pouvez-vous rapporter ?', s2Lede: 'Trois limites différentes. Une seule est légale.',
+      value: 'Valeur', legalLock: 'Plafond légal — non modifiable', valueNote: e => 'par déplacement · en vigueur depuis le ' + e, effective: '29 juin 2025',
+      wv: 'Poids et volume', wvHint: 'Vos propres limites — selon la franchise bagages et vos valises', weightKg: 'Poids (kg)', volM3: 'Volume (m³)',
+      presets: ['2 valises de 23 kg', 'Valise + cabine', 'Fret accompagné'],
+      s3Title: 'Qui voit votre voyage ?', s3Lede: 'Vos fournisseurs, vos adresses d’achat et votre budget ne sont jamais affichés.',
+      vis: [['Tous les commerçants vérifiés', 'La plus large audience, les demandes les plus rapides.'], ['Commerçants de mes catégories', 'Visible par ceux qu’intéresse ce que vous achetez.'], ['Mes contacts uniquement', 'Voyage privé pour votre réseau actuel.']],
+      s4Title: 'Vérifiez avant de publier',
+      rk: ['Destination', 'Dates', 'Catégories', 'Valeur', 'Poids et volume', 'Visibilité'],
+      rDates: '12 – 16 octobre · arrivée le 18', rValue: ' — plafond légal', rWv: v => '46 kg · ' + v + ' m³ — vos limites',
+      declareTitle: 'N’oubliez pas la pré-déclaration', declareBody: 'Avant chaque départ, déclarez la marchandise sur anae.dz. Maabar vous le rappelle seulement et ne déclare pas à votre place.',
+      publish: 'Publier le voyage', saveDraft: 'Enregistrer comme brouillon',
+      s5Title: 'Votre voyage est publié', published: '14 commerçants de vos catégories le voient dès maintenant.',
+      openBoard: 'Ouvrir le tableau de la demande', viewTrip: 'Voir le voyage'
+    },
+
+    en: {
+      dir: 'ltr', short: 'EN', langLabel: 'Language', sep: ',', dec: '.', cur: 'DA',
+      back: 'Back', title: 'New trip', step: (i, n) => 'Step ' + i + ' of ' + n, cont: 'Continue',
+      s0Title: 'Where and when?', s0Lede: 'Traders search by destination and date first.',
+      destination: 'Destination', destPh: 'Type any city or country in the world', mostUsed: 'Most used',
+      dests: ['Istanbul', 'Dubai', 'Guangzhou', 'Yiwu', 'Gaziantep', 'Bangkok', 'Milan', 'Paris', 'Jeddah', 'Tunis'],
+      depart: 'Departure', ret: 'Return', arrival: 'Expected arrival of goods', d1: '12 October', d2: '16 October', d3: '18 October',
+      arrivalHint: 'This date decides which requests match your trip.',
+      tripOf: (i, n) => 'Trip ' + i + ' of ' + n + ' this month', tripLeft: 'You have one trip left after this one',
+      s1Title: 'What do you usually buy?', s1Lede: 'We show you demand in these categories only, and show your trip to traders interested in them.',
+      cats: ['Women’s clothing', 'Men’s clothing', 'Bags', 'Shoes', 'Beauty & perfume', 'Watches', 'Home'],
+      s1Note: 'Some categories are prohibited or conditional under low-value importing. We’ll tell you when an item needs attention.',
+      s2Title: 'How much can you bring?', s2Lede: 'Three different limits. Only one of them is legal.',
+      value: 'Value', legalLock: 'Legal limit — cannot be changed', valueNote: e => 'per trip · in force since ' + e, effective: '29 June 2025',
+      wv: 'Weight and volume', wvHint: 'Your own limits — set by your baggage allowance and luggage', weightKg: 'Weight (kg)', volM3: 'Volume (m³)',
+      presets: ['2 × 23 kg bags', 'Bag + cabin', 'Accompanied cargo'],
+      s3Title: 'Who sees your trip?', s3Lede: 'Your suppliers, sourcing addresses and budget are never shown.',
+      vis: [['All verified traders', 'Widest reach, fastest requests.'], ['Traders in my categories', 'Visible to those interested in what you usually buy.'], ['Only people I’ve dealt with', 'A private trip for your existing network.']],
+      s4Title: 'Review before publishing',
+      rk: ['Destination', 'Dates', 'Categories', 'Value', 'Weight and volume', 'Visibility'],
+      rDates: '12 – 16 October · arrives 18th', rValue: ' — legal limit', rWv: v => '46 kg · ' + v + ' m³ — your limits',
+      declareTitle: 'Don’t forget the pre-declaration', declareBody: 'Before every trip, declare the goods on anae.dz. Maabar only reminds you — it does not declare on your behalf.',
+      publish: 'Publish the trip', saveDraft: 'Save as draft',
+      s5Title: 'Your trip is published', published: '14 traders in your categories can see it now.',
+      openBoard: 'Open the demand board', viewTrip: 'View the trip'
+    }
+  };
 
   N = 6;
   // Any destination worldwide. These are the most-used shortcuts, not the options.
-  DESTS = [['ist','إسطنبول'],['dxb','دبي'],['can','قوانغتشو'],['yiw','ييوو'],['ist2','غازي عنتاب'],['bkk','بانكوك'],['mil','ميلانو'],['par','باريس'],['ist3','جدة'],['tun','تونس']];
-  CATS = [['clothes','ألبسة نسائية'],['men','ألبسة رجالية'],['bags','حقائب'],['shoes','أحذية'],['cosm','تجميل وعطور'],['watch','ساعات'],['home','منزل']];
-  PRESETS = ['حقيبتان 23 كغ', 'حقيبة + يد', 'شحن مرافق'];
-
-  VIS = [
-    { id: 'all', title: 'كل التجّار المُتحقَّقين', body: 'أوسع وصول وأسرع طلبات.' },
-    { id: 'cats', title: 'تجّار فئاتي فقط', body: 'تظهر لمن يهتمّ بما تشتريه عادةً.' },
-    { id: 'known', title: 'من تعاملت معهم فقط', body: 'رحلة خاصّة لشبكتك الحالية.' }
-  ];
+  DEST_IDS = ['ist', 'dxb', 'can', 'yiw', 'gzt', 'bkk', 'mil', 'par', 'jed', 'tun'];
+  CAT_IDS = ['clothes', 'men', 'bags', 'shoes', 'cosm', 'watch', 'home'];
+  VIS_IDS = ['all', 'cats', 'known'];
 
   // Regulatory values come from configuration, never from a constant in a screen.
-  PARAMS = { maxValue: 1800000, maxTrips: 2, effective: '29 جوان 2025' };
-
-  fmt(n) { return '⁦' + String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + '⁩'; }
-  LRI = '⁦'; PDI = '⁩';
-  ltr(s) { return this.LRI + s + this.PDI; }
+  PARAMS = { maxValue: 1800000, maxTrips: 2, tripIndex: 1 };
 
   renderVals() {
-    const s = this.state;
-    const dest = this.DESTS.find(d => d[0] === s.dest)[1];
-    const catNames = this.CATS.filter(c => s.cats[c[0]]).map(c => c[1]);
-    const vis = this.VIS.find(v => v.id === s.vis).title;
+    const s = this.state, t = this.L[s.lang];
+    const di = Math.max(0, this.DEST_IDS.indexOf(s.dest));
+    const dest = t.dests[di];
+    const catNames = this.CAT_IDS.map((id, i) => s.cats[id] ? t.cats[i] : null).filter(Boolean);
+    const vis = t.vis[this.VIS_IDS.indexOf(s.vis)][0];
+    const vol = (1.2).toFixed(2).replace('.', t.dec);
+    const money = this.fmt(this.PARAMS.maxValue, t.sep) + ' ' + t.cur;
 
     return {
-      stepLabel: s.step < this.N - 1 ? 'خطوة ' + (s.step + 1) + ' من ' + (this.N - 1) : '',
+      rootRef: this.root, t, langs: this.langsFor(s.lang),
+      backFlip: t.dir === 'rtl' ? -1 : 1,
+
+      stepLabel: s.step < this.N - 1 ? this.iso(t.step(s.step + 1, this.N - 1)) : '',
       progress: Math.round((s.step + 1) / this.N * 100),
       back: () => this.setState(x => ({ step: Math.max(0, x.step - 1) })),
       next: () => this.setState(x => ({ step: Math.min(this.N - 1, x.step + 1) })),
       is0: s.step === 0, is1: s.step === 1, is2: s.step === 2,
       is3: s.step === 3, is4: s.step === 4, is5: s.step === 5,
 
+      tripOf: this.iso(t.tripOf(this.PARAMS.tripIndex, this.PARAMS.maxTrips)),
+      volVal: vol,
+      publishedLede: this.iso(t.published),
+
       destName: dest,
-      dests: this.DESTS.map(([id, label]) => ({
-        label, on: s.dest === id,
+      dests: this.DEST_IDS.map((id, i) => ({
+        label: t.dests[i], on: s.dest === id,
         bd: s.dest === id ? 'var(--ink)' : 'var(--rule-strong)',
         bg: s.dest === id ? 'var(--ink)' : 'var(--surface)',
         fg: s.dest === id ? 'var(--ink-on)' : 'var(--ink)',
         pick: () => this.setState({ dest: id })
       })),
 
-      cats: this.CATS.map(([id, label]) => {
+      // a selected category is chrome, not a compliance verdict
+      cats: this.CAT_IDS.map((id, i) => {
         const on = !!s.cats[id];
         return {
-          label, on, fw: on ? 600 : 400,
+          label: t.cats[i], on, fw: on ? 600 : 400,
           bd: on ? 'var(--brand)' : 'var(--rule-strong)',
-          bg: on ? 'var(--allowed-bg)' : 'var(--surface)',
-          fg: on ? 'var(--allowed-ink)' : 'var(--ink)',
+          bg: on ? 'var(--brand-bg)' : 'var(--surface)',
+          fg: on ? 'var(--brand-ink)' : 'var(--ink)',
           pick: () => this.setState(x => {
             const cats = { ...x.cats };
             if (cats[id]) delete cats[id]; else cats[id] = true;
@@ -271,31 +400,25 @@ class Component extends DCLogic {
         };
       }),
 
-      maxValue: this.fmt(this.PARAMS.maxValue),
-      valueNote: this.ltr('لكل تنقّل · ساري منذ ' + this.PARAMS.effective),
-      presets: this.PRESETS,
+      maxValue: money,
+      valueNote: this.iso(t.valueNote(t.effective)),
+      presets: t.presets,
 
-      visibility: this.VIS.map(v => {
-        const on = s.vis === v.id;
+      visibility: this.VIS_IDS.map((id, i) => {
+        const on = s.vis === id;
         return {
-          ...v, on,
+          title: t.vis[i][0], body: t.vis[i][1], on,
           bd: on ? 'var(--brand)' : 'var(--rule-faint)',
           bw: on ? 2 : 1,
           dotBd: on ? 'var(--brand)' : 'var(--rule-strong)',
           dotBg: on ? 'var(--brand)' : 'transparent',
           check: on ? '✓' : '',
-          pick: () => this.setState({ vis: v.id })
+          pick: () => this.setState({ vis: id })
         };
       }),
 
-      review: [
-        { k: 'الوجهة', v: dest },
-        { k: 'التواريخ', v: this.ltr('12 – 16 أكتوبر · يصل 18') },
-        { k: 'الفئات', v: catNames.join(' · ') },
-        { k: 'القيمة', v: this.ltr(this.fmt(this.PARAMS.maxValue) + ' دج — الحدّ القانوني') },
-        { k: 'الوزن والحجم', v: this.ltr('46 كغ · 1.20 م³ — حدودك') },
-        { k: 'الظهور', v: vis }
-      ]
+      review: [dest, this.iso(t.rDates), catNames.join(' · '), this.iso(money + t.rValue), this.iso(t.rWv(vol)), vis]
+        .map((v, i) => ({ k: t.rk[i], v }))
     };
   }
 }
