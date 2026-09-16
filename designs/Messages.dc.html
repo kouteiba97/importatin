@@ -18,24 +18,30 @@
 .mine{background:var(--ink);color:var(--ink-on);border-end-end-radius:var(--r-xs);margin-inline-start:auto}
 .theirs{background:var(--surface);border:1px solid var(--rule);border-end-start-radius:var(--r-xs)}
 .tmpl{flex:none;height:34px;padding:0 13px;border:1px solid var(--rule-strong);border-radius:var(--r-pill);background:var(--surface);font-size:var(--t-sm);cursor:pointer;color:inherit}
+.lang{height:24px;padding:0 8px;border:0;font-size:var(--t-micro);font-weight:500;cursor:pointer}
 </style>
 </helmet>
 
-<div dir="rtl" lang="ar" class="tier-op" style="min-height:100vh;display:flex;justify-content:center">
+<div ref="{{ rootRef }}" dir="rtl" lang="ar" class="tier-op" style="min-height:100vh;display:flex;justify-content:center">
 <div style="width:100%;max-width:430px;min-height:100vh;display:flex;flex-direction:column;background:var(--paper);border-inline:1px solid var(--rule)">
 
 <header style="position:sticky;top:0;z-index:20;background:var(--surface);border-bottom:1px solid var(--rule)">
 <div style="display:flex;align-items:center;gap:10px;padding:9px 12px">
-<button type="button" aria-label="رجوع" style="width:34px;height:34px;border:0;background:transparent;cursor:pointer;display:grid;place-items:center;color:inherit">
-<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 5l-7 7 7 7"/></svg>
+<button type="button" aria-label="{{ t.back }}" style="width:34px;height:34px;border:0;background:transparent;cursor:pointer;display:grid;place-items:center;color:inherit">
+<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="transform:scaleX({{ arrow }})"><path d="M15 5l-7 7 7 7"/></svg>
 </button>
-<span aria-hidden="true" style="flex:none;width:36px;height:36px;border-radius:50%;background:var(--role-trader-bg);display:grid;place-items:center;font-size:12px;font-weight:600;color:var(--role-trader-ink)">ي ب</span>
+<span aria-hidden="true" style="flex:none;width:36px;height:36px;border-radius:50%;background:var(--role-trader-bg);display:grid;place-items:center;font-size:12px;font-weight:600;color:var(--role-trader-ink)">{{ t.initials }}</span>
 <div style="flex:1;min-width:0">
 <div style="display:flex;align-items:center;gap:5px">
-<span style="font-size:var(--t-h3);font-weight:500">ياسين ب.</span>
-<svg width="13" height="13" viewBox="0 0 24 24" style="flex:none" role="img" aria-label="مُتحقَّق"><circle cx="12" cy="12" r="10" fill="var(--allowed)"/><path d="M7.4 12.4l3 3 6.2-6.6" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<span style="font-size:var(--t-h3);font-weight:500">{{ t.who }}</span>
+<svg width="13" height="13" viewBox="0 0 24 24" style="flex:none" role="img" aria-label="{{ t.verified }}"><circle cx="12" cy="12" r="10" fill="var(--allowed)"/><path d="M7.4 12.4l3 3 6.2-6.6" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
 </div>
-<div class="num" style="font-size:var(--t-micro);color:var(--ink-2);margin-top:1px"><bdi>تاجر · سطيف · يردّ خلال ساعتين</bdi></div>
+<div class="num" style="font-size:var(--t-micro);color:var(--ink-2);margin-top:1px"><bdi>{{ whoMeta }}</bdi></div>
+</div>
+<div role="group" aria-label="{{ t.langLabel }}" style="display:flex;border:1px solid var(--rule-strong);border-radius:var(--r-sm);overflow:hidden;flex:none">
+<sc-for list="{{ langs }}" as="l" hint-placeholder-count="3">
+<button type="button" onClick="{{ l.pick }}" aria-pressed="{{ l.on }}" class="lang" style="background:{{ l.bg }};color:{{ l.fg }}">{{ l.short }}</button>
+</sc-for>
 </div>
 </div>
 
@@ -43,16 +49,16 @@
 <button type="button" style="width:100%;display:flex;align-items:center;gap:10px;padding:10px 14px;border:0;border-top:1px solid var(--rule-faint);background:var(--surface-2);color:inherit;text-align:start;cursor:pointer">
 <span class="img ph ph-coat" style="flex:none;width:30px;height:36px;border-radius:var(--r-xs);display:block"></span>
 <span style="flex:1;min-width:0">
-<span style="display:block;font-size:var(--t-sm);font-weight:500">معاطف نسائية شتوية</span>
-<span class="num" style="display:block;font-size:var(--t-micro);color:var(--ink-2);margin-top:2px"><bdi>18 وحدة · 4 800 – 5 200 دج · رحلة إسطنبول</bdi></span>
+<span style="display:block;font-size:var(--t-sm);font-weight:500">{{ t.deal }}</span>
+<span class="num" style="display:block;font-size:var(--t-micro);color:var(--ink-2);margin-top:2px"><bdi>{{ dealMeta }}</bdi></span>
 </span>
-<span class="chip chip-verified" style="height:20px;font-size:var(--t-micro);flex:none">متّفق عليه</span>
+<span class="chip chip-verified" style="height:20px;font-size:var(--t-micro);flex:none">{{ t.agreed }}</span>
 </button>
 </header>
 
 <main style="flex:1;padding:16px 14px 12px;display:flex;flex-direction:column;gap:11px">
 
-<div style="text-align:center;font-size:var(--t-micro);color:var(--ink-3)">12 أكتوبر</div>
+<div style="text-align:center;font-size:var(--t-micro);color:var(--ink-3)">{{ t.day }}</div>
 
 <sc-for list="{{ messages }}" as="m" hint-placeholder-count="6">
 <div style="display:flex;flex-direction:column;gap:3px;align-items:{{ m.align }}">
@@ -90,18 +96,18 @@
 
 <!-- structured templates before free text: fewer disputes later -->
 <div class="scrollx" style="display:flex;gap:7px;padding:0 14px 10px">
-<sc-for list="{{ templates }}" as="t" hint-placeholder-count="4">
-<button type="button" class="tmpl">{{ t }}</button>
+<sc-for list="{{ templates }}" as="x" hint-placeholder-count="4">
+<button type="button" class="tmpl">{{ x }}</button>
 </sc-for>
 </div>
 
 <div style="display:flex;align-items:center;gap:9px;padding:10px 14px 15px;background:var(--surface);border-top:1px solid var(--rule)">
-<button type="button" aria-label="أرفق صورة" style="flex:none;width:42px;height:42px;border:1px solid var(--rule-strong);border-radius:var(--r-sm);background:var(--surface);display:grid;place-items:center;cursor:pointer;color:var(--ink-2)">
+<button type="button" aria-label="{{ t.attach }}" style="flex:none;width:42px;height:42px;border:1px solid var(--rule-strong);border-radius:var(--r-sm);background:var(--surface);display:grid;place-items:center;cursor:pointer;color:var(--ink-2)">
 <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3.5" y="5" width="17" height="14" rx="2.5"/><circle cx="9" cy="10" r="1.6"/><path d="M4 17l5-4 4 3 3-2 4 3"/></svg>
 </button>
-<input placeholder="اكتب رسالة" aria-label="رسالة" style="flex:1;min-width:0;height:42px;padding:0 14px;border:1px solid var(--rule-strong);border-radius:var(--r-pill);background:var(--surface);font-size:15px;color:inherit">
-<button type="button" aria-label="أرسل" style="flex:none;width:42px;height:42px;border:0;border-radius:50%;background:var(--brand);display:grid;place-items:center;cursor:pointer">
-<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M21 3L3 10.5l7 3 3 7z"/></svg>
+<input placeholder="{{ t.compose }}" aria-label="{{ t.message }}" style="flex:1;min-width:0;height:42px;padding:0 14px;border:1px solid var(--rule-strong);border-radius:var(--r-pill);background:var(--surface);font-size:15px;color:inherit">
+<button type="button" aria-label="{{ t.send }}" style="flex:none;width:42px;height:42px;border:0;border-radius:50%;background:var(--brand);display:grid;place-items:center;cursor:pointer">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" style="transform:scaleX({{ arrow }})"><path d="M21 3L3 10.5l7 3 3 7z"/></svg>
 </button>
 </div>
 
@@ -110,49 +116,160 @@
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:430,&quot;height&quot;:1060}}">
 class Component extends DCLogic {
-  MESSAGES = [
-    { who: 'them', text: 'سلام. المعاطف اللي في لوحة الطلب، عندك منها مقاس L و XL؟', time: '09:12' },
-    { who: 'me', text: 'سلام. إي، الاثنين موجودين. راني نخطّط نشري 30 وحدة مقسّمين على المقاسات.', time: '09:20' },
-    { who: 'them', text: 'مليح. نحتاج 18 وحدة: 6 مقاس L و12 مقاس XL. الأسود والكحلي.', time: '09:24' },
-    { kind: 'agree', time: '09:31',
-      cardTitle: 'الاتفاق المقترح', glyph: '✓', tone: 'ok',
-      rows: [
-        ['الصنف', 'معاطف نسائية شتوية'],
-        ['الكمية', '18 وحدة — 6 مقاس L · 12 مقاس XL'],
-        ['نطاق السعر', '4 800 – 5 200 دج للوحدة'],
-        ['أجل التسليم', '20 أكتوبر · سطيف']
-      ],
-      cta1: 'أوافق على الاتفاق', cta2: 'عدّل' },
-    { who: 'me', text: 'واخّا. إذا تغيّر السعر خارج النطاق نعلمك قبل ما نشري، ما نشريش وندير حسابي وحدي.', time: '09:36' },
-    { kind: 'handover', time: '18 أكتوبر',
-      cardTitle: 'وصلت البضاعة — أكّد الاستلام', glyph: '↓', tone: 'cond',
-      rows: [
-        ['الكمية المسلَّمة', '18 وحدة'],
-        ['نقطة الاستلام', 'سطيف · وسط المدينة'],
-        ['رمز التأكيد', '4 7 2 9 1 6']
-      ],
-      cta1: 'استلمتُ ومطابق', cta2: 'عندي اعتراض' }
-  ];
+  /* Locale is browser-detected. French is the fallback — Algeria's commercial
+     lingua franca and the neutral middle between Arabic and English. One value. */
+  static FALLBACK = 'fr';
+  static detect() {
+    const tag = (typeof navigator !== 'undefined' && (navigator.language || '')).slice(0, 2).toLowerCase();
+    return ['ar', 'fr', 'en'].includes(tag) ? tag : Component.FALLBACK;
+  }
 
-  TEMPLATES = ['أؤكّد المواصفة', 'أقترح سعراً', 'أبلغ عن تأخير', 'أطلب صوراً'];
+  state = { lang: Component.detect() };
+  root = React.createRef();
+  componentDidMount() { this._apply(); }
+  componentDidUpdate() { this._apply(); }
+  _apply() {
+    const el = this.root.current;
+    if (el) { el.setAttribute('dir', this.L[this.state.lang].dir); el.setAttribute('lang', this.state.lang); }
+  }
+
+  L = {
+    ar: {
+      dir: 'rtl', short: 'ع', langLabel: 'اللغة', back: 'رجوع',
+      initials: 'ي ب', who: 'ياسين ب.', verified: 'مُتحقَّق',
+      whoMeta: 'تاجر · سطيف · يردّ خلال ساعتين',
+      deal: 'معاطف نسائية شتوية',
+      dealMeta: '18 وحدة · 4 800 – 5 200 دج · رحلة إسطنبول',
+      agreed: 'متّفق عليه', day: '12 أكتوبر',
+      attach: 'أرفق صورة', compose: 'اكتب رسالة', message: 'رسالة', send: 'أرسل',
+      templates: ['أؤكّد المواصفة', 'أقترح سعراً', 'أبلغ عن تأخير', 'أطلب صوراً'],
+      messages: [
+        { who: 'them', text: 'سلام. المعاطف اللي في لوحة الطلب، عندك منها مقاس L و XL؟', time: '09:12' },
+        { who: 'me', text: 'سلام. إي، الاثنين موجودين. راني نخطّط نشري 30 وحدة مقسّمين على المقاسات.', time: '09:20' },
+        { who: 'them', text: 'مليح. نحتاج 18 وحدة: 6 مقاس L و12 مقاس XL. الأسود والكحلي.', time: '09:24' },
+        { kind: 'agree', time: '09:31', glyph: '✓', tone: 'ok',
+          cardTitle: 'الاتفاق المقترح',
+          rows: [
+            ['الصنف', 'معاطف نسائية شتوية'],
+            ['الكمية', '18 وحدة — 6 مقاس L · 12 مقاس XL'],
+            ['نطاق السعر', '4 800 – 5 200 دج للوحدة'],
+            ['أجل التسليم', '20 أكتوبر · سطيف']
+          ],
+          cta1: 'أوافق على الاتفاق', cta2: 'عدّل' },
+        { who: 'me', text: 'واخّا. إذا تغيّر السعر خارج النطاق نعلمك قبل ما نشري، ما نشريش وندير حسابي وحدي.', time: '09:36' },
+        { kind: 'handover', time: '18 أكتوبر', glyph: '↓', tone: 'cond',
+          cardTitle: 'وصلت البضاعة — أكّد الاستلام',
+          rows: [
+            ['الكمية المسلَّمة', '18 وحدة'],
+            ['نقطة الاستلام', 'سطيف · وسط المدينة'],
+            ['رمز التأكيد', '4 7 2 9 1 6']
+          ],
+          cta1: 'استلمتُ ومطابق', cta2: 'عندي اعتراض' }
+      ]
+    },
+
+    fr: {
+      dir: 'ltr', short: 'FR', langLabel: 'Langue', back: 'Retour',
+      initials: 'YB', who: 'Yacine B.', verified: 'Vérifié',
+      whoMeta: 'Commerçant · Sétif · répond en 2 h',
+      deal: 'Manteaux femme, hiver',
+      dealMeta: '18 unités · 4 800 – 5 200 DA · voyage Istanbul',
+      agreed: 'Convenu', day: '12 octobre',
+      attach: 'Joindre une photo', compose: 'Écrire un message', message: 'Message', send: 'Envoyer',
+      templates: ['Confirmer la spécification', 'Proposer un prix', 'Signaler un retard', 'Demander des photos'],
+      messages: [
+        { who: 'them', text: 'Bonjour. Les manteaux du tableau de la demande — vous avez du L et du XL ?', time: '09:12' },
+        { who: 'me', text: 'Bonjour. Oui, les deux. Je prévois d’acheter 30 unités réparties sur les tailles.', time: '09:20' },
+        { who: 'them', text: 'Très bien. Il m’en faut 18 : 6 en L et 12 en XL. Noir et bleu marine.', time: '09:24' },
+        { kind: 'agree', time: '09:31', glyph: '✓', tone: 'ok',
+          cardTitle: 'Accord proposé',
+          rows: [
+            ['Article', 'Manteaux femme, hiver'],
+            ['Quantité', '18 unités — 6 en L · 12 en XL'],
+            ['Fourchette de prix', '4 800 – 5 200 DA l’unité'],
+            ['Délai de livraison', '20 octobre · Sétif']
+          ],
+          cta1: 'J’accepte l’accord', cta2: 'Modifier' },
+        { who: 'me', text: 'D’accord. Si le prix sort de la fourchette je vous préviens avant d’acheter — je n’achète pas et je ne décide pas seul.', time: '09:36' },
+        { kind: 'handover', time: '18 octobre', glyph: '↓', tone: 'cond',
+          cardTitle: 'Marchandise arrivée — confirmez la réception',
+          rows: [
+            ['Quantité livrée', '18 unités'],
+            ['Point de remise', 'Sétif · centre-ville'],
+            ['Code de confirmation', '4 7 2 9 1 6']
+          ],
+          cta1: 'Reçu et conforme', cta2: 'J’ai une réserve' }
+      ]
+    },
+
+    en: {
+      dir: 'ltr', short: 'EN', langLabel: 'Language', back: 'Back',
+      initials: 'YB', who: 'Yacine B.', verified: 'Verified',
+      whoMeta: 'Trader · Sétif · replies within 2 h',
+      deal: 'Women’s winter coats',
+      dealMeta: '18 units · 4,800 – 5,200 DA · Istanbul trip',
+      agreed: 'Agreed', day: '12 October',
+      attach: 'Attach a photo', compose: 'Write a message', message: 'Message', send: 'Send',
+      templates: ['Confirm the specification', 'Propose a price', 'Report a delay', 'Ask for photos'],
+      messages: [
+        { who: 'them', text: 'Hello. The coats on the demand board — do you have them in L and XL?', time: '09:12' },
+        { who: 'me', text: 'Hello. Yes, both. I’m planning to buy 30 units split across sizes.', time: '09:20' },
+        { who: 'them', text: 'Good. I need 18: 6 in L and 12 in XL. Black and navy.', time: '09:24' },
+        { kind: 'agree', time: '09:31', glyph: '✓', tone: 'ok',
+          cardTitle: 'Proposed agreement',
+          rows: [
+            ['Item', 'Women’s winter coats'],
+            ['Quantity', '18 units — 6 in L · 12 in XL'],
+            ['Price range', '4,800 – 5,200 DA per unit'],
+            ['Delivery date', '20 October · Sétif']
+          ],
+          cta1: 'I accept the agreement', cta2: 'Amend' },
+        { who: 'me', text: 'Fine. If the price moves outside the range I’ll tell you before buying — I won’t buy and decide on my own.', time: '09:36' },
+        { kind: 'handover', time: '18 October', glyph: '↓', tone: 'cond',
+          cardTitle: 'Goods arrived — confirm receipt',
+          rows: [
+            ['Quantity delivered', '18 units'],
+            ['Handover point', 'Sétif · city centre'],
+            ['Confirmation code', '4 7 2 9 1 6']
+          ],
+          cta1: 'Received and correct', cta2: 'I have an objection' }
+      ]
+    }
+  };
 
   TONE = {
     ok: ['var(--allowed-bg)', 'var(--allowed-ink)'],
     cond: ['var(--conditional-bg)', 'var(--conditional-ink)']
   };
 
+  ltr(s) { return '⁦' + s + '⁩'; }
+
   renderVals() {
+    const t = this.L[this.state.lang];
     return {
-      templates: this.TEMPLATES,
-      messages: this.MESSAGES.map(m => {
+      rootRef: this.root,
+      t,
+      arrow: t.dir === 'rtl' ? 1 : -1,
+      whoMeta: this.ltr(t.whoMeta),
+      dealMeta: this.ltr(t.dealMeta),
+      templates: t.templates,
+
+      langs: ['ar', 'fr', 'en'].map(id => ({
+        short: this.L[id].short, on: this.state.lang === id,
+        bg: this.state.lang === id ? 'var(--ink)' : 'var(--surface)',
+        fg: this.state.lang === id ? 'var(--ink-on)' : 'var(--ink-2)',
+        pick: () => this.setState({ lang: id })
+      })),
+
+      messages: t.messages.map(m => {
         if (m.kind) {
           const [cardBg, cardFg] = this.TONE[m.tone];
           return {
             isCard: true, isText: false, align: 'stretch',
             cardTitle: m.cardTitle, glyph: m.glyph, cardBg, cardFg,
-            rows: m.rows.map(([k, v]) => ({ k, v })),
+            rows: m.rows.map(([k, v]) => ({ k, v: this.ltr(v) })),
             hasCta: !!m.cta1, cta1: m.cta1, cta2: m.cta2,
-            time: m.time
+            time: this.ltr(m.time)
           };
         }
         const mine = m.who === 'me';
@@ -160,7 +277,7 @@ class Component extends DCLogic {
           isCard: false, isText: true,
           align: mine ? 'flex-end' : 'flex-start',
           cls: mine ? 'mine' : 'theirs',
-          text: m.text, time: m.time
+          text: m.text, time: this.ltr(m.time)
         };
       })
     };

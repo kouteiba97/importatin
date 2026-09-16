@@ -21,21 +21,26 @@
 </style>
 </helmet>
 
-<div dir="rtl" lang="ar" class="tier-public" style="min-height:100vh;display:flex;justify-content:center">
+<div ref="{{ rootRef }}" dir="rtl" lang="ar" class="tier-public" style="min-height:100vh;display:flex;justify-content:center">
 <div style="width:100%;max-width:430px;min-height:100vh;display:flex;flex-direction:column;background:var(--paper-public);border-inline:1px solid var(--rule)">
 
 <header style="position:sticky;top:0;z-index:20;background:var(--surface);border-bottom:1px solid var(--rule)">
 <div style="display:flex;align-items:center;gap:10px;padding:12px 16px 10px">
-<span style="font-weight:600;font-size:18px">مَعْبَر</span>
+<span style="font-family:var(--font-display);font-weight:600;font-size:18px">{{ t.brand }}</span>
 <div style="flex:1"></div>
-<button type="button" aria-label="الرسائل" style="position:relative;width:36px;height:36px;border:1px solid var(--rule);border-radius:var(--r-sm);background:var(--surface);cursor:pointer;display:grid;place-items:center;color:inherit">
+<div role="group" aria-label="{{ t.langLabel }}" style="display:flex;border:1px solid var(--rule-strong);border-radius:var(--r-sm);overflow:hidden;flex:none">
+<sc-for list="{{ langs }}" as="l" hint-placeholder-count="3">
+<button type="button" onClick="{{ l.pick }}" aria-pressed="{{ l.on }}" style="height:24px;padding:0 8px;border:0;background:{{ l.bg }};color:{{ l.fg }};font-size:var(--t-micro);font-weight:500;cursor:pointer">{{ l.short }}</button>
+</sc-for>
+</div>
+<button type="button" aria-label="{{ t.navMsg }}" style="position:relative;width:36px;height:36px;border:1px solid var(--rule);border-radius:var(--r-sm);background:var(--surface);cursor:pointer;display:grid;place-items:center;color:inherit">
 <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 9 9 0 0 1-3.3-.6L3 21l1.7-5a8.2 8.2 0 0 1-.7-3.4 8.4 8.4 0 0 1 8.5-8.5 8.4 8.4 0 0 1 8.5 8.4z"/></svg>
 </button>
 </div>
 <div style="padding:0 16px 12px">
 <button type="button" style="width:100%;display:flex;align-items:center;gap:9px;height:44px;padding:0 13px;border:1px solid var(--rule-strong);border-radius:var(--r);background:var(--surface-2);cursor:pointer;color:var(--ink-3);font-size:15px;text-align:start">
 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex:none"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
-ابحث عن منتج أو متجر
+{{ t.searchPh }}
 </button>
 </div>
 </header>
@@ -44,7 +49,7 @@
 
 <!-- ══ CATEGORIES ══ -->
 <section>
-<div class="sech"><h2>الفئات</h2></div>
+<div class="sech"><h2>{{ t.cats }}</h2></div>
 <div class="scrollx" style="display:flex;gap:10px;padding:0 16px 4px">
 <sc-for list="{{ cats }}" as="c" hint-placeholder-count="5">
 <button type="button" class="card" style="flex:none;width:98px;overflow:hidden;padding:0;border:0;cursor:pointer;text-align:start;color:inherit">
@@ -61,8 +66,8 @@
 <!-- ══ JUST ARRIVED — the reason to come back ══ -->
 <section>
 <div class="sech">
-<h2>وصل حديثاً</h2>
-<button type="button" class="more">الكل ←</button>
+<h2>{{ t.fresh }}</h2>
+<button type="button" class="more">{{ t.all }}</button>
 </div>
 <div class="scrollx" style="display:flex;gap:12px;padding:0 16px 4px">
 <sc-for list="{{ fresh }}" as="p" hint-placeholder-count="4">
@@ -73,7 +78,7 @@
 </div>
 <span style="display:block;padding:9px 10px 11px">
 <span class="clamp2" style="display:-webkit-box;font-size:var(--t-xs);line-height:1.45;height:33px;overflow:hidden">{{ p.title }}</span>
-<span class="num" style="display:block;font-size:var(--t-sm);font-weight:600;color:var(--ink);margin-top:5px"><bdi>{{ p.price }} دج</bdi></span>
+<span class="num" style="display:block;font-size:var(--t-sm);font-weight:600;color:var(--ink);margin-top:5px"><bdi>{{ p.price }}</bdi></span>
 </span>
 </article>
 </sc-for>
@@ -83,8 +88,8 @@
 <!-- ══ TRUSTED SELLERS NEARBY ══ -->
 <section>
 <div class="sech">
-<h2>متاجر موثوقة قريبة منك</h2>
-<span class="num" style="font-size:var(--t-xs);color:var(--ink-3)"><bdi>قسنطينة</bdi></span>
+<h2>{{ t.sellers }}</h2>
+<span class="num" style="font-size:var(--t-xs);color:var(--ink-3)"><bdi>{{ t.city }}</bdi></span>
 </div>
 <div style="margin:0 16px" class="card">
 <sc-for list="{{ sellers }}" as="s" hint-placeholder-count="3">
@@ -97,7 +102,7 @@
 </span>
 <span class="num" style="display:block;font-size:var(--t-micro);color:var(--ink-2);margin-top:3px"><bdi>{{ s.meta }}</bdi></span>
 </span>
-<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--ink-3)" stroke-width="2" style="flex:none"><path d="M15 5l-7 7 7 7"/></svg>
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--ink-3)" stroke-width="2" style="flex:none;transform:scaleX({{ arrow }})"><path d="M15 5l-7 7 7 7"/></svg>
 </button>
 </sc-for>
 </div>
@@ -106,8 +111,8 @@
 <!-- ══ YOUR SAVED — a reason the app remembers you ══ -->
 <section>
 <div class="sech">
-<h2>محفوظاتك</h2>
-<button type="button" class="more">الكل ←</button>
+<h2>{{ t.saved }}</h2>
+<button type="button" class="more">{{ t.all }}</button>
 </div>
 <div style="margin:0 16px" class="card" style="margin:0 16px;padding:4px 13px">
 <sc-for list="{{ saved }}" as="s" hint-placeholder-count="2">
@@ -117,7 +122,7 @@
 <div style="font-size:var(--t-sm);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ s.title }}</div>
 <div style="font-size:var(--t-micro);color:{{ s.fg }};margin-top:3px;font-weight:500">{{ s.note }}</div>
 </div>
-<span class="num" style="flex:none;font-size:var(--t-sm);font-weight:600;color:var(--ink)"><bdi>{{ s.price }} دج</bdi></span>
+<span class="num" style="flex:none;font-size:var(--t-sm);font-weight:600;color:var(--ink)"><bdi>{{ s.price }}</bdi></span>
 </div>
 </sc-for>
 </div>
@@ -125,7 +130,7 @@
 
 <!-- ══ HOW BUYING WORKS — one calm explainer, once ══ -->
 <section style="margin:0 16px;padding:15px;border:1px solid var(--rule);border-radius:var(--r);background:var(--surface)">
-<h2 style="margin:0 0 11px;font-size:var(--t-h3);font-weight:600">كيفاش يخدم الشراء هنا</h2>
+<h2 style="margin:0 0 11px;font-size:var(--t-h3);font-weight:600">{{ t.howTitle }}</h2>
 <sc-for list="{{ how }}" as="h" hint-placeholder-count="3">
 <div style="display:flex;gap:11px;padding:7px 0">
 <span aria-hidden="true" style="flex:none;width:21px;height:21px;border-radius:50%;background:var(--neutral-bg);color:var(--ink-2);display:grid;place-items:center;font-size:10px;font-weight:600">{{ h.n }}</span>
@@ -136,7 +141,7 @@
 
 </main>
 
-<nav aria-label="التنقّل" style="position:fixed;inset-block-end:0;inset-inline:0;margin:0 auto;max-width:430px;display:grid;grid-template-columns:repeat(5,1fr);background:var(--surface);border-top:1px solid var(--rule);padding-block:6px 8px">
+<nav aria-label="{{ t.navLabel }}" style="position:fixed;inset-block-end:0;inset-inline:0;margin:0 auto;max-width:430px;display:grid;grid-template-columns:repeat(5,1fr);background:var(--surface);border-top:1px solid var(--rule);padding-block:6px 8px">
 <sc-for list="{{ nav }}" as="n" hint-placeholder-count="5">
 <button type="button" aria-current="{{ n.on }}" style="display:flex;flex-direction:column;align-items:center;gap:3px;border:0;background:transparent;padding:5px 0;cursor:pointer;color:{{ n.fg }}">
 <span aria-hidden="true" style="width:21px;height:21px;display:grid;place-items:center">{{ n.icon }}</span>
@@ -150,39 +155,105 @@
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:430,&quot;height&quot;:1320}}">
 class Component extends DCLogic {
-  fmt(n) { return '⁦' + String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + '⁩'; }
+  /* Locale is browser-detected. French is the fallback — Algeria's commercial
+     lingua franca and the neutral middle between Arabic and English. One value. */
+  static FALLBACK = 'fr';
+  static detect() {
+    const tag = (typeof navigator !== 'undefined' && (navigator.language || '')).slice(0, 2).toLowerCase();
+    return ['ar', 'fr', 'en'].includes(tag) ? tag : Component.FALLBACK;
+  }
 
-  CATS = [
-    { ph: 'ph-coat', label: 'ألبسة', n: 1240 },
-    { ph: 'ph-perfume', label: 'تجميل', n: 913 },
-    { ph: 'ph-shoe', label: 'أحذية', n: 702 },
-    { ph: 'ph-bag', label: 'حقائب', n: 486 },
-    { ph: 'ph-home', label: 'منزل', n: 355 }
-  ];
+  state = { lang: Component.detect() };
+  root = React.createRef();
+  componentDidMount() { this._apply(); }
+  componentDidUpdate() { this._apply(); }
+  _apply() {
+    const el = this.root.current;
+    if (el) { el.setAttribute('dir', this.L[this.state.lang].dir); el.setAttribute('lang', this.state.lang); }
+  }
 
-  FRESH = [
-    { ph: 'ph-coat', title: 'معطف نسائي شتوي — صوف مخلوط', price: 7400, when: 'اليوم' },
-    { ph: 'ph-bag', title: 'حقيبة يد جلدية بحزام كتف', price: 5900, when: 'اليوم' },
-    { ph: 'ph-watch', title: 'ساعة يد رجالية ستانلس', price: 11500, when: 'أمس' },
-    { ph: 'ph-perfume', title: 'عطر نسائي 100 مل', price: 4200, when: 'أمس' }
-  ];
+  /* Digits stay Western in all three locales; only the group separator changes.
+     Every formatted run is isolated so RTL never reverses it. */
+  fmt(n, sep) { return '⁦' + String(n).replace(/\B(?=(\d{3})+(?!\d))/g, sep) + '⁩'; }
+  iso(s) { return '⁦' + s + '⁩'; }
 
-  SELLERS = [
-    { name: 'بوتيك نادية', initials: 'ب ن', meta: 'قسنطينة · 63 معاملة مؤكَّدة · ترد خلال ساعتين', tone: 0 },
-    { name: 'دار الأناقة', initials: 'د أ', meta: 'وهران · 118 معاملة مؤكَّدة', tone: 1 },
-    { name: 'محل ياسين', initials: 'م ي', meta: 'سطيف · 241 معاملة مؤكَّدة', tone: 2 }
-  ];
+  L = {
+    ar: {
+      dir: 'rtl', short: 'ع', langLabel: 'اللغة', sep: ' ', cur: 'دج',
+      brand: 'مَعْبَر', searchPh: 'ابحث عن منتج أو متجر',
+      cats: 'الفئات', fresh: 'وصل حديثاً', sellers: 'متاجر موثوقة قريبة منك',
+      saved: 'محفوظاتك', all: 'الكل ←', city: 'قسنطينة',
+      howTitle: 'كيفاش يخدم الشراء هنا',
+      navLabel: 'التنقّل', navMsg: 'الرسائل',
+      unit: 'منتج',
+      catLabels: ['ألبسة', 'تجميل', 'أحذية', 'حقائب', 'منزل'],
+      freshTitles: ['معطف نسائي شتوي — صوف مخلوط', 'حقيبة يد جلدية بحزام كتف', 'ساعة يد رجالية ستانلس', 'عطر نسائي 100 مل'],
+      freshWhen: ['اليوم', 'اليوم', 'أمس', 'أمس'],
+      sellerNames: ['بوتيك نادية', 'دار الأناقة', 'محل ياسين'],
+      sellerInitials: ['ب ن', 'د أ', 'م ي'],
+      sellerMeta: ['قسنطينة · 63 معاملة مؤكَّدة · ترد خلال ساعتين', 'وهران · 118 معاملة مؤكَّدة', 'سطيف · 241 معاملة مؤكَّدة'],
+      savedTitles: ['معطف نسائي شتوي', 'عطر نسائي 100 مل'],
+      savedNotes: ['نزل السعر 500 دج', 'بقيت 3 وحدات'],
+      how: [
+        'تختار المنتج وتشوف سجل البائع قبل ما تتواصل.',
+        'تراسل البائع مباشرةً وتتّفقوا على السعر والتسليم.',
+        'البيع يتمّ بينك وبين البائع — مَعْبَر ما تبيعش وما تستلمش فلوس.'
+      ],
+      nav: ['الرئيسية', 'السوق', 'المحفوظات', 'الرسائل', 'حسابي']
+    },
 
-  SAVED = [
-    { ph: 'ph-coat', title: 'معطف نسائي شتوي', price: 6900, note: 'نزل السعر 500 دج', good: true },
-    { ph: 'ph-perfume', title: 'عطر نسائي 100 مل', price: 4200, note: 'بقيت 3 وحدات', good: false }
-  ];
+    fr: {
+      dir: 'ltr', short: 'FR', langLabel: 'Langue', sep: ' ', cur: 'DA',
+      brand: 'Maabar', searchPh: 'Chercher un produit ou une boutique',
+      cats: 'Catégories', fresh: 'Nouveautés', sellers: 'Boutiques fiables près de chez vous',
+      saved: 'Vos enregistrements', all: 'Tout →', city: 'Constantine',
+      howTitle: 'Comment l’achat fonctionne ici',
+      navLabel: 'Navigation', navMsg: 'Messages',
+      unit: 'produits',
+      catLabels: ['Vêtements', 'Beauté', 'Chaussures', 'Sacs', 'Maison'],
+      freshTitles: ['Manteau femme hiver — laine mélangée', 'Sac à main cuir avec bandoulière', 'Montre homme acier inoxydable', 'Parfum femme 100 ml'],
+      freshWhen: ['Aujourd’hui', 'Aujourd’hui', 'Hier', 'Hier'],
+      sellerNames: ['Boutique Nadia', 'Dar El Anaqa', 'Chez Yacine'],
+      sellerInitials: ['BN', 'DA', 'CY'],
+      sellerMeta: ['Constantine · 63 transactions confirmées · répond en 2 h', 'Oran · 118 transactions confirmées', 'Sétif · 241 transactions confirmées'],
+      savedTitles: ['Manteau femme hiver', 'Parfum femme 100 ml'],
+      savedNotes: ['Prix baissé de 500 DA', 'Il reste 3 unités'],
+      how: [
+        'Vous choisissez le produit et consultez les antécédents du vendeur avant tout contact.',
+        'Vous écrivez directement au vendeur et convenez du prix et de la remise.',
+        'La vente se fait entre vous et le vendeur — Maabar ne vend pas et ne reçoit pas d’argent.'
+      ],
+      nav: ['Accueil', 'Place', 'Enregistrés', 'Messages', 'Compte']
+    },
 
-  HOW = [
-    'تختار المنتج وتشوف سجل البائع قبل ما تتواصل.',
-    'تراسل البائع مباشرةً وتتّفقوا على السعر والتسليم.',
-    'البيع يتمّ بينك وبين البائع — مَعْبَر ما تبيعش وما تستلمش فلوس.'
-  ];
+    en: {
+      dir: 'ltr', short: 'EN', langLabel: 'Language', sep: ',', cur: 'DA',
+      brand: 'Maabar', searchPh: 'Search for a product or a shop',
+      cats: 'Categories', fresh: 'Just arrived', sellers: 'Trusted shops near you',
+      saved: 'Your saved items', all: 'All →', city: 'Constantine',
+      howTitle: 'How buying works here',
+      navLabel: 'Navigation', navMsg: 'Messages',
+      unit: 'products',
+      catLabels: ['Clothing', 'Beauty', 'Shoes', 'Bags', 'Home'],
+      freshTitles: ['Women’s winter coat — wool blend', 'Leather handbag with shoulder strap', 'Men’s stainless steel watch', 'Women’s perfume 100 ml'],
+      freshWhen: ['Today', 'Today', 'Yesterday', 'Yesterday'],
+      sellerNames: ['Boutique Nadia', 'Dar El Anaqa', 'Chez Yacine'],
+      sellerInitials: ['BN', 'DA', 'CY'],
+      sellerMeta: ['Constantine · 63 confirmed transactions · replies within 2 h', 'Oran · 118 confirmed transactions', 'Sétif · 241 confirmed transactions'],
+      savedTitles: ['Women’s winter coat', 'Women’s perfume 100 ml'],
+      savedNotes: ['Price dropped by 500 DA', '3 units left'],
+      how: [
+        'You pick the product and read the seller’s record before making contact.',
+        'You message the seller directly and agree the price and the handover.',
+        'The sale is between you and the seller — Maabar does not sell and does not hold money.'
+      ],
+      nav: ['Home', 'Marketplace', 'Saved', 'Messages', 'Account']
+    }
+  };
+
+  CATS  = [{ ph: 'ph-coat', n: 1240 }, { ph: 'ph-perfume', n: 913 }, { ph: 'ph-shoe', n: 702 }, { ph: 'ph-bag', n: 486 }, { ph: 'ph-home', n: 355 }];
+  FRESH = [{ ph: 'ph-coat', price: 7400 }, { ph: 'ph-bag', price: 5900 }, { ph: 'ph-watch', price: 11500 }, { ph: 'ph-perfume', price: 4200 }];
+  SAVED = [{ ph: 'ph-coat', price: 6900, good: true }, { ph: 'ph-perfume', price: 4200, good: false }];
 
   TONE = [
     ['var(--role-importer-bg)', 'var(--role-importer-ink)'],
@@ -198,32 +269,46 @@ class Component extends DCLogic {
     user: React.createElement('svg', { width: 20, height: 20, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 1.8 }, React.createElement('circle', { cx: 12, cy: 8.5, r: 3.7 }), React.createElement('path', { d: 'M4.8 20a7.4 7.4 0 0 1 14.4 0' }))
   };
 
-  NAV = [
-    { id: 'home', label: 'الرئيسية', icon: 'home' },
-    { id: 'shop', label: 'السوق', icon: 'shop' },
-    { id: 'saved', label: 'المحفوظات', icon: 'heart' },
-    { id: 'msg', label: 'الرسائل', icon: 'msg' },
-    { id: 'me', label: 'حسابي', icon: 'user' }
-  ];
+  NAV_ICONS = ['home', 'shop', 'heart', 'msg', 'user'];
 
   renderVals() {
+    const lang = this.state.lang;
+    const t = this.L[lang];
+    const money = n => this.fmt(n, t.sep) + ' ' + t.cur;
+
     return {
-      cats: this.CATS.map(c => ({ ...c, n: this.fmt(c.n) + ' منتج' })),
-      fresh: this.FRESH.map(p => ({ ...p, price: this.fmt(p.price) })),
-      sellers: this.SELLERS.map(s => {
-        const [avBg, avFg] = this.TONE[s.tone];
-        return { ...s, avBg, avFg };
+      rootRef: this.root,
+      t,
+      arrow: t.dir === 'rtl' ? 1 : -1,
+
+      langs: ['ar', 'fr', 'en'].map(id => ({
+        short: this.L[id].short, on: lang === id,
+        bg: lang === id ? 'var(--ink)' : 'var(--surface)',
+        fg: lang === id ? 'var(--ink-on)' : 'var(--ink-2)',
+        pick: () => this.setState({ lang: id })
+      })),
+
+      cats: this.CATS.map((c, i) => ({ ph: c.ph, label: t.catLabels[i], n: this.fmt(c.n, t.sep) + ' ' + t.unit })),
+
+      fresh: this.FRESH.map((p, i) => ({ ph: p.ph, title: t.freshTitles[i], when: t.freshWhen[i], price: money(p.price) })),
+
+      sellers: t.sellerNames.map((name, i) => {
+        const [avBg, avFg] = this.TONE[i % 3];
+        return { name, initials: t.sellerInitials[i], meta: this.iso(t.sellerMeta[i]), avBg, avFg };
       }),
-      saved: this.SAVED.map(s => ({
-        ...s, price: this.fmt(s.price),
+
+      saved: this.SAVED.map((s, i) => ({
+        ph: s.ph, title: t.savedTitles[i], note: t.savedNotes[i], price: money(s.price),
         fg: s.good ? 'var(--allowed-ink)' : 'var(--conditional-ink)'
       })),
-      how: this.HOW.map((t, i) => ({ n: String(i + 1), t })),
-      nav: this.NAV.map(n => ({
-        ...n, on: n.id === 'home',
-        fg: n.id === 'home' ? 'var(--ink)' : 'var(--ink-3)',
-        fw: n.id === 'home' ? 600 : 400,
-        icon: this.ICON[n.icon]
+
+      how: t.how.map((x, i) => ({ n: String(i + 1), t: x })),
+
+      nav: t.nav.map((label, i) => ({
+        label, on: i === 0,
+        fg: i === 0 ? 'var(--ink)' : 'var(--ink-3)',
+        fw: i === 0 ? 600 : 400,
+        icon: this.ICON[this.NAV_ICONS[i]]
       }))
     };
   }

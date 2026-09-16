@@ -111,7 +111,14 @@
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:430,&quot;height&quot;:1020}}">
 class Component extends DCLogic {
-  state = { lang: 'ar', open: null };
+  /* Locale is browser-detected. French is the fallback — Algeria's commercial
+     lingua franca and the neutral middle between Arabic and English. One value. */
+  static FALLBACK = 'fr';
+  static detect() {
+    const tag = (typeof navigator !== 'undefined' && (navigator.language || '')).slice(0, 2).toLowerCase();
+    return ['ar', 'fr', 'en'].includes(tag) ? tag : Component.FALLBACK;
+  }
+  state = { lang: Component.detect(), open: null };
   root = React.createRef();
   componentDidMount() { this._apply(); }
   componentDidUpdate() { this._apply(); }
