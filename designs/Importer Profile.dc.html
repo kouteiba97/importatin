@@ -21,15 +21,20 @@
 </style>
 </helmet>
 
-<div dir="rtl" lang="ar" class="tier-op" style="min-height:100vh;display:flex;justify-content:center">
+<div ref="{{ rootRef }}" dir="rtl" lang="ar" class="tier-op" style="min-height:100vh;display:flex;justify-content:center">
 <div style="width:100%;max-width:430px;min-height:100vh;display:flex;flex-direction:column;background:var(--paper);border-inline:1px solid var(--rule)">
 
 <header style="position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--surface);border-bottom:1px solid var(--rule)">
-<button type="button" aria-label="رجوع" style="width:34px;height:34px;border:0;background:transparent;cursor:pointer;display:grid;place-items:center;color:inherit">
-<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 5l-7 7 7 7"/></svg>
+<button type="button" aria-label="{{ t.back }}" style="width:34px;height:34px;border:0;background:transparent;cursor:pointer;display:grid;place-items:center;color:inherit">
+<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="transform:scaleX({{ backFlip }})"><path d="M15 5l-7 7 7 7"/></svg>
 </button>
-<span style="flex:1;font-size:var(--t-h3);font-weight:500">الملف</span>
-<button type="button" aria-label="إبلاغ" style="width:34px;height:34px;border:0;background:transparent;cursor:pointer;display:grid;place-items:center;color:var(--ink-3)">
+<span style="flex:1;font-size:var(--t-h3);font-weight:500">{{ t.title }}</span>
+<div role="group" aria-label="{{ t.langLabel }}" style="display:flex;border:1px solid var(--rule-strong);border-radius:var(--r-sm);overflow:hidden;flex:none">
+<sc-for list="{{ langs }}" as="l" hint-placeholder-count="3">
+<button type="button" onClick="{{ l.pick }}" aria-pressed="{{ l.on }}" style="height:24px;padding:0 8px;border:0;background:{{ l.bg }};color:{{ l.fg }};font-size:var(--t-micro);font-weight:500;cursor:pointer">{{ l.short }}</button>
+</sc-for>
+</div>
+<button type="button" aria-label="{{ t.report }}" style="width:34px;height:34px;border:0;background:transparent;cursor:pointer;display:grid;place-items:center;color:var(--ink-3)">
 <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M5 21V4h10l-1.5 3.5L15 11H5"/></svg>
 </button>
 </header>
@@ -38,11 +43,11 @@
 
 <!-- ══ IDENTITY ══ -->
 <section style="display:flex;align-items:flex-start;gap:13px">
-<span aria-hidden="true" style="flex:none;width:62px;height:62px;border-radius:50%;background:var(--role-trader-bg);display:grid;place-items:center;font-size:19px;font-weight:600;color:var(--role-trader-ink)">{{ initials }}</span>
+<span aria-hidden="true" style="flex:none;width:62px;height:62px;border-radius:50%;background:var(--role-importer-bg);display:grid;place-items:center;font-size:19px;font-weight:600;color:var(--role-importer-ink)">{{ initials }}</span>
 <div style="flex:1;min-width:0;padding-block-start:3px">
 <div style="display:flex;align-items:center;gap:7px">
 <h1 style="margin:0;font-size:21px;font-weight:600">{{ name }}</h1>
-<svg width="18" height="18" viewBox="0 0 24 24" style="flex:none" role="img" aria-label="مُتحقَّق"><circle cx="12" cy="12" r="10" fill="var(--allowed)"/><path d="M7.4 12.4l3 3 6.2-6.6" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<svg width="18" height="18" viewBox="0 0 24 24" style="flex:none" role="img" aria-label="{{ t.verified }}"><circle cx="12" cy="12" r="10" fill="var(--allowed)"/><path d="M7.4 12.4l3 3 6.2-6.6" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
 </div>
 <div style="font-size:var(--t-sm);color:var(--ink-2);margin-top:4px">{{ role }}</div>
 <div class="num" style="font-size:var(--t-xs);color:var(--ink-3);margin-top:3px"><bdi>{{ since }}</bdi></div>
@@ -54,8 +59,8 @@
 <div style="display:flex;align-items:baseline;gap:9px;margin-bottom:14px">
 <span class="num" style="font-size:42px;font-weight:600;line-height:1"><bdi>{{ txCount }}</bdi></span>
 <div style="flex:1">
-<div style="font-size:var(--t-body);font-weight:500">معاملة مؤكَّدة</div>
-<div style="font-size:var(--t-xs);color:var(--ink-2);margin-top:1px">أكّدها الطرفان عند التسليم</div>
+<div style="font-size:var(--t-body);font-weight:500">{{ txLabel }}</div>
+<div style="font-size:var(--t-xs);color:var(--ink-2);margin-top:1px">{{ t.txHint }}</div>
 </div>
 </div>
 <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--rule);border:1px solid var(--rule);border-radius:var(--r-sm);overflow:hidden">
@@ -71,8 +76,8 @@
 <!-- ══ ACTIVITY — evidence of continuity, not a vanity chart ══ -->
 <section class="card" style="padding:14px">
 <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:11px">
-<h2 class="sh" style="margin:0">النشاط</h2>
-<span class="num" style="font-size:var(--t-xs);color:var(--ink-3)"><bdi>آخر 12 شهراً</bdi></span>
+<h2 class="sh" style="margin:0">{{ t.activityTitle }}</h2>
+<span class="num" style="font-size:var(--t-xs);color:var(--ink-3)"><bdi>{{ last12 }}</bdi></span>
 </div>
 <div class="bar">
 <sc-for list="{{ months }}" as="m" hint-placeholder-count="12">
@@ -92,7 +97,7 @@
 
 <!-- ══ WHAT IS VERIFIED — honest checklist, including what is NOT ══ -->
 <section class="card" style="padding:14px">
-<h2 class="sh">ما تحقّقت منه المنصّة</h2>
+<h2 class="sh">{{ t.verifiedTitle }}</h2>
 <div style="display:flex;flex-direction:column">
 <sc-for list="{{ docs }}" as="d" hint-placeholder-count="5">
 <div style="display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--rule-faint)">
@@ -104,20 +109,20 @@
 </div>
 <div style="display:flex;gap:9px;margin-top:12px;padding:11px 12px;background:var(--surface-2);border:1px solid var(--rule-faint);border-radius:var(--r-sm)">
 <span aria-hidden="true" style="flex:none;color:var(--ink-3);font-size:var(--t-sm)">i</span>
-<p style="margin:0;font-size:var(--t-xs);color:var(--ink-2)">تحقّق من الوثائق — ليس اعتماداً حكومياً.</p>
+<p style="margin:0;font-size:var(--t-xs);color:var(--ink-2)">{{ t.notEndorsement }}</p>
 </div>
 </section>
 
 <!-- ══ SPECIALISATION ══ -->
 <section class="card" style="padding:14px">
-<h2 class="sh">التخصّص والوجهات</h2>
-<div style="font-size:var(--t-xs);color:var(--ink-3);margin-bottom:7px">الفئات التي أنجز فيها معاملات</div>
+<h2 class="sh">{{ t.specTitle }}</h2>
+<div style="font-size:var(--t-xs);color:var(--ink-3);margin-bottom:7px">{{ t.catsLabel }}</div>
 <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px">
 <sc-for list="{{ cats }}" as="c" hint-placeholder-count="4">
-<span class="chip chip-neutral"><bdi>{{ c.label }} · {{ c.n }}</bdi></span>
+<span class="chip chip-neutral"><bdi>{{ c.line }}</bdi></span>
 </sc-for>
 </div>
-<div style="font-size:var(--t-xs);color:var(--ink-3);margin-bottom:7px">الوجهات</div>
+<div style="font-size:var(--t-xs);color:var(--ink-3);margin-bottom:7px">{{ t.destsLabel }}</div>
 <div style="display:flex;flex-wrap:wrap;gap:6px">
 <sc-for list="{{ dests }}" as="d" hint-placeholder-count="3">
 <span class="chip chip-neutral"><bdi>{{ d }}</bdi></span>
@@ -128,20 +133,20 @@
 <!-- ══ REVIEWS — with right of reply visible ══ -->
 <section class="card" style="padding:14px">
 <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:11px">
-<h2 class="sh" style="margin:0">المراجعات</h2>
+<h2 class="sh" style="margin:0">{{ t.reviewsTitle }}</h2>
 <span class="num" style="font-size:var(--t-xs);color:var(--ink-3)"><bdi>{{ reviewCount }}</bdi></span>
 </div>
 <sc-for list="{{ reviews }}" as="r" hint-placeholder-count="2">
 <div style="padding:11px 0;border-bottom:1px solid var(--rule-faint)">
 <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
 <span style="font-size:var(--t-sm);font-weight:500">{{ r.by }}</span>
-<span class="chip chip-verified" style="height:19px;font-size:var(--t-micro)">معاملة مسجَّلة</span>
+<span class="chip chip-verified" style="height:19px;font-size:var(--t-micro)">{{ recordedTx }}</span>
 <span class="num" style="margin-inline-start:auto;font-size:var(--t-micro);color:var(--ink-3)"><bdi>{{ r.when }}</bdi></span>
 </div>
 <p style="margin:0;font-size:var(--t-sm);line-height:1.7;color:var(--ink-2)">{{ r.text }}</p>
 <sc-if value="{{ r.hasReply }}" hint-placeholder-val="{{ false }}">
 <div style="margin-top:9px;padding:10px 12px;background:var(--surface-2);border-radius:var(--r-sm);border-inline-start:2px solid var(--rule-strong)">
-<div style="font-size:var(--t-micro);color:var(--ink-3);margin-bottom:4px">ردّ {{ name }}</div>
+<div style="font-size:var(--t-micro);color:var(--ink-3);margin-bottom:4px">{{ replyFrom }}</div>
 <p style="margin:0;font-size:var(--t-sm);line-height:1.65;color:var(--ink-2)">{{ r.reply }}</p>
 </div>
 </sc-if>
@@ -163,17 +168,17 @@
 </main>
 
 <div style="position:fixed;inset-block-end:0;inset-inline:0;margin:0 auto;max-width:430px;display:flex;gap:9px;padding:11px 16px 15px;background:var(--surface);border-top:1px solid var(--rule)">
-<button type="button" style="flex:1;height:50px;border:0;border-radius:var(--r);background:var(--brand);color:var(--ink-on);font-size:15px;font-weight:500;cursor:pointer">راسل</button>
-<button type="button" style="flex:1;height:50px;border:1px solid var(--rule-strong);border-radius:var(--r);background:var(--surface);color:inherit;font-size:15px;cursor:pointer">اطلب عرضاً</button>
+<button type="button" style="flex:1;height:50px;border:0;border-radius:var(--r);background:var(--brand);color:var(--ink-on);font-size:15px;font-weight:500;cursor:pointer">{{ t.message }}</button>
+<button type="button" style="flex:1;height:50px;border:1px solid var(--rule-strong);border-radius:var(--r);background:var(--surface);color:inherit;font-size:15px;cursor:pointer">{{ t.requestOffer }}</button>
 </div>
 
 <!-- ══ HOW A NUMBER IS COMPUTED ══ -->
 <sc-if value="{{ sheetOpen }}" hint-placeholder-val="{{ false }}">
-<div role="dialog" aria-label="تفصيل الرقم" style="position:fixed;inset:0;background:oklch(0.24 0.06 257 / 0.42);display:flex;align-items:flex-end;justify-content:center;z-index:40">
+<div role="dialog" aria-label="{{ t.breakdown }}" style="position:fixed;inset:0;background:oklch(0.24 0.06 257 / 0.42);display:flex;align-items:flex-end;justify-content:center;z-index:40">
 <div style="width:100%;max-width:430px;background:var(--surface);border-radius:var(--r-lg) var(--r-lg) 0 0;padding:17px 16px 24px;box-shadow:var(--e2)">
 <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:11px">
 <h3 style="margin:0;font-size:var(--t-h2);font-weight:500">{{ sheetTitle }}</h3>
-<button type="button" onClick="{{ closeSheet }}" style="border:0;background:transparent;font-size:var(--t-sm);color:var(--ink-2);cursor:pointer">إغلاق</button>
+<button type="button" onClick="{{ closeSheet }}" style="border:0;background:transparent;font-size:var(--t-sm);color:var(--ink-2);cursor:pointer">{{ t.close }}</button>
 </div>
 <p style="margin:0 0 13px;font-size:var(--t-sm);line-height:1.7;color:var(--ink-2)">{{ sheetIntro }}</p>
 <sc-for list="{{ sheetRows }}" as="r" hint-placeholder-count="3">
@@ -192,111 +197,210 @@
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:430,&quot;height&quot;:1760}}">
 class Component extends DCLogic {
-  state = { sheet: null };
-  LRI = '⁦'; PDI = '⁩';
-  ltr(s) { return this.LRI + s + this.PDI; }
+  /* Locale is browser-detected. French is the fallback — Algeria's commercial
+     lingua franca and the neutral middle between Arabic and English. One value. */
+  static FALLBACK = 'fr';
+  static detect() {
+    const tag = (typeof navigator !== 'undefined' && (navigator.language || '')).slice(0, 2).toLowerCase();
+    return ['ar', 'fr', 'en'].includes(tag) ? tag : Component.FALLBACK;
+  }
 
-  P = {
-    name: 'كريمة ح.', initials: 'ك ح',
-    role: 'مستوردة مُتحقَّقة · ألبسة نسائية وإكسسوار',
-    since: 'على المنصّة منذ مارس 2023',
-    txCount: '84'
+  state = { sheet: null, lang: Component.detect() };
+  root = React.createRef();
+  componentDidMount() { this._apply(); }
+  componentDidUpdate() { this._apply(); }
+  _apply() {
+    const el = this.root.current;
+    if (el) { el.setAttribute('dir', this.L[this.state.lang].dir); el.setAttribute('lang', this.state.lang); }
+  }
+
+  /* Text runs take a first-strong isolate so Arabic stays RTL and Latin stays LTR;
+     inside Arabic, each digit group is pinned LTR so "4 800" never reads "800 4". */
+  iso(s) { if (/[\u0600-\u06FF]/.test(s)) s = s.replace(/\d[\d ,.:]*\d%?|\d%?/g, m => '\u2066' + m + '\u2069'); return '\u2068' + s + '\u2069'; }
+  fmt(n, sep) { return '⁦' + String(n).replace(/\B(?=(\d{3})+(?!\d))/g, sep === undefined ? ' ' : sep) + '⁩'; }
+  /* Arabic counts nouns in four forms (one / two / 3–10 / 11+); French and English in two.
+     f = { one, two, few, many } for Arabic, { one, many } otherwise. */
+  count(n, t, f) {
+    if (t.dir === 'rtl') {
+      const m = n % 100;
+      if (n === 1) return f.one;
+      if (n === 2) return f.two;
+      if (m >= 3 && m <= 10) return this.fmt(n, t.sep) + ' ' + f.few;
+      return this.fmt(n, t.sep) + ' ' + f.many;
+    }
+    return this.fmt(n, t.sep) + ' ' + (n === 1 ? f.one : f.many);
+  }
+  langsFor(cur) {
+    return ['ar', 'fr', 'en'].map(id => ({
+      short: this.L[id].short, on: cur === id,
+      bg: cur === id ? 'var(--ink)' : 'var(--surface)',
+      fg: cur === id ? 'var(--ink-on)' : 'var(--ink-2)',
+      pick: () => this.setState({ lang: id })
+    }));
+  }
+
+  L = {
+    ar: {
+      dir: 'rtl', short: 'ع', langLabel: 'اللغة', sep: ' ',
+      back: 'رجوع', title: 'الملف', report: 'إبلاغ', verified: 'مُتحقَّق',
+      name: 'كريمة ح.', initials: 'ك ح', role: 'مستوردة مُتحقَّقة · ألبسة نسائية وإكسسوار', since: 'على المنصّة منذ مارس 2023',
+      tx: { one: 'معاملة مؤكَّدة', two: 'معاملتان مؤكَّدتان', few: 'معاملات مؤكَّدة', many: 'معاملة مؤكَّدة' },
+      txHint: 'أكّدها الطرفان عند التسليم',
+      stats: [['نسبة الإتمام', '97%'], ['متوسط الردّ', 'ساعة'], ['ثبات السعر', '95%']],
+      sheets: {
+        done: ['كيف حُسبت نسبة الإتمام', 'الالتزامات التي سُلّمت داخل الأجل المتّفق عليه، مقسومة على كل الالتزامات المقبولة.',
+          [['التزامات مقبولة', '87'], ['سُلّمت في الأجل', '84'], ['تأخّرت', '2'], ['أُلغيت من طرفها', '1'], ['حُجزت في الجمارك — لا تُحتسب', '1']],
+          'التأخير الناتج عن حجز جمركي موثّق لا يُحتسب ضدّ المستورد. القرار ليس بيده.'],
+        resp: ['كيف حُسب متوسط الردّ', 'الوسيط (لا المتوسط الحسابي) لزمن أول ردّ على رسالة جديدة، خلال آخر 90 يوماً.',
+          [['رسائل واردة', '212'], ['رُدّ عليها', '204'], ['وسيط زمن الردّ', '58 دقيقة'], ['بلا ردّ', '8']],
+          'نستعمل الوسيط حتى لا ترفع حالة واحدة بطيئة المتوسط بشكل مضلّل.'],
+        price: ['كيف حُسب ثبات السعر', 'الالتزامات التي بقي سعرها النهائي داخل النطاق المُعلَن وقت الاتفاق.',
+          [['التزامات بنطاق معلن', '80'], ['بقيت داخل النطاق', '76'], ['خرجت عن النطاق', '4'], ['متوسط الانحراف عند الخروج', '6%']],
+          'أكثر شكوى يرفعها التجّار هي تغيّر السعر بعد الاتفاق — لذلك يُقاس ويُعرض.']
+      },
+      activityTitle: 'النشاط', last12: 'آخر 12 شهراً', monthTip: n => n + ' معاملة', monthFrom: 'أكتوبر 2025', monthTo: 'سبتمبر 2026',
+      activity: [['رحلة منجزة', '31'], ['آخر رحلة', 'قبل 11 يوماً']],
+      verifiedTitle: 'ما تحقّقت منه المنصّة',
+      docs: [['الهوية الوطنية', 'مُتحقَّق'], ['بطاقة المقاول الذاتي — استيراد مصغّر', 'سارية حتى جوان 2027'], ['الرخصة العامة للاستيراد المصغّر', 'سارية حتى جوان 2027'], ['الانتساب إلى CASNOS', 'مُتحقَّق'], ['السجل التجاري', 'غير مطلوب لهذا الدور']],
+      notEndorsement: 'تحقّق من الوثائق — ليس اعتماداً حكومياً.',
+      specTitle: 'التخصّص والوجهات', catsLabel: 'الفئات التي أنجز فيها معاملات', destsLabel: 'الوجهات',
+      cats: ['ألبسة نسائية', 'حقائب', 'إكسسوار', 'أحذية'], dests: ['إسطنبول', 'غازي عنتاب', 'دبي'],
+      reviewsTitle: 'المراجعات', rev: { one: 'مراجعة واحدة', two: 'مراجعتان', few: 'مراجعات', many: 'مراجعة' },
+      recordedTx: 'معاملة مسجَّلة', replyPrefix: 'ردّ',
+      reviews: [
+        ['ياسين ب. · سطيف', 'قبل 12 يوماً', 'المواصفة مطابقة تماماً والتسليم في الموعد. أبلغتني بتغيّر بسيط في اللون قبل الشراء لا بعده — وهذا نادر.', ''],
+        ['نادية ر. · قسنطينة', 'قبل شهر', 'تأخّر التسليم ثلاثة أيام عن الموعد. البضاعة سليمة لكن التأخير أربكني مع زبائني.', 'محقّة. الرحلة تأخّرت بسبب مراجعة جمركية على دفعة كاملة. عوّضتُ الفرق في الشحن الداخلي، وسأترك هامش يومين في المواعيد القادمة.']
+      ],
+      disputeTitle: 'لا نزاع مفتوح', disputeMeta: 'نزاع واحد خلال 3 سنوات · أُغلق بالتراضي في 2025',
+      message: 'راسل', requestOffer: 'اطلب عرضاً', breakdown: 'تفصيل الرقم', close: 'إغلاق'
+    },
+
+    fr: {
+      dir: 'ltr', short: 'FR', langLabel: 'Langue', sep: ' ',
+      back: 'Retour', title: 'Profil', report: 'Signaler', verified: 'Vérifiée',
+      name: 'Karima H.', initials: 'KH', role: 'Importatrice vérifiée · vêtements femme et accessoires', since: 'Sur la plateforme depuis mars 2023',
+      tx: { one: 'transaction confirmée', many: 'transactions confirmées' },
+      txHint: 'Confirmées par les deux parties à la remise',
+      stats: [['Taux d’achèvement', '97 %'], ['Délai de réponse', '1 h'], ['Tenue des prix', '95 %']],
+      sheets: {
+        done: ['Comment le taux d’achèvement est calculé', 'Les engagements livrés dans le délai convenu, divisés par l’ensemble des engagements acceptés.',
+          [['Engagements acceptés', '87'], ['Livrés dans les délais', '84'], ['En retard', '2'], ['Annulés de son fait', '1'], ['Retenus en douane — non comptés', '1']],
+          'Un retard dû à une retenue douanière documentée n’est pas compté contre l’importateur. La décision ne lui appartient pas.'],
+        resp: ['Comment le délai de réponse est calculé', 'La médiane (et non la moyenne) du délai de première réponse à un nouveau message, sur les 90 derniers jours.',
+          [['Messages reçus', '212'], ['Avec réponse', '204'], ['Délai médian', '58 min'], ['Sans réponse', '8']],
+          'Nous utilisons la médiane pour qu’un seul cas lent ne gonfle pas le chiffre de façon trompeuse.'],
+        price: ['Comment la tenue des prix est calculée', 'Les engagements dont le prix final est resté dans la fourchette annoncée à l’accord.',
+          [['Engagements avec fourchette', '80'], ['Restés dans la fourchette', '76'], ['Sortis de la fourchette', '4'], ['Écart moyen en cas de sortie', '6 %']],
+          'La plainte la plus fréquente des commerçants est un prix modifié après l’accord — c’est pourquoi il est mesuré et affiché.']
+      },
+      activityTitle: 'Activité', last12: '12 derniers mois', monthTip: n => n + ' transactions', monthFrom: 'octobre 2025', monthTo: 'septembre 2026',
+      activity: [['Voyages effectués', '31'], ['Dernier voyage', 'il y a 11 jours']],
+      verifiedTitle: 'Ce que la plateforme a vérifié',
+      docs: [['Pièce d’identité nationale', 'Vérifiée'], ['Carte d’auto-entrepreneur — importation de faible valeur', 'Valide jusqu’en juin 2027'], ['Autorisation générale d’importation', 'Valide jusqu’en juin 2027'], ['Affiliation CASNOS', 'Vérifiée'], ['Registre de commerce', 'Non requis pour ce rôle']],
+      notEndorsement: 'Vérification de documents — pas un agrément de l’État.',
+      specTitle: 'Spécialités et destinations', catsLabel: 'Catégories avec transactions réalisées', destsLabel: 'Destinations',
+      cats: ['Vêtements femme', 'Sacs', 'Accessoires', 'Chaussures'], dests: ['Istanbul', 'Gaziantep', 'Dubaï'],
+      reviewsTitle: 'Avis', rev: { one: 'avis', many: 'avis' },
+      recordedTx: 'Transaction enregistrée', replyPrefix: 'Réponse de',
+      reviews: [
+        ['Yacine B. · Sétif', 'il y a 12 jours', 'Spécification parfaitement conforme et livraison à l’heure. Elle m’a signalé un léger changement de couleur avant l’achat, pas après — c’est rare.', ''],
+        ['Nadia R. · Constantine', 'il y a un mois', 'Livraison en retard de trois jours. Marchandise intacte, mais le retard m’a mise en difficulté avec mes clients.', 'C’est juste. Le voyage a été retardé par un contrôle douanier sur un lot entier. J’ai pris en charge la différence de transport intérieur et je prévoirai deux jours de marge désormais.']
+      ],
+      disputeTitle: 'Aucun litige en cours', disputeMeta: 'Un litige en 3 ans · clos à l’amiable en 2025',
+      message: 'Écrire', requestOffer: 'Demander une offre', breakdown: 'Détail du chiffre', close: 'Fermer'
+    },
+
+    en: {
+      dir: 'ltr', short: 'EN', langLabel: 'Language', sep: ',',
+      back: 'Back', title: 'Profile', report: 'Report', verified: 'Verified',
+      name: 'Karima H.', initials: 'KH', role: 'Verified importer · women’s clothing and accessories', since: 'On the platform since March 2023',
+      tx: { one: 'confirmed transaction', many: 'confirmed transactions' },
+      txHint: 'Confirmed by both parties at handover',
+      stats: [['Completion rate', '97%'], ['Response time', '1 h'], ['Price holding', '95%']],
+      sheets: {
+        done: ['How the completion rate is calculated', 'Commitments delivered within the agreed date, divided by all accepted commitments.',
+          [['Accepted commitments', '87'], ['Delivered on time', '84'], ['Late', '2'], ['Cancelled by her', '1'], ['Held at customs — not counted', '1']],
+          'A delay caused by a documented customs hold is not counted against the importer. The decision isn’t theirs.'],
+        resp: ['How response time is calculated', 'The median (not the mean) time to first reply to a new message, over the last 90 days.',
+          [['Messages received', '212'], ['Replied to', '204'], ['Median reply time', '58 min'], ['No reply', '8']],
+          'We use the median so a single slow case can’t inflate the figure misleadingly.'],
+        price: ['How price holding is calculated', 'Commitments whose final price stayed within the range declared at agreement.',
+          [['Commitments with a range', '80'], ['Stayed within range', '76'], ['Went outside range', '4'], ['Average deviation when outside', '6%']],
+          'The most common complaint from traders is a price changed after agreement — so it is measured and shown.']
+      },
+      activityTitle: 'Activity', last12: 'Last 12 months', monthTip: n => n + ' transactions', monthFrom: 'October 2025', monthTo: 'September 2026',
+      activity: [['Trips completed', '31'], ['Last trip', '11 days ago']],
+      verifiedTitle: 'What the platform has verified',
+      docs: [['National ID', 'Verified'], ['Auto-entrepreneur card — low-value import', 'Valid until June 2027'], ['General import authorisation', 'Valid until June 2027'], ['CASNOS affiliation', 'Verified'], ['Commercial register', 'Not required for this role']],
+      notEndorsement: 'Document verification — not a government endorsement.',
+      specTitle: 'Specialities and destinations', catsLabel: 'Categories with completed transactions', destsLabel: 'Destinations',
+      cats: ['Women’s clothing', 'Bags', 'Accessories', 'Shoes'], dests: ['Istanbul', 'Gaziantep', 'Dubai'],
+      reviewsTitle: 'Reviews', rev: { one: 'review', many: 'reviews' },
+      recordedTx: 'Recorded transaction', replyPrefix: 'Reply from',
+      reviews: [
+        ['Yacine B. · Sétif', '12 days ago', 'Specification matched exactly and delivery was on time. She told me about a small colour change before buying, not after — that’s rare.', ''],
+        ['Nadia R. · Constantine', 'a month ago', 'Delivery was three days late. Goods were fine, but the delay caused me trouble with my customers.', 'Fair point. The trip was held up by a customs inspection of a whole batch. I covered the domestic shipping difference and will leave two days’ margin from now on.']
+      ],
+      disputeTitle: 'No open disputes', disputeMeta: 'One dispute in 3 years · settled amicably in 2025',
+      message: 'Message', requestOffer: 'Request an offer', breakdown: 'How this number works', close: 'Close'
+    }
   };
 
   // Counts and rates only. No composite score anywhere on this screen —
   // a single number would hide exactly what a counterparty needs to weigh.
-  STATS = [
-    { id: 'done', k: 'نسبة الإتمام', v: '97%', fg: 'var(--allowed-ink)' },
-    { id: 'resp', k: 'متوسط الردّ', v: 'ساعة', fg: 'var(--ink)' },
-    { id: 'price', k: 'ثبات السعر', v: '95%', fg: 'var(--allowed-ink)' }
-  ];
-
-  SHEETS = {
-    done: { title: 'كيف حُسبت نسبة الإتمام', intro: 'الالتزامات التي سُلّمت داخل الأجل المتّفق عليه، مقسومة على كل الالتزامات المقبولة.',
-      rows: [['التزامات مقبولة','87'],['سُلّمت في الأجل','84'],['تأخّرت','2'],['أُلغيت من طرفها','1'],['حُجزت في الجمارك — لا تُحتسب','1']],
-      foot: 'التأخير الناتج عن حجز جمركي موثّق لا يُحتسب ضدّ المستورد. القرار ليس بيده.' },
-    resp: { title: 'كيف حُسب متوسط الردّ', intro: 'الوسيط (لا المتوسط الحسابي) لزمن أول ردّ على رسالة جديدة، خلال آخر 90 يوماً.',
-      rows: [['رسائل واردة','212'],['رُدّ عليها','204'],['وسيط زمن الردّ','58 دقيقة'],['بلا ردّ','8']],
-      foot: 'نستعمل الوسيط حتى لا ترفع حالة واحدة بطيئة المتوسط بشكل مضلّل.' },
-    price: { title: 'كيف حُسب ثبات السعر', intro: 'الالتزامات التي بقي سعرها النهائي داخل النطاق المُعلَن وقت الاتفاق.',
-      rows: [['التزامات بنطاق معلن','80'],['بقيت داخل النطاق','76'],['خرجت عن النطاق','4'],['متوسط الانحراف عند الخروج','6%']],
-      foot: 'أكثر شكوى يرفعها التجّار هي تغيّر السعر بعد الاتفاق — لذلك يُقاس ويُعرض.' }
-  };
-
+  STAT_IDS = ['done', 'resp', 'price'];
+  STAT_FG = ['var(--allowed-ink)', 'var(--ink)', 'var(--allowed-ink)'];
   MONTHS = [3, 5, 4, 7, 6, 9, 8, 6, 10, 9, 12, 5];
-
-  ACTIVITY = [
-    { k: 'رحلة منجزة', v: '31' },
-    { k: 'آخر رحلة', v: 'قبل 11 يوماً' }
-  ];
-
-  DOCS = [
-    { label: 'الهوية الوطنية', ok: true, meta: 'مُتحقَّق' },
-    { label: 'بطاقة المقاول الذاتي — استيراد مصغّر', ok: true, meta: 'سارية حتى جوان 2027' },
-    { label: 'الرخصة العامة للاستيراد المصغّر', ok: true, meta: 'سارية حتى جوان 2027' },
-    { label: 'الانتساب إلى CASNOS', ok: true, meta: 'مُتحقَّق' },
-    { label: 'السجل التجاري', ok: false, meta: 'غير مطلوب لهذا الدور' }
-  ];
-
-  CATS = [
-    { label: 'ألبسة نسائية', n: '46' },
-    { label: 'حقائب', n: '21' },
-    { label: 'إكسسوار', n: '12' },
-    { label: 'أحذية', n: '5' }
-  ];
-
-  DESTS = ['إسطنبول', 'غازي عنتاب', 'دبي'];
-
-  REVIEWS = [
-    { by: 'ياسين ب. · سطيف', when: 'قبل 12 يوماً',
-      text: 'المواصفة مطابقة تماماً والتسليم في الموعد. أبلغتني بتغيّر بسيط في اللون قبل الشراء لا بعده — وهذا نادر.',
-      reply: '' },
-    { by: 'نادية ر. · قسنطينة', when: 'قبل شهر',
-      text: 'تأخّر التسليم ثلاثة أيام عن الموعد. البضاعة سليمة لكن التأخير أربكني مع زبائني.',
-      reply: 'محقّة. الرحلة تأخّرت بسبب مراجعة جمركية على دفعة كاملة. عوّضتُ الفرق في الشحن الداخلي، وسأترك هامش يومين في المواعيد القادمة.' }
-  ];
+  DOC_OK = [true, true, true, true, false];
+  CAT_N = [46, 21, 12, 5];
 
   renderVals() {
-    const s = this.state;
+    const s = this.state, t = this.L[s.lang];
     const max = Math.max(...this.MONTHS);
-    const sh = s.sheet ? this.SHEETS[s.sheet] : null;
+    const sh = s.sheet ? t.sheets[s.sheet] : null;
 
     return {
-      ...this.P,
+      rootRef: this.root, t, langs: this.langsFor(s.lang),
+      backFlip: t.dir === 'rtl' ? -1 : 1,
 
-      stats: this.STATS.map(x => ({ ...x, open: () => this.setState({ sheet: x.id }) })),
+      name: t.name, initials: t.initials, role: t.role, since: this.iso(t.since),
+      txCount: this.fmt(84, t.sep),
+      txLabel: 84 === 1 ? t.tx.one : t.tx.many,
+      last12: this.iso(t.last12),
+      recordedTx: t.recordedTx,
+      replyFrom: t.replyPrefix + ' ' + t.name,
 
+      stats: this.STAT_IDS.map((id, i) => ({ k: t.stats[i][0], v: this.iso(t.stats[i][1]), fg: this.STAT_FG[i], open: () => this.setState({ sheet: id }) })),
+
+      // an activity chart, not a verdict: recent months in brand, earlier muted
       months: this.MONTHS.map((v, i) => ({
         h: Math.round(v / max * 100),
-        fg: i >= 9 ? 'var(--allowed)' : 'var(--allowed-bd)',
-        t: v + ' معاملة'
+        fg: i >= 9 ? 'var(--viz-2)' : 'var(--brand-bd)',
+        t: t.monthTip(v)
       })),
-      monthFrom: 'أكتوبر 2025',
-      monthTo: 'سبتمبر 2026',
-      activity: this.ACTIVITY,
+      monthFrom: this.iso(t.monthFrom),
+      monthTo: this.iso(t.monthTo),
+      activity: t.activity.map(([k, v]) => ({ k, v: this.iso(v) })),
 
-      docs: this.DOCS.map(d => ({
-        label: d.label,
-        glyph: d.ok ? '✓' : '—',
-        bg: d.ok ? 'var(--allowed-bg)' : 'var(--neutral-bg)',
-        meta: d.meta,
-        metaFg: d.ok ? 'var(--ink-2)' : 'var(--ink-3)'
-      })),
+      docs: t.docs.map(([label, meta], i) => {
+        const ok = this.DOC_OK[i];
+        return { label, meta: this.iso(meta), glyph: ok ? '✓' : '—', bg: ok ? 'var(--allowed-bg)' : 'var(--neutral-bg)', metaFg: ok ? 'var(--ink-2)' : 'var(--ink-3)' };
+      }),
 
-      cats: this.CATS,
-      dests: this.DESTS,
+      cats: t.cats.map((label, i) => ({ line: this.iso(label + ' · ' + this.CAT_N[i]) })),
+      dests: t.dests,
 
-      reviewCount: '38 مراجعة',
-      reviews: this.REVIEWS.map(r => ({ ...r, hasReply: !!r.reply })),
+      reviewCount: this.count(38, t, t.rev),
+      reviews: t.reviews.map(([by, when, text, reply]) => ({ by, when: this.iso(when), text, reply, hasReply: !!reply })),
 
-      disputeTitle: 'لا نزاع مفتوح',
-      disputeMeta: 'نزاع واحد خلال 3 سنوات · أُغلق بالتراضي في 2025',
+      disputeTitle: t.disputeTitle,
+      disputeMeta: this.iso(t.disputeMeta),
 
       sheetOpen: !!sh,
-      sheetTitle: sh ? sh.title : '',
-      sheetIntro: sh ? sh.intro : '',
-      sheetRows: sh ? sh.rows.map(([k, v]) => ({ k, v })) : [],
-      sheetFoot: sh ? sh.foot : '',
+      sheetTitle: sh ? sh[0] : '',
+      sheetIntro: sh ? sh[1] : '',
+      sheetRows: sh ? sh[2].map(([k, v]) => ({ k, v: this.iso(v) })) : [],
+      sheetFoot: sh ? sh[3] : '',
       closeSheet: () => this.setState({ sheet: null })
     };
   }
