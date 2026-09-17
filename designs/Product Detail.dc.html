@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script src="./support.js"></script>
+<script src="./shell.js"></script>
 </head>
 <body>
 <x-dc>
@@ -12,172 +13,134 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="./tokens.css">
+<link rel="stylesheet" href="./web.css">
 <style>
-.scrollx{overflow-x:auto;scrollbar-width:none}
-.scrollx::-webkit-scrollbar{display:none}
-.disc{width:100%;display:flex;align-items:center;gap:10px;padding:14px 0;border:0;border-top:1px solid var(--rule-faint);background:transparent;color:inherit;text-align:start;cursor:pointer;font-size:var(--t-body)}
+.sech{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin:0 0 16px}
+.sech h2{margin:0;font-size:24px;font-weight:600}
+.block{margin-bottom:44px}
+.pd{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:40px;align-items:start;margin-bottom:40px}
+.thumbs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:12px}
+.disc{width:100%;display:flex;align-items:center;gap:12px;padding:16px 20px;border:0;background:transparent;color:inherit;text-align:start;cursor:pointer;font-size:var(--t-body)}
+.simgrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:22px}
+@media (max-width:980px){.pd{grid-template-columns:1fr}}
+
 </style>
 </helmet>
 
-<div ref="{{ rootRef }}" dir="rtl" lang="ar" class="tier-public" style="min-height:100vh;display:flex;justify-content:center">
-<div style="width:100%;max-width:430px;min-height:100vh;display:flex;flex-direction:column;background:var(--paper-public);border-inline:1px solid var(--rule)">
+<div ref="{{ rootRef }}" dir="rtl" lang="ar" class="tier-public web site-page">
 
-<header style="position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--surface);border-bottom:1px solid var(--rule)">
-<button type="button" aria-label="{{ t.back }}" style="width:36px;height:36px;border:0;border-radius:var(--r-sm);background:transparent;cursor:pointer;display:grid;place-items:center;color:inherit">
-<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="transform:scaleX({{ backFlip }})"><path d="M15 5l-7 7 7 7"/></svg>
-</button>
+<header class="site">
+<div class="container site-in">
+<div class="site-brand"><svg width="28" height="28" viewBox="0 0 48 48" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 36V23a8 8 0 0 1 16 0v13"/><path d="M24 23a8 8 0 0 1 16 0v13"/></g></svg><span class="wordmark">{{ sh.brand }}</span></div>
+<nav class="site-nav" aria-label="{{ sh.navLabel }}">
+<sc-for list="{{ sh.nav }}" as="n" hint-placeholder-count="3">
+<button type="button" class="site-link" aria-current="{{ n.on }}">{{ n.label }}</button>
+</sc-for>
+</nav>
+<div class="site-search">{{ sh.icSearch }}<span>{{ sh.pubSearch }}</span></div>
 <div style="flex:1"></div>
-<div role="group" aria-label="{{ t.langLabel }}" style="display:flex;border:1px solid var(--rule-strong);border-radius:var(--r-sm);overflow:hidden;flex:none">
+<div class="langsw" role="group" aria-label="{{ sh.langLabel }}">
 <sc-for list="{{ langs }}" as="l" hint-placeholder-count="3">
-<button type="button" onClick="{{ l.pick }}" aria-pressed="{{ l.on }}" style="height:24px;padding:0 8px;border:0;background:{{ l.bg }};color:{{ l.fg }};font-size:var(--t-micro);font-weight:500;cursor:pointer">{{ l.short }}</button>
+<button type="button" onClick="{{ l.pick }}" aria-pressed="{{ l.on }}" style="background:{{ l.bg }};color:{{ l.fg }}">{{ l.short }}</button>
 </sc-for>
 </div>
-<button type="button" onClick="{{ save }}" aria-pressed="{{ saved }}" aria-label="{{ saveLabel }}" style="width:36px;height:36px;border:0;background:transparent;cursor:pointer;display:grid;place-items:center">
-<svg width="19" height="19" viewBox="0 0 24 24" fill="{{ heartFill }}" stroke="{{ heartStroke }}" stroke-width="1.9"><path d="M12 20s-7-4.4-7-9.3A4.2 4.2 0 0 1 12 8a4.2 4.2 0 0 1 7 2.7c0 4.9-7 9.3-7 9.3z"/></svg>
-</button>
-<button type="button" aria-label="{{ t.share }}" style="width:36px;height:36px;border:0;background:transparent;cursor:pointer;display:grid;place-items:center;color:inherit">
-<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="6" cy="12" r="2.4"/><circle cx="17" cy="6" r="2.4"/><circle cx="17" cy="18" r="2.4"/><path d="M8.2 10.9l6.6-3.6M8.2 13.1l6.6 3.6"/></svg>
-</button>
+<button type="button" class="iconbtn" aria-label="{{ sh.saved }}">{{ sh.icHeart }}</button>
+<button type="button" class="iconbtn" aria-label="{{ sh.messages }}">{{ sh.icMsg }}<span class="dot"></span></button>
+<span class="av" style="width:40px;height:40px;font-size:12px;background:{{ sh.roleBg }};color:{{ sh.roleFg }}">{{ sh.userInitials }}</span>
+</div>
 </header>
 
-<main style="flex:1;padding-bottom:86px">
+<main class="site-main">
+<div class="container">
 
-<!-- ── 1. WHAT IS IT ── -->
-<div style="padding:14px 16px 0">
-<span class="img img-hero ph {{ ph }}" style="display:block;border:1px solid var(--rule-faint)"></span>
-<div class="scrollx" style="display:flex;gap:8px;padding:10px 0 0">
-<sc-for list="{{ thumbs }}" as="t" hint-placeholder-count="4">
-<span class="img img-thumb ph {{ t.ph }}" style="flex:none;width:56px;border:1.5px solid {{ t.bd }};display:block"></span>
-</sc-for>
-</div>
-</div>
+<div class="crumb" style="margin-bottom:18px"><button type="button" aria-label="{{ t.back }}" style="display:inline-flex;align-items:center;gap:6px"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="transform:scaleX({{ backFlip }})"><path d="M15 5l-7 7 7 7"/></svg>{{ sh.current }}</button></div>
 
-<section style="padding:16px">
-<h1 style="margin:0 0 8px;font-size:var(--t-h1);font-weight:500;line-height:1.4">{{ title }}</h1>
-
-<div style="display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;margin-bottom:10px">
-<span class="num" style="font-size:26px;font-weight:600;color:var(--ink)"><bdi>{{ price }}</bdi></span>
-<span class="num" style="font-size:var(--t-sm);color:var(--ink-3)"><bdi>{{ perUnit }}</bdi></span>
+<div class="pd">
+<div>
+<span class="img img-hero ph {{ ph }}" style="border:1px solid var(--rule-faint);border-radius:var(--r-lg)"></span>
+<div class="thumbs"><sc-for list="{{ thumbs }}" as="th" hint-placeholder-count="4"><span class="img img-thumb ph {{ th.ph }}" style="border:2px solid {{ th.bd }};border-radius:var(--r-sm)"></span></sc-for></div>
 </div>
 
-<div style="display:flex;gap:7px;flex-wrap:wrap">
-<span class="chip {{ availChip }}">{{ availLabel }}</span>
-<span class="chip chip-neutral"><bdi>{{ origin }}</bdi></span>
-<span class="chip chip-neutral"><bdi>{{ updated }}</bdi></span>
+<div class="stack" style="gap:22px">
+<div>
+<h1 style="margin:0 0 14px;font-size:32px;font-weight:600;line-height:1.3">{{ title }}</h1>
+<div style="display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:14px"><span class="num" style="font-size:36px;font-weight:600"><bdi>{{ price }}</bdi></span><span class="num" style="font-size:var(--t-body);color:var(--ink-3)"><bdi>{{ perUnit }}</bdi></span></div>
+<div class="fchips"><span class="chip {{ availChip }}">{{ availLabel }}</span><span class="chip chip-neutral"><bdi>{{ origin }}</bdi></span><span class="chip chip-neutral"><bdi>{{ updated }}</bdi></span></div>
 </div>
-</section>
 
-<!-- ── 2 + 3. WHO SELLS IT, ARE THEY TRUSTWORTHY ── -->
-<section style="margin:0 16px 16px">
-<button type="button" class="card" style="width:100%;display:flex;align-items:center;gap:12px;padding:13px;text-align:start;cursor:pointer;color:inherit">
-<span aria-hidden="true" style="flex:none;width:44px;height:44px;border-radius:50%;background:var(--role-trader-bg);display:grid;place-items:center;font-size:14px;font-weight:600;color:var(--ink)">{{ initials }}</span>
-<span style="flex:1;min-width:0">
-<span style="display:flex;align-items:center;gap:5px">
-<span style="font-size:var(--t-h3);font-weight:500">{{ seller }}</span>
-<svg width="14" height="14" viewBox="0 0 24 24" style="flex:none" role="img" aria-label="{{ t.verifiedShop }}"><circle cx="12" cy="12" r="10" fill="var(--allowed)"/><path d="M7.4 12.4l3 3 6.2-6.6" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-</span>
-<span class="num" style="display:block;font-size:var(--t-xs);color:var(--ink-2);margin-top:3px"><bdi>{{ sellerMeta }}</bdi></span>
-</span>
+<div style="display:flex;gap:10px;flex-wrap:wrap">
+<button type="button" class="btn btn-primary btn-lg" style="flex:1;min-width:200px">{{ t.message }}</button>
+<button type="button" class="btn btn-lg">{{ t.askStock }}</button>
+<button type="button" onClick="{{ save }}" aria-pressed="{{ saved }}" aria-label="{{ saveLabel }}" class="btn btn-lg" style="padding:0 14px"><svg width="20" height="20" viewBox="0 0 24 24" fill="{{ heartFill }}" stroke="{{ heartStroke }}" stroke-width="1.9"><path d="M12 20s-7-4.4-7-9.3A4.2 4.2 0 0 1 12 8a4.2 4.2 0 0 1 7 2.7c0 4.9-7 9.3-7 9.3z"/></svg></button>
+<button type="button" aria-label="{{ t.share }}" class="btn btn-lg" style="padding:0 14px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="6" cy="12" r="2.4"/><circle cx="17" cy="6" r="2.4"/><circle cx="17" cy="18" r="2.4"/><path d="M8.2 10.9l6.6-3.6M8.2 13.1l6.6 3.6"/></svg></button>
+</div>
+
+<section class="panel">
+<button type="button" class="panel-b" style="width:100%;display:flex;align-items:center;gap:14px;border:0;background:none;text-align:start;cursor:pointer;color:inherit">
+<span class="av" style="width:52px;height:52px;font-size:15px;background:var(--role-trader-bg);color:var(--role-trader-ink)">{{ initials }}</span>
+<span style="flex:1;min-width:0"><span style="display:flex;align-items:center;gap:6px"><span style="font-size:var(--t-h3);font-weight:600">{{ seller }}</span><svg width="15" height="15" viewBox="0 0 24 24" style="flex:none" role="img" aria-label="{{ t.verifiedShop }}"><circle cx="12" cy="12" r="10" fill="var(--allowed)"/><path d="M7.4 12.4l3 3 6.2-6.6" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="num" style="display:block;font-size:var(--t-sm);color:var(--ink-2);margin-top:4px"><bdi>{{ sellerMeta }}</bdi></span></span>
 <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--ink-3)" stroke-width="2" style="flex:none;transform:scaleX({{ arrow }})"><path d="M15 5l-7 7 7 7"/></svg>
 </button>
-
-<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1px;margin-top:10px;background:var(--rule);border:1px solid var(--rule);border-radius:var(--r);overflow:hidden">
-<sc-for list="{{ trustStats }}" as="s" hint-placeholder-count="3">
-<div style="background:var(--surface);padding:11px 8px;text-align:center">
-<div class="num" style="font-size:17px;font-weight:600;line-height:1.2"><bdi>{{ s.v }}</bdi></div>
-<div style="font-size:var(--t-micro);color:var(--ink-2);margin-top:3px">{{ s.k }}</div>
-</div>
-</sc-for>
+<div style="display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--rule-faint)">
+<sc-for list="{{ trustStats }}" as="s" hint-placeholder-count="3"><div style="padding:14px;text-align:center"><div class="num" style="font-size:20px;font-weight:600"><bdi>{{ s.v }}</bdi></div><div style="font-size:var(--t-xs);color:var(--ink-2);margin-top:3px">{{ s.k }}</div></div></sc-for>
 </div>
 </section>
 
-<!-- ── 4 + 5. SPECS — structured metadata, rules not cards ── -->
-<section style="margin:0 16px 16px;padding:2px 14px 6px;background:var(--surface);border:1px solid var(--rule);border-radius:var(--r)">
-<sc-for list="{{ specs }}" as="s" hint-placeholder-count="6">
-<div style="display:flex;justify-content:space-between;align-items:baseline;gap:14px;padding:11px 0;border-bottom:1px solid var(--rule-faint)">
-<span style="font-size:var(--t-sm);color:var(--ink-2);flex:none">{{ s.k }}</span>
-<span class="num" style="font-size:var(--t-body);text-align:end"><bdi>{{ s.v }}</bdi></span>
+<section class="panel">
+<div class="rows">
+<sc-for list="{{ specs }}" as="s" hint-placeholder-count="6"><div style="display:flex;justify-content:space-between;gap:16px;padding:12px 20px"><span style="font-size:var(--t-sm);color:var(--ink-2)">{{ s.k }}</span><span class="num" style="font-size:var(--t-sm);font-weight:500;text-align:end"><bdi>{{ s.v }}</bdi></span></div></sc-for>
 </div>
-</sc-for>
-<p style="margin:12px 0 10px;font-size:var(--t-body);line-height:1.7;color:var(--ink)">{{ desc }}</p>
+<div class="panel-f"><p style="margin:0;font-size:var(--t-body);line-height:1.75">{{ desc }}</p></div>
 </section>
-
-<!-- ── 6. REVIEWS ── -->
-<section style="margin:0 16px 16px">
-<div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:9px">
-<h2 style="margin:0;font-size:var(--t-h2);font-weight:500">{{ t.reviewsTitle }}</h2>
-<button type="button" style="border:0;background:transparent;font-size:var(--t-sm);color:var(--brand-ink);cursor:pointer">{{ t.all }}</button>
 </div>
-<div class="card" style="padding:13px">
+</div>
+
+<div class="split" style="margin-bottom:44px">
+<section class="panel">
+<div class="panel-h"><h2>{{ t.reviewsTitle }}</h2><button type="button" class="link">{{ t.all }}</button></div>
+<div class="rows">
 <sc-for list="{{ reviews }}" as="r" hint-placeholder-count="2">
-<div style="padding:9px 0;border-bottom:1px solid var(--rule-faint)">
-<div style="display:flex;align-items:center;gap:8px;margin-bottom:5px">
-<span style="font-size:var(--t-sm);font-weight:500">{{ r.name }}</span>
-<span class="chip chip-verified" style="height:19px;font-size:var(--t-micro)">{{ t.confirmedBuy }}</span>
-<span class="num" style="margin-inline-start:auto;font-size:var(--t-micro);color:var(--ink-3)"><bdi>{{ r.when }}</bdi></span>
-</div>
-<p style="margin:0;font-size:var(--t-sm);line-height:1.65;color:var(--ink-2)">{{ r.text }}</p>
-</div>
+<div style="padding:18px 20px"><div style="display:flex;align-items:center;gap:10px;margin-bottom:8px"><span style="font-weight:600">{{ r.name }}</span><span class="chip chip-verified">{{ t.confirmedBuy }}</span><span class="num" style="margin-inline-start:auto;font-size:var(--t-xs);color:var(--ink-3)"><bdi>{{ r.when }}</bdi></span></div><p style="margin:0;line-height:1.7;color:var(--ink-2)">{{ r.text }}</p></div>
 </sc-for>
 </div>
 </section>
-
-<!-- ── 7. RESTRICTIONS — progressive disclosure, deliberately BELOW commerce ── -->
-<section style="margin:0 16px 20px;padding:0 14px;background:var(--surface);border:1px solid var(--rule);border-radius:var(--r)">
+<aside class="panel">
 <sc-for list="{{ discs }}" as="d" hint-placeholder-count="3">
-<div>
-<button type="button" onClick="{{ d.toggle }}" aria-expanded="{{ d.open }}" class="disc" style="border-top-color:{{ d.bt }}">
-<span aria-hidden="true" style="flex:none;width:22px;height:22px;border-radius:50%;background:{{ d.iconBg }};display:grid;place-items:center;font-size:11px;font-weight:600;color:{{ d.iconFg }}">{{ d.glyph }}</span>
-<span style="flex:1">{{ d.label }}</span>
-<span style="font-size:var(--t-xs);color:var(--ink-3)">{{ d.hint }}</span>
-<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--ink-3)" stroke-width="2" style="flex:none;transform:rotate({{ d.rot }}deg);transition:transform .16s ease"><path d="M6 9l6 6 6-6"/></svg>
+<div style="border-top:1px solid {{ d.bt }}">
+<button type="button" onClick="{{ d.toggle }}" aria-expanded="{{ d.open }}" class="disc">
+<span aria-hidden="true" style="flex:none;width:26px;height:26px;border-radius:50%;background:{{ d.iconBg }};display:grid;place-items:center;font-size:12px;font-weight:600;color:{{ d.iconFg }}">{{ d.glyph }}</span>
+<span style="flex:1;font-weight:500">{{ d.label }}</span><span style="font-size:var(--t-xs);color:var(--ink-3)">{{ d.hint }}</span>
+<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--ink-3)" stroke-width="2" style="flex:none;transform:rotate({{ d.rot }}deg)"><path d="M6 9l6 6 6-6"/></svg>
 </button>
 <sc-if value="{{ d.open }}" hint-placeholder-val="{{ false }}">
-<div style="padding-block:0 14px;padding-inline:32px 0">
-<p style="margin:0 0 8px;font-size:var(--t-sm);line-height:1.7;color:var(--ink-2)">{{ d.body }}</p>
-<sc-if value="{{ d.hasCite }}" hint-placeholder-val="{{ false }}">
-<div style="display:flex;justify-content:space-between;align-items:baseline;gap:10px;padding:9px 11px;background:var(--surface-2);border:1px solid var(--rule-faint);border-radius:var(--r-sm)">
-<span class="ref">{{ d.cite }}</span>
-<a href="#" style="font-size:var(--t-xs)">{{ d.citeLink }}</a>
-</div>
-</sc-if>
-</div>
+<div style="padding:0 20px 16px;padding-inline-start:58px"><p style="margin:0 0 10px;font-size:var(--t-sm);line-height:1.7;color:var(--ink-2)">{{ d.body }}</p>
+<sc-if value="{{ d.hasCite }}" hint-placeholder-val="{{ false }}"><div style="display:flex;justify-content:space-between;gap:10px;padding:10px 12px;background:var(--surface-2);border:1px solid var(--rule-faint);border-radius:var(--r-sm)"><span class="ref">{{ d.cite }}</span><a href="#" style="font-size:var(--t-xs)">{{ d.citeLink }}</a></div></sc-if></div>
 </sc-if>
 </div>
 </sc-for>
-</section>
-
-<!-- ── SIMILAR ── -->
-<section style="padding:0 0 20px">
-<h2 style="margin:0 16px 10px;font-size:var(--t-h2);font-weight:500">{{ t.similarTitle }}</h2>
-<div class="scrollx" style="display:flex;gap:12px;padding:0 16px 6px">
-<sc-for list="{{ similar }}" as="p" hint-placeholder-count="3">
-<article class="card" style="flex:none;width:132px;overflow:hidden;cursor:pointer">
-<span class="img img-card ph {{ p.ph }}" style="border-radius:0;display:block"></span>
-<span style="display:block;padding:9px 10px 11px">
-<span style="display:block;font-size:var(--t-xs);line-height:1.45;height:33px;overflow:hidden">{{ p.title }}</span>
-<span class="num" style="display:block;font-size:var(--t-sm);font-weight:600;color:var(--ink);margin-top:5px"><bdi>{{ p.price }}</bdi></span>
-</span>
-</article>
-</sc-for>
+</aside>
 </div>
-</section>
 
+<div class="sech"><h2>{{ t.similarTitle }}</h2></div>
+<div class="simgrid">
+<sc-for list="{{ similar }}" as="p" hint-placeholder-count="3"><article class="pcard"><span class="img img-card ph {{ p.ph }}" style="border-radius:0"></span><div style="padding:14px 16px"><div class="clamp2" style="font-size:var(--t-body);min-height:42px">{{ p.title }}</div><div class="num" style="font-size:18px;font-weight:600;margin-top:6px"><bdi>{{ p.price }}</bdi></div></div></article></sc-for>
+</div>
+
+</div>
 </main>
 
-<!-- ── STICKY ACTION BAR — contact is the conversion, not "buy" ── -->
-<div style="position:fixed;inset-block-end:0;inset-inline:0;margin:0 auto;max-width:430px;display:flex;gap:9px;padding:11px 16px 15px;background:var(--surface);border-top:1px solid var(--rule);box-shadow:0 -2px 12px oklch(0.24 0.06 257 / 0.05)">
-<button type="button" onClick="{{ save }}" aria-label="{{ saveLabel }}" style="flex:none;width:50px;height:50px;border:1px solid var(--rule-strong);border-radius:var(--r);background:var(--surface);display:grid;place-items:center;cursor:pointer">
-<svg width="20" height="20" viewBox="0 0 24 24" fill="{{ heartFill }}" stroke="{{ heartStroke }}" stroke-width="1.9"><path d="M12 20s-7-4.4-7-9.3A4.2 4.2 0 0 1 12 8a4.2 4.2 0 0 1 7 2.7c0 4.9-7 9.3-7 9.3z"/></svg>
-</button>
-<button type="button" style="flex:1;height:50px;border:0;border-radius:var(--r);background:var(--brand);color:var(--ink-on);font-size:16px;font-weight:500;cursor:pointer">{{ t.message }}</button>
-<button type="button" style="flex:none;padding:0 16px;height:50px;border:1px solid var(--rule-strong);border-radius:var(--r);background:var(--surface);color:inherit;font-size:var(--t-sm);cursor:pointer">{{ t.askStock }}</button>
+<footer class="site-foot">
+<div class="container site-foot-in">
+<span class="site-brand"><svg width="20" height="20" viewBox="0 0 48 48" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 36V23a8 8 0 0 1 16 0v13"/><path d="M24 23a8 8 0 0 1 16 0v13"/></g></svg><span class="wordmark" style="font-size:16px">{{ sh.brand }}</span></span>
+<span class="grow">{{ sh.foot }}</span>
+<button type="button" class="link">{{ sh.business }}</button>
+<span>{{ sh.terms }}</span><span>{{ sh.privacy }}</span><span>{{ sh.help }}</span>
+</div>
+</footer>
 </div>
 
-</div>
-</div>
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:430,&quot;height&quot;:1900}}">
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:1700}}">
 class Component extends DCLogic {
   /* Locale: ?lang= in the URL, else the browser, else French. French is the fallback as Algeria's commercial
      lingua franca and the neutral middle between Arabic and English. One value. */
@@ -309,7 +272,8 @@ class Component extends DCLogic {
     const s = this.state, t = this.L[s.lang];
     const money = n => this.fmt(n, t.sep) + ' ' + t.cur;
     return {
-      rootRef: this.root, t, langs: this.langsFor(s.lang),
+      rootRef: this.root,
+      sh: window.MaabarShell(this.state.lang, 'public', 'market'), t, langs: this.langsFor(s.lang),
       arrow: t.dir === 'rtl' ? 1 : -1,
       backFlip: t.dir === 'rtl' ? -1 : 1,
 

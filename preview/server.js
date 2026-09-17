@@ -67,9 +67,11 @@ function inject(html) {
 
 http
   .createServer((req, res) => {
-    const url = decodeURIComponent(req.url.split('?')[0]);
+    let url = decodeURIComponent(req.url.split('?')[0]);
+    if (url === '/' || url === '/index') url = '/index.html';
 
-    if (url === '/' || url === '/index') {
+    // The design review hub (designs/index.html) is the front door; the plain list stays at /list.
+    if (url === '/list') {
       res.writeHead(200, { 'Content-Type': TYPES['.html'] });
       return res.end(indexPage());
     }

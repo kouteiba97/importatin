@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script src="./support.js"></script>
+<script src="./shell.js"></script>
 </head>
 <body>
 <x-dc>
@@ -12,173 +13,178 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="./tokens.css">
+<link rel="stylesheet" href="./web.css">
 <style>
-.scrollx{overflow-x:auto;scrollbar-width:none}
-.scrollx::-webkit-scrollbar{display:none}
-.sec{margin-bottom:18px}
-.sech{display:flex;justify-content:space-between;align-items:baseline;padding:0 16px 10px}
-.sech h2{margin:0;font-size:var(--t-h2);font-weight:500}
-.more{border:0;background:transparent;font-size:var(--t-sm);color:var(--brand-ink);cursor:pointer;padding:0}
-.tap{cursor:pointer}
-.meter{height:7px;border-radius:4px;background:oklch(1 0 0 / 0.22);overflow:hidden}
-.meter>i{display:block;height:100%;border-radius:4px;background:#fff}
+
+.trip-hero{border-radius:var(--r-lg);background:linear-gradient(150deg, oklch(0.330 0.080 254), oklch(0.240 0.060 257));color:#fff;padding:28px 30px;box-shadow:var(--e2)}
+.hero-meters{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:28px;padding-top:22px;border-top:1px solid oklch(1 0 0 / 0.16)}
+.hmeter{height:8px;border-radius:4px;background:oklch(1 0 0 / 0.2);overflow:hidden}
+.hmeter>i{display:block;height:100%;border-radius:4px;background:#fff}
+.drow{display:flex;align-items:center;gap:16px;padding:16px 20px}
+
 </style>
 </helmet>
 
-<div ref="{{ rootRef }}" dir="rtl" lang="ar" class="tier-op" style="min-height:100vh;display:flex;justify-content:center">
-<div style="width:100%;max-width:430px;min-height:100vh;display:flex;flex-direction:column;background:var(--paper);border-inline:1px solid var(--rule)">
+<div ref="{{ rootRef }}" dir="rtl" lang="ar" class="tier-op web">
+<div class="app">
 
-<header style="position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:10px;padding:11px 16px;background:var(--surface);border-bottom:1px solid var(--rule)">
-<span style="font-family:var(--font-display);font-weight:600;font-size:18px">{{ t.brand }}</span>
-<div role="group" aria-label="{{ t.context }}" style="display:flex;border:1px solid var(--rule-strong);border-radius:var(--r-sm);overflow:hidden;margin-inline-start:4px">
-<sc-for list="{{ ctx }}" as="c" hint-placeholder-count="2">
-<button type="button" onClick="{{ c.pick }}" aria-pressed="{{ c.on }}" style="height:28px;padding:0 11px;border:0;background:{{ c.bg }};color:{{ c.fg }};font-size:var(--t-xs);font-weight:500;cursor:pointer">{{ c.label }}</button>
+<aside class="rail">
+<div class="rail-brand"><svg width="28" height="28" viewBox="0 0 48 48" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 36V23a8 8 0 0 1 16 0v13"/><path d="M24 23a8 8 0 0 1 16 0v13"/></g></svg><span class="wordmark">{{ sh.brand }}</span></div>
+<div class="rail-role" style="background:{{ sh.roleBg }};color:{{ sh.roleFg }}">{{ sh.role }}</div>
+<nav class="rail-nav" aria-label="{{ sh.navLabel }}">
+<sc-for list="{{ sh.nav }}" as="n" hint-placeholder-count="7">
+<button type="button" class="rail-link" aria-current="{{ n.on }}"><span class="ri" aria-hidden="true">{{ n.icon }}</span><span class="lbl">{{ n.label }}</span><sc-if value="{{ n.hasBadge }}" hint-placeholder-val="{{ false }}"><span class="badge num">{{ n.badge }}</span></sc-if></button>
 </sc-for>
+<div class="rail-sep"></div>
+<button type="button" class="rail-link"><span class="ri" aria-hidden="true">{{ sh.icSettings }}</span><span class="lbl">{{ sh.settings }}</span></button>
+</nav>
+<div class="rail-user">
+<span class="av" style="width:38px;height:38px;font-size:12px;background:{{ sh.roleBg }};color:{{ sh.roleFg }}">{{ sh.userInitials }}</span>
+<div style="min-width:0"><div style="font-size:var(--t-sm);font-weight:600">{{ sh.userName }}</div><div style="font-size:var(--t-xs);color:var(--ink-3);margin-top:2px">{{ sh.userRole }}</div></div>
 </div>
+</aside>
+
+<div class="main">
+<header class="topbar">
+<div class="gsearch">{{ sh.icSearch }}<span>{{ sh.search }}</span><kbd>/</kbd></div>
 <div style="flex:1"></div>
-<div role="group" aria-label="{{ t.langLabel }}" style="display:flex;border:1px solid var(--rule-strong);border-radius:var(--r-sm);overflow:hidden;flex:none">
+<div class="langsw" role="group" aria-label="{{ sh.langLabel }}">
 <sc-for list="{{ langs }}" as="l" hint-placeholder-count="3">
-<button type="button" onClick="{{ l.pick }}" aria-pressed="{{ l.on }}" style="height:24px;padding:0 8px;border:0;background:{{ l.bg }};color:{{ l.fg }};font-size:var(--t-micro);font-weight:500;cursor:pointer">{{ l.short }}</button>
+<button type="button" onClick="{{ l.pick }}" aria-pressed="{{ l.on }}" style="background:{{ l.bg }};color:{{ l.fg }}">{{ l.short }}</button>
 </sc-for>
 </div>
-<button type="button" aria-label="{{ t.alerts }}" style="position:relative;width:36px;height:36px;border:0;background:transparent;cursor:pointer;display:grid;place-items:center;color:inherit">
-<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 9a6 6 0 0 1 12 0c0 5 2 6 2 6H4s2-1 2-6z"/><path d="M10.5 19.5a2 2 0 0 0 3 0"/></svg>
-<span aria-hidden="true" style="position:absolute;inset-block-start:5px;inset-inline-end:5px;width:7px;height:7px;border-radius:50%;background:var(--conditional)"></span>
-</button>
+<button type="button" class="iconbtn" aria-label="{{ sh.alerts }}">{{ sh.icBell }}<span class="dot"></span></button>
 </header>
 
-<main style="flex:1;padding:16px 0 84px">
+<div class="page">
 
-<!-- ══ THE TRIP — the whole job in one card ══ -->
-<section class="sec" style="padding:0 16px">
-<div style="border-radius:var(--r-lg);background:linear-gradient(155deg, oklch(0.330 0.080 254), oklch(0.240 0.060 257));color:#fff;padding:17px;box-shadow:var(--e1)">
+<div class="page-head">
+<div class="grow">
+<h1>{{ sh.current }}</h1>
+<p class="sub">{{ tripCounter }}</p>
+</div>
+<div role="group" aria-label="{{ t.context }}" class="langsw">
+<sc-for list="{{ ctx }}" as="c" hint-placeholder-count="2">
+<button type="button" onClick="{{ c.pick }}" aria-pressed="{{ c.on }}" style="height:40px;padding:0 16px;font-size:var(--t-sm);background:{{ c.bg }};color:{{ c.fg }}">{{ c.label }}</button>
+</sc-for>
+</div>
+<button type="button" class="btn btn-primary btn-lg">{{ t.openList }}</button>
+</div>
 
-<div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:16px">
+<!-- ══ ROW 1 — the trip, with its three limits side by side ══ -->
+<div class="split split-wide" style="margin-bottom:24px">
+<section class="trip-hero">
+<div style="display:flex;align-items:flex-start;gap:18px;margin-bottom:26px">
 <div style="flex:1;min-width:0">
-<div style="font-size:var(--t-xs);opacity:0.72;margin-bottom:4px">{{ t.nextTrip }}</div>
-<div style="font-size:24px;font-weight:600;line-height:1.25">{{ dest }}</div>
-<div class="num" style="font-size:var(--t-sm);opacity:0.82;margin-top:4px"><bdi>{{ dates }}</bdi></div>
+<div style="font-size:var(--t-sm);opacity:.72;margin-bottom:6px">{{ t.nextTrip }}</div>
+<div style="font-size:34px;font-weight:600;line-height:1.15">{{ dest }}</div>
+<div class="num" style="font-size:var(--t-body);opacity:.82;margin-top:6px"><bdi>{{ dates }}</bdi></div>
 </div>
-<div style="flex:none;text-align:center;background:oklch(1 0 0 / 0.14);border-radius:var(--r);padding:9px 12px">
-<div class="num" style="font-size:22px;font-weight:600;line-height:1"><bdi>{{ daysLeft }}</bdi></div>
-<div style="font-size:var(--t-micro);opacity:0.8;margin-top:3px">{{ t.daysToGo }}</div>
+<div style="flex:none;text-align:center;background:oklch(1 0 0 / 0.12);border-radius:var(--r);padding:14px 20px">
+<div class="num" style="font-size:34px;font-weight:600;line-height:1"><bdi>{{ daysLeft }}</bdi></div>
+<div style="font-size:var(--t-xs);opacity:.8;margin-top:5px">{{ t.daysToGo }}</div>
 </div>
 </div>
-
-<div style="display:flex;flex-direction:column;gap:11px">
+<div class="hero-meters">
 <sc-for list="{{ meters }}" as="m" hint-placeholder-count="3">
 <div>
-<div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:5px">
-<span style="font-size:var(--t-xs);opacity:0.8">{{ m.label }}</span>
-<span class="num" style="font-size:var(--t-sm);font-weight:500"><bdi>{{ m.text }}</bdi></span>
-</div>
-<div class="meter"><i style="width:{{ m.pct }}%;opacity:{{ m.op }}"></i></div>
-</div>
-</sc-for>
-</div>
-
-<div style="display:flex;align-items:center;gap:10px;margin-top:15px;padding-top:14px;border-top:1px solid oklch(1 0 0 / 0.16)">
-<span class="num" style="flex:1;font-size:var(--t-xs);opacity:0.82"><bdi>{{ tripCounter }}</bdi></span>
-<button type="button" style="height:38px;padding:0 16px;border:0;border-radius:var(--r-sm);background:#fff;color:oklch(0.275 0.070 256);font-size:var(--t-sm);font-weight:600;cursor:pointer">{{ t.openList }}</button>
-</div>
-</div>
-</section>
-
-<!-- ══ NEEDS ATTENTION ══ -->
-<section class="sec">
-<div class="sech"><h2>{{ t.attentionTitle }}</h2></div>
-<div style="margin:0 16px" class="card">
-<sc-for list="{{ attention }}" as="a" hint-placeholder-count="3">
-<div style="display:flex;gap:12px;padding:13px;border-bottom:1px solid var(--rule-faint)">
-<span aria-hidden="true" style="flex:none;width:32px;height:32px;border-radius:50%;background:{{ a.bg }};display:grid;place-items:center;color:{{ a.fg }}">{{ a.icon }}</span>
-<div style="flex:1;min-width:0">
-<div style="display:flex;align-items:baseline;gap:8px">
-<span style="flex:1;min-width:0;font-size:var(--t-body);font-weight:500">{{ a.title }}</span>
-<span class="num" style="flex:none;font-size:var(--t-micro);color:{{ a.fg }};font-weight:500"><bdi>{{ a.when }}</bdi></span>
-</div>
-<p style="margin:5px 0 0;font-size:var(--t-sm);color:var(--ink-2);line-height:1.6">{{ a.body }}</p>
-<button type="button" style="height:33px;padding:0 14px;margin-top:9px;border:1px solid var(--rule-strong);border-radius:var(--r-sm);background:var(--surface);color:inherit;font-size:var(--t-sm);font-weight:500;cursor:pointer">{{ a.cta }}</button>
-</div>
+<div style="font-size:var(--t-sm);opacity:.75;margin-bottom:6px">{{ m.label }}</div>
+<div class="num" style="font-size:20px;font-weight:600;margin-bottom:10px"><bdi>{{ m.text }}</bdi></div>
+<div class="hmeter"><i style="width:{{ m.pct }}%;opacity:{{ m.op }}"></i></div>
 </div>
 </sc-for>
 </div>
 </section>
 
-<!-- ══ WHAT THE MARKET WANTS ══ -->
-<section class="sec">
-<div class="sech">
-<h2>{{ t.demandTitle }}</h2>
-<button type="button" class="more">{{ t.demandLink }}</button>
+<section class="panel" style="background:var(--brand-bg);border-color:var(--brand-bd);height:100%;display:flex;flex-direction:column">
+<div class="panel-b" style="flex:1;display:flex;flex-direction:column">
+<div style="font-size:var(--t-xs);font-weight:600;color:var(--brand-ink);margin-bottom:10px">{{ t.nextStep }}</div>
+<div style="font-size:22px;font-weight:600;line-height:1.3;margin-bottom:10px">{{ next.title }}</div>
+<p style="margin:0 0 20px;font-size:var(--t-body);line-height:1.7;color:var(--ink-2);flex:1">{{ next.body }}</p>
+<button type="button" class="btn btn-primary btn-lg btn-block">{{ next.cta }}</button>
 </div>
-<div style="margin:0 16px" class="card">
+</section>
+</div>
+
+<!-- ══ ROW 2 — demand on the left, what needs you on the right ══ -->
+<div class="split">
+<div class="stack">
+
+<section class="panel">
+<div class="panel-h"><h2>{{ t.demandTitle }}</h2><button type="button" class="link">{{ t.demandLink }}</button></div>
+<div class="rows">
 <sc-for list="{{ demand }}" as="d" hint-placeholder-count="3">
-<button type="button" class="tap" style="width:100%;display:flex;align-items:center;gap:12px;padding:12px 13px;border:0;border-bottom:1px solid var(--rule-faint);background:transparent;color:inherit;text-align:start">
-<span class="img ph {{ d.ph }}" style="flex:none;width:46px;height:58px;border-radius:var(--r-sm);display:block"></span>
-<span style="flex:1;min-width:0">
-<span style="display:block;font-size:var(--t-body);font-weight:500">{{ d.name }}</span>
-<span style="display:flex;align-items:center;gap:6px;margin-top:6px">
-<span class="num" style="font-size:var(--t-h3);font-weight:600;color:var(--allowed-ink)"><bdi>{{ d.confirmed }}</bdi></span>
-<span style="font-size:var(--t-xs);color:var(--ink-2)">{{ confirmedWord }}</span>
-<span class="num" style="font-size:var(--t-sm);color:var(--ink-3);margin-inline-start:4px"><bdi>{{ d.interestedLine }}</bdi></span>
-</span>
-<span class="num" style="display:block;font-size:var(--t-xs);color:var(--ink-2);margin-top:5px"><bdi>{{ d.band }}</bdi></span>
-</span>
-<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--ink-3)" stroke-width="2" style="flex:none;transform:scaleX({{ arrow }})"><path d="M15 5l-7 7 7 7"/></svg>
-</button>
-</sc-for>
+<div class="drow">
+<span class="img ph {{ d.ph }}" style="flex:none;width:64px;height:76px;border-radius:var(--r-sm)"></span>
+<div style="flex:1;min-width:0">
+<div style="font-size:var(--t-h3);font-weight:600">{{ d.name }}</div>
+<div class="num" style="font-size:var(--t-sm);color:var(--ink-2);margin-top:6px"><bdi>{{ d.band }}</bdi></div>
 </div>
-</section>
-
-<!-- ══ AT RISK ══ -->
-<section class="sec">
-<div class="sech"><h2>{{ t.riskTitle }}</h2></div>
-<div style="margin:0 16px" class="card" style="margin:0 16px;padding:4px 13px">
-<sc-for list="{{ risks }}" as="r" hint-placeholder-count="2">
-<div style="display:flex;align-items:center;gap:11px;padding:12px 0;border-bottom:1px solid var(--rule-faint)">
-<span aria-hidden="true" style="flex:none;width:8px;height:8px;border-radius:50%;background:{{ r.dot }}"></span>
-<span style="flex:1;min-width:0;font-size:var(--t-sm)">{{ r.text }}</span>
-<button type="button" class="more" style="flex:none">{{ r.cta }}</button>
+<div style="flex:none;text-align:end;min-width:150px">
+<div><span class="num" style="font-size:24px;font-weight:600;color:var(--allowed-ink)"><bdi>{{ d.confirmed }}</bdi></span> <span style="font-size:var(--t-sm);color:var(--ink-2)">{{ confirmedWord }}</span></div>
+<div class="num" style="font-size:var(--t-sm);color:var(--ink-3);margin-top:4px"><bdi>{{ d.interestedLine }}</bdi></div>
+</div>
+<button type="button" class="btn">{{ t.openList }}</button>
 </div>
 </sc-for>
 </div>
 </section>
 
-<!-- ══ RECENT ══ -->
-<section class="sec">
-<div class="sech"><h2>{{ t.recentTitle }}</h2></div>
-<div style="margin:0 16px;padding:4px 13px" class="card">
+<section class="panel">
+<div class="panel-h"><h2>{{ t.recentTitle }}</h2></div>
+<div class="rows">
 <sc-for list="{{ recent }}" as="r" hint-placeholder-count="3">
-<div style="display:flex;align-items:baseline;gap:11px;padding:11px 0;border-bottom:1px solid var(--rule-faint)">
-<span style="flex:1;min-width:0;font-size:var(--t-sm);color:var(--ink-2)">{{ r.text }}</span>
-<span class="num" style="flex:none;font-size:var(--t-micro);color:var(--ink-3)"><bdi>{{ r.when }}</bdi></span>
+<div style="display:flex;align-items:baseline;gap:14px;padding:14px 20px">
+<span style="flex:1;min-width:0;font-size:var(--t-body);color:var(--ink-2)">{{ r.text }}</span>
+<span class="num" style="flex:none;font-size:var(--t-xs);color:var(--ink-3)"><bdi>{{ r.when }}</bdi></span>
 </div>
 </sc-for>
 </div>
 </section>
 
-<!-- ══ ONE NEXT STEP ══ -->
-<section style="margin:2px 16px 0;padding:15px;border:1px solid var(--brand-bd);border-radius:var(--r);background:var(--brand-bg)">
-<div style="font-size:var(--t-xs);color:var(--brand-ink);margin-bottom:6px">{{ t.nextStep }}</div>
-<div style="font-size:var(--t-h3);font-weight:500;margin-bottom:6px">{{ next.title }}</div>
-<p style="margin:0 0 12px;font-size:var(--t-sm);line-height:1.65;color:var(--ink-2)">{{ next.body }}</p>
-<button type="button" style="height:44px;padding:0 20px;border:0;border-radius:var(--r-sm);background:var(--brand);color:var(--ink-on);font-size:var(--t-sm);font-weight:500;cursor:pointer">{{ next.cta }}</button>
+</div>
+
+<div class="stack">
+<section class="panel">
+<div class="panel-h"><h2>{{ t.attentionTitle }}</h2></div>
+<div class="rows">
+<sc-for list="{{ attention }}" as="a" hint-placeholder-count="3">
+<div style="display:flex;gap:13px;padding:16px 20px">
+<span aria-hidden="true" style="flex:none;width:36px;height:36px;border-radius:50%;background:{{ a.bg }};display:grid;place-items:center;color:{{ a.fg }}">{{ a.icon }}</span>
+<div style="flex:1;min-width:0">
+<div style="font-size:var(--t-body);font-weight:600">{{ a.title }}</div>
+<div class="num" style="font-size:var(--t-xs);color:{{ a.fg }};font-weight:500;margin-top:3px"><bdi>{{ a.when }}</bdi></div>
+<p style="margin:7px 0 10px;font-size:var(--t-sm);color:var(--ink-2);line-height:1.6">{{ a.body }}</p>
+<button type="button" class="btn">{{ a.cta }}</button>
+</div>
+</div>
+</sc-for>
+</div>
 </section>
 
-</main>
-
-<nav aria-label="{{ t.navLabel }}" style="position:fixed;inset-block-end:0;inset-inline:0;margin:0 auto;max-width:430px;display:grid;grid-template-columns:repeat(5,1fr);background:var(--surface);border-top:1px solid var(--rule);padding-block:6px 8px">
-<sc-for list="{{ nav }}" as="n" hint-placeholder-count="5">
-<button type="button" aria-current="{{ n.on }}" style="display:flex;flex-direction:column;align-items:center;gap:3px;border:0;background:transparent;padding:5px 0;cursor:pointer;color:{{ n.fg }}">
-<span aria-hidden="true" style="width:21px;height:21px;display:grid;place-items:center">{{ n.icon }}</span>
-<span style="font-size:var(--t-micro);font-weight:{{ n.fw }}">{{ n.label }}</span>
-</button>
+<section class="panel">
+<div class="panel-h"><h2>{{ t.riskTitle }}</h2></div>
+<div class="rows">
+<sc-for list="{{ risks }}" as="r" hint-placeholder-count="2">
+<div style="display:flex;align-items:center;gap:12px;padding:14px 20px">
+<span aria-hidden="true" style="flex:none;width:9px;height:9px;border-radius:50%;background:{{ r.dot }}"></span>
+<span style="flex:1;min-width:0;font-size:var(--t-sm)">{{ r.text }}</span>
+<button type="button" class="link" style="flex:none">{{ r.cta }}</button>
+</div>
 </sc-for>
-</nav>
+</div>
+</section>
+</div>
+</div>
 
 </div>
 </div>
+
+</div>
+</div>
+
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:430,&quot;height&quot;:1580}}">
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:1180}}">
 class Component extends DCLogic {
   /* Locale: ?lang= in the URL, else the browser, else French. French is the fallback as Algeria's commercial
      lingua franca and the neutral middle between Arabic and English. One value. */
@@ -343,7 +349,8 @@ class Component extends DCLogic {
     };
 
     return {
-      rootRef: this.root, t, langs: this.langsFor(s.lang),
+      rootRef: this.root,
+      sh: window.MaabarShell(this.state.lang, 'importer', 'home'), t, langs: this.langsFor(s.lang),
       arrow: t.dir === 'rtl' ? 1 : -1,
       confirmedWord: t.confirmed,
 

@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script src="./support.js"></script>
+<script src="./shell.js"></script>
 </head>
 <body>
 <x-dc>
@@ -12,210 +13,203 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="./tokens.css">
+<link rel="stylesheet" href="./web.css">
 <style>
-.fld{display:block;font-size:var(--t-sm);color:var(--ink-2);margin-bottom:7px}
-.inp{width:100%;height:48px;padding:0 14px;border:1px solid var(--rule-strong);border-radius:var(--r);background:var(--surface);font-size:15px;color:inherit}
-.cta{width:100%;height:52px;border:0;border-radius:var(--r);background:var(--ink);color:var(--ink-on);font-size:16px;font-weight:600;cursor:pointer}
-.scrollx{overflow-x:auto;scrollbar-width:none}.scrollx::-webkit-scrollbar{display:none}
-.lock{display:flex;align-items:center;gap:5px;font-size:var(--t-micro);color:var(--ink-3)}
+
+.wz h2{margin:0 0 8px;font-size:26px;font-weight:600;line-height:1.3}
+.wz .lede{margin:0 0 26px;font-size:var(--t-body);color:var(--ink-2);line-height:1.7}
+.wz .sec{margin-bottom:24px}
+.chipbtn{height:40px;padding:0 16px;border:1px solid var(--rule-strong);border-radius:999px;background:var(--surface);font-size:var(--t-sm);cursor:pointer;display:inline-flex;align-items:center;gap:7px}
+.lock{display:flex;align-items:center;gap:6px;font-size:var(--t-xs);color:var(--ink-3)}
+.progress{height:6px;border-radius:3px;background:var(--neutral-bg);overflow:hidden}
+.progress>i{display:block;height:100%;background:var(--brand);border-radius:3px;transition:width .2s ease}
+.wz-foot{display:flex;gap:12px;align-items:center;padding-top:22px;margin-top:8px;border-top:1px solid var(--rule-faint)}
+
 </style>
 </helmet>
 
-<div ref="{{ rootRef }}" dir="rtl" lang="ar" class="tier-op" style="min-height:100vh;display:flex;justify-content:center">
-<div style="width:100%;max-width:430px;min-height:100vh;display:flex;flex-direction:column;background:var(--paper);border-inline:1px solid var(--rule)">
+<div ref="{{ rootRef }}" dir="rtl" lang="ar" class="tier-op web">
+<div class="app">
 
-<header style="display:flex;align-items:center;gap:10px;padding:11px 14px;background:var(--surface);border-bottom:1px solid var(--rule)">
-<button type="button" onClick="{{ back }}" aria-label="{{ t.back }}" style="width:34px;height:34px;border:0;background:transparent;cursor:pointer;display:grid;place-items:center;color:inherit">
-<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="transform:scaleX({{ backFlip }})"><path d="M15 5l-7 7 7 7"/></svg>
-</button>
-<span style="flex:1;font-size:var(--t-h3);font-weight:500">{{ t.title }}</span>
-<div role="group" aria-label="{{ t.langLabel }}" style="display:flex;border:1px solid var(--rule-strong);border-radius:var(--r-sm);overflow:hidden;flex:none">
+<aside class="rail">
+<div class="rail-brand"><svg width="28" height="28" viewBox="0 0 48 48" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 36V23a8 8 0 0 1 16 0v13"/><path d="M24 23a8 8 0 0 1 16 0v13"/></g></svg><span class="wordmark">{{ sh.brand }}</span></div>
+<div class="rail-role" style="background:{{ sh.roleBg }};color:{{ sh.roleFg }}">{{ sh.role }}</div>
+<nav class="rail-nav" aria-label="{{ sh.navLabel }}">
+<sc-for list="{{ sh.nav }}" as="n" hint-placeholder-count="7">
+<button type="button" class="rail-link" aria-current="{{ n.on }}"><span class="ri" aria-hidden="true">{{ n.icon }}</span><span class="lbl">{{ n.label }}</span><sc-if value="{{ n.hasBadge }}" hint-placeholder-val="{{ false }}"><span class="badge num">{{ n.badge }}</span></sc-if></button>
+</sc-for>
+<div class="rail-sep"></div>
+<button type="button" class="rail-link"><span class="ri" aria-hidden="true">{{ sh.icSettings }}</span><span class="lbl">{{ sh.settings }}</span></button>
+</nav>
+<div class="rail-user">
+<span class="av" style="width:38px;height:38px;font-size:12px;background:{{ sh.roleBg }};color:{{ sh.roleFg }}">{{ sh.userInitials }}</span>
+<div style="min-width:0"><div style="font-size:var(--t-sm);font-weight:600">{{ sh.userName }}</div><div style="font-size:var(--t-xs);color:var(--ink-3);margin-top:2px">{{ sh.userRole }}</div></div>
+</div>
+</aside>
+
+<div class="main">
+<header class="topbar">
+<div class="gsearch">{{ sh.icSearch }}<span>{{ sh.search }}</span><kbd>/</kbd></div>
+<div style="flex:1"></div>
+<div class="langsw" role="group" aria-label="{{ sh.langLabel }}">
 <sc-for list="{{ langs }}" as="l" hint-placeholder-count="3">
-<button type="button" onClick="{{ l.pick }}" aria-pressed="{{ l.on }}" style="height:24px;padding:0 8px;border:0;background:{{ l.bg }};color:{{ l.fg }};font-size:var(--t-micro);font-weight:500;cursor:pointer">{{ l.short }}</button>
+<button type="button" onClick="{{ l.pick }}" aria-pressed="{{ l.on }}" style="background:{{ l.bg }};color:{{ l.fg }}">{{ l.short }}</button>
 </sc-for>
 </div>
-<span class="num" style="font-size:var(--t-xs);color:var(--ink-3)"><bdi>{{ stepLabel }}</bdi></span>
+<button type="button" class="iconbtn" aria-label="{{ sh.alerts }}">{{ sh.icBell }}<span class="dot"></span></button>
 </header>
-<div style="height:3px;background:var(--neutral-bg)"><i style="display:block;height:100%;width:{{ progress }}%;background:var(--brand);transition:width .2s ease"></i></div>
 
-<main style="flex:1;padding:20px 16px 24px;display:flex;flex-direction:column;gap:18px">
+<div class="page">
 
-<!-- ══ 1 · WHERE & WHEN ══ -->
-<sc-if value="{{ is0 }}" hint-placeholder-val="{{ true }}">
-<div style="display:flex;flex-direction:column;gap:17px">
-<div>
-<h1 style="margin:0 0 7px;font-size:23px;font-weight:600">{{ t.s0Title }}</h1>
-<p style="margin:0;font-size:var(--t-body);color:var(--ink-2);line-height:1.7">{{ t.s0Lede }}</p>
+<div class="page-head">
+<div class="grow">
+<div class="crumb"><button type="button" onClick="{{ back }}" aria-label="{{ t.back }}" style="display:inline-flex;align-items:center;gap:6px"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="transform:scaleX({{ backFlip }})"><path d="M15 5l-7 7 7 7"/></svg>{{ sh.current }}</button></div>
+<h1>{{ t.title }}</h1>
 </div>
+<div style="min-width:280px">
+<div class="num" style="font-size:var(--t-sm);color:var(--ink-2);margin-bottom:8px;text-align:end"><bdi>{{ stepLabel }}</bdi></div>
+<div class="progress"><i style="width:{{ progress }}%"></i></div>
+</div>
+</div>
+
+<div class="split split-wide">
+<section class="panel wz"><div class="panel-b" style="padding:32px 36px">
+
+<sc-if value="{{ is0 }}" hint-placeholder-val="{{ true }}">
 <div>
-<label class="fld" for="dst">{{ t.destination }}</label>
-<div style="display:flex;align-items:center;gap:9px;height:48px;padding:0 14px;border:1px solid var(--rule-strong);border-radius:var(--r);background:var(--surface)">
-<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--ink-3)" stroke-width="2" style="flex:none"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+<h2>{{ t.s0Title }}</h2><p class="lede">{{ t.s0Lede }}</p>
+<div class="sec">
+<label class="field" for="dst">{{ t.destination }}</label>
+<div style="display:flex;align-items:center;gap:10px;height:48px;padding:0 14px;border:1px solid var(--rule-strong);border-radius:var(--r-sm);background:var(--surface)">
+<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--ink-3)" stroke-width="2" style="flex:none"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
 <input id="dst" value="{{ destName }}" placeholder="{{ t.destPh }}" style="flex:1;min-width:0;border:0;background:transparent;font-size:15px;color:inherit;outline:none">
 </div>
-<div style="font-size:var(--t-xs);color:var(--ink-3);margin:9px 0 8px">{{ t.mostUsed }}</div>
-<div class="scrollx" style="display:flex;gap:7px">
+<div style="font-size:var(--t-xs);color:var(--ink-3);margin:14px 0 9px">{{ t.mostUsed }}</div>
+<div class="fchips">
 <sc-for list="{{ dests }}" as="d" hint-placeholder-count="8">
-<button type="button" onClick="{{ d.pick }}" aria-pressed="{{ d.on }}" style="flex:none;height:36px;padding:0 13px;border:1px solid {{ d.bd }};border-radius:var(--r-pill);background:{{ d.bg }};color:{{ d.fg }};font-size:var(--t-sm);cursor:pointer;white-space:nowrap">{{ d.label }}</button>
+<button type="button" onClick="{{ d.pick }}" aria-pressed="{{ d.on }}" class="chipbtn" style="border-color:{{ d.bd }};background:{{ d.bg }};color:{{ d.fg }}">{{ d.label }}</button>
 </sc-for>
 </div>
 </div>
-<div style="display:flex;gap:11px">
-<div style="flex:1"><label class="fld" for="d1">{{ t.depart }}</label><input id="d1" class="inp num" value="{{ t.d1 }}"></div>
-<div style="flex:1"><label class="fld" for="d2">{{ t.ret }}</label><input id="d2" class="inp num" value="{{ t.d2 }}"></div>
+<div class="sec cols cols-3">
+<div><label class="field" for="d1">{{ t.depart }}</label><input id="d1" class="input num" value="{{ t.d1 }}"></div>
+<div><label class="field" for="d2">{{ t.ret }}</label><input id="d2" class="input num" value="{{ t.d2 }}"></div>
+<div><label class="field" for="ar">{{ t.arrival }}</label><input id="ar" class="input num" value="{{ t.d3 }}"></div>
 </div>
-<div><label class="fld" for="ar">{{ t.arrival }}</label><input id="ar" class="inp num" value="{{ t.d3 }}">
-<p style="margin:8px 0 0;font-size:var(--t-xs);color:var(--ink-3);line-height:1.65">{{ t.arrivalHint }}</p></div>
-
-<div class="card" style="padding:13px;display:flex;align-items:center;gap:11px">
-<span aria-hidden="true" style="flex:none;width:30px;height:30px;border-radius:50%;background:var(--allowed-bg);display:grid;place-items:center;font-size:13px;color:var(--allowed-ink)">✓</span>
-<div style="flex:1;min-width:0">
-<div style="font-size:var(--t-sm);font-weight:500">{{ tripOf }}</div>
-<div style="font-size:var(--t-micro);color:var(--ink-2);margin-top:2px">{{ t.tripLeft }}</div>
+<p style="margin:-10px 0 22px;font-size:var(--t-sm);color:var(--ink-3)">{{ t.arrivalHint }}</p>
+<div class="note" style="background:var(--allowed-bg);border-color:var(--allowed-bd);color:var(--ink)">
+<span class="i" style="color:var(--allowed-ink)">✓</span>
+<div><div style="font-weight:600">{{ tripOf }}</div><div style="font-size:var(--t-xs);color:var(--ink-2);margin-top:2px">{{ t.tripLeft }}</div></div>
 </div>
-</div>
-
-<button type="button" onClick="{{ next }}" class="cta">{{ t.cont }}</button>
+<div class="wz-foot"><div style="flex:1"></div><button type="button" onClick="{{ next }}" class="btn btn-dark btn-lg">{{ t.cont }}</button></div>
 </div>
 </sc-if>
 
-<!-- ══ 2 · CATEGORIES ══ -->
 <sc-if value="{{ is1 }}" hint-placeholder-val="{{ false }}">
-<div style="display:flex;flex-direction:column;gap:17px">
 <div>
-<h1 style="margin:0 0 7px;font-size:23px;font-weight:600">{{ t.s1Title }}</h1>
-<p style="margin:0;font-size:var(--t-body);color:var(--ink-2);line-height:1.7">{{ t.s1Lede }}</p>
-</div>
-<div style="display:flex;flex-wrap:wrap;gap:8px">
+<h2>{{ t.s1Title }}</h2><p class="lede">{{ t.s1Lede }}</p>
+<div class="fchips sec">
 <sc-for list="{{ cats }}" as="c" hint-placeholder-count="7">
-<button type="button" onClick="{{ c.pick }}" aria-pressed="{{ c.on }}" style="height:42px;padding:0 15px;border:1px solid {{ c.bd }};border-radius:var(--r-pill);background:{{ c.bg }};color:{{ c.fg }};font-size:var(--t-sm);font-weight:{{ c.fw }};cursor:pointer;display:flex;align-items:center;gap:7px">
-<sc-if value="{{ c.on }}" hint-placeholder-val="{{ false }}"><span aria-hidden="true" style="font-size:11px">✓</span></sc-if>
-{{ c.label }}
-</button>
+<button type="button" onClick="{{ c.pick }}" aria-pressed="{{ c.on }}" class="chipbtn" style="height:44px;border-color:{{ c.bd }};background:{{ c.bg }};color:{{ c.fg }};font-weight:{{ c.fw }}">
+<sc-if value="{{ c.on }}" hint-placeholder-val="{{ false }}"><span aria-hidden="true">✓</span></sc-if>{{ c.label }}</button>
 </sc-for>
 </div>
-<div class="card" style="padding:13px;display:flex;gap:11px">
-<span aria-hidden="true" style="flex:none;color:var(--ink-3)">i</span>
-<p style="margin:0;font-size:var(--t-xs);line-height:1.7;color:var(--ink-2)">{{ t.s1Note }}</p>
-</div>
-<button type="button" onClick="{{ next }}" class="cta">{{ t.cont }}</button>
+<div class="note"><span class="i">i</span><span>{{ t.s1Note }}</span></div>
+<div class="wz-foot"><div style="flex:1"></div><button type="button" onClick="{{ next }}" class="btn btn-dark btn-lg">{{ t.cont }}</button></div>
 </div>
 </sc-if>
 
-<!-- ══ 3 · CAPACITY — the three axes, clearly separated ══ -->
 <sc-if value="{{ is2 }}" hint-placeholder-val="{{ false }}">
-<div style="display:flex;flex-direction:column;gap:17px">
 <div>
-<h1 style="margin:0 0 7px;font-size:23px;font-weight:600">{{ t.s2Title }}</h1>
-<p style="margin:0;font-size:var(--t-body);color:var(--ink-2);line-height:1.7">{{ t.s2Lede }}</p>
+<h2>{{ t.s2Title }}</h2><p class="lede">{{ t.s2Lede }}</p>
+<div class="cols cols-2 sec">
+<div class="panel" style="border-color:var(--allowed-bd)"><div class="panel-b">
+<div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
+<span aria-hidden="true" style="flex:none;width:30px;height:30px;border-radius:50%;background:var(--allowed);color:#fff;display:grid;place-items:center">§</span>
+<div><div style="font-size:var(--t-h3);font-weight:600">{{ t.value }}</div><div class="lock"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg> {{ t.legalLock }}</div></div>
 </div>
-
-<!-- legal -->
-<div class="card" style="padding:15px;border-color:var(--allowed-bd)">
-<div style="display:flex;align-items:center;gap:9px;margin-bottom:11px">
-<span aria-hidden="true" style="flex:none;width:26px;height:26px;border-radius:50%;background:var(--allowed);color:#fff;display:grid;place-items:center;font-size:12px">§</span>
-<div style="flex:1;min-width:0">
-<div style="font-size:var(--t-h3);font-weight:600">{{ t.value }}</div>
-<div class="lock"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg> {{ t.legalLock }}</div>
+<div class="num" style="font-size:30px;font-weight:600"><bdi>{{ maxValue }}</bdi></div>
+<div class="num" style="font-size:var(--t-sm);color:var(--ink-2);margin-top:6px"><bdi>{{ valueNote }}</bdi></div>
+</div></div>
+<div class="panel"><div class="panel-b">
+<div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
+<span aria-hidden="true" style="flex:none;width:30px;height:30px;border-radius:50%;background:var(--neutral-bg);color:var(--ink-2);display:grid;place-items:center">✎</span>
+<div><div style="font-size:var(--t-h3);font-weight:600">{{ t.wv }}</div><div style="font-size:var(--t-xs);color:var(--ink-3)">{{ t.wvHint }}</div></div>
 </div>
+<div class="cols cols-2" style="gap:12px">
+<div><label class="field" for="wg">{{ t.weightKg }}</label><input id="wg" class="input num" value="46"></div>
+<div><label class="field" for="vl">{{ t.volM3 }}</label><input id="vl" class="input num" value="{{ volVal }}"></div>
 </div>
-<div class="num" style="font-size:26px;font-weight:600"><bdi>{{ maxValue }}</bdi></div>
-<div class="num" style="font-size:var(--t-xs);color:var(--ink-2);margin-top:5px"><bdi>{{ valueNote }}</bdi></div>
+<div class="fchips" style="margin-top:12px">
+<sc-for list="{{ presets }}" as="p" hint-placeholder-count="3"><button type="button" class="sw">{{ p }}</button></sc-for>
 </div>
-
-<!-- personal -->
-<div class="card" style="padding:15px">
-<div style="display:flex;align-items:center;gap:9px;margin-bottom:13px">
-<span aria-hidden="true" style="flex:none;width:26px;height:26px;border-radius:50%;background:var(--neutral-bg);color:var(--ink-2);display:grid;place-items:center;font-size:12px">✎</span>
-<div style="flex:1;min-width:0">
-<div style="font-size:var(--t-h3);font-weight:600">{{ t.wv }}</div>
-<div style="font-size:var(--t-micro);color:var(--ink-3);margin-top:1px">{{ t.wvHint }}</div>
+</div></div>
 </div>
-</div>
-<div style="display:flex;gap:11px">
-<div style="flex:1"><label class="fld" for="wg">{{ t.weightKg }}</label><input id="wg" class="inp num" inputMode="decimal" value="46"></div>
-<div style="flex:1"><label class="fld" for="vl">{{ t.volM3 }}</label><input id="vl" class="inp num" inputMode="decimal" value="{{ volVal }}"></div>
-</div>
-<div style="display:flex;gap:7px;margin-top:10px">
-<sc-for list="{{ presets }}" as="p" hint-placeholder-count="3">
-<button type="button" style="flex:none;height:32px;padding:0 11px;border:1px solid var(--rule-strong);border-radius:var(--r-pill);background:var(--surface);font-size:var(--t-micro);cursor:pointer;color:inherit">{{ p }}</button>
-</sc-for>
-</div>
-</div>
-
-<button type="button" onClick="{{ next }}" class="cta">{{ t.cont }}</button>
+<div class="wz-foot"><div style="flex:1"></div><button type="button" onClick="{{ next }}" class="btn btn-dark btn-lg">{{ t.cont }}</button></div>
 </div>
 </sc-if>
 
-<!-- ══ 4 · VISIBILITY ══ -->
 <sc-if value="{{ is3 }}" hint-placeholder-val="{{ false }}">
-<div style="display:flex;flex-direction:column;gap:17px">
 <div>
-<h1 style="margin:0 0 7px;font-size:23px;font-weight:600">{{ t.s3Title }}</h1>
-<p style="margin:0;font-size:var(--t-body);color:var(--ink-2);line-height:1.7">{{ t.s3Lede }}</p>
-</div>
-<div style="display:flex;flex-direction:column;gap:10px">
+<h2>{{ t.s3Title }}</h2><p class="lede">{{ t.s3Lede }}</p>
+<div class="cols cols-3 sec">
 <sc-for list="{{ visibility }}" as="v" hint-placeholder-count="3">
-<button type="button" onClick="{{ v.pick }}" aria-pressed="{{ v.on }}" class="card" style="padding:14px;display:flex;gap:11px;align-items:flex-start;text-align:start;cursor:pointer;color:inherit;border-color:{{ v.bd }};border-width:{{ v.bw }}px">
-<span aria-hidden="true" style="flex:none;width:19px;height:19px;border-radius:50%;border:2px solid {{ v.dotBd }};background:{{ v.dotBg }};display:grid;place-items:center;color:#fff;font-size:10px;margin-block-start:1px">{{ v.check }}</span>
-<span style="flex:1;min-width:0">
-<span style="display:block;font-size:var(--t-body);font-weight:500">{{ v.title }}</span>
-<span style="display:block;font-size:var(--t-sm);color:var(--ink-2);line-height:1.6;margin-top:3px">{{ v.body }}</span>
-</span>
+<button type="button" onClick="{{ v.pick }}" aria-pressed="{{ v.on }}" class="panel" style="padding:18px;display:flex;flex-direction:column;gap:10px;text-align:start;cursor:pointer;color:inherit;border-color:{{ v.bd }};border-width:{{ v.bw }}px">
+<span aria-hidden="true" style="width:22px;height:22px;border-radius:50%;border:2px solid {{ v.dotBd }};background:{{ v.dotBg }};display:grid;place-items:center;color:#fff;font-size:11px">{{ v.check }}</span>
+<span style="font-size:var(--t-body);font-weight:600">{{ v.title }}</span>
+<span style="font-size:var(--t-sm);color:var(--ink-2);line-height:1.6">{{ v.body }}</span>
 </button>
 </sc-for>
 </div>
-<button type="button" onClick="{{ next }}" class="cta">{{ t.cont }}</button>
+<div class="wz-foot"><div style="flex:1"></div><button type="button" onClick="{{ next }}" class="btn btn-dark btn-lg">{{ t.cont }}</button></div>
 </div>
 </sc-if>
 
-<!-- ══ 5 · REVIEW ══ -->
 <sc-if value="{{ is4 }}" hint-placeholder-val="{{ false }}">
-<div style="display:flex;flex-direction:column;gap:16px">
-<h1 style="margin:0;font-size:23px;font-weight:600">{{ t.s4Title }}</h1>
-
-<div class="card" style="padding:4px 15px">
+<div>
+<h2>{{ t.s4Title }}</h2>
+<div class="rows sec" style="border:1px solid var(--rule);border-radius:var(--r);margin-top:18px">
 <sc-for list="{{ review }}" as="r" hint-placeholder-count="6">
-<div style="display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:12px 0;border-bottom:1px solid var(--rule-faint)">
-<span style="font-size:var(--t-sm);color:var(--ink-2);flex:none">{{ r.k }}</span>
-<span class="num" style="font-size:var(--t-sm);font-weight:500;text-align:end"><bdi>{{ r.v }}</bdi></span>
-</div>
+<div style="display:flex;justify-content:space-between;gap:16px;padding:14px 18px"><span style="color:var(--ink-2)">{{ r.k }}</span><span class="num" style="font-weight:500;text-align:end"><bdi>{{ r.v }}</bdi></span></div>
 </sc-for>
 </div>
-
-<div style="display:flex;gap:11px;padding:14px;border:1px solid var(--conditional-bd);border-radius:var(--r);background:var(--conditional-bg)">
-<span aria-hidden="true" style="flex:none;width:26px;height:26px;border-radius:50%;background:var(--conditional);color:#fff;display:grid;place-items:center;font-size:13px;font-weight:600">!</span>
-<div style="flex:1">
-<div style="font-size:var(--t-sm);font-weight:600;margin-bottom:4px">{{ t.declareTitle }}</div>
-<p style="margin:0;font-size:var(--t-xs);line-height:1.7;color:var(--ink-2)">{{ t.declareBody }}</p>
-</div>
-</div>
-
-<button type="button" onClick="{{ next }}" class="cta" style="background:var(--brand)">{{ t.publish }}</button>
-<button type="button" style="width:100%;height:48px;border:1px solid var(--rule-strong);border-radius:var(--r);background:transparent;color:inherit;font-size:15px;cursor:pointer">{{ t.saveDraft }}</button>
+<div class="note" style="background:var(--conditional-bg);border-color:var(--conditional-bd);color:var(--ink)"><span class="i" style="color:var(--conditional-ink)">!</span><div><div style="font-weight:600">{{ t.declareTitle }}</div><div style="color:var(--ink-2);margin-top:3px">{{ t.declareBody }}</div></div></div>
+<div class="wz-foot"><button type="button" class="btn btn-lg">{{ t.saveDraft }}</button><div style="flex:1"></div><button type="button" onClick="{{ next }}" class="btn btn-primary btn-lg">{{ t.publish }}</button></div>
 </div>
 </sc-if>
 
-<!-- ══ 6 · PUBLISHED ══ -->
 <sc-if value="{{ is5 }}" hint-placeholder-val="{{ false }}">
-<div style="display:flex;flex-direction:column;gap:18px;padding-top:14px">
-<div style="text-align:center">
-<span aria-hidden="true" style="display:inline-grid;place-items:center;width:62px;height:62px;border-radius:50%;background:var(--allowed-bg);color:var(--allowed-ink);font-size:28px;margin-bottom:13px">✓</span>
-<h1 style="margin:0 0 8px;font-size:23px;font-weight:600">{{ t.s5Title }}</h1>
-<p class="num" style="margin:0;font-size:var(--t-body);line-height:1.7;color:var(--ink-2)"><bdi>{{ publishedLede }}</bdi></p>
-</div>
-<div style="display:flex;flex-direction:column;gap:9px">
-<button type="button" class="cta" style="background:var(--brand)">{{ t.openBoard }}</button>
-<button type="button" style="width:100%;height:48px;border:1px solid var(--rule-strong);border-radius:var(--r);background:transparent;color:inherit;font-size:15px;cursor:pointer">{{ t.viewTrip }}</button>
-</div>
+<div style="text-align:center;padding:30px 0">
+<span aria-hidden="true" style="display:inline-grid;place-items:center;width:72px;height:72px;border-radius:50%;background:var(--allowed-bg);color:var(--allowed-ink);font-size:32px;margin-bottom:16px">✓</span>
+<h2>{{ t.s5Title }}</h2>
+<p class="lede num"><bdi>{{ publishedLede }}</bdi></p>
+<div style="display:flex;gap:12px;justify-content:center"><button type="button" class="btn btn-primary btn-lg">{{ t.openBoard }}</button><button type="button" class="btn btn-lg">{{ t.viewTrip }}</button></div>
 </div>
 </sc-if>
 
-</main>
+</div></section>
+
+<aside class="stack sticky">
+<section class="panel">
+<div class="panel-h"><h2>{{ t.s4Title }}</h2></div>
+<div class="rows">
+<sc-for list="{{ review }}" as="r" hint-placeholder-count="6">
+<div style="padding:12px 20px"><div style="font-size:var(--t-xs);color:var(--ink-3)">{{ r.k }}</div><div class="num" style="font-size:var(--t-sm);font-weight:500;margin-top:3px"><bdi>{{ r.v }}</bdi></div></div>
+</sc-for>
+</div>
+</section>
+<div class="note"><span class="i">!</span><span>{{ t.declareBody }}</span></div>
+</aside>
+</div>
+
 </div>
 </div>
+
+</div>
+</div>
+
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:430,&quot;height&quot;:900}}">
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:1100}}">
 class Component extends DCLogic {
   /* Locale: ?lang= in the URL, else the browser, else French. French is the fallback as Algeria's commercial
      lingua franca and the neutral middle between Arabic and English. One value. */
@@ -362,7 +356,8 @@ class Component extends DCLogic {
     const money = this.fmt(this.PARAMS.maxValue, t.sep) + ' ' + t.cur;
 
     return {
-      rootRef: this.root, t, langs: this.langsFor(s.lang),
+      rootRef: this.root,
+      sh: window.MaabarShell(this.state.lang, 'importer', 'trip'), t, langs: this.langsFor(s.lang),
       backFlip: t.dir === 'rtl' ? -1 : 1,
 
       stepLabel: s.step < this.N - 1 ? this.iso(t.step(s.step + 1, this.N - 1)) : '',

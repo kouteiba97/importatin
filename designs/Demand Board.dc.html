@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script src="./support.js"></script>
+<script src="./shell.js"></script>
 </head>
 <body>
 <x-dc>
@@ -12,239 +13,145 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="./tokens.css">
+<link rel="stylesheet" href="./web.css">
 <style>
-/* ============================================================
-   RESPONSIVE APP SHELL — one document, two shapes.
-   Phone keeps bottom tabs. From 1140px a persistent rail replaces
-   them and the capacity panel pins beside the list instead of
-   stacking above it. This is a web platform that happens to work
-   well on a phone, not a phone app stretched onto a desktop.
-   ============================================================ */
-.app{min-height:100vh;display:flex;background:var(--paper)}
 
-/* In RTL the first flex child sits on the right — correct for the rail. */
-.rail{display:none;flex:none;width:232px;background:var(--surface);
-      border-inline-end:1px solid var(--rule);flex-direction:column;
-      position:sticky;top:0;height:100vh}
-.railtop{padding:16px 16px 13px;border-bottom:1px solid var(--rule);display:flex;align-items:center;gap:11px}
-.railnav{padding:11px 9px;display:flex;flex-direction:column;gap:2px;flex:1}
-.raillink{display:flex;align-items:center;gap:11px;padding:10px 11px;border:0;border-radius:var(--r-sm);
-          background:transparent;color:var(--ink-2);font-size:var(--t-body);cursor:pointer;text-align:start;width:100%}
-.raillink:hover{background:var(--surface-2)}
-.raillink[aria-current="true"]{background:var(--brand-bg);color:var(--brand-ink);font-weight:600}
-
-.body{flex:1;min-width:0;display:flex;flex-direction:column}
-.shellpad{width:100%;max-width:430px;margin:0 auto;padding-inline:16px}
-.topbar{position:sticky;top:0;z-index:20;background:var(--surface);border-bottom:1px solid var(--rule)}
-.content{padding:14px 16px 128px;display:grid;grid-template-columns:1fr;gap:12px;align-content:start}
-/* the pinned panel is desktop-only; on phone the header strip carries capacity */
-.side{display:none}
-.list{display:flex;flex-direction:column;gap:12px;min-width:0}
-.tabs{position:fixed;inset-block-end:0;inset-inline:0;margin:0 auto;max-width:430px;
-      display:grid;grid-template-columns:repeat(5,1fr);background:var(--surface);
-      border-top:1px solid var(--rule);padding-block:6px 8px;z-index:20}
-
-@media (min-width:1140px){
-  .rail{display:flex}
-  .tabs{display:none}
-  .shellpad{max-width:none;padding-inline:26px}
-  .content{max-width:1180px;margin:0 auto;padding:22px 26px 44px;
-           grid-template-columns:minmax(0,1fr) 336px;gap:24px;align-items:start}
-  .side{display:block;position:sticky;top:104px}
-  .list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
-  .only-sm{display:none !important}
-}
-@media (min-width:1600px){
-  .content{max-width:1440px}
-  .list{grid-template-columns:repeat(3,minmax(0,1fr))}
-}
-
-.scrollx{overflow-x:auto;scrollbar-width:none}
-.scrollx::-webkit-scrollbar{display:none}
-.meter{height:5px;border-radius:3px;background:var(--neutral-bg);overflow:hidden}
-.meter>i{display:block;height:100%;border-radius:3px;transition:width .18s ease}
-.step{width:34px;height:34px;border:1px solid var(--rule-strong);border-radius:var(--r-sm);background:var(--surface);font-size:17px;line-height:1;cursor:pointer;color:inherit;display:grid;place-items:center}
-.track{position:relative;height:5px;border-radius:3px;background:var(--neutral-bg)}
+.dgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
+@media (min-width:1500px){.dgrid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.meter{height:7px;border-radius:4px;background:var(--neutral-bg);overflow:hidden}
+.meter>i{display:block;height:100%;border-radius:4px;transition:width .18s ease}
+.step{width:38px;height:38px;border:1px solid var(--rule-strong);border-radius:var(--r-sm);background:var(--surface);font-size:18px;cursor:pointer;color:inherit;display:grid;place-items:center}
+.track{position:relative;height:6px;border-radius:3px;background:var(--neutral-bg)}
 .track>b{position:absolute;top:0;height:100%;border-radius:3px;background:var(--brand)}
+
 </style>
 </helmet>
 
-<div ref="{{ rootRef }}" dir="rtl" lang="ar" class="app tier-op">
+<div ref="{{ rootRef }}" dir="rtl" lang="ar" class="tier-op web">
+<div class="app">
 
-<!-- ══ RAIL — desktop only ══ -->
-<nav class="rail" aria-label="{{ t.navLabel }}">
-<div class="railtop">
-<span style="color:var(--brand);display:grid;place-items:center;flex:none">
-<svg width="26" height="26" viewBox="0 0 48 48" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="4.4" stroke-linecap="round" stroke-linejoin="round"><path d="M8 36V23a8 8 0 0 1 16 0v13"/><path d="M24 23a8 8 0 0 1 16 0v13"/></g></svg>
-</span>
-<span style="font-family:var(--font-display);font-weight:600;font-size:19px">{{ t.brand }}</span>
-</div>
-<div class="railnav">
-<sc-for list="{{ nav }}" as="n" hint-placeholder-count="5">
-<button type="button" class="raillink" aria-current="{{ n.on }}">
-<span aria-hidden="true" style="flex:none;display:grid;place-items:center">{{ n.icon }}</span>
-<span style="flex:1;min-width:0">{{ n.label }}</span>
-</button>
+<aside class="rail">
+<div class="rail-brand"><svg width="28" height="28" viewBox="0 0 48 48" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 36V23a8 8 0 0 1 16 0v13"/><path d="M24 23a8 8 0 0 1 16 0v13"/></g></svg><span class="wordmark">{{ sh.brand }}</span></div>
+<div class="rail-role" style="background:{{ sh.roleBg }};color:{{ sh.roleFg }}">{{ sh.role }}</div>
+<nav class="rail-nav" aria-label="{{ sh.navLabel }}">
+<sc-for list="{{ sh.nav }}" as="n" hint-placeholder-count="7">
+<button type="button" class="rail-link" aria-current="{{ n.on }}"><span class="ri" aria-hidden="true">{{ n.icon }}</span><span class="lbl">{{ n.label }}</span><sc-if value="{{ n.hasBadge }}" hint-placeholder-val="{{ false }}"><span class="badge num">{{ n.badge }}</span></sc-if></button>
 </sc-for>
-</div>
-<div style="padding:12px 14px;border-top:1px solid var(--rule);display:flex;align-items:center;gap:9px">
-<span aria-hidden="true" style="flex:none;width:30px;height:30px;border-radius:50%;background:var(--role-importer-bg);display:grid;place-items:center;font-size:11px;font-weight:600;color:var(--role-importer-ink)">{{ t.userInitials }}</span>
-<div style="flex:1;min-width:0">
-<div style="font-size:var(--t-xs);font-weight:500">{{ t.userName }}</div>
-<div style="font-size:var(--t-micro);color:var(--ink-3)">{{ t.userRole }}</div>
-</div>
-</div>
+<div class="rail-sep"></div>
+<button type="button" class="rail-link"><span class="ri" aria-hidden="true">{{ sh.icSettings }}</span><span class="lbl">{{ sh.settings }}</span></button>
 </nav>
-
-<div class="body">
-
-<header class="topbar">
-<div class="shellpad" style="display:flex;align-items:center;gap:12px;padding-block:12px 10px">
-<span style="font-size:var(--t-h2);font-weight:600">{{ t.title }}</span>
-<div style="flex:1"></div>
-<span class="num" style="font-size:var(--t-xs);color:var(--ink-3)"><bdi>{{ basis }}</bdi></span>
-<div role="group" aria-label="{{ t.langLabel }}" style="display:flex;border:1px solid var(--rule-strong);border-radius:var(--r-sm);overflow:hidden;flex:none">
-<sc-for list="{{ langs }}" as="l" hint-placeholder-count="3">
-<button type="button" onClick="{{ l.pick }}" aria-pressed="{{ l.on }}" style="height:24px;padding:0 8px;border:0;background:{{ l.bg }};color:{{ l.fg }};font-size:var(--t-micro);font-weight:500;cursor:pointer">{{ l.short }}</button>
-</sc-for>
-</div>
-</div>
-
-<!-- capacity strip: phone only — on desktop it lives in the pinned panel -->
-<div class="shellpad only-sm" style="padding-block:0 11px">
-<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
-<span style="font-size:var(--t-xs);color:var(--ink-2);flex:1">{{ tripLabel }}</span>
-<span class="num" style="font-size:var(--t-micro);color:var(--ink-3)"><bdi>{{ tripCounter }}</bdi></span>
-</div>
-<div style="display:flex;gap:10px">
-<sc-for list="{{ meters }}" as="m" hint-placeholder-count="3">
-<div style="flex:1">
-<div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:4px">
-<span style="font-size:var(--t-micro);color:var(--ink-3)">{{ m.label }}</span>
-<span class="num" style="font-size:var(--t-micro);font-weight:600;color:{{ m.fg }}"><bdi>{{ m.left }}</bdi></span>
-</div>
-<div class="meter"><i style="width:{{ m.pct }}%;background:{{ m.fg }}"></i></div>
-</div>
-</sc-for>
-</div>
-</div>
-
-<div class="shellpad scrollx" style="display:flex;gap:7px;padding-block:0 11px">
-<sc-for list="{{ filters }}" as="f" hint-placeholder-count="5">
-<button type="button" onClick="{{ f.pick }}" aria-pressed="{{ f.on }}" style="flex:none;height:31px;padding:0 12px;border:1px solid {{ f.bd }};border-radius:var(--r-pill);background:{{ f.bg }};color:{{ f.fg }};font-size:var(--t-sm);cursor:pointer">{{ f.label }}</button>
-</sc-for>
-</div>
-</header>
-
-<div class="content">
-
-<!-- ══ PINNED CAPACITY PANEL — desktop only ══ -->
-<aside class="side">
-<div class="card sidecard" style="padding:15px">
-<div style="font-size:var(--t-h3);font-weight:600;margin-bottom:4px">{{ tripLabel }}</div>
-<div class="num" style="font-size:var(--t-xs);color:var(--ink-3);margin-bottom:15px"><bdi>{{ tripCounter }}</bdi></div>
-<div style="display:flex;flex-direction:column;gap:13px">
-<sc-for list="{{ meters }}" as="m" hint-placeholder-count="3">
-<div>
-<div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:5px">
-<span style="font-size:var(--t-sm);color:var(--ink-2)">{{ m.label }}</span>
-<span class="num" style="font-size:var(--t-sm);font-weight:600;color:{{ m.fg }}"><bdi>{{ m.left }}</bdi></span>
-</div>
-<div class="meter" style="height:7px"><i style="width:{{ m.pct }}%;background:{{ m.fg }}"></i></div>
-</div>
-</sc-for>
-</div>
-<sc-if value="{{ hasList }}" hint-placeholder-val="{{ true }}">
-<div style="margin-top:17px;padding-top:15px;border-top:1px solid var(--rule-faint)">
-<div style="font-size:var(--t-xs);color:var(--ink-3);margin-bottom:5px">{{ t.buyingList }}</div>
-<div class="num" style="font-size:var(--t-body);font-weight:600;margin-bottom:13px"><bdi>{{ listSummary }}</bdi></div>
-<button type="button" style="width:100%;height:44px;border:0;border-radius:var(--r-sm);background:var(--brand);color:var(--ink-on);font-size:var(--t-sm);font-weight:600;cursor:pointer">{{ t.openList }}</button>
-</div>
-</sc-if>
+<div class="rail-user">
+<span class="av" style="width:38px;height:38px;font-size:12px;background:{{ sh.roleBg }};color:{{ sh.roleFg }}">{{ sh.userInitials }}</span>
+<div style="min-width:0"><div style="font-size:var(--t-sm);font-weight:600">{{ sh.userName }}</div><div style="font-size:var(--t-xs);color:var(--ink-3);margin-top:2px">{{ sh.userRole }}</div></div>
 </div>
 </aside>
 
-<main class="list">
-<sc-for list="{{ items }}" as="it" hint-placeholder-count="4">
-<article class="card" style="padding:13px;display:flex;flex-direction:column;gap:11px">
+<div class="main">
+<header class="topbar">
+<div class="gsearch">{{ sh.icSearch }}<span>{{ sh.search }}</span><kbd>/</kbd></div>
+<div style="flex:1"></div>
+<div class="langsw" role="group" aria-label="{{ sh.langLabel }}">
+<sc-for list="{{ langs }}" as="l" hint-placeholder-count="3">
+<button type="button" onClick="{{ l.pick }}" aria-pressed="{{ l.on }}" style="background:{{ l.bg }};color:{{ l.fg }}">{{ l.short }}</button>
+</sc-for>
+</div>
+<button type="button" class="iconbtn" aria-label="{{ sh.alerts }}">{{ sh.icBell }}<span class="dot"></span></button>
+</header>
 
-<div style="display:flex;gap:12px">
-<span class="img ph {{ it.ph }}" style="flex:none;width:62px;height:78px;border-radius:var(--r-sm);display:block"></span>
+<div class="page">
+
+<div class="page-head">
+<div class="grow"><h1>{{ t.title }}</h1><p class="sub num"><bdi>{{ basis }}</bdi></p></div>
+<div class="fchips">
+<sc-for list="{{ filters }}" as="f" hint-placeholder-count="5">
+<button type="button" onClick="{{ f.pick }}" aria-pressed="{{ f.on }}" class="fchip" style="border-color:{{ f.bd }};background:{{ f.bg }};color:{{ f.fg }}">{{ f.label }}</button>
+</sc-for>
+</div>
+</div>
+
+<div class="split">
+<main class="dgrid">
+<sc-for list="{{ items }}" as="it" hint-placeholder-count="4">
+<article class="panel" style="padding:18px;display:flex;flex-direction:column;gap:14px">
+<div style="display:flex;gap:14px">
+<span class="img ph {{ it.ph }}" style="flex:none;width:76px;height:94px;border-radius:var(--r-sm)"></span>
 <div style="flex:1;min-width:0">
 <div style="display:flex;align-items:flex-start;gap:8px">
-<h2 style="margin:0;flex:1;min-width:0;font-size:var(--t-h3);font-weight:500;line-height:1.4">{{ it.name }}</h2>
-<span class="chip {{ it.compChip }}" style="height:20px;font-size:var(--t-micro);flex:none">{{ it.comp }}</span>
+<h2 style="margin:0;flex:1;min-width:0;font-size:var(--t-h3);font-weight:600;line-height:1.4">{{ it.name }}</h2>
+<span class="chip {{ it.compChip }}" style="flex:none">{{ it.comp }}</span>
 </div>
-<div style="font-size:var(--t-xs);color:var(--ink-2);margin-top:5px">{{ it.wilayas }}</div>
-<div style="display:flex;align-items:baseline;gap:7px;margin-top:9px">
-<span class="num" style="font-size:24px;font-weight:600;line-height:1;color:var(--allowed-ink)"><bdi>{{ it.confirmed }}</bdi></span>
+<div style="font-size:var(--t-sm);color:var(--ink-2);margin-top:6px">{{ it.wilayas }}</div>
+<div style="display:flex;align-items:baseline;gap:8px;margin-top:10px;flex-wrap:wrap">
+<span class="num" style="font-size:28px;font-weight:600;line-height:1;color:var(--allowed-ink)"><bdi>{{ it.confirmed }}</bdi></span>
 <span style="font-size:var(--t-sm);color:var(--ink-2)">{{ confirmedWord }}</span>
-<span class="num" style="font-size:var(--t-sm);color:var(--ink-3);margin-inline-start:3px"><bdi>{{ it.interestedLine }}</bdi></span>
+<span class="num" style="font-size:var(--t-sm);color:var(--ink-3)"><bdi>{{ it.interestedLine }}</bdi></span>
 </div>
 </div>
 </div>
-
-<div style="padding:11px 0;border-block:1px solid var(--rule-faint)">
-<div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:7px">
+<div style="padding:13px 0;border-block:1px solid var(--rule-faint)">
+<div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px">
 <span style="font-size:var(--t-xs);color:var(--ink-3)">{{ refPrice }}</span>
 <span class="num" style="font-size:var(--t-sm);font-weight:600"><bdi>{{ it.band }}</bdi></span>
 </div>
 <div class="track"><b style="inset-inline-start:{{ it.bandStart }}%;width:{{ it.bandWidth }}%"></b></div>
-<div class="num" style="display:flex;justify-content:space-between;font-size:9.5px;color:var(--ink-3);margin-top:5px"><bdi>{{ it.trackLo }}</bdi><bdi>{{ it.trackHi }}</bdi></div>
+<div class="num" style="display:flex;justify-content:space-between;font-size:var(--t-micro);color:var(--ink-3);margin-top:6px"><bdi>{{ it.trackLo }}</bdi><bdi>{{ it.trackHi }}</bdi></div>
 </div>
-
 <sc-if value="{{ it.hasNote }}" hint-placeholder-val="{{ false }}">
-<div style="display:flex;gap:8px;padding:10px 11px;background:{{ it.noteBg }};border:1px solid {{ it.noteBd }};border-radius:var(--r-sm)">
-<span aria-hidden="true" style="flex:none;font-weight:600;color:{{ it.noteFg }};font-size:var(--t-sm)">!</span>
-<p style="margin:0;font-size:var(--t-xs);line-height:1.6;color:var(--ink-2)">{{ it.note }}</p>
+<div style="display:flex;gap:9px;padding:11px 12px;background:{{ it.noteBg }};border:1px solid {{ it.noteBd }};border-radius:var(--r-sm)">
+<span aria-hidden="true" style="flex:none;font-weight:600;color:{{ it.noteFg }}">!</span>
+<p style="margin:0;font-size:var(--t-sm);line-height:1.6;color:var(--ink-2)">{{ it.note }}</p>
 </div>
 </sc-if>
-
 <sc-if value="{{ it.inList }}" hint-placeholder-val="{{ false }}">
-<div style="display:flex;align-items:center;gap:9px;margin-top:auto">
+<div style="display:flex;align-items:center;gap:10px;margin-top:auto">
 <div style="flex:1;min-width:0">
-<div class="num" style="font-size:var(--t-sm);font-weight:500"><bdi>{{ it.inListLine }}</bdi></div>
-<div class="num" style="font-size:var(--t-micro);color:var(--ink-3);margin-top:2px"><bdi>{{ it.lineCost }}</bdi></div>
+<div class="num" style="font-size:var(--t-body);font-weight:600"><bdi>{{ it.inListLine }}</bdi></div>
+<div class="num" style="font-size:var(--t-xs);color:var(--ink-3);margin-top:3px"><bdi>{{ it.lineCost }}</bdi></div>
 </div>
 <button type="button" class="step" onClick="{{ it.dec }}" aria-label="{{ less }}">−</button>
 <button type="button" class="step" onClick="{{ it.inc }}" aria-label="{{ more }}">+</button>
 </div>
 </sc-if>
-
 <sc-if value="{{ it.notInList }}" hint-placeholder-val="{{ true }}">
-<button type="button" onClick="{{ it.add }}" disabled="{{ it.blocked }}" style="height:44px;margin-top:auto;border:0;border-radius:var(--r-sm);background:{{ it.addBg }};color:{{ it.addFg }};font-size:var(--t-sm);font-weight:500;cursor:pointer">{{ it.addLabel }}</button>
+<button type="button" onClick="{{ it.add }}" disabled="{{ it.blocked }}" class="btn btn-lg btn-block" style="margin-top:auto;border:0;background:{{ it.addBg }};color:{{ it.addFg }}">{{ it.addLabel }}</button>
 </sc-if>
-
 </article>
 </sc-for>
 </main>
 
+<aside class="stack sticky">
+<section class="panel">
+<div class="panel-h" style="flex-direction:column;align-items:flex-start;gap:4px"><h2>{{ tripLabel }}</h2><span class="meta num"><bdi>{{ tripCounter }}</bdi></span></div>
+<div class="panel-b" style="display:flex;flex-direction:column;gap:16px">
+<sc-for list="{{ meters }}" as="m" hint-placeholder-count="3">
+<div>
+<div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px">
+<span style="font-size:var(--t-sm);color:var(--ink-2)">{{ m.label }}</span>
+<span class="num" style="font-size:var(--t-body);font-weight:600;color:{{ m.fg }}"><bdi>{{ m.left }}</bdi></span>
 </div>
+<div class="meter"><i style="width:{{ m.pct }}%;background:{{ m.fg }}"></i></div>
 </div>
-
-<!-- ══ BOTTOM TABS — phone only ══ -->
-<nav class="tabs" aria-label="{{ t.navLabel }}">
-<sc-for list="{{ nav }}" as="n" hint-placeholder-count="5">
-<button type="button" aria-current="{{ n.on }}" style="display:flex;flex-direction:column;align-items:center;gap:3px;border:0;background:transparent;padding:5px 0;cursor:pointer;color:{{ n.tabFg }}">
-<span aria-hidden="true" style="width:21px;height:21px;display:grid;place-items:center">{{ n.icon }}</span>
-<span style="font-size:var(--t-micro);font-weight:{{ n.fw }}">{{ n.label }}</span>
-</button>
 </sc-for>
-</nav>
-
-<sc-if value="{{ hasList }}" hint-placeholder-val="{{ true }}">
-<div class="only-sm" style="position:fixed;inset-block-end:62px;inset-inline:0;margin:0 auto;max-width:430px;display:flex;align-items:center;gap:12px;padding:12px 16px;background:var(--surface);border-top:1px solid var(--rule);box-shadow:0 -2px 14px oklch(0.24 0.06 257 / 0.06);z-index:19">
-<div style="flex:1;min-width:0">
-<div style="font-size:var(--t-sm);font-weight:500">{{ t.buyingList }}</div>
-<div class="num" style="font-size:var(--t-xs);color:var(--ink-2);margin-top:2px"><bdi>{{ listSummary }}</bdi></div>
 </div>
-<button type="button" style="flex:none;height:46px;padding:0 20px;border:0;border-radius:var(--r);background:var(--brand);color:var(--ink-on);font-size:var(--t-sm);font-weight:600;cursor:pointer">{{ t.openList }}</button>
+<sc-if value="{{ hasList }}" hint-placeholder-val="{{ true }}">
+<div class="panel-f">
+<div style="font-size:var(--t-xs);color:var(--ink-3);margin-bottom:5px">{{ t.buyingList }}</div>
+<div class="num" style="font-size:var(--t-body);font-weight:600;margin-bottom:14px"><bdi>{{ listSummary }}</bdi></div>
+<button type="button" class="btn btn-primary btn-lg btn-block">{{ t.openList }}</button>
 </div>
 </sc-if>
+</section>
+</aside>
+</div>
 
 </div>
+</div>
+
+</div>
+</div>
+
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1280,&quot;height&quot;:920}}">
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:1200}}">
 class Component extends DCLogic {
   /* Locale: ?lang= in the URL, else the browser, else French. French is the fallback as Algeria's commercial
      lingua franca and the neutral middle between Arabic and English. One value. */
@@ -453,7 +360,8 @@ class Component extends DCLogic {
     const units = inList.reduce((a, it) => a + s.qty[it.id], 0);
 
     return {
-      rootRef: this.root, t, langs: this.langsFor(s.lang),
+      rootRef: this.root,
+      sh: window.MaabarShell(this.state.lang, 'importer', 'demand'), t, langs: this.langsFor(s.lang),
       confirmedWord: t.confirmed, refPrice: t.refPrice, less: t.less, more: t.more,
 
       basis: this.iso(t.basis),

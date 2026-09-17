@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script src="./support.js"></script>
+<script src="./shell.js"></script>
 </head>
 <body>
 <x-dc>
@@ -12,209 +13,191 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="./tokens.css">
+<link rel="stylesheet" href="./web.css">
 <style>
-.sech{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px}
-.sech h2{margin:0;font-size:var(--t-h2);font-weight:500}
-.more{border:0;background:transparent;font-size:var(--t-sm);color:var(--brand-ink);cursor:pointer;padding:0}
+
+.stats3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.labelbox{border:1.5px dashed var(--rule-strong);border-radius:var(--r);padding:20px;background:var(--surface-2)}
+
 </style>
 </helmet>
 
-<div ref="{{ rootRef }}" dir="rtl" lang="ar" class="tier-op" style="min-height:100vh;display:flex;justify-content:center">
-<div style="width:100%;max-width:430px;min-height:100vh;display:flex;flex-direction:column;background:var(--paper);border-inline:1px solid var(--rule)">
+<div ref="{{ rootRef }}" dir="rtl" lang="ar" class="tier-op web">
+<div class="app">
 
-<header style="position:sticky;top:0;z-index:20;background:var(--surface);border-bottom:1px solid var(--rule)">
-<div style="display:flex;align-items:center;gap:10px;padding:11px 16px 9px">
-<span style="font-size:var(--t-h2);font-weight:600;flex:1">{{ t.title }}</span>
-<div role="group" aria-label="{{ t.langLabel }}" style="display:flex;border:1px solid var(--rule-strong);border-radius:var(--r-sm);overflow:hidden;flex:none">
-<sc-for list="{{ langs }}" as="l" hint-placeholder-count="3">
-<button type="button" onClick="{{ l.pick }}" aria-pressed="{{ l.on }}" style="height:24px;padding:0 8px;border:0;background:{{ l.bg }};color:{{ l.fg }};font-size:var(--t-micro);font-weight:500;cursor:pointer">{{ l.short }}</button>
+<aside class="rail">
+<div class="rail-brand"><svg width="28" height="28" viewBox="0 0 48 48" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 36V23a8 8 0 0 1 16 0v13"/><path d="M24 23a8 8 0 0 1 16 0v13"/></g></svg><span class="wordmark">{{ sh.brand }}</span></div>
+<div class="rail-role" style="background:{{ sh.roleBg }};color:{{ sh.roleFg }}">{{ sh.role }}</div>
+<nav class="rail-nav" aria-label="{{ sh.navLabel }}">
+<sc-for list="{{ sh.nav }}" as="n" hint-placeholder-count="7">
+<button type="button" class="rail-link" aria-current="{{ n.on }}"><span class="ri" aria-hidden="true">{{ n.icon }}</span><span class="lbl">{{ n.label }}</span><sc-if value="{{ n.hasBadge }}" hint-placeholder-val="{{ false }}"><span class="badge num">{{ n.badge }}</span></sc-if></button>
 </sc-for>
-</div>
-</div>
-<nav aria-label="{{ t.sections }}" style="display:grid;grid-template-columns:repeat(3,1fr)">
-<sc-for list="{{ tabs }}" as="tb" hint-placeholder-count="3">
-<button type="button" onClick="{{ tb.pick }}" aria-current="{{ tb.on }}" style="height:42px;border:0;border-bottom:2px solid {{ tb.bd }};background:transparent;color:{{ tb.fg }};font-size:var(--t-body);font-weight:{{ tb.fw }};cursor:pointer">{{ tb.label }}</button>
-</sc-for>
+<div class="rail-sep"></div>
+<button type="button" class="rail-link"><span class="ri" aria-hidden="true">{{ sh.icSettings }}</span><span class="lbl">{{ sh.settings }}</span></button>
 </nav>
+<div class="rail-user">
+<span class="av" style="width:38px;height:38px;font-size:12px;background:{{ sh.roleBg }};color:{{ sh.roleFg }}">{{ sh.userInitials }}</span>
+<div style="min-width:0"><div style="font-size:var(--t-sm);font-weight:600">{{ sh.userName }}</div><div style="font-size:var(--t-xs);color:var(--ink-3);margin-top:2px">{{ sh.userRole }}</div></div>
+</div>
+</aside>
+
+<div class="main">
+<header class="topbar">
+<div class="gsearch">{{ sh.icSearch }}<span>{{ sh.search }}</span><kbd>/</kbd></div>
+<div style="flex:1"></div>
+<div class="langsw" role="group" aria-label="{{ sh.langLabel }}">
+<sc-for list="{{ langs }}" as="l" hint-placeholder-count="3">
+<button type="button" onClick="{{ l.pick }}" aria-pressed="{{ l.on }}" style="background:{{ l.bg }};color:{{ l.fg }}">{{ l.short }}</button>
+</sc-for>
+</div>
+<button type="button" class="iconbtn" aria-label="{{ sh.alerts }}">{{ sh.icBell }}<span class="dot"></span></button>
 </header>
 
-<main style="flex:1;padding:16px 16px 30px;display:flex;flex-direction:column;gap:16px">
+<div class="page">
 
-<!-- ══════ LEDGER ══════ -->
+<div class="page-head"><div class="grow"><h1>{{ t.title }}</h1></div></div>
+
+<nav class="tabs-h" aria-label="{{ t.sections }}">
+<sc-for list="{{ tabs }}" as="tb" hint-placeholder-count="3">
+<button type="button" onClick="{{ tb.pick }}" aria-current="{{ tb.on }}" class="tab-h">{{ tb.label }}</button>
+</sc-for>
+</nav>
+
 <sc-if value="{{ isLedger }}" hint-placeholder-val="{{ true }}">
-<div style="display:flex;flex-direction:column;gap:16px">
-
-<section class="card" style="padding:15px">
-<div class="sech"><h2>{{ t.thisMonth }}</h2></div>
-<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--rule);border:1px solid var(--rule);border-radius:var(--r-sm);overflow:hidden">
+<div class="stack">
+<div>
+<div style="font-size:var(--t-sm);color:var(--ink-3);margin-bottom:10px">{{ t.thisMonth }}</div>
+<div class="stats stats3">
 <sc-for list="{{ summary }}" as="s" hint-placeholder-count="3">
-<div style="background:var(--surface);padding:12px 7px;text-align:center">
-<div class="num" style="font-size:17px;font-weight:600;line-height:1.2"><bdi>{{ s.v }}</bdi></div>
-<div style="font-size:var(--t-micro);color:var(--ink-2);margin-top:3px">{{ s.k }}</div>
-</div>
+<div class="stat"><div class="v num"><bdi>{{ s.v }}</bdi></div><div class="k">{{ s.k }}</div></div>
 </sc-for>
 </div>
-</section>
-
-<section>
-<div class="sech">
-<h2>{{ t.ops }}</h2>
-<button type="button" class="more">{{ t.export }}</button>
 </div>
-<div class="card">
+<div class="split">
+<section class="panel">
+<div class="panel-h"><h2>{{ t.ops }}</h2><button type="button" class="btn">{{ t.export }}</button></div>
+<div class="rows">
 <sc-for list="{{ entries }}" as="e" hint-placeholder-count="5">
-<div style="display:flex;gap:11px;padding:12px 13px;border-bottom:1px solid var(--rule-faint)">
-<span aria-hidden="true" style="flex:none;width:3px;align-self:stretch;border-radius:2px;background:{{ e.bar }}"></span>
+<div style="display:flex;gap:14px;align-items:center;padding:15px 20px">
+<span aria-hidden="true" style="flex:none;width:4px;align-self:stretch;border-radius:2px;background:{{ e.bar }}"></span>
 <div style="flex:1;min-width:0">
-<div style="display:flex;align-items:baseline;gap:8px">
-<span style="flex:1;min-width:0;font-size:var(--t-body);font-weight:500">{{ e.what }}</span>
-<span class="num" style="flex:none;font-size:var(--t-sm);font-weight:600"><bdi>{{ e.amount }}</bdi></span>
+<div style="font-size:var(--t-body);font-weight:600">{{ e.what }}</div>
+<div class="num" style="font-size:var(--t-sm);color:var(--ink-2);margin-top:3px"><bdi>{{ e.meta }}</bdi></div>
 </div>
-<div class="num" style="font-size:var(--t-xs);color:var(--ink-2);margin-top:4px"><bdi>{{ e.meta }}</bdi></div>
-</div>
+<span class="num" style="flex:none;font-size:var(--t-h3);font-weight:600"><bdi>{{ e.amount }}</bdi></span>
 </div>
 </sc-for>
 </div>
 </section>
-
-<section style="display:flex;gap:10px;padding:13px 14px;border:1px solid var(--rule);border-radius:var(--r);background:var(--surface-2)">
-<span aria-hidden="true" style="flex:none;color:var(--ink-3)">i</span>
-<p style="margin:0;font-size:var(--t-xs);line-height:1.65;color:var(--ink-2)">{{ t.ledgerNote }}</p>
-</section>
-
+<aside class="stack sticky">
+<div class="note"><span class="i">i</span><span>{{ t.ledgerNote }}</span></div>
+</aside>
+</div>
 </div>
 </sc-if>
 
-<!-- ══════ LABELS — Article 14 ══════ -->
 <sc-if value="{{ isLabels }}" hint-placeholder-val="{{ false }}">
-<div style="display:flex;flex-direction:column;gap:16px">
-
-<section>
-<div class="sech"><h2>{{ t.pickItem }}</h2></div>
-<div class="card">
+<div class="cols cols-3">
+<section class="panel">
+<div class="panel-h"><h2>{{ t.pickItem }}</h2></div>
+<div class="rows">
 <sc-for list="{{ items }}" as="it" hint-placeholder-count="3">
-<button type="button" onClick="{{ it.pick }}" aria-pressed="{{ it.on }}" style="width:100%;display:flex;align-items:center;gap:11px;padding:12px 13px;border:0;border-bottom:1px solid var(--rule-faint);background:{{ it.bg }};text-align:start;cursor:pointer;color:inherit">
-<span aria-hidden="true" style="flex:none;width:3px;align-self:stretch;border-radius:2px;background:{{ it.bar }}"></span>
-<span class="img ph {{ it.ph }}" style="flex:none;width:38px;height:46px;border-radius:var(--r-sm);display:block"></span>
-<span style="flex:1;min-width:0">
-<span style="display:block;font-size:var(--t-body);font-weight:{{ it.fw }}">{{ it.name }}</span>
-<span class="num" style="display:block;font-size:var(--t-xs);color:var(--ink-2);margin-top:3px"><bdi>{{ it.meta }}</bdi></span>
-</span>
+<button type="button" onClick="{{ it.pick }}" aria-pressed="{{ it.on }}" style="width:100%;display:flex;align-items:center;gap:12px;padding:14px 18px;border:0;background:{{ it.bg }};text-align:start;cursor:pointer;color:inherit">
+<span aria-hidden="true" style="flex:none;width:4px;align-self:stretch;border-radius:2px;background:{{ it.bar }}"></span>
+<span class="img ph {{ it.ph }}" style="flex:none;width:44px;height:54px;border-radius:var(--r-sm)"></span>
+<span style="flex:1;min-width:0"><span style="display:block;font-size:var(--t-body);font-weight:{{ it.fw }}">{{ it.name }}</span><span class="num" style="display:block;font-size:var(--t-xs);color:var(--ink-2);margin-top:3px"><bdi>{{ it.meta }}</bdi></span></span>
 </button>
 </sc-for>
 </div>
 </section>
 
-<section>
-<div class="sech"><h2>{{ t.label }}</h2></div>
-<div class="card" style="padding:15px">
-<div dir="rtl" lang="ar" style="border:1.5px dashed var(--rule-strong);border-radius:var(--r-sm);padding:14px;background:var(--surface-2)">
+<section class="panel">
+<div class="panel-h"><h2>{{ t.label }}</h2></div>
+<div class="panel-b">
+<div dir="rtl" lang="ar" class="labelbox">
 <sc-for list="{{ labelRows }}" as="r" hint-placeholder-count="4">
-<div style="display:grid;grid-template-columns:72px 1fr;gap:4px 10px;padding:5px 0;border-top:1px solid var(--rule-faint)">
-<span style="font-size:var(--t-micro);color:var(--ink-3);padding-top:2px">{{ r.k }}</span>
-<span style="font-size:var(--t-sm);font-weight:{{ r.fw }};line-height:1.45"><bdi>{{ r.v }}</bdi></span>
+<div style="display:grid;grid-template-columns:90px 1fr;gap:10px;padding:8px 0;border-top:1px solid var(--rule-faint)">
+<span style="font-size:var(--t-xs);color:var(--ink-3);padding-top:2px">{{ r.k }}</span>
+<span style="font-size:var(--t-body);font-weight:{{ r.fw }};line-height:1.5"><bdi>{{ r.v }}</bdi></span>
 </div>
 </sc-for>
 </div>
-<p style="margin:11px 0 0;font-size:var(--t-xs);color:var(--ink-2);line-height:1.6">{{ t.labelNote }}</p>
-</div>
-</section>
-
-<section>
-<div class="sech"><h2>{{ t.deliveryNote }}</h2></div>
-<div class="card" style="padding:4px 14px">
-<sc-for list="{{ noteRows }}" as="r" hint-placeholder-count="5">
-<div style="display:flex;justify-content:space-between;align-items:baseline;gap:14px;padding:11px 0;border-bottom:1px solid var(--rule-faint)">
-<span style="font-size:var(--t-sm);color:var(--ink-2)">{{ r.k }}</span>
-<span class="num" style="font-size:var(--t-body);font-weight:{{ r.fw }}"><bdi>{{ r.v }}</bdi></span>
-</div>
-</sc-for>
-</div>
-</section>
-
+<p style="margin:14px 0 0;font-size:var(--t-sm);color:var(--ink-2);line-height:1.6">{{ t.labelNote }}</p>
 <sc-if value="{{ missingAddr }}" hint-placeholder-val="{{ false }}">
-<div role="alert" style="display:flex;gap:10px;padding:13px 14px;background:var(--conditional-bg);border:1px solid var(--conditional-bd);border-radius:var(--r)">
-<span aria-hidden="true" style="flex:none;font-weight:600;color:var(--conditional-ink)">!</span>
-<span style="font-size:var(--t-sm);line-height:1.6">{{ t.missingAddr }}</span>
-</div>
+<div role="alert" class="note" style="margin-top:12px;background:var(--conditional-bg);border-color:var(--conditional-bd)"><span class="i" style="color:var(--conditional-ink)">!</span><span>{{ t.missingAddr }}</span></div>
 </sc-if>
-
-<div style="display:flex;gap:9px">
-<button type="button" style="flex:1;height:50px;border:0;border-radius:var(--r);background:var(--brand);color:var(--ink-on);font-size:15px;font-weight:600;cursor:pointer">{{ printLabel }}</button>
-<button type="button" style="flex:none;padding:0 16px;height:50px;border:1px solid var(--rule-strong);border-radius:var(--r);background:var(--surface);color:inherit;font-size:var(--t-sm);cursor:pointer">PDF</button>
 </div>
-
-</div>
-</sc-if>
-
-<!-- ══════ SUBSCRIPTION ══════ -->
-<sc-if value="{{ isCredits }}" hint-placeholder-val="{{ false }}">
-<div style="display:flex;flex-direction:column;gap:16px">
-
-<section class="card" style="padding:16px">
-<div style="display:flex;align-items:baseline;gap:9px;margin-bottom:6px">
-<span class="num" style="font-size:34px;font-weight:600;line-height:1"><bdi>{{ daysLeft }}</bdi></span>
-<span style="font-size:var(--t-body);color:var(--ink-2)">{{ t.daysLeft }}</span>
-</div>
-<div style="font-size:var(--t-sm);color:var(--ink-2)">{{ planName }}</div>
-<div style="height:6px;border-radius:3px;background:var(--neutral-bg);overflow:hidden;margin-top:12px"><i style="display:block;height:100%;width:{{ planPct }}%;background:var(--brand);border-radius:3px"></i></div>
-<div class="num" style="font-size:var(--t-xs);color:var(--ink-3);margin-top:6px"><bdi>{{ planUntil }}</bdi></div>
+<div class="panel-f" style="display:flex;gap:10px"><button type="button" class="btn btn-primary btn-lg" style="flex:1">{{ printLabel }}</button><button type="button" class="btn btn-lg">PDF</button></div>
 </section>
 
-<section>
-<div class="sech"><h2>{{ t.renew }}</h2></div>
-<div class="card">
+<section class="panel">
+<div class="panel-h"><h2>{{ t.deliveryNote }}</h2></div>
+<div class="rows">
+<sc-for list="{{ noteRows }}" as="r" hint-placeholder-count="5">
+<div style="display:flex;justify-content:space-between;gap:14px;padding:13px 20px"><span style="font-size:var(--t-sm);color:var(--ink-2)">{{ r.k }}</span><span class="num" style="font-size:var(--t-body);font-weight:{{ r.fw }}"><bdi>{{ r.v }}</bdi></span></div>
+</sc-for>
+</div>
+</section>
+</div>
+</sc-if>
+
+<sc-if value="{{ isCredits }}" hint-placeholder-val="{{ false }}">
+<div class="split">
+<div class="stack">
+<section class="panel">
+<div class="panel-h"><h2>{{ t.renew }}</h2></div>
+<div class="cols cols-3 panel-b">
 <sc-for list="{{ plans }}" as="p" hint-placeholder-count="3">
-<label style="display:flex;align-items:center;gap:12px;padding:13px;border-bottom:1px solid var(--rule-faint);cursor:pointer">
-<input type="radio" name="plan" checked="{{ p.on }}" style="accent-color:var(--brand);width:18px;height:18px;flex:none">
-<span style="flex:1;min-width:0">
-<span style="display:block;font-size:var(--t-body);font-weight:500">{{ p.label }}</span>
-<span class="num" style="display:block;font-size:var(--t-xs);color:var(--ink-2);margin-top:2px"><bdi>{{ p.note }}</bdi></span>
-</span>
-<span class="num" style="flex:none;font-size:var(--t-h3);font-weight:600"><bdi>{{ p.price }}</bdi></span>
+<label class="panel" style="padding:18px;cursor:pointer;display:flex;flex-direction:column;gap:8px">
+<span style="display:flex;align-items:center;gap:8px"><input type="radio" name="plan" checked="{{ p.on }}" style="accent-color:var(--brand);width:18px;height:18px"><span class="num" style="font-size:var(--t-h3);font-weight:600"><bdi>{{ p.label }}</bdi></span></span>
+<span class="num" style="font-size:24px;font-weight:600"><bdi>{{ p.price }}</bdi></span>
+<span class="num" style="font-size:var(--t-sm);color:var(--ink-2)"><bdi>{{ p.note }}</bdi></span>
 </label>
 </sc-for>
 </div>
 </section>
-
-<section>
-<div class="sech"><h2>{{ t.payMethod }}</h2></div>
-<div class="card">
+<section class="panel">
+<div class="panel-h"><h2>{{ t.payMethod }}</h2></div>
+<div class="cols cols-2 panel-b">
 <sc-for list="{{ methods }}" as="m" hint-placeholder-count="2">
-<button type="button" onClick="{{ m.pick }}" aria-pressed="{{ m.on }}" style="width:100%;display:flex;align-items:center;gap:12px;padding:13px;border:0;border-bottom:1px solid var(--rule-faint);background:{{ m.bg }};text-align:start;cursor:pointer;color:inherit">
-<span aria-hidden="true" style="flex:none;width:34px;height:34px;border-radius:var(--r-sm);background:{{ m.iconBg }};display:grid;place-items:center;font-size:var(--t-micro);font-weight:600;color:{{ m.iconFg }}">{{ m.tag }}</span>
-<span style="flex:1;min-width:0">
-<span style="display:block;font-size:var(--t-body);font-weight:{{ m.fw }}">{{ m.label }}</span>
-<span style="display:block;font-size:var(--t-xs);color:var(--ink-2);margin-top:2px">{{ m.note }}</span>
-</span>
+<button type="button" onClick="{{ m.pick }}" aria-pressed="{{ m.on }}" class="panel" style="display:flex;align-items:center;gap:13px;padding:16px;background:{{ m.bg }};text-align:start;cursor:pointer;color:inherit">
+<span aria-hidden="true" style="flex:none;width:44px;height:44px;border-radius:var(--r-sm);background:{{ m.iconBg }};display:grid;place-items:center;font-size:var(--t-xs);font-weight:600;color:{{ m.iconFg }}">{{ m.tag }}</span>
+<span style="flex:1;min-width:0"><span style="display:block;font-size:var(--t-body);font-weight:{{ m.fw }}">{{ m.label }}</span><span style="display:block;font-size:var(--t-xs);color:var(--ink-2);margin-top:3px">{{ m.note }}</span></span>
 </button>
 </sc-for>
 </div>
-</section>
-
 <sc-if value="{{ isCcp }}" hint-placeholder-val="{{ true }}">
-<section class="card" style="padding:15px">
-<div class="sech"><h2>{{ t.uploadReceipt }}</h2></div>
-<button type="button" style="width:100%;height:104px;border:1.5px dashed var(--rule-strong);border-radius:var(--r);background:var(--surface-2);cursor:pointer;color:var(--ink-2);font-size:var(--t-sm);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px">
-<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 16V6M8 10l4-4 4 4"/><path d="M4 18h16"/></svg>
-{{ t.snapReceipt }}
-</button>
-<p style="margin:11px 0 0;font-size:var(--t-xs);color:var(--ink-2);line-height:1.6">{{ t.activation }}</p>
+<div class="panel-f">
+<div style="font-size:var(--t-sm);font-weight:600;margin-bottom:10px">{{ t.uploadReceipt }}</div>
+<button type="button" style="width:100%;height:110px;border:1.5px dashed var(--rule-strong);border-radius:var(--r);background:var(--surface-2);cursor:pointer;color:var(--ink-2);font-size:var(--t-sm);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px">
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 16V6M8 10l4-4 4 4"/><path d="M4 18h16"/></svg>{{ t.snapReceipt }}</button>
+<p style="margin:10px 0 0;font-size:var(--t-xs);color:var(--ink-2)">{{ t.activation }}</p>
+</div>
+</sc-if>
 </section>
-</sc-if>
-
-<button type="button" style="height:52px;border:0;border-radius:var(--r);background:var(--ink);color:var(--ink-on);font-size:16px;font-weight:600;cursor:pointer">{{ payCta }}</button>
-
+</div>
+<aside class="stack sticky">
+<section class="panel"><div class="panel-b">
+<div style="display:flex;align-items:baseline;gap:9px"><span class="num" style="font-size:40px;font-weight:600;line-height:1"><bdi>{{ daysLeft }}</bdi></span><span style="color:var(--ink-2)">{{ t.daysLeft }}</span></div>
+<div style="font-size:var(--t-body);margin-top:8px">{{ planName }}</div>
+<div style="height:7px;border-radius:4px;background:var(--neutral-bg);overflow:hidden;margin-top:14px"><i style="display:block;height:100%;width:{{ planPct }}%;background:var(--brand)"></i></div>
+<div class="num" style="font-size:var(--t-xs);color:var(--ink-3);margin-top:8px"><bdi>{{ planUntil }}</bdi></div>
+</div>
+<div class="panel-f"><button type="button" class="btn btn-dark btn-lg btn-block">{{ payCta }}</button></div>
+</section>
 <p style="margin:0;font-size:var(--t-xs);color:var(--ink-3);line-height:1.65">{{ t.subNote }}</p>
-
+</aside>
 </div>
 </sc-if>
 
-</main>
 </div>
 </div>
+
+</div>
+</div>
+
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:430,&quot;height&quot;:1320}}">
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:1000}}">
 class Component extends DCLogic {
   /* Locale: ?lang= in the URL, else the browser, else French. French is the fallback as Algeria's commercial
      lingua franca and the neutral middle between Arabic and English. One value. */
@@ -361,7 +344,8 @@ class Component extends DCLogic {
     const money = n => this.fmt(n, t.sep) + ' ' + t.cur;
 
     return {
-      rootRef: this.root, t, langs: this.langsFor(s.lang),
+      rootRef: this.root,
+      sh: window.MaabarShell(this.state.lang, 'importer', 'rec'), t, langs: this.langsFor(s.lang),
 
       tabs: this.TAB_IDS.map((id, i) => ({
         label: t.tabs[i], on: s.tab === id,

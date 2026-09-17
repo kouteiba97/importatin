@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script src="./support.js"></script>
+<script src="./shell.js"></script>
 </head>
 <body>
 <x-dc>
@@ -12,211 +13,168 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="./tokens.css">
+<link rel="stylesheet" href="./web.css">
 <style>
-.scrollx{overflow-x:auto;scrollbar-width:none}.scrollx::-webkit-scrollbar{display:none}
-.sw{flex:none;height:27px;padding:0 10px;border:1px solid var(--rule-strong);border-radius:var(--r-pill);background:var(--surface);font-size:var(--t-micro);cursor:pointer;color:inherit}
-.ta{width:100%;min-height:98px;padding:12px 14px;border:1px solid var(--rule-strong);border-radius:var(--r);background:var(--surface);font-size:15px;color:inherit;line-height:1.65;resize:vertical}
-.cta{width:100%;height:52px;border:0;border-radius:var(--r);background:var(--ink);color:var(--ink-on);font-size:16px;font-weight:600;cursor:pointer}
+.center{max-width:760px;margin:0 auto;padding:36px;text-align:center}
 </style>
 </helmet>
 
-<div ref="{{ rootRef }}" dir="rtl" lang="ar" class="tier-op" style="min-height:100vh;display:flex;justify-content:center">
-<div style="width:100%;max-width:430px;min-height:100vh;display:flex;flex-direction:column;background:var(--paper);border-inline:1px solid var(--rule)">
+<div ref="{{ rootRef }}" dir="rtl" lang="ar" class="tier-op web">
+<div class="app">
 
-<header style="display:flex;align-items:center;gap:10px;padding:11px 14px;background:var(--surface);border-bottom:1px solid var(--rule)">
-<button type="button" aria-label="{{ t.back }}" style="width:34px;height:34px;border:0;background:transparent;cursor:pointer;display:grid;place-items:center;color:inherit">
-<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="transform:scaleX({{ backFlip }})"><path d="M15 5l-7 7 7 7"/></svg>
-</button>
-<span style="flex:1;font-size:var(--t-h3);font-weight:500">{{ headline }}</span>
-<div role="group" aria-label="{{ t.langLabel }}" style="display:flex;border:1px solid var(--rule-strong);border-radius:var(--r-sm);overflow:hidden;flex:none">
+<aside class="rail">
+<div class="rail-brand"><svg width="28" height="28" viewBox="0 0 48 48" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 36V23a8 8 0 0 1 16 0v13"/><path d="M24 23a8 8 0 0 1 16 0v13"/></g></svg><span class="wordmark">{{ sh.brand }}</span></div>
+<div class="rail-role" style="background:{{ sh.roleBg }};color:{{ sh.roleFg }}">{{ sh.role }}</div>
+<nav class="rail-nav" aria-label="{{ sh.navLabel }}">
+<sc-for list="{{ sh.nav }}" as="n" hint-placeholder-count="7">
+<button type="button" class="rail-link" aria-current="{{ n.on }}"><span class="ri" aria-hidden="true">{{ n.icon }}</span><span class="lbl">{{ n.label }}</span><sc-if value="{{ n.hasBadge }}" hint-placeholder-val="{{ false }}"><span class="badge num">{{ n.badge }}</span></sc-if></button>
+</sc-for>
+<div class="rail-sep"></div>
+<button type="button" class="rail-link"><span class="ri" aria-hidden="true">{{ sh.icSettings }}</span><span class="lbl">{{ sh.settings }}</span></button>
+</nav>
+<div class="rail-user">
+<span class="av" style="width:38px;height:38px;font-size:12px;background:{{ sh.roleBg }};color:{{ sh.roleFg }}">{{ sh.userInitials }}</span>
+<div style="min-width:0"><div style="font-size:var(--t-sm);font-weight:600">{{ sh.userName }}</div><div style="font-size:var(--t-xs);color:var(--ink-3);margin-top:2px">{{ sh.userRole }}</div></div>
+</div>
+</aside>
+
+<div class="main">
+<header class="topbar">
+<div class="gsearch">{{ sh.icSearch }}<span>{{ sh.search }}</span><kbd>/</kbd></div>
+<div style="flex:1"></div>
+<div class="langsw" role="group" aria-label="{{ sh.langLabel }}">
 <sc-for list="{{ langs }}" as="l" hint-placeholder-count="3">
-<button type="button" onClick="{{ l.pick }}" aria-pressed="{{ l.on }}" style="height:24px;padding:0 8px;border:0;background:{{ l.bg }};color:{{ l.fg }};font-size:var(--t-micro);font-weight:500;cursor:pointer">{{ l.short }}</button>
+<button type="button" onClick="{{ l.pick }}" aria-pressed="{{ l.on }}" style="background:{{ l.bg }};color:{{ l.fg }}">{{ l.short }}</button>
 </sc-for>
 </div>
+<button type="button" class="iconbtn" aria-label="{{ sh.alerts }}">{{ sh.icBell }}<span class="dot"></span></button>
 </header>
-
-<div class="scrollx" style="display:flex;gap:6px;padding:9px 14px;background:var(--surface-2);border-bottom:1px solid var(--rule-faint)">
-<sc-for list="{{ views }}" as="v" hint-placeholder-count="6">
-<button type="button" onClick="{{ v.pick }}" aria-pressed="{{ v.on }}" class="sw" style="background:{{ v.bg }};color:{{ v.fg }};border-color:{{ v.bd }}">{{ v.label }}</button>
+<div class="statebar">
+<span class="lbl">{{ stateLabel }}</span>
+<sc-for list="{{ views }}" as="sv" hint-placeholder-count="5">
+<button type="button" onClick="{{ sv.pick }}" aria-pressed="{{ sv.on }}" class="sw" style="background:{{ sv.bg }};color:{{ sv.fg }};border-color:{{ sv.bd }}">{{ sv.label }}</button>
 </sc-for>
 </div>
+<div class="page">
 
-<main style="flex:1;padding:18px 16px 26px;display:flex;flex-direction:column;gap:16px">
+<div class="page-head"><div class="grow"><div class="crumb"><button type="button" aria-label="{{ t.back }}" style="display:inline-flex;align-items:center;gap:6px"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="transform:scaleX({{ backFlip }})"><path d="M15 5l-7 7 7 7"/></svg>{{ sh.current }}</button></div><h1>{{ headline }}</h1></div></div>
 
-<!-- ══ 1 · PICK THE ISSUE ══ -->
 <sc-if value="{{ isPick }}" hint-placeholder-val="{{ true }}">
-<div style="display:flex;flex-direction:column;gap:16px">
-<div>
-<h1 style="margin:0 0 7px;font-size:23px;font-weight:600">{{ t.pickTitle }}</h1>
-<p style="margin:0;font-size:var(--t-body);line-height:1.7;color:var(--ink-2)">{{ t.pickLede }}</p>
-</div>
-
-<div class="card" style="padding:12px;display:flex;align-items:center;gap:11px">
-<span class="img ph ph-coat" style="flex:none;width:36px;height:44px;border-radius:var(--r-sm);display:block"></span>
-<div style="flex:1;min-width:0">
-<div style="font-size:var(--t-sm);font-weight:500">{{ t.item }}</div>
-<div class="num" style="font-size:var(--t-micro);color:var(--ink-2);margin-top:2px"><bdi>{{ itemMeta }}</bdi></div>
-</div>
-</div>
-
-<div style="display:flex;flex-direction:column;gap:9px">
+<div class="split">
+<section class="panel"><div class="panel-b" style="padding:28px">
+<h2 style="margin:0 0 8px;font-size:24px;font-weight:600">{{ t.pickTitle }}</h2>
+<p style="margin:0 0 22px;color:var(--ink-2)">{{ t.pickLede }}</p>
+<div class="cols cols-2" style="gap:12px">
 <sc-for list="{{ kinds }}" as="k" hint-placeholder-count="5">
-<button type="button" onClick="{{ k.pick }}" aria-pressed="{{ k.on }}" class="card" style="padding:14px;display:flex;gap:11px;align-items:flex-start;text-align:start;cursor:pointer;color:inherit;border-color:{{ k.bd }};border-width:{{ k.bw }}px">
-<span aria-hidden="true" style="flex:none;width:19px;height:19px;border-radius:50%;border:2px solid {{ k.dotBd }};background:{{ k.dotBg }};display:grid;place-items:center;color:#fff;font-size:10px;margin-block-start:1px">{{ k.check }}</span>
-<span style="flex:1;min-width:0">
-<span style="display:block;font-size:var(--t-body);font-weight:500">{{ k.title }}</span>
-<span style="display:block;font-size:var(--t-sm);color:var(--ink-2);line-height:1.6;margin-top:3px">{{ k.body }}</span>
-</span>
+<button type="button" onClick="{{ k.pick }}" aria-pressed="{{ k.on }}" class="panel" style="padding:16px;display:flex;gap:12px;align-items:flex-start;text-align:start;cursor:pointer;color:inherit;border-color:{{ k.bd }};border-width:{{ k.bw }}px">
+<span aria-hidden="true" style="flex:none;width:20px;height:20px;border-radius:50%;border:2px solid {{ k.dotBd }};background:{{ k.dotBg }};display:grid;place-items:center;color:#fff;font-size:10px">{{ k.check }}</span>
+<span><span style="display:block;font-weight:600">{{ k.title }}</span><span style="display:block;font-size:var(--t-sm);color:var(--ink-2);margin-top:4px;line-height:1.6">{{ k.body }}</span></span>
 </button>
 </sc-for>
 </div>
-
-<button type="button" onClick="{{ goDetail }}" class="cta">{{ t.cont }}</button>
+</div>
+<div class="panel-f" style="display:flex"><div style="flex:1"></div><button type="button" onClick="{{ goDetail }}" class="btn btn-dark btn-lg">{{ t.cont }}</button></div>
+</section>
+<aside class="panel sticky"><div class="panel-b" style="display:flex;align-items:center;gap:14px">
+<span class="img ph ph-coat" style="flex:none;width:60px;height:74px;border-radius:var(--r-sm)"></span>
+<div><div style="font-weight:600">{{ t.item }}</div><div class="num" style="font-size:var(--t-sm);color:var(--ink-2);margin-top:4px"><bdi>{{ itemMeta }}</bdi></div></div>
+</div></aside>
 </div>
 </sc-if>
 
-<!-- ══ 2 · EXPLAIN + EVIDENCE ══ -->
 <sc-if value="{{ isDetail }}" hint-placeholder-val="{{ false }}">
-<div style="display:flex;flex-direction:column;gap:16px">
-<div>
-<h1 style="margin:0 0 7px;font-size:23px;font-weight:600">{{ t.detailTitle }}</h1>
-<p style="margin:0;font-size:var(--t-body);line-height:1.7;color:var(--ink-2)">{{ t.detailLede }}</p>
-</div>
-
-<div>
-<span style="display:block;font-size:var(--t-sm);color:var(--ink-2);margin-bottom:7px">{{ t.desc }}</span>
-<textarea class="ta" placeholder="{{ t.descPh }}"></textarea>
-</div>
-
-<div>
-<span style="display:block;font-size:var(--t-sm);color:var(--ink-2);margin-bottom:7px">{{ t.evidence }}</span>
-<div style="display:flex;gap:9px">
-<button type="button" style="flex:none;width:82px;height:92px;border:1.5px dashed var(--rule-strong);border-radius:var(--r-sm);background:var(--surface-2);cursor:pointer;color:var(--ink-2);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;font-size:var(--t-micro)">
-<svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 16V6M8 10l4-4 4 4"/><path d="M4 18h16"/></svg>
-{{ t.addPhoto }}
-</button>
+<div class="split">
+<section class="panel"><div class="panel-b" style="padding:28px">
+<h2 style="margin:0 0 8px;font-size:24px;font-weight:600">{{ t.detailTitle }}</h2>
+<p style="margin:0 0 22px;color:var(--ink-2)">{{ t.detailLede }}</p>
+<div style="margin-bottom:22px"><span class="field">{{ t.desc }}</span><textarea class="input" placeholder="{{ t.descPh }}"></textarea></div>
+<div style="margin-bottom:22px"><span class="field">{{ t.evidence }}</span>
+<div style="display:flex;gap:12px;flex-wrap:wrap">
+<button type="button" style="width:110px;height:120px;border:1.5px dashed var(--rule-strong);border-radius:var(--r-sm);background:var(--surface-2);cursor:pointer;color:var(--ink-2);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;font-size:var(--t-xs)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 16V6M8 10l4-4 4 4"/><path d="M4 18h16"/></svg>{{ t.addPhoto }}</button>
 <sc-for list="{{ evidence }}" as="e" hint-placeholder-count="2">
-<div style="flex:none;width:82px;height:92px;border-radius:var(--r-sm);background:linear-gradient(135deg, oklch(0.9 0.02 {{ e.h }}), oklch(0.84 0.03 {{ e.h }}));border:1px solid var(--rule);position:relative">
-<button type="button" aria-label="{{ removeLabel }}" style="position:absolute;inset-block-start:5px;inset-inline-end:5px;width:21px;height:21px;border:0;border-radius:50%;background:oklch(1 0 0 / 0.9);cursor:pointer;font-size:10px;color:var(--ink-2)">✕</button>
+<div style="width:110px;height:120px;border-radius:var(--r-sm);background:linear-gradient(135deg, oklch(0.9 0.02 {{ e.h }}), oklch(0.84 0.03 {{ e.h }}));border:1px solid var(--rule);position:relative">
+<button type="button" aria-label="{{ removeLabel }}" style="position:absolute;inset-block-start:6px;inset-inline-end:6px;width:22px;height:22px;border:0;border-radius:50%;background:oklch(1 0 0 / 0.9);cursor:pointer;font-size:10px">✕</button>
 </div>
 </sc-for>
 </div>
-<p style="margin:9px 0 0;font-size:var(--t-xs);color:var(--ink-3);line-height:1.65">{{ t.autoAttach }}</p>
+<p style="margin:10px 0 0;font-size:var(--t-sm);color:var(--ink-3)">{{ t.autoAttach }}</p>
 </div>
-
-<div>
-<span style="display:block;font-size:var(--t-sm);color:var(--ink-2);margin-bottom:7px">{{ t.wantTitle }}</span>
-<div style="display:flex;flex-wrap:wrap;gap:7px">
-<sc-for list="{{ wants }}" as="w" hint-placeholder-count="3">
-<button type="button" onClick="{{ w.pick }}" aria-pressed="{{ w.on }}" style="height:36px;padding:0 13px;border:1px solid {{ w.bd }};border-radius:var(--r-pill);background:{{ w.bg }};color:{{ w.fg }};font-size:var(--t-sm);cursor:pointer">{{ w.label }}</button>
-</sc-for>
+<div><span class="field">{{ t.wantTitle }}</span><div class="fchips">
+<sc-for list="{{ wants }}" as="w" hint-placeholder-count="3"><button type="button" onClick="{{ w.pick }}" aria-pressed="{{ w.on }}" class="fchip" style="border-color:{{ w.bd }};background:{{ w.bg }};color:{{ w.fg }}">{{ w.label }}</button></sc-for>
+</div></div>
 </div>
-</div>
-
-<div style="display:flex;gap:10px;padding:13px 14px;border:1px solid var(--rule);border-radius:var(--r);background:var(--surface-2)">
-<span aria-hidden="true" style="flex:none;color:var(--ink-3)">i</span>
-<p style="margin:0;font-size:var(--t-xs);line-height:1.7;color:var(--ink-2)">{{ t.platformNote }}</p>
-</div>
-
-<button type="button" onClick="{{ goSubmitted }}" class="cta">{{ t.send }}</button>
+<div class="panel-f" style="display:flex"><div style="flex:1"></div><button type="button" onClick="{{ goSubmitted }}" class="btn btn-dark btn-lg">{{ t.send }}</button></div>
+</section>
+<aside class="stack sticky"><div class="note"><span class="i">i</span><span>{{ t.platformNote }}</span></div></aside>
 </div>
 </sc-if>
 
-<!-- ══ 3 · SUBMITTED ══ -->
 <sc-if value="{{ isSubmitted }}" hint-placeholder-val="{{ false }}">
-<div style="display:flex;flex-direction:column;gap:17px;padding-top:12px">
-<div style="text-align:center">
-<span aria-hidden="true" style="display:inline-grid;place-items:center;width:58px;height:58px;border-radius:50%;background:var(--allowed-bg);color:var(--allowed-ink);font-size:26px;margin-bottom:13px">✓</span>
-<h1 style="margin:0 0 8px;font-size:22px;font-weight:600">{{ t.gotTitle }}</h1>
-<p style="margin:0;font-size:var(--t-body);line-height:1.7;color:var(--ink-2)">{{ t.gotLede }}</p>
+<section class="panel center">
+<span aria-hidden="true" style="display:inline-grid;place-items:center;width:68px;height:68px;border-radius:50%;background:var(--allowed-bg);color:var(--allowed-ink);font-size:30px;margin-bottom:14px">✓</span>
+<h2 style="margin:0 0 8px;font-size:26px;font-weight:600">{{ t.gotTitle }}</h2>
+<p style="margin:0 0 22px;color:var(--ink-2)">{{ t.gotLede }}</p>
+<div class="cols cols-2" style="text-align:start;margin-bottom:22px">
+<sc-for list="{{ attached }}" as="a" hint-placeholder-count="4"><div style="display:flex;align-items:center;gap:10px;padding:12px 14px;border:1px solid var(--rule);border-radius:var(--r)"><span aria-hidden="true" style="flex:none;width:18px;height:18px;border-radius:50%;background:var(--allowed-bg);display:grid;place-items:center;font-size:11px;color:var(--allowed-ink)">✓</span><span style="font-size:var(--t-sm)">{{ a }}</span></div></sc-for>
 </div>
-<div class="card" style="padding:4px 14px">
-<sc-for list="{{ attached }}" as="a" hint-placeholder-count="4">
-<div style="display:flex;align-items:center;gap:10px;padding:11px 0;border-bottom:1px solid var(--rule-faint)">
-<span aria-hidden="true" style="flex:none;width:17px;height:17px;border-radius:50%;background:var(--allowed-bg);display:grid;place-items:center;font-size:9px;color:var(--allowed-ink)">✓</span>
-<span style="flex:1;min-width:0;font-size:var(--t-sm)">{{ a }}</span>
-</div>
-</sc-for>
-</div>
-<button type="button" onClick="{{ goReview }}" class="cta" style="background:var(--brand)">{{ t.follow }}</button>
-</div>
+<button type="button" onClick="{{ goReview }}" class="btn btn-primary btn-lg">{{ t.follow }}</button>
+</section>
 </sc-if>
 
-<!-- ══ 4 · UNDER REVIEW / NEEDS MORE ══ -->
 <sc-if value="{{ isReview }}" hint-placeholder-val="{{ false }}">
-<div style="display:flex;flex-direction:column;gap:15px">
-<div style="display:flex;gap:12px;padding:15px;border:1px solid {{ rv.bd }};border-radius:var(--r);background:{{ rv.bg }}">
-<span aria-hidden="true" style="flex:none;width:32px;height:32px;border-radius:50%;background:{{ rv.dot }};color:#fff;display:grid;place-items:center;font-size:15px;font-weight:600">{{ rv.glyph }}</span>
-<div style="flex:1;min-width:0">
-<div style="font-size:var(--t-h3);font-weight:600;margin-bottom:4px">{{ rv.title }}</div>
-<p style="margin:0;font-size:var(--t-sm);line-height:1.7;color:var(--ink-2)">{{ rv.body }}</p>
+<div class="split">
+<div class="stack">
+<div style="display:flex;gap:14px;padding:20px;border:1px solid {{ rv.bd }};border-radius:var(--r-lg);background:{{ rv.bg }}">
+<span aria-hidden="true" style="flex:none;width:36px;height:36px;border-radius:50%;background:{{ rv.dot }};color:#fff;display:grid;place-items:center;font-weight:600">{{ rv.glyph }}</span>
+<div style="flex:1"><div style="font-size:var(--t-h2);font-weight:600;margin-bottom:5px">{{ rv.title }}</div><p style="margin:0;color:var(--ink-2);line-height:1.7">{{ rv.body }}</p>
+<sc-if value="{{ rv.needsMore }}" hint-placeholder-val="{{ false }}"><button type="button" class="btn" style="margin-top:12px;background:var(--conditional-ink);border-color:var(--conditional-ink);color:#fff">{{ t.addEvidence }}</button></sc-if></div>
 </div>
-</div>
-
-<sc-if value="{{ rv.needsMore }}" hint-placeholder-val="{{ false }}">
-<button type="button" class="cta" style="background:var(--conditional-ink)">{{ t.addEvidence }}</button>
-</sc-if>
-
-<section class="card" style="padding:15px">
-<div style="font-size:var(--t-xs);color:var(--ink-3);margin-bottom:13px">{{ t.soFar }}</div>
+<section class="panel">
+<div class="panel-h"><h2>{{ t.soFar }}</h2></div>
+<div class="panel-b">
 <sc-for list="{{ timeline }}" as="tl" hint-placeholder-count="4">
-<div style="display:flex;gap:12px">
-<div style="flex:none;display:flex;flex-direction:column;align-items:center;width:16px">
-<span aria-hidden="true" style="width:11px;height:11px;border-radius:50%;background:{{ tl.dot }}"></span>
-<sc-if value="{{ tl.line }}" hint-placeholder-val="{{ true }}"><span aria-hidden="true" style="flex:1;width:2px;background:var(--rule);min-height:20px"></span></sc-if>
-</div>
-<div style="flex:1;min-width:0;padding-block-end:14px">
-<div style="display:flex;align-items:baseline;gap:8px">
-<span style="flex:1;min-width:0;font-size:var(--t-sm);font-weight:{{ tl.fw }}">{{ tl.what }}</span>
-<span class="num" style="flex:none;font-size:var(--t-micro);color:var(--ink-3)"><bdi>{{ tl.when }}</bdi></span>
-</div>
-<sc-if value="{{ tl.hasBy }}" hint-placeholder-val="{{ false }}">
-<div style="font-size:var(--t-micro);color:var(--ink-2);margin-top:3px">{{ tl.by }}</div>
-</sc-if>
-</div>
+<div style="display:flex;gap:14px">
+<div style="flex:none;display:flex;flex-direction:column;align-items:center;width:16px"><span aria-hidden="true" style="width:12px;height:12px;border-radius:50%;background:{{ tl.dot }}"></span><sc-if value="{{ tl.line }}" hint-placeholder-val="{{ true }}"><span aria-hidden="true" style="flex:1;width:2px;background:var(--rule);min-height:24px"></span></sc-if></div>
+<div style="flex:1;padding-block-end:16px"><div style="display:flex;gap:10px"><span style="flex:1;font-weight:{{ tl.fw }}">{{ tl.what }}</span><span class="num" style="font-size:var(--t-xs);color:var(--ink-3)"><bdi>{{ tl.when }}</bdi></span></div><sc-if value="{{ tl.hasBy }}" hint-placeholder-val="{{ false }}"><div style="font-size:var(--t-xs);color:var(--ink-2);margin-top:3px">{{ tl.by }}</div></sc-if></div>
 </div>
 </sc-for>
+</div>
 </section>
+</div>
+<aside class="panel sticky"><div class="panel-b" style="display:flex;align-items:center;gap:14px">
+<span class="img ph ph-coat" style="flex:none;width:60px;height:74px;border-radius:var(--r-sm)"></span>
+<div><div style="font-weight:600">{{ t.item }}</div><div class="num" style="font-size:var(--t-sm);color:var(--ink-2);margin-top:4px"><bdi>{{ itemMeta }}</bdi></div></div>
+</div></aside>
 </div>
 </sc-if>
 
-<!-- ══ 5 · DECISION ══ -->
 <sc-if value="{{ isDecided }}" hint-placeholder-val="{{ false }}">
-<div style="display:flex;flex-direction:column;gap:15px">
-<div style="display:flex;gap:12px;padding:15px;border:1px solid var(--brand-bd);border-radius:var(--r);background:var(--brand-bg)">
-<span aria-hidden="true" style="flex:none;width:32px;height:32px;border-radius:50%;background:var(--allowed);color:#fff;display:grid;place-items:center;font-size:15px;font-weight:600">✓</span>
-<div style="flex:1;min-width:0">
-<div style="font-size:var(--t-h3);font-weight:600;margin-bottom:4px">{{ t.decTitle }}</div>
-<p style="margin:0;font-size:var(--t-sm);line-height:1.7;color:var(--ink-2)">{{ t.decLede }}</p>
+<div class="split">
+<div class="stack">
+<div style="display:flex;gap:14px;padding:20px;border:1px solid var(--brand-bd);border-radius:var(--r-lg);background:var(--brand-bg)">
+<span aria-hidden="true" style="flex:none;width:36px;height:36px;border-radius:50%;background:var(--allowed);color:#fff;display:grid;place-items:center;font-weight:600">✓</span>
+<div><div style="font-size:var(--t-h2);font-weight:600;margin-bottom:5px">{{ t.decTitle }}</div><p style="margin:0;color:var(--ink-2)">{{ t.decLede }}</p></div>
 </div>
+<div class="cols cols-2">
+<section class="panel"><div class="panel-h"><h2>{{ t.reason }}</h2></div><div class="panel-b"><p style="margin:0;line-height:1.75">{{ t.reasonBody }}</p></div></section>
+<section class="panel"><div class="panel-h"><h2>{{ t.effect }}</h2></div><div class="panel-b">
+<sc-for list="{{ effects }}" as="e" hint-placeholder-count="3"><div style="display:flex;gap:10px;padding:6px 0"><span aria-hidden="true" style="flex:none;width:6px;height:6px;border-radius:50%;background:var(--ink-3);margin-top:9px"></span><span style="font-size:var(--t-sm);line-height:1.65;color:var(--ink-2)">{{ e }}</span></div></sc-for>
+</div></section>
 </div>
-
-<section class="card" style="padding:15px">
-<div style="font-size:var(--t-xs);color:var(--ink-3);margin-bottom:9px">{{ t.reason }}</div>
-<p style="margin:0 0 14px;font-size:var(--t-sm);line-height:1.75">{{ t.reasonBody }}</p>
-<div style="font-size:var(--t-xs);color:var(--ink-3);margin-bottom:9px">{{ t.effect }}</div>
-<sc-for list="{{ effects }}" as="e" hint-placeholder-count="3">
-<div style="display:flex;gap:9px;padding:6px 0">
-<span aria-hidden="true" style="flex:none;width:6px;height:6px;border-radius:50%;background:var(--ink-3);margin-block-start:8px"></span>
-<span style="flex:1;font-size:var(--t-sm);line-height:1.65;color:var(--ink-2)">{{ e }}</span>
+<div class="note"><span class="i">i</span><span>{{ t.decNote }}</span></div>
 </div>
-</sc-for>
-</section>
-
-<div style="display:flex;gap:10px;padding:13px 14px;border:1px solid var(--rule);border-radius:var(--r);background:var(--surface-2)">
-<span aria-hidden="true" style="flex:none;color:var(--ink-3)">i</span>
-<p style="margin:0;font-size:var(--t-xs);line-height:1.7;color:var(--ink-2)">{{ t.decNote }}</p>
-</div>
-
-<button type="button" class="cta">{{ t.leaveReview }}</button>
+<aside class="sticky"><button type="button" class="btn btn-dark btn-lg btn-block">{{ t.leaveReview }}</button></aside>
 </div>
 </sc-if>
 
-</main>
 </div>
 </div>
+
+</div>
+</div>
+
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:430,&quot;height&quot;:1100}}">
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:1100}}">
 class Component extends DCLogic {
   /* Locale: ?lang= in the URL, else the browser, else French. French is the fallback as Algeria's commercial
      lingua franca and the neutral middle between Arabic and English. One value. */
@@ -379,7 +337,9 @@ class Component extends DCLogic {
     const early = v === 'pick' || v === 'detail' || v === 'submitted';
 
     return {
-      rootRef: this.root, t, langs: this.langsFor(s.lang),
+      rootRef: this.root,
+      sh: window.MaabarShell(this.state.lang, 'trader', 'cmt'),
+      stateLabel: ({ ar: 'الحالة', fr: 'État de l’écran', en: 'Screen state' })[this.state.lang], t, langs: this.langsFor(s.lang),
       backFlip: t.dir === 'rtl' ? -1 : 1,
       removeLabel: t.remove,
       itemMeta: this.iso(t.itemMeta),

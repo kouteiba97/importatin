@@ -14,8 +14,11 @@ Maabar connects the micro-importer, the trader, and the consumer through discove
 
 | | |
 |---|---|
-| **[`DESIGN-AUDIT.md`](DESIGN-AUDIT.md)** | The audit. Verdict, role/capability matrix, screen inventory, user journeys, state coverage, legal holds. **Read this first.** |
-| **`designs/`** | 24 product screens + `tokens.css` (the token layer) + `Logo.dc.html` (the brand kit) + `Dashboards.html` (the three-role deck) |
+| **[`HANDOFF.md`](HANDOFF.md)** | Full context for anyone (or Claude) continuing on another machine: decisions, history, current state, next steps. **Read this first.** |
+| **[`DESIGN-AUDIT.md`](DESIGN-AUDIT.md)** | The audit. Verdict, role/capability matrix, screen inventory, user journeys, state coverage, legal holds. |
+| **`designs/`** | 24 product screens, `index.html` (review hub), `tokens.css` (colours/type), `web.css` + `shell.js` (web platform layout and navigation), `Logo.dc.html` (brand kit), `Dashboards.html` (three-role deck) |
+| **`tools/`** | The generator used to convert screens to the web layout, and a QA check |
+| **`docs/history/`** | Strategy, Claude Design prompts, earlier audits |
 | **`preview/`** | Local server for viewing the screens |
 
 ---
@@ -56,7 +59,7 @@ The screens are Claude Design artboards (`.dc.html`). They need a React runtime 
 node preview/server.js
 ```
 
-Then open <http://localhost:4321>.
+Then open <http://localhost:4321> — the **design review hub**: every screen grouped by surface (public website, importer app, trader app, operations console, brand), rendered at desktop width (1440px), with ←/→ navigation and an EN / FR / ع switch.
 
 Boards with a chip row at the top or bottom are **state-switchable** — click through to see loading, empty, error, offline, pending, rejected, expired and success states.
 
@@ -92,5 +95,5 @@ Ten decisions were settled during design. Do not re-open them while implementing
 ## Known gaps
 
 - All 24 screens are trilingual (EN / FR / AR). The French and Arabic copy has not yet been reviewed by native commercial writers.
-- Desktop layouts exist for the admin console and `Demand Board`, which proves the responsive shell — bottom tabs below 1140px, a persistent rail above it. The remaining screens still need the same treatment, and that is **P0 for a web-first launch**.
+- **Maabar is a web platform, not a mobile app.** 20 of 24 screens now use the desktop web layout (public website header, or importer/trader sidebar app); the operations console was already desktop. **Still to convert:** Seller Profile, Saved, Compliance Checker, Onboarding, and the `Dashboards.html` deck (still shows phone frames). See `HANDOFF.md` §6.
 - Product imagery uses designed category placeholders, not real photography.
