@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script src="./support.js"></script>
+<script src="./shell.js"></script>
 </head>
 <body>
 <x-dc>
@@ -12,6 +13,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600&family=IBM+Plex+Sans:wght@500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="./tokens.css">
+<link rel="stylesheet" href="./web.css">
 <style>
 /* ============================================================
    CONSUMER-FIRST HOMEPAGE
@@ -37,27 +39,37 @@
 .search{display:flex;align-items:center;gap:11px;height:58px;padding:0 18px;
         border:1px solid var(--rule-strong);border-radius:var(--r-lg);background:var(--surface);
         box-shadow:var(--e1);max-width:560px;margin:0 auto}
+.paths{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;max-width:960px;margin:34px auto 0;text-align:start}
+.path{display:flex;align-items:center;gap:14px;padding:16px 18px;border:1px solid var(--rule);border-radius:var(--r-lg);background:var(--surface);cursor:pointer;color:inherit;text-align:start}
+.path:hover{border-color:var(--rule-strong);box-shadow:var(--e1)}
+.path .pi{flex:none;width:42px;height:42px;border-radius:var(--r);display:grid;place-items:center}
+.path .pt{flex:1;min-width:0}.path .pn{display:block;font-size:var(--t-body);font-weight:600}.path .ps{display:block;font-size:var(--t-xs);color:var(--ink-2);margin-top:2px}
+.path .pa{flex:none;color:var(--ink-3)}
 .biz{background:var(--ink);color:#fff}
 .bizcard{background:oklch(0.240 0.060 257);border:1px solid oklch(0.320 0.075 255);border-radius:var(--r);padding:19px}
 </style>
 </helmet>
 
-<div ref="{{ rootRef }}" dir="rtl" lang="ar" class="tier-public" style="min-height:100vh;background:var(--paper-public)">
+<div ref="{{ rootRef }}" dir="rtl" lang="ar" class="tier-public web" style="min-height:100vh;background:var(--paper-public)">
 
-<!-- ══ HEADER — one clear business door ══ -->
-<header style="position:sticky;top:0;z-index:30;background:var(--surface);border-bottom:1px solid var(--rule)">
-<div class="wrap" style="display:flex;align-items:center;gap:14px;padding-block:13px">
-<span style="display:flex;align-items:center;gap:10px;color:var(--brand);flex:none">
-<svg width="30" height="30" viewBox="0 0 48 48" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="4.3" stroke-linecap="round" stroke-linejoin="round"><path d="M8 36V23a8 8 0 0 1 16 0v13"/><path d="M24 23a8 8 0 0 1 16 0v13"/></g></svg>
-<span style="font-family:var(--font-display);letter-spacing:-.02em;font-weight:600;font-size:21px;color:var(--ink)">{{ brand }}</span>
-</span>
-<div style="flex:1"></div>
-<button type="button" style="flex:none;height:38px;padding:0 14px;border:1px solid var(--rule-strong);border-radius:var(--r-sm);background:var(--surface);color:inherit;font-size:var(--t-sm);font-weight:500;cursor:pointer">{{ bizLink }}</button>
-<button type="button" style="flex:none;height:38px;padding:0 16px;border:0;border-radius:var(--r-sm);background:var(--ink);color:var(--ink-on);font-size:var(--t-sm);font-weight:500;cursor:pointer">{{ signIn }}</button>
-<div role="group" aria-label="{{ langLabel }}" style="display:flex;border:1px solid var(--rule-strong);border-radius:var(--r-sm);overflow:hidden;flex:none">
-<sc-for list="{{ langs }}" as="l" hint-placeholder-count="3">
-<button type="button" onClick="{{ l.pick }}" aria-pressed="{{ l.on }}" style="height:36px;padding:0 10px;border:0;background:{{ l.bg }};color:{{ l.fg }};font-size:var(--t-xs);font-weight:500;cursor:pointer">{{ l.label }}</button>
+<header class="site">
+<div class="container site-in">
+<div class="site-brand"><svg width="28" height="28" viewBox="0 0 48 48" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 36V23a8 8 0 0 1 16 0v13"/><path d="M24 23a8 8 0 0 1 16 0v13"/></g></svg><span class="wordmark">{{ sh.brand }}</span></div>
+<nav class="site-nav" aria-label="{{ sh.navLabel }}">
+<sc-for list="{{ sh.nav }}" as="n" hint-placeholder-count="4">
+<button type="button" class="site-link" aria-current="{{ n.on }}">{{ n.label }}</button>
 </sc-for>
+</nav>
+<div style="flex:1"></div>
+<div class="langsw" role="group" aria-label="{{ sh.langLabel }}">
+<sc-for list="{{ langs }}" as="l" hint-placeholder-count="3">
+<button type="button" onClick="{{ l.pick }}" aria-pressed="{{ l.on }}" style="background:{{ l.bg }};color:{{ l.fg }}">{{ l.short }}</button>
+</sc-for>
+</div>
+<div class="site-actions">
+<button type="button" class="btn">{{ sh.entry.signin }}</button>
+<button type="button" class="btn btn-dark">{{ sh.entry.importer }}</button>
+<button type="button" class="btn btn-dark">{{ sh.entry.trader }}</button>
 </div>
 </div>
 </header>
@@ -74,6 +86,15 @@
 <div class="scrollx" style="display:flex;gap:8px;justify-content:center;margin-top:16px;padding-bottom:4px">
 <sc-for list="{{ quick }}" as="q" hint-placeholder-count="5">
 <button type="button" style="flex:none;height:34px;padding:0 14px;border:1px solid var(--rule-strong);border-radius:var(--r-pill);background:var(--surface);font-size:var(--t-sm);cursor:pointer;color:inherit;white-space:nowrap">{{ q }}</button>
+</sc-for>
+</div>
+<div class="paths">
+<sc-for list="{{ paths }}" as="p" hint-placeholder-count="3">
+<button type="button" class="path" data-k="{{ p.k }}">
+<span class="pi" style="background:{{ p.bg }};color:{{ p.fg }}">{{ p.icon }}</span>
+<span class="pt"><span class="pn">{{ p.n }}</span><span class="ps">{{ p.s }}</span></span>
+<span class="pa">→</span>
+</button>
 </sc-for>
 </div>
 </section>
@@ -251,6 +272,8 @@ class Component extends DCLogic {
     tra: React.createElement('svg', { width: 18, height: 18, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 1.9 }, React.createElement('path', { d: 'M4 8h16l-1.2 11a1 1 0 0 1-1 .9H6.2a1 1 0 0 1-1-.9z' }), React.createElement('path', { d: 'M8.5 8a3.5 3.5 0 0 1 7 0' }))
   };
 
+  PATH_ICON = ['M4 8h16l-1.2 11a1 1 0 0 1-1 .9H6.2a1 1 0 0 1-1-.9zM8.5 8a3.5 3.5 0 0 1 7 0', 'M3 15l18-7-7 18-2.5-8z', 'M7 4h10a1 1 0 0 1 1 1v15l-6-3-6 3V5a1 1 0 0 1 1-1z'].map(d =>
+    React.createElement('svg', { width: 20, height: 20, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 1.8, strokeLinecap: 'round', strokeLinejoin: 'round' }, React.createElement('path', { d })));
   CATS = [['ph-coat',1240],['ph-perfume',913],['ph-shoe',702],['ph-bag',486],['ph-watch',188],['ph-home',355]];
   FRESH = [['ph-coat',7400],['ph-bag',5900],['ph-watch',11500],['ph-perfume',4200],['ph-shoe',6300]];
 
@@ -258,8 +281,8 @@ class Component extends DCLogic {
     ar: {
       dir: 'rtl', label: 'ع', brand: 'مَعْبَر', langLabel: 'اللغة',
       bizLink: 'تستورد أو تبيع؟', signIn: 'دخول',
-      h1: 'سلع مستوردة، من تجّار تعرف سجلّهم.',
-      sub: 'تصفّح آلاف المنتجات التي جلبها مستوردون مقنّنون، واشترِ من تاجر مُتحقَّق قريب منك.',
+      h1: 'شبكة الاستيراد المصغّر في الجزائر.',
+      sub: 'مستوردون مقنَّنون، تجّار مُتحقَّقون، ومشترون — على منصّة واحدة يعرف فيها كلّ طرف سجلّ الآخر.',
       searchPh: 'ابحث عن منتج أو متجر', searchCta: 'ابحث',
       quick: ['ألبسة نسائية', 'عطور', 'أحذية', 'حقائب', 'ساعات'],
       catTitle: 'تصفّح حسب الفئة', allLink: 'الكل ←',
@@ -270,43 +293,44 @@ class Component extends DCLogic {
       whens: ['اليوم','اليوم','أمس','أمس','قبل يومين'],
       unit: 'منتج',
       whyTitle: 'لماذا تشتري من هنا',
-      whyLede: 'كل بائع على مَعْبَر تاجر مقيَّد في السجل التجاري، وسجلّه معروض قبل أن تراسله.',
+      whyLede: 'كل بائع مقيَّد في السجل التجاري، وسجلّه معروض للجميع.',
       why: [
-        ['بائع مُتحقَّق', 'راجعنا سجله التجاري وهويته. تشوف عدد معاملاته المؤكَّدة ونسبة ردّه قبل ما تتواصل.'],
-        ['سلعة معروفة المصدر', 'كل منتج يحمل بلد مصدره، ودخل عبر مستورد مقنَّن لا عبر سوق مواز.'],
-        ['مراجعات من شراء فعلي', 'لا تُقبل مراجعة إلا من معاملة مسجَّلة، ولا تُحذف، وللبائع حقّ ردّ يظهر معها.']
+        ['بائع مُتحقَّق', 'سجل تجاري وهوية مُراجَعان. معاملاته ونسبة ردّه ظاهرة.'],
+        ['سلعة معروفة المصدر', 'بلد المصدر على كل منتج، عبر مستورد مقنَّن.'],
+        ['مراجعات حقيقية', 'من معاملات مسجَّلة فقط. لا تُحذف. للبائع حقّ الردّ.']
       ],
       howTitle: 'كيفاش تشري',
       how: [
-        ['اختر المنتج', 'تصفّح أو ابحث، وشوف سجل البائع قبل أي خطوة.'],
-        ['راسل البائع', 'تتّفقوا على السعر والمقاس والتسليم مباشرةً بينكما.'],
-        ['استلم وقيّم', 'استلام من المحل أو توصيل، ثم مراجعتك تبني سجلّه للي بعدك.']
+        ['اختر المنتج', 'تصفّح، ابحث، وراجع سجل البائع.'],
+        ['راسل البائع', 'اتّفقا على السعر والمقاس والتسليم مباشرة.'],
+        ['استلم وقيّم', 'من المحل أو بالتوصيل، ثم اكتب مراجعتك.']
       ],
+      paths: [['تصفّح السوق', 'منتجات من تجّار مُتحقَّقين'], ['أنا مستورد', 'طلب مُتحقَّق قبل أن تشتري'], ['أنا تاجر', 'جد من يجلب لك ما تحتاج']],
       bizKicker: 'للمحترفين',
       bizTitle: 'تستورد أو تبيع؟ ابدأ من هنا.',
-      bizLede: 'مَعْبَر تربط المستورد المصغّر بالتاجر: المستورد يرى ما يطلبه السوق قبل أن يشتري بماله، والتاجر يجد من يجلب له ما يحتاج.',
+      bizLede: 'المستورد يرى الطلب المُتحقَّق قبل أن يشتري. التاجر يجد من يجلب له ما يحتاج.',
       bizRoles: [
-        { who: 'مستورد مصغّر', req: 'يحتاج بطاقة المقاول الذاتي والرخصة العامة', icon: 'imp',
-          body: 'تسافر بمالك وترجع ببضاعة. مَعْبَر يريك الطلب المُتحقَّق قبل الشراء، ويحسب ما تبقّى من حدّك القانوني.',
-          points: ['طلب مُجمَّع من تجّار مُتحقَّقين', 'عدّادات القيمة والوزن والحجم', 'دفتر مبسّط ووسم المادة 14'],
-          cta: 'سجّل كمستورد' },
-        { who: 'تاجر', req: 'يحتاج سجلاً تجارياً', icon: 'tra',
-          body: 'تبحث عن سلعة مميّزة بسعر ثابت ومورّد موثوق. تكتشف من يسافر ومتى، وتوثّق اتفاقك.',
-          points: ['اكتشاف الرحلات والمستوردين', 'طلب توريد بمواصفة ونطاق سعر', 'عرض منتجاتك للجمهور في السوق'],
-          cta: 'سجّل كتاجر' }
+        { who: 'مستورد مصغّر', req: 'بطاقة المقاول الذاتي + الرخصة العامة', icon: 'imp',
+          body: 'شوف الطلب المُتحقَّق قبل الشراء، وتابع حدّك القانوني.',
+          points: ['طلب مُجمَّع من التجّار', 'عدّادات القيمة والوزن والحجم', 'دفتر ووسم المادة 14'],
+          cta: 'أنا مستورد' },
+        { who: 'تاجر', req: 'سجل تجاري', icon: 'tra',
+          body: 'اكتشف من يسافر ومتى، ووثّق اتفاقك.',
+          points: ['اكتشاف الرحلات والمستوردين', 'طلب توريد بنطاق سعر', 'منتجاتك في السوق'],
+          cta: 'أنا تاجر' }
       ],
-      bizNote: 'التسجيل بالهاتف. الوثائق تُطلب فقط للدور الذي تختاره، وتبقى خاصّة ولا تظهر لأي مستخدم.',
+      bizNote: 'التسجيل بالهاتف. وثائقك تبقى خاصّة.',
       proof: [['1 240','منتج معروض'],['38','تاجراً مُتحقَّقاً'],['24','مستورداً مُتحقَّقاً']],
       limitsTitle: 'حدود المنصّة ومسؤولياتها',
       limits: ['لا صرف عملة','لا دفع ولا حجز أموال','لا شراء بالوكالة','لا تصريح جمركي','لا ضمان للمعاملات','لا اعتماد حكومي'],
-      limitsNote: 'مَعْبَر منصّة اكتشاف وتوثيق. ليست طرفاً في أي اتفاق بين المستخدمين، ولا تستلم أموالاً ولا تضمنها. نشاط الاستيراد المصغّر شخصي وغير قابل للتنازل (المادتان 3 و12 من المرسوم 25-170)، والتصريح المسبق يتمّ حصراً على anae.dz.',
-      footer: 'مَعْبَر · منصّة معلومات تجارية خاصة. المعلومات التنظيمية استرشادية والقرار النهائي يعود لمصالح الجمارك.'
+      limitsNote: 'مَعْبَر ليست طرفاً في أي اتفاق ولا تستلم أموالاً. الاستيراد المصغّر شخصي وغير قابل للتنازل (المرسوم 25-170، المادتان 3 و12). التصريح المسبق على anae.dz فقط.',
+      footer: 'مَعْبَر · منصّة معلومات تجارية خاصة. المعلومات التنظيمية استرشادية؛ القرار للجمارك.'
     },
     fr: {
       dir: 'ltr', label: 'FR', brand: 'Maabar', langLabel: 'Langue',
       bizLink: 'Vous importez ou vendez ?', signIn: 'Connexion',
-      h1: 'Des produits importés, chez des commerçants dont vous voyez l’historique.',
-      sub: 'Parcourez des milliers de produits rapportés par des importateurs déclarés, et achetez chez un commerçant vérifié près de chez vous.',
+      h1: 'Le réseau de la micro-importation en Algérie.',
+      sub: 'Importateurs déclarés, commerçants vérifiés et acheteurs, sur une plateforme où chacun voit l’historique de l’autre.',
       searchPh: 'Rechercher un produit ou une boutique', searchCta: 'Chercher',
       quick: ['Vêtements femme', 'Parfums', 'Chaussures', 'Sacs', 'Montres'],
       catTitle: 'Parcourir par catégorie', allLink: 'Tout voir →',
@@ -317,43 +341,44 @@ class Component extends DCLogic {
       whens: ['Aujourd’hui','Aujourd’hui','Hier','Hier','Il y a 2 jours'],
       unit: 'produits',
       whyTitle: 'Pourquoi acheter ici',
-      whyLede: 'Chaque vendeur sur Maabar est inscrit au registre du commerce, et son historique est visible avant que vous le contactiez.',
+      whyLede: 'Chaque vendeur est inscrit au registre du commerce. Son historique est public.',
       why: [
-        ['Vendeur vérifié', 'Registre du commerce et identité contrôlés. Vous voyez ses transactions confirmées et son taux de réponse avant d’écrire.'],
-        ['Origine connue', 'Chaque produit affiche son pays de provenance et provient d’un importateur déclaré.'],
-        ['Avis issus d’un achat réel', 'Aucun avis sans transaction enregistrée, aucun avis supprimé, et un droit de réponse affiché avec.']
+        ['Vendeur vérifié', 'Registre et identité contrôlés. Transactions et taux de réponse visibles.'],
+        ['Origine connue', 'Pays de provenance sur chaque produit, via un importateur déclaré.'],
+        ['Avis réels', 'Uniquement après un achat enregistré. Jamais supprimés. Droit de réponse.']
       ],
       howTitle: 'Comment acheter',
       how: [
-        ['Choisissez', 'Parcourez ou cherchez, et consultez l’historique du vendeur avant tout.'],
-        ['Écrivez au vendeur', 'Vous convenez du prix, de la taille et de la remise directement entre vous.'],
-        ['Recevez et évaluez', 'Retrait en boutique ou livraison, puis votre avis construit son historique.']
+        ['Choisissez', 'Parcourez, cherchez, consultez l’historique du vendeur.'],
+        ['Écrivez au vendeur', 'Convenez du prix, de la taille et de la remise directement.'],
+        ['Recevez et évaluez', 'Retrait ou livraison, puis laissez un avis.']
       ],
+      paths: [['Explorer la place de marché', 'Des produits de commerçants vérifiés'], ['Je suis importateur', 'La demande vérifiée avant d’acheter'], ['Je suis commerçant', 'Trouvez qui vous approvisionne']],
       bizKicker: 'Pour les professionnels',
       bizTitle: 'Vous importez ou vous vendez ? Commencez ici.',
-      bizLede: 'Maabar relie le micro-importateur au commerçant : l’importateur voit ce que le marché demande avant d’engager son argent, le commerçant trouve qui peut le fournir.',
+      bizLede: 'L’importateur voit la demande vérifiée avant d’acheter. Le commerçant trouve qui peut le fournir.',
       bizRoles: [
-        { who: 'Micro-importateur', req: 'Carte d’auto-entrepreneur et autorisation générale requises', icon: 'imp',
-          body: 'Vous voyagez avec votre propre argent. Maabar vous montre la demande vérifiée avant l’achat et calcule ce qu’il reste de votre plafond légal.',
-          points: ['Demande agrégée de commerçants vérifiés', 'Compteurs valeur, poids et volume', 'Registre simplifié et étiquetage art. 14'],
-          cta: 'S’inscrire comme importateur' },
-        { who: 'Commerçant', req: 'Registre du commerce requis', icon: 'tra',
-          body: 'Vous cherchez un produit différenciant, à prix tenu, chez un fournisseur fiable. Découvrez qui voyage et quand, et documentez l’accord.',
-          points: ['Découverte des voyages et importateurs', 'Demande d’approvisionnement chiffrée', 'Vos produits visibles sur la place de marché'],
-          cta: 'S’inscrire comme commerçant' }
+        { who: 'Micro-importateur', req: 'Carte d’auto-entrepreneur + autorisation générale', icon: 'imp',
+          body: 'Voyez la demande vérifiée avant d’acheter et suivez votre plafond légal.',
+          points: ['Demande agrégée des commerçants', 'Compteurs valeur, poids et volume', 'Registre et étiquetage art. 14'],
+          cta: 'Je suis importateur' },
+        { who: 'Commerçant', req: 'Registre du commerce', icon: 'tra',
+          body: 'Découvrez qui voyage et quand, et documentez l’accord.',
+          points: ['Découverte des voyages et importateurs', 'Demandes avec fourchette de prix', 'Vos produits sur la place de marché'],
+          cta: 'Je suis commerçant' }
       ],
-      bizNote: 'Inscription par téléphone. Les documents ne sont demandés que pour le rôle choisi ; ils restent privés et ne sont montrés à aucun utilisateur.',
+      bizNote: 'Inscription par téléphone. Vos documents restent privés.',
       proof: [['1 240','produits en ligne'],['38','commerçants vérifiés'],['24','importateurs vérifiés']],
       limitsTitle: 'Limites et responsabilités de la plateforme',
       limits: ['Aucun change','Aucun paiement ni séquestre','Aucun achat par procuration','Aucune déclaration douanière','Aucune garantie','Aucun agrément public'],
-      limitsNote: 'Maabar est une plateforme de découverte et de documentation. Elle n’est partie à aucun accord entre utilisateurs et ne reçoit aucun fonds. L’activité de micro-importation est personnelle et incessible (art. 3 et 12 du décret 25-170) ; la pré-déclaration se fait exclusivement sur anae.dz.',
-      footer: 'Maabar · plateforme privée d’information commerciale. L’information réglementaire est indicative ; la décision finale appartient aux douanes.'
+      limitsNote: 'Maabar n’est partie à aucun accord et ne reçoit aucun fonds. La micro-importation est personnelle et incessible (décret 25-170, art. 3 et 12). Pré-déclaration uniquement sur anae.dz.',
+      footer: 'Maabar · plateforme privée d’information commerciale. Information réglementaire indicative ; les douanes décident.'
     },
     en: {
       dir: 'ltr', label: 'EN', brand: 'Maabar', langLabel: 'Language',
       bizLink: 'Import or sell?', signIn: 'Sign in',
-      h1: 'Imported goods, from sellers whose record you can see.',
-      sub: 'Browse thousands of products brought in by licensed importers, and buy from a verified trader near you.',
+      h1: 'Algeria’s micro-import network.',
+      sub: 'Licensed importers, verified traders and shoppers on one platform, where everyone can see the other’s record.',
       searchPh: 'Search a product or a shop', searchCta: 'Search',
       quick: ['Women’s clothing', 'Fragrance', 'Shoes', 'Bags', 'Watches'],
       catTitle: 'Browse by category', allLink: 'See all →',
@@ -364,37 +389,38 @@ class Component extends DCLogic {
       whens: ['Today','Today','Yesterday','Yesterday','2 days ago'],
       unit: 'products',
       whyTitle: 'Why buy here',
-      whyLede: 'Every seller on Maabar holds a commercial register, and their record is visible before you make contact.',
+      whyLede: 'Every seller holds a commercial register. Their record is public.',
       why: [
-        ['Verified seller', 'Commercial register and identity checked. You see confirmed transactions and response rate before you write.'],
-        ['Known origin', 'Every product carries its country of provenance and came through a licensed importer.'],
-        ['Reviews from real purchases', 'No review without a recorded transaction, none deleted, and a right of reply shown alongside.']
+        ['Verified seller', 'Register and identity checked. Deals and response rate visible.'],
+        ['Known origin', 'Country of origin on every product, via a licensed importer.'],
+        ['Real reviews', 'Only from recorded purchases. Never deleted. Right of reply.']
       ],
       howTitle: 'How buying works',
       how: [
-        ['Pick the product', 'Browse or search, and read the seller’s record before anything else.'],
-        ['Message the seller', 'You agree price, size and handover directly between you.'],
-        ['Receive and review', 'Shop pickup or delivery, then your review builds their record for the next buyer.']
+        ['Pick the product', 'Browse, search, check the seller’s record.'],
+        ['Message the seller', 'Agree price, size and handover directly.'],
+        ['Receive and review', 'Pickup or delivery, then leave a review.']
       ],
+      paths: [['Explore the marketplace', 'Products from verified traders'], ['I’m an importer', 'Verified demand before you buy'], ['I’m a trader', 'Find who can supply you']],
       bizKicker: 'For professionals',
       bizTitle: 'Import or sell? Start here.',
-      bizLede: 'Maabar connects the micro-importer to the trader: the importer sees what the market wants before committing their own money, and the trader finds who can supply it.',
+      bizLede: 'Importers see verified demand before they buy. Traders find who can supply them.',
       bizRoles: [
-        { who: 'Micro-importer', req: 'Auto-entrepreneur card and general authorisation required', icon: 'imp',
-          body: 'You travel with your own money. Maabar shows you verified demand before you buy, and computes what is left of your legal cap.',
-          points: ['Aggregated demand from verified traders', 'Value, weight and volume meters', 'Simplified ledger and Art. 14 labelling'],
-          cta: 'Sign up as an importer' },
-        { who: 'Trader', req: 'Commercial register required', icon: 'tra',
-          body: 'You want differentiated stock at a price that holds, from a supplier you can check. Discover who travels and when, and document the agreement.',
-          points: ['Trip and importer discovery', 'Sourcing requests with spec and price band', 'Your products listed on the marketplace'],
-          cta: 'Sign up as a trader' }
+        { who: 'Micro-importer', req: 'Auto-entrepreneur card + general authorisation', icon: 'imp',
+          body: 'See verified demand before you buy and track your legal cap.',
+          points: ['Aggregated demand from traders', 'Value, weight and volume meters', 'Ledger and Art. 14 labels'],
+          cta: 'I’m an importer' },
+        { who: 'Trader', req: 'Commercial register', icon: 'tra',
+          body: 'Find who travels and when, and document the deal.',
+          points: ['Trip and importer discovery', 'Sourcing requests with price band', 'Your products on the marketplace'],
+          cta: 'I’m a trader' }
       ],
-      bizNote: 'Sign up with a phone number. Documents are requested only for the role you choose; they stay private and are never shown to another user.',
+      bizNote: 'Sign up by phone. Your documents stay private.',
       proof: [['1,240','products listed'],['38','verified traders'],['24','verified importers']],
       limitsTitle: 'Platform limits and responsibilities',
       limits: ['No currency exchange','No payments or escrow','No buying by proxy','No customs declaration','No transaction guarantee','No government approval'],
-      limitsNote: 'Maabar is a discovery and documentation platform. It is not a party to any agreement between users and receives no funds. Micro-importing is personal and non-transferable (arts. 3 and 12 of Decree 25-170); pre-declaration happens exclusively on anae.dz.',
-      footer: 'Maabar · private commercial information platform. Regulatory information is indicative; the final decision rests with customs.'
+      limitsNote: 'Maabar is not a party to any deal and holds no funds. Micro-importing is personal and non-transferable (Decree 25-170, arts. 3 and 12). Pre-declaration on anae.dz only.',
+      footer: 'Maabar · private commercial information platform. Regulatory information is indicative; customs decide.'
     }
   };
 
@@ -403,6 +429,10 @@ class Component extends DCLogic {
     return {
       ...t,
       rootRef: this.root,
+      sh: window.MaabarShell(lang, 'public', ''),
+      paths: t.paths.map(([n, s], i) => ({ n, s, k: ['market', 'importer', 'trader'][i],
+        bg: ['var(--role-consumer-bg)', 'var(--role-importer-bg)', 'var(--role-trader-bg)'][i], fg: ['var(--role-consumer-ink)', 'var(--role-importer-ink)', 'var(--role-trader-ink)'][i],
+        icon: this.PATH_ICON[i] })),
       cats: this.CATS.map(([ph, n], i) => ({ ph, label: t.catNames[i], n: this.fmt(n) + ' ' + t.unit })),
       fresh: this.FRESH.map(([ph, p], i) => ({
         ph, price: this.fmt(p), title: t.freshNames[i], seller: t.sellers[i], when: t.whens[i]
@@ -415,7 +445,7 @@ class Component extends DCLogic {
       limitsRot: this.state.limits ? 180 : 0,
       toggleLimits: () => this.setState(s => ({ limits: !s.limits })),
       langs: Object.keys(this.L).map(k => ({
-        label: this.L[k].label, on: k === lang,
+        label: this.L[k].label, short: this.L[k].label, on: k === lang,
         bg: k === lang ? 'var(--ink)' : 'var(--surface)',
         fg: k === lang ? 'var(--ink-on)' : 'var(--ink-2)',
         pick: () => this.setState({ lang: k })

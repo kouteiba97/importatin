@@ -26,7 +26,7 @@
 <div class="app">
 
 <aside class="rail">
-<div class="rail-brand"><svg width="28" height="28" viewBox="0 0 48 48" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 36V23a8 8 0 0 1 16 0v13"/><path d="M24 23a8 8 0 0 1 16 0v13"/></g></svg><span class="wordmark">{{ sh.brand }}</span></div>
+<div class="rail-brand"><svg width="28" height="28" viewBox="0 0 48 48" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 36V23a8 8 0 0 1 16 0v13"/><path d="M24 23a8 8 0 0 1 16 0v13"/></g></svg><span><span class="wordmark">{{ sh.brand }}</span><sc-if value="{{ sh.hasMark }}" hint-placeholder-val="{{ true }}"><span class="mark" style="color:{{ sh.roleFg }}">{{ sh.mark }}</span></sc-if></span></div>
 <div class="rail-role" style="background:{{ sh.roleBg }};color:{{ sh.roleFg }}">{{ sh.role }}</div>
 <nav class="rail-nav" aria-label="{{ sh.navLabel }}">
 <sc-for list="{{ sh.nav }}" as="n" hint-placeholder-count="7">
@@ -262,20 +262,20 @@ class Component extends DCLogic {
       thisMonth: 'هذا الشهر', summary: [['عملية', '9'], ['قيمة الاستيراد', '1 240 000'], ['رحلتان', '2 من 2']],
       ops: 'العمليات', export: 'صدّر ←',
       entries: [['بيع — معاطف نسائية', 'ياسين ب. · 18 وحدة · 12 أكتوبر'], ['استيراد — رحلة إسطنبول', 'رسم جمركي 5% · 18 أكتوبر'], ['بيع — حقائب يد', 'دار الأناقة · 20 وحدة · 20 أكتوبر'], ['بيع — عطور', 'نادية ر. · 24 وحدة · 22 أكتوبر'], ['اشتراك مَعْبَر', 'شهر أكتوبر']],
-      ledgerNote: 'هذا دفترك المبسّط. صدّره وقدّمه لمصالح الضرائب عند الحاجة.',
-      pickItem: 'اختر الصنف', label: 'الملصق', labelNote: 'يُلصق على كل وحدة أو على أصغر عبوة بيع، بالعربية.',
+      ledgerNote: 'دفترك المبسّط، جاهز للتصدير لمصالح الضرائب.',
+      pickItem: 'اختر الصنف', label: 'الملصق', labelNote: 'على كل وحدة أو أصغر عبوة بيع، بالعربية.',
       items: { coats: 'معاطف نسائية شتوية', bags: 'حقائب يد نسائية', perfume: 'عطور نسائية 100 مل' },
       origins: { coats: 'تركيا', bags: 'تركيا', perfume: 'الإمارات' },
       unit: { one: 'وحدة واحدة', two: 'وحدتان', few: 'وحدات', many: 'وحدة' },
       sheet: { one: 'ورقة واحدة', two: 'ورقتان', few: 'أوراق', many: 'ورقة' },
       deliveryNote: 'وصل التسليم', noteKeys: ['السلعة', 'الكمية', 'الوزن', 'الحجم', 'بلد المنشأ'], kg: 'كغ', m3: 'م³',
-      missingAddr: 'أكمل عنوانك في ملفك — الملصق لا يكتمل بدونه.', print: 'اطبع',
+      missingAddr: 'أكمل عنوانك في ملفك لإكمال الملصق.', print: 'اطبع',
       daysLeft: 'يوماً متبقّياً', planName: 'اشتراك المستورد — شهري', planUntil: 'ينتهي في 31 أكتوبر 2026',
       renew: 'جدّد اشتراكك', plans: [['شهر', 'تجديد يدوي'], ['3 أشهر', 'توفير 10%'], ['سنة', 'توفير 20%']],
-      payMethod: 'طريقة الدفع', methods: [['تحويل CCP أو بريدي موب', 'ارفع الوصل ويُفعَّل خلال يوم عمل'], ['بطاقة CIB أو الذهبية', 'تفعيل فوري']],
-      uploadReceipt: 'ارفع وصل التحويل', snapReceipt: 'صوّر الوصل أو اختر صورة', activation: 'يُفعَّل اشتراكك خلال يوم عمل بعد مطابقة الوصل.',
+      payMethod: 'طريقة الدفع', methods: [['تحويل CCP أو بريدي موب', 'تفعيل خلال يوم عمل'], ['بطاقة CIB أو الذهبية', 'تفعيل فوري']],
+      uploadReceipt: 'ارفع وصل التحويل', snapReceipt: 'صوّر الوصل أو اختر صورة', activation: 'التفعيل خلال يوم عمل بعد مطابقة الوصل.',
       sendReceipt: 'أرسل الوصل للمراجعة', pay: a => 'ادفع ' + a,
-      subNote: 'هذا اشتراكك في مَعْبَر. لا علاقة له بأي مبلغ بينك وبين تاجر.'
+      subNote: 'اشتراك مَعْبَر فقط. لا علاقة له بأي مبلغ بينك وبين تاجر.'
     },
 
     fr: {
@@ -284,20 +284,20 @@ class Component extends DCLogic {
       thisMonth: 'Ce mois-ci', summary: [['opérations', '9'], ['valeur importée', '1 240 000'], ['voyages', '2 sur 2']],
       ops: 'Opérations', export: 'Exporter →',
       entries: [['Vente — manteaux femme', 'Yacine B. · 18 unités · 12 octobre'], ['Importation — voyage Istanbul', 'droit de douane 5 % · 18 octobre'], ['Vente — sacs à main', 'Dar El Anaqa · 20 unités · 20 octobre'], ['Vente — parfums', 'Nadia R. · 24 unités · 22 octobre'], ['Abonnement Maabar', 'mois d’octobre']],
-      ledgerNote: 'Votre registre simplifié. Exportez-le et présentez-le à l’administration fiscale si nécessaire.',
-      pickItem: 'Choisissez l’article', label: 'L’étiquette', labelNote: 'À apposer sur chaque unité ou sur le plus petit conditionnement de vente, en arabe.',
+      ledgerNote: 'Votre registre simplifié, exportable pour l’administration fiscale.',
+      pickItem: 'Choisissez l’article', label: 'L’étiquette', labelNote: 'Sur chaque unité ou le plus petit conditionnement, en arabe.',
       items: { coats: 'Manteaux femme hiver', bags: 'Sacs à main femme', perfume: 'Parfums femme 100 ml' },
       origins: { coats: 'Turquie', bags: 'Turquie', perfume: 'Émirats' },
       unit: { one: 'unité', many: 'unités' },
       sheet: { one: 'feuille', many: 'feuilles' },
       deliveryNote: 'Bon de remise', noteKeys: ['Article', 'Quantité', 'Poids', 'Volume', 'Pays d’origine'], kg: 'kg', m3: 'm³',
-      missingAddr: 'Complétez votre adresse dans votre profil — l’étiquette est incomplète sans elle.', print: 'Imprimer',
+      missingAddr: 'Complétez votre adresse dans votre profil pour finaliser l’étiquette.', print: 'Imprimer',
       daysLeft: 'jours restants', planName: 'Abonnement importateur — mensuel', planUntil: 'Expire le 31 octobre 2026',
       renew: 'Renouveler l’abonnement', plans: [['1 mois', 'renouvellement manuel'], ['3 mois', '10 % d’économie'], ['1 an', '20 % d’économie']],
-      payMethod: 'Moyen de paiement', methods: [['Virement CCP ou BaridiMob', 'déposez le reçu, activation sous un jour ouvré'], ['Carte CIB ou Edahabia', 'activation immédiate']],
-      uploadReceipt: 'Déposer le reçu de virement', snapReceipt: 'Photographiez le reçu ou choisissez une image', activation: 'Votre abonnement est activé sous un jour ouvré après vérification du reçu.',
+      payMethod: 'Moyen de paiement', methods: [['Virement CCP ou BaridiMob', 'activation sous un jour ouvré'], ['Carte CIB ou Edahabia', 'activation immédiate']],
+      uploadReceipt: 'Déposer le reçu de virement', snapReceipt: 'Photographiez le reçu ou choisissez une image', activation: 'Activation sous un jour ouvré après vérification du reçu.',
       sendReceipt: 'Envoyer le reçu pour vérification', pay: a => 'Payer ' + a,
-      subNote: 'Il s’agit de votre abonnement à Maabar. Il n’a aucun lien avec un montant échangé entre vous et un commerçant.'
+      subNote: 'Abonnement Maabar uniquement. Sans lien avec un montant entre vous et un commerçant.'
     },
 
     en: {
@@ -306,20 +306,20 @@ class Component extends DCLogic {
       thisMonth: 'This month', summary: [['transactions', '9'], ['import value', '1,240,000'], ['trips', '2 of 2']],
       ops: 'Entries', export: 'Export →',
       entries: [['Sale — women’s coats', 'Yacine B. · 18 units · 12 October'], ['Import — Istanbul trip', '5% customs duty · 18 October'], ['Sale — handbags', 'Dar El Anaqa · 20 units · 20 October'], ['Sale — perfumes', 'Nadia R. · 24 units · 22 October'], ['Maabar subscription', 'October']],
-      ledgerNote: 'Your simplified ledger. Export it and present it to the tax office when needed.',
-      pickItem: 'Choose the item', label: 'The label', labelNote: 'Affixed to each unit or the smallest sales pack, in Arabic.',
+      ledgerNote: 'Your simplified ledger, exportable for the tax office.',
+      pickItem: 'Choose the item', label: 'The label', labelNote: 'On each unit or the smallest sales pack, in Arabic.',
       items: { coats: 'Women’s winter coats', bags: 'Women’s handbags', perfume: 'Women’s perfume 100 ml' },
       origins: { coats: 'Türkiye', bags: 'Türkiye', perfume: 'UAE' },
       unit: { one: 'unit', many: 'units' },
       sheet: { one: 'sheet', many: 'sheets' },
       deliveryNote: 'Delivery note', noteKeys: ['Item', 'Quantity', 'Weight', 'Volume', 'Country of origin'], kg: 'kg', m3: 'm³',
-      missingAddr: 'Complete your address in your profile — the label is incomplete without it.', print: 'Print',
+      missingAddr: 'Complete your address in your profile to finish the label.', print: 'Print',
       daysLeft: 'days left', planName: 'Importer subscription — monthly', planUntil: 'Ends 31 October 2026',
       renew: 'Renew your subscription', plans: [['1 month', 'manual renewal'], ['3 months', 'save 10%'], ['1 year', 'save 20%']],
-      payMethod: 'Payment method', methods: [['CCP or BaridiMob transfer', 'upload the receipt, active within one working day'], ['CIB or Edahabia card', 'instant activation']],
-      uploadReceipt: 'Upload the transfer receipt', snapReceipt: 'Photograph the receipt or choose an image', activation: 'Your subscription activates within one working day after the receipt is matched.',
+      payMethod: 'Payment method', methods: [['CCP or BaridiMob transfer', 'active within one working day'], ['CIB or Edahabia card', 'instant activation']],
+      uploadReceipt: 'Upload the transfer receipt', snapReceipt: 'Photograph the receipt or choose an image', activation: 'Active within one working day after the receipt is matched.',
       sendReceipt: 'Send receipt for review', pay: a => 'Pay ' + a,
-      subNote: 'This is your Maabar subscription. It has nothing to do with any amount between you and a trader.'
+      subNote: 'Maabar subscription only. Unrelated to any amount between you and a trader.'
     }
   };
 

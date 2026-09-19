@@ -27,7 +27,7 @@
 <div class="app">
 
 <aside class="rail">
-<div class="rail-brand"><svg width="28" height="28" viewBox="0 0 48 48" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 36V23a8 8 0 0 1 16 0v13"/><path d="M24 23a8 8 0 0 1 16 0v13"/></g></svg><span class="wordmark">{{ sh.brand }}</span></div>
+<div class="rail-brand"><svg width="28" height="28" viewBox="0 0 48 48" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 36V23a8 8 0 0 1 16 0v13"/><path d="M24 23a8 8 0 0 1 16 0v13"/></g></svg><span><span class="wordmark">{{ sh.brand }}</span><sc-if value="{{ sh.hasMark }}" hint-placeholder-val="{{ true }}"><span class="mark" style="color:{{ sh.roleFg }}">{{ sh.mark }}</span></sc-if></span></div>
 <div class="rail-role" style="background:{{ sh.roleBg }};color:{{ sh.roleFg }}">{{ sh.role }}</div>
 <nav class="rail-nav" aria-label="{{ sh.navLabel }}">
 <sc-for list="{{ sh.nav }}" as="n" hint-placeholder-count="7">
@@ -193,7 +193,7 @@ class Component extends DCLogic {
     ar: {
       dir: 'rtl', short: 'ع', langLabel: 'اللغة', sep: ' ',
       title: 'اكتشف', search: 'بحث', sections: 'أقسام الاكتشاف', navLabel: 'التنقّل',
-      tabs: [['رحلات', 'ابحث بأي وجهة في العالم أو بالفئة'], ['مستوردون', 'ابحث بالاسم أو التخصّص'], ['منتجات', 'ابحث في السوق']],
+      tabs: [['رحلات', 'ابحث بالوجهة أو الفئة'], ['مستوردون', 'ابحث بالاسم أو التخصّص'], ['منتجات', 'ابحث في السوق']],
       chips: {
         trips: ['كل الوجهات', 'يغادر هذا الأسبوع', 'سعة واسعة', 'تركيا', 'الإمارات', 'الصين', 'أوروبا', 'آسيا', 'وجهات أخرى'],
         importers: ['الكل', 'ألبسة', 'تجميل', 'أحذية', 'مُتحقَّق حديثاً'],
@@ -206,7 +206,7 @@ class Component extends DCLogic {
       verifiedImporter: 'مستورد مُتحقَّق', verified: 'مُتحقَّق',
       requestOffer: 'اطلب عرضاً لهذه الرحلة', followOn: 'إلغاء التنبيه', followOff: 'نبّهني عند فتح السعة',
       profile: 'الملف', message: 'راسل',
-      productsLede: 'تصفّح المنتجات المعروضة من التجّار المُتحقَّقين في السوق.', openMarket: 'افتح السوق',
+      productsLede: 'منتجات التجّار المُتحقَّقين في السوق.', openMarket: 'افتح السوق',
       trips: [
         { dest: 'إسطنبول', dates: '12–16 أكتوبر', arrival: '18 أكتوبر', state: 'مفتوحة للطلب', cats: 'ألبسة نسائية · حقائب · إكسسوار', who: 'كريمة ح.', initials: 'ك ح', whoMeta: '84 معاملة مؤكَّدة · ترد خلال ساعة' },
         { dest: 'دبي', dates: '19–23 أكتوبر', arrival: '25 أكتوبر', state: 'سعة محدودة', cats: 'عطور · ساعات · إلكترونيات صغيرة', who: 'سفيان ب.', initials: 'س ب', whoMeta: '12 معاملة مؤكَّدة · مستورد جديد' },
@@ -214,8 +214,8 @@ class Component extends DCLogic {
       ],
       statLabels: ['معاملة مؤكَّدة', 'نسبة الإتمام', 'متوسط الردّ', 'على المنصّة'],
       importers: [
-        { name: 'كريمة ح.', initials: 'ك ح', level: 'مستوردة مُتحقَّقة · وثائق سارية حتى جوان 2027', cats: ['ألبسة نسائية', 'حقائب', 'إكسسوار'], stats: ['84', '97%', 'ساعة', '3 سنوات'], next: 'رحلتها القادمة: إسطنبول · 12 أكتوبر' },
-        { name: 'ن. مرابط', initials: 'ن م', level: 'مستورد مُتحقَّق · وثائق سارية حتى مارس 2027', cats: ['منسوجات منزلية', 'مفروشات'], stats: ['46', '92%', '3 ساعات', 'سنتان'], next: 'رحلته القادمة: غازي عنتاب · 2 نوفمبر' },
+        { name: 'كريمة ح.', initials: 'ك ح', level: 'مستوردة مُتحقَّقة · حتى جوان 2027', cats: ['ألبسة نسائية', 'حقائب', 'إكسسوار'], stats: ['84', '97%', 'ساعة', '3 سنوات'], next: 'رحلتها القادمة: إسطنبول · 12 أكتوبر' },
+        { name: 'ن. مرابط', initials: 'ن م', level: 'مستورد مُتحقَّق · حتى مارس 2027', cats: ['منسوجات منزلية', 'مفروشات'], stats: ['46', '92%', '3 ساعات', 'سنتان'], next: 'رحلته القادمة: غازي عنتاب · 2 نوفمبر' },
         { name: 'سفيان ب.', initials: 'س ب', level: 'مستورد مُتحقَّق · سجل قصير', cats: ['عطور', 'ساعات'], stats: ['12', '100%', 'ساعتان', '5 أشهر'], next: 'رحلته القادمة: دبي · 19 أكتوبر' }
       ],
       nav: ['الرئيسية', 'اكتشف', 'طلباتي', 'التزاماتي', 'الرسائل', 'حسابي']
@@ -224,7 +224,7 @@ class Component extends DCLogic {
     fr: {
       dir: 'ltr', short: 'FR', langLabel: 'Langue', sep: ' ', dec: ',',
       title: 'Découvrir', search: 'Recherche', sections: 'Rubriques', navLabel: 'Navigation',
-      tabs: [['Voyages', 'Chercher par destination dans le monde ou par catégorie'], ['Importateurs', 'Chercher par nom ou spécialité'], ['Produits', 'Chercher sur la place']],
+      tabs: [['Voyages', 'Chercher par destination ou catégorie'], ['Importateurs', 'Chercher par nom ou spécialité'], ['Produits', 'Chercher sur la place']],
       chips: {
         trips: ['Toutes destinations', 'Départ cette semaine', 'Grande capacité', 'Turquie', 'Émirats', 'Chine', 'Europe', 'Asie', 'Autres destinations'],
         importers: ['Tout', 'Vêtements', 'Beauté', 'Chaussures', 'Vérifiés récemment'],
@@ -237,7 +237,7 @@ class Component extends DCLogic {
       verifiedImporter: 'Importateur vérifié', verified: 'Vérifié',
       requestOffer: 'Demander une offre pour ce voyage', followOn: 'Désactiver l’alerte', followOff: 'M’alerter quand la capacité s’ouvre',
       profile: 'Profil', message: 'Écrire',
-      productsLede: 'Parcourez les produits proposés par les commerçants vérifiés sur la place.', openMarket: 'Ouvrir la place',
+      productsLede: 'Produits des commerçants vérifiés sur la place.', openMarket: 'Ouvrir la place',
       trips: [
         { dest: 'Istanbul', dates: '12–16 octobre', arrival: '18 octobre', state: 'Ouvert aux demandes', cats: 'Vêtements femme · sacs · accessoires', who: 'Karima H.', initials: 'KH', whoMeta: '84 transactions confirmées · répond en 1 h' },
         { dest: 'Dubaï', dates: '19–23 octobre', arrival: '25 octobre', state: 'Capacité limitée', cats: 'Parfums · montres · petite électronique', who: 'Sofiane B.', initials: 'SB', whoMeta: '12 transactions confirmées · nouvel importateur' },
@@ -245,8 +245,8 @@ class Component extends DCLogic {
       ],
       statLabels: ['Transactions confirmées', 'Taux d’achèvement', 'Délai de réponse', 'Sur la plateforme'],
       importers: [
-        { name: 'Karima H.', initials: 'KH', level: 'Importatrice vérifiée · documents valides jusqu’en juin 2027', cats: ['Vêtements femme', 'Sacs', 'Accessoires'], stats: ['84', '97 %', '1 h', '3 ans'], next: 'Prochain voyage : Istanbul · 12 octobre' },
-        { name: 'N. Merabet', initials: 'NM', level: 'Importateur vérifié · documents valides jusqu’en mars 2027', cats: ['Linge de maison', 'Ameublement'], stats: ['46', '92 %', '3 h', '2 ans'], next: 'Prochain voyage : Gaziantep · 2 novembre' },
+        { name: 'Karima H.', initials: 'KH', level: 'Importatrice vérifiée · jusqu’en juin 2027', cats: ['Vêtements femme', 'Sacs', 'Accessoires'], stats: ['84', '97 %', '1 h', '3 ans'], next: 'Prochain voyage : Istanbul · 12 octobre' },
+        { name: 'N. Merabet', initials: 'NM', level: 'Importateur vérifié · jusqu’en mars 2027', cats: ['Linge de maison', 'Ameublement'], stats: ['46', '92 %', '3 h', '2 ans'], next: 'Prochain voyage : Gaziantep · 2 novembre' },
         { name: 'Sofiane B.', initials: 'SB', level: 'Importateur vérifié · historique court', cats: ['Parfums', 'Montres'], stats: ['12', '100 %', '2 h', '5 mois'], next: 'Prochain voyage : Dubaï · 19 octobre' }
       ],
       nav: ['Accueil', 'Découvrir', 'Demandes', 'Engagements', 'Messages', 'Compte']
@@ -255,7 +255,7 @@ class Component extends DCLogic {
     en: {
       dir: 'ltr', short: 'EN', langLabel: 'Language', sep: ',',
       title: 'Discover', search: 'Search', sections: 'Sections', navLabel: 'Navigation',
-      tabs: [['Trips', 'Search any destination in the world, or a category'], ['Importers', 'Search by name or speciality'], ['Products', 'Search the marketplace']],
+      tabs: [['Trips', 'Search by destination or category'], ['Importers', 'Search by name or speciality'], ['Products', 'Search the marketplace']],
       chips: {
         trips: ['All destinations', 'Leaving this week', 'Plenty of capacity', 'Türkiye', 'UAE', 'China', 'Europe', 'Asia', 'Other destinations'],
         importers: ['All', 'Clothing', 'Beauty', 'Shoes', 'Recently verified'],
@@ -268,7 +268,7 @@ class Component extends DCLogic {
       verifiedImporter: 'Verified importer', verified: 'Verified',
       requestOffer: 'Request an offer for this trip', followOn: 'Turn off alert', followOff: 'Alert me when capacity opens',
       profile: 'Profile', message: 'Message',
-      productsLede: 'Browse products listed by verified traders on the marketplace.', openMarket: 'Open the marketplace',
+      productsLede: 'Products from verified traders on the marketplace.', openMarket: 'Open the marketplace',
       trips: [
         { dest: 'Istanbul', dates: '12–16 October', arrival: '18 October', state: 'Open to requests', cats: 'Women’s clothing · bags · accessories', who: 'Karima H.', initials: 'KH', whoMeta: '84 confirmed transactions · replies within 1 h' },
         { dest: 'Dubai', dates: '19–23 October', arrival: '25 October', state: 'Limited capacity', cats: 'Perfumes · watches · small electronics', who: 'Sofiane B.', initials: 'SB', whoMeta: '12 confirmed transactions · new importer' },
@@ -276,8 +276,8 @@ class Component extends DCLogic {
       ],
       statLabels: ['Confirmed transactions', 'Completion rate', 'Response time', 'On the platform'],
       importers: [
-        { name: 'Karima H.', initials: 'KH', level: 'Verified importer · documents valid until June 2027', cats: ['Women’s clothing', 'Bags', 'Accessories'], stats: ['84', '97%', '1 h', '3 yrs'], next: 'Next trip: Istanbul · 12 October' },
-        { name: 'N. Merabet', initials: 'NM', level: 'Verified importer · documents valid until March 2027', cats: ['Home textiles', 'Furnishings'], stats: ['46', '92%', '3 h', '2 yrs'], next: 'Next trip: Gaziantep · 2 November' },
+        { name: 'Karima H.', initials: 'KH', level: 'Verified importer · valid until June 2027', cats: ['Women’s clothing', 'Bags', 'Accessories'], stats: ['84', '97%', '1 h', '3 yrs'], next: 'Next trip: Istanbul · 12 October' },
+        { name: 'N. Merabet', initials: 'NM', level: 'Verified importer · valid until March 2027', cats: ['Home textiles', 'Furnishings'], stats: ['46', '92%', '3 h', '2 yrs'], next: 'Next trip: Gaziantep · 2 November' },
         { name: 'Sofiane B.', initials: 'SB', level: 'Verified importer · short record', cats: ['Perfumes', 'Watches'], stats: ['12', '100%', '2 h', '5 mo'], next: 'Next trip: Dubai · 19 October' }
       ],
       nav: ['Home', 'Discover', 'Requests', 'Commitments', 'Messages', 'Account']

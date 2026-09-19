@@ -31,7 +31,7 @@
 <div class="app">
 
 <aside class="rail">
-<div class="rail-brand"><svg width="28" height="28" viewBox="0 0 48 48" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 36V23a8 8 0 0 1 16 0v13"/><path d="M24 23a8 8 0 0 1 16 0v13"/></g></svg><span class="wordmark">{{ sh.brand }}</span></div>
+<div class="rail-brand"><svg width="28" height="28" viewBox="0 0 48 48" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 36V23a8 8 0 0 1 16 0v13"/><path d="M24 23a8 8 0 0 1 16 0v13"/></g></svg><span><span class="wordmark">{{ sh.brand }}</span><sc-if value="{{ sh.hasMark }}" hint-placeholder-val="{{ true }}"><span class="mark" style="color:{{ sh.roleFg }}">{{ sh.mark }}</span></sc-if></span></div>
 <div class="rail-role" style="background:{{ sh.roleBg }};color:{{ sh.roleFg }}">{{ sh.role }}</div>
 <nav class="rail-nav" aria-label="{{ sh.navLabel }}">
 <sc-for list="{{ sh.nav }}" as="n" hint-placeholder-count="7">
@@ -218,8 +218,8 @@ class Component extends DCLogic {
       items: {
         coats: ['معاطف نسائية شتوية', 'سطيف · الجزائر · وهران', 'مسموح', ''],
         bags: ['حقائب يد نسائية', 'الجزائر · البليدة · تيزي وزو', 'مسموح', ''],
-        perfume: ['عطور نسائية 100 مل', 'وهران · الجزائر · قسنطينة', 'بشرط', 'يجب أن يتبقّى أكثر من نصف مدة الصلاحية عند دخول البضاعة.'],
-        shoes: ['أحذية رياضية رجالية', 'الجزائر · عنابة · باتنة', 'مسموح', 'ثلاثة بلاغات تقليد في هذه الفئة خلال 30 يوماً. اطلب تأكيد المواصفة قبل الالتزام.']
+        perfume: ['عطور نسائية 100 مل', 'وهران · الجزائر · قسنطينة', 'بشرط', 'يجب أن يتبقّى أكثر من نصف مدة الصلاحية عند الدخول.'],
+        shoes: ['أحذية رياضية رجالية', 'الجزائر · عنابة · باتنة', 'مسموح', '3 بلاغات تقليد خلال 30 يوماً. اطلب تأكيد المواصفة.']
       },
       nav: ['الرئيسية', 'رحلتي', 'الطلب', 'الرسائل', 'حسابي']
     },
@@ -240,8 +240,8 @@ class Component extends DCLogic {
       items: {
         coats: ['Manteaux femme hiver', 'Sétif · Alger · Oran', 'Autorisé', ''],
         bags: ['Sacs à main femme', 'Alger · Blida · Tizi Ouzou', 'Autorisé', ''],
-        perfume: ['Parfums femme 100 ml', 'Oran · Alger · Constantine', 'Sous condition', 'Plus de la moitié de la durée de conservation doit rester à l’entrée de la marchandise.'],
-        shoes: ['Baskets homme', 'Alger · Annaba · Batna', 'Autorisé', 'Trois signalements de contrefaçon dans cette catégorie en 30 jours. Demandez une confirmation de la spécification avant de vous engager.']
+        perfume: ['Parfums femme 100 ml', 'Oran · Alger · Constantine', 'Sous condition', 'Plus de la moitié de la durée de conservation doit rester à l’entrée.'],
+        shoes: ['Baskets homme', 'Alger · Annaba · Batna', 'Autorisé', '3 signalements de contrefaçon en 30 jours. Demandez une confirmation de la spécification.']
       },
       nav: ['Accueil', 'Voyage', 'Demande', 'Messages', 'Compte']
     },
@@ -262,8 +262,8 @@ class Component extends DCLogic {
       items: {
         coats: ['Women’s winter coats', 'Sétif · Algiers · Oran', 'Allowed', ''],
         bags: ['Women’s handbags', 'Algiers · Blida · Tizi Ouzou', 'Allowed', ''],
-        perfume: ['Women’s perfume 100 ml', 'Oran · Algiers · Constantine', 'Conditional', 'More than half the shelf life must remain when the goods enter the country.'],
-        shoes: ['Men’s trainers', 'Algiers · Annaba · Batna', 'Allowed', 'Three counterfeit reports in this category in 30 days. Ask for specification confirmation before committing.']
+        perfume: ['Women’s perfume 100 ml', 'Oran · Algiers · Constantine', 'Conditional', 'More than half the shelf life must remain on entry.'],
+        shoes: ['Men’s trainers', 'Algiers · Annaba · Batna', 'Allowed', '3 counterfeit reports in 30 days. Ask for spec confirmation.']
       },
       nav: ['Home', 'My trip', 'Demand', 'Messages', 'Account']
     }

@@ -252,32 +252,32 @@ class Component extends DCLogic {
         importer: {
           badge: 'مستورد مصغّر', chip: 'chip-verified',
           title: 'قبل ما تبدأ — واش تحتاج',
-          lede: 'التسجيل بالهاتف ويأخذ دقيقة. الوثائق تُطلب بعد ذلك، ويمكنك رفعها على مراحل.',
+          lede: 'الهاتف أولاً. الوثائق بعد ذلك، على مراحل.',
           needs: [
-            { i: '1', t: 'بطاقة المقاول الذاتي', d: 'بميدان «الاستيراد المصغّر»، سارية المفعول.' },
-            { i: '2', t: 'الرخصة العامة', d: 'من وزارة التجارة الخارجية، صالحة سنة قابلة للتجديد.' },
-            { i: '3', t: 'الرقم الجبائي والانتساب إلى CASNOS', d: 'وثيقتان قصيرتان تُرفعان بالصورة.' }
+            { i: '1', t: 'بطاقة المقاول الذاتي', d: 'ميدان «الاستيراد المصغّر»، سارية.' },
+            { i: '2', t: 'الرخصة العامة', d: 'من وزارة التجارة الخارجية، صالحة سنة.' },
+            { i: '3', t: 'الرقم الجبائي والانتساب إلى CASNOS', d: 'تُرفعان بالصورة.' }
           ],
           unlocks: ['نشر رحلة واستقبال طلبات التجّار', 'لوحة الطلب المُجمَّع كاملةً', 'عدّادات القيمة والوزن والحجم', 'الدفتر المبسّط ومولّد وسم المادة 14'],
-          note: 'مَعْبَر تتحقّق من وثائقك فقط. لا تمنحك المنصّة حقّ الاستيراد — هذا الحق تحصل عليه من الجهات الرسمية، ونحن نتأكّد أنك تملكه.',
+          note: 'مَعْبَر تتحقّق من وثائقك فقط، ولا تمنح حقّ الاستيراد.',
           cta: 'ابدأ التسجيل'
         },
         trader: {
           badge: 'تاجر', chip: 'chip-verified',
           title: 'قبل ما تبدأ — واش تحتاج',
-          lede: 'التسجيل بالهاتف ويأخذ دقيقة. السجل التجاري يُطلب فقط إذا أردت عرض منتجاتك للجمهور.',
+          lede: 'الهاتف أولاً. السجل التجاري فقط لعرض منتجاتك للجمهور.',
           needs: [
-            { i: '1', t: 'السجل التجاري', d: 'مستخرج ساري، باسمك أو باسم نشاطك.' },
+            { i: '1', t: 'السجل التجاري', d: 'مستخرج ساري.' },
             { i: '2', t: 'الرقم الجبائي', d: 'يُرفع بالصورة.' },
             { i: '3', t: 'عنوان النشاط', d: 'يظهر في ملف متجرك العام.' }
           ],
           unlocks: ['طلب توريد بمواصفة ونطاق سعر', 'اكتشاف الرحلات والمستوردين وسجلّاتهم', 'عرض منتجاتك للجمهور في السوق', 'ملف متجر عام بسجلّك'],
-          note: 'يمكنك البحث والمراسلة وطلب التوريد قبل رفع السجل التجاري. الوثيقة مطلوبة فقط لعرض المنتجات للجمهور.',
+          note: 'البحث والمراسلة وطلب التوريد متاحة قبل رفع السجل.',
           cta: 'ابدأ التسجيل'
         }
       },
       PH: {
-        consumer: { title: 'أهلاً بك في مَعْبَر', lede: 'رقم هاتفك يكفي. ما نطلبوش منك وثائق — أنت هنا باش تشري.' },
+        consumer: { title: 'أهلاً بك في مَعْبَر', lede: 'رقم هاتفك يكفي. بلا وثائق.' },
         importer: { title: 'أنشئ حسابك', lede: 'رقم الهاتف أولاً. الوثائق بعد ذلك.' },
         trader:   { title: 'أنشئ حسابك', lede: 'رقم الهاتف أولاً. الوثائق بعد ذلك.' }
       },
@@ -298,7 +298,7 @@ class Component extends DCLogic {
           cta1: 'ابدأ رفع الوثائق', cta2: 'لاحقاً — خذني للرئيسية'
         },
         trader: {
-          title: 'حسابك جاهز', lede: 'تقدر تطلب توريد من دابا. السجل التجاري مطلوب فقط لعرض منتجاتك.',
+          title: 'حسابك جاهز', lede: 'تقدر تطلب توريد من دابا.',
           rows: [['اكتشاف الرحلات والمستوردين', true, 'الآن'], ['نشر طلب توريد', true, 'الآن'], ['مراسلة المستوردين', true, 'الآن'], ['عرض منتجاتك للجمهور', false, 'بعد التحقّق']],
           cta1: 'ابدأ رفع الوثائق', cta2: 'لاحقاً — انشر طلب توريد'
         }
@@ -322,32 +322,32 @@ class Component extends DCLogic {
         importer: {
           badge: 'Micro-importateur', chip: 'chip-verified',
           title: 'Avant de commencer — ce qu’il vous faut',
-          lede: 'L’inscription se fait par téléphone et prend une minute. Les documents viennent après, et vous pouvez les déposer par étapes.',
+          lede: 'Le téléphone d’abord. Les documents ensuite, par étapes.',
           needs: [
-            { i: '1', t: 'Carte d’auto-entrepreneur', d: 'Avec l’activité « importation de faible valeur », en cours de validité.' },
-            { i: '2', t: 'Autorisation générale', d: 'Du ministère du Commerce extérieur, valable un an, renouvelable.' },
-            { i: '3', t: 'Numéro fiscal et affiliation CASNOS', d: 'Deux pièces courtes, déposées en photo.' }
+            { i: '1', t: 'Carte d’auto-entrepreneur', d: 'Activité « importation de faible valeur », en cours de validité.' },
+            { i: '2', t: 'Autorisation générale', d: 'Du ministère du Commerce extérieur, valable un an.' },
+            { i: '3', t: 'Numéro fiscal et affiliation CASNOS', d: 'Déposés en photo.' }
           ],
           unlocks: ['Publier un voyage et recevoir les demandes des commerçants', 'Le tableau de la demande agrégée en entier', 'Compteurs de valeur, de poids et de volume', 'Le registre simplifié et le générateur d’étiquette (art. 14)'],
-          note: 'Maabar vérifie vos documents, rien de plus. La plateforme ne vous accorde pas le droit d’importer — ce droit vient des autorités, et nous nous assurons que vous le détenez.',
+          note: 'Maabar vérifie vos documents, sans accorder le droit d’importer.',
           cta: 'Commencer l’inscription'
         },
         trader: {
           badge: 'Commerçant', chip: 'chip-verified',
           title: 'Avant de commencer — ce qu’il vous faut',
-          lede: 'L’inscription se fait par téléphone et prend une minute. Le registre de commerce n’est exigé que pour exposer vos produits au public.',
+          lede: 'Le téléphone d’abord. Le registre du commerce seulement pour exposer vos produits.',
           needs: [
-            { i: '1', t: 'Registre de commerce', d: 'Extrait en cours de validité, à votre nom ou à celui de votre activité.' },
+            { i: '1', t: 'Registre de commerce', d: 'Extrait en cours de validité.' },
             { i: '2', t: 'Numéro fiscal', d: 'Déposé en photo.' },
             { i: '3', t: 'Adresse de l’activité', d: 'Elle figure sur votre fiche boutique publique.' }
           ],
           unlocks: ['Demande d’approvisionnement avec spécification et fourchette de prix', 'Découverte des voyages, des importateurs et de leurs antécédents', 'Exposition de vos produits au public sur la place', 'Fiche boutique publique portant vos antécédents'],
-          note: 'Vous pouvez chercher, écrire et demander un approvisionnement avant de déposer le registre. Le document n’est exigé que pour exposer des produits au public.',
+          note: 'Recherche, messages et demandes possibles avant de déposer le registre.',
           cta: 'Commencer l’inscription'
         }
       },
       PH: {
-        consumer: { title: 'Bienvenue sur Maabar', lede: 'Votre numéro suffit. Aucun document demandé — vous êtes ici pour acheter.' },
+        consumer: { title: 'Bienvenue sur Maabar', lede: 'Votre numéro suffit. Aucun document.' },
         importer: { title: 'Créez votre compte', lede: 'Le téléphone d’abord. Les documents ensuite.' },
         trader:   { title: 'Créez votre compte', lede: 'Le téléphone d’abord. Les documents ensuite.' }
       },
@@ -368,7 +368,7 @@ class Component extends DCLogic {
           cta1: 'Déposer mes documents', cta2: 'Plus tard — aller à l’accueil'
         },
         trader: {
-          title: 'Votre compte est prêt', lede: 'Vous pouvez demander un approvisionnement dès maintenant. Le registre n’est exigé que pour exposer vos produits.',
+          title: 'Votre compte est prêt', lede: 'Vous pouvez demander un approvisionnement dès maintenant.',
           rows: [['Découvrir voyages et importateurs', true, 'Maintenant'], ['Publier une demande d’approvisionnement', true, 'Maintenant'], ['Écrire aux importateurs', true, 'Maintenant'], ['Exposer vos produits au public', false, 'Après vérification']],
           cta1: 'Déposer mes documents', cta2: 'Plus tard — publier une demande'
         }
@@ -392,32 +392,32 @@ class Component extends DCLogic {
         importer: {
           badge: 'Micro-importer', chip: 'chip-verified',
           title: 'Before you start — what you need',
-          lede: 'Signing up takes a minute and needs only a phone. Documents come after, and you can upload them in stages.',
+          lede: 'Phone first. Documents after, in stages.',
           needs: [
-            { i: '1', t: 'Auto-entrepreneur card', d: 'Under the “low-value import” activity, currently valid.' },
-            { i: '2', t: 'General authorisation', d: 'From the Ministry of Foreign Trade, valid one year, renewable.' },
-            { i: '3', t: 'Tax number and CASNOS affiliation', d: 'Two short documents, uploaded as photos.' }
+            { i: '1', t: 'Auto-entrepreneur card', d: '“Low-value import” activity, currently valid.' },
+            { i: '2', t: 'General authorisation', d: 'From the Ministry of Foreign Trade, valid one year.' },
+            { i: '3', t: 'Tax number and CASNOS affiliation', d: 'Uploaded as photos.' }
           ],
           unlocks: ['Publish a trip and receive traders’ requests', 'The full aggregated demand board', 'Value, weight and volume counters', 'The simplified register and the Article 14 label generator'],
-          note: 'Maabar verifies your documents, nothing more. The platform does not grant you the right to import — that right comes from the authorities, and we confirm you hold it.',
+          note: 'Maabar verifies your documents. It does not grant the right to import.',
           cta: 'Start signing up'
         },
         trader: {
           badge: 'Trader', chip: 'chip-verified',
           title: 'Before you start — what you need',
-          lede: 'Signing up takes a minute and needs only a phone. The commercial register is required only to show your products publicly.',
+          lede: 'Phone first. The commercial register only to show your products publicly.',
           needs: [
-            { i: '1', t: 'Commercial register', d: 'A valid extract, in your name or your business name.' },
+            { i: '1', t: 'Commercial register', d: 'A valid extract.' },
             { i: '2', t: 'Tax number', d: 'Uploaded as a photo.' },
             { i: '3', t: 'Business address', d: 'Shown on your public shop profile.' }
           ],
           unlocks: ['Sourcing request with a specification and a price range', 'Discovery of trips, importers and their records', 'Your products shown publicly on the marketplace', 'A public shop profile carrying your record'],
-          note: 'You can search, message and request sourcing before uploading the register. The document is required only to show products publicly.',
+          note: 'Search, message and request sourcing before uploading the register.',
           cta: 'Start signing up'
         }
       },
       PH: {
-        consumer: { title: 'Welcome to Maabar', lede: 'Your phone number is enough. No documents asked — you are here to buy.' },
+        consumer: { title: 'Welcome to Maabar', lede: 'Your phone number is enough. No documents.' },
         importer: { title: 'Create your account', lede: 'Phone first. Documents after.' },
         trader:   { title: 'Create your account', lede: 'Phone first. Documents after.' }
       },
@@ -438,7 +438,7 @@ class Component extends DCLogic {
           cta1: 'Upload my documents', cta2: 'Later — take me home'
         },
         trader: {
-          title: 'Your account is ready', lede: 'You can request sourcing from now on. The register is required only to show your products.',
+          title: 'Your account is ready', lede: 'You can request sourcing from now on.',
           rows: [['Discover trips and importers', true, 'Now'], ['Publish a sourcing request', true, 'Now'], ['Message importers', true, 'Now'], ['Show your products publicly', false, 'After verification']],
           cta1: 'Upload my documents', cta2: 'Later — publish a request'
         }

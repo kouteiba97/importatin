@@ -86,38 +86,39 @@
    Screens render at a real desktop width (1440px) and are scaled to fit. */
 const GROUPS = [
   { id: 'public', h: 1500, screens: [
-    ['Landing', 'maabar.dz'], ['Marketplace', 'maabar.dz/market'], ['Search', 'maabar.dz/search'], ['Product Detail', 'maabar.dz/p/coat-wool'],
-    ['Seller Profile', 'maabar.dz/shop/boutique-nadia'], ['Consumer Home', 'maabar.dz/home'], ['Saved', 'maabar.dz/saved'],
-    ['Compliance Checker', 'maabar.dz/check'], ['Onboarding', 'maabar.dz/signup'] ] },
+    ['Landing', 'maabar.dz'], ['For Importers', 'maabar.dz/for-importers'], ['For Traders', 'maabar.dz/for-traders'], ['Sign In', 'maabar.dz/sign-in'], ['Choose Experience', 'maabar.dz/choose'],
+    ['Marketplace', 'maabar.dz/marketplace'], ['Search', 'maabar.dz/search'], ['Product Detail', 'maabar.dz/p/coat-wool'],
+    ['Seller Profile', 'maabar.dz/shop/boutique-nadia'], ['Consumer Home', 'maabar.dz/home'], ['Saved', 'maabar.dz/saved'], ['Compliance Checker', 'maabar.dz/check'] ] },
   { id: 'importer', h: 1200, screens: [
-    ['Importer Home', 'app.maabar.dz'], ['Trip', 'app.maabar.dz/trip'], ['Trip Creation', 'app.maabar.dz/trip/new'], ['Demand Board', 'app.maabar.dz/demand'],
-    ['Messages', 'app.maabar.dz/messages'], ['Records', 'app.maabar.dz/records'], ['Verification', 'app.maabar.dz/verification'] ] },
+    ['Importer Setup', 'maabar.dz/import/setup'], ['Verification', 'maabar.dz/import/verification'], ['Verification Status', 'maabar.dz/import/status'],
+    ['Importer Home', 'maabar.dz/import'], ['Demand Board', 'maabar.dz/import/demand'], ['Trip', 'maabar.dz/import/trips/T-26-0412'], ['Trip Creation', 'maabar.dz/import/trips/new'],
+    ['Messages', 'maabar.dz/import/messages'], ['Records', 'maabar.dz/import/records'] ] },
   { id: 'trader', h: 1200, screens: [
-    ['Trader Home', 'app.maabar.dz'], ['Discover', 'app.maabar.dz/discover'], ['Importer Profile', 'app.maabar.dz/importers/karima-h'],
-    ['Sourcing Request', 'app.maabar.dz/requests/new'], ['Commitment', 'app.maabar.dz/commitments/CMT-26-0331'], ['Dispute', 'app.maabar.dz/disputes/new'],
-    ['Listing Composer', 'app.maabar.dz/shop/new'] ] },
-  { id: 'admin', h: 900, screens: [['Admin Console', 'ops.maabar.dz']] },
+    ['Trader Setup', 'maabar.dz/trade/setup'], ['Trader Home', 'maabar.dz/trade'], ['Discover', 'maabar.dz/trade/discover'], ['Importer Profile', 'maabar.dz/trade/importers/karima-h'],
+    ['Sourcing Request', 'maabar.dz/trade/requests/new'], ['Commitment', 'maabar.dz/trade/commitments/CMT-26-0331'], ['Dispute', 'maabar.dz/trade/disputes/new'],
+    ['Listing Composer', 'maabar.dz/trade/shop/new'] ] },
+  { id: 'admin', h: 900, screens: [['Admin Sign In', 'ops.maabar.dz/login'], ['Admin Console', 'ops.maabar.dz']] },
   { id: 'brand', h: 2000, screens: [['Logo', 'brand'], ['Dashboards', 'deck']] }
 ];
 
 const T = {
   en: { heading: 'Design review — web platform', back: '← All screens', full: 'Open full page', of: 'of',
-        public: ['Public website', 'Visitors and shoppers. Top navigation, wide layouts. The seller is always a verified trader.'],
-        importer: ['Micro-importer web app', 'Plan trips, read verified demand, keep records. Sidebar navigation.'],
-        trader: ['Trader web app', 'Discover trips and importers, request sourcing, manage commitments and the shop.'],
-        admin: ['Operations console', 'Separate internal platform for trust & safety, compliance and billing.'],
+        public: ['Marketplace — public website', 'Visitors and shoppers, the two professional doors, one sign-in, the experience selector.'],
+        importer: ['Maabar Import', 'Importer setup and verification, then the workspace: trips, demand, records.'],
+        trader: ['Maabar Trade', 'Trader setup with person + business verification, then discovery, requests, commitments, shop.'],
+        admin: ['Maabar Admin', 'Separate entry with MFA, then the console: queues, evidence, decisions, audit.'],
         brand: ['Brand', 'Logo kit and the three-role overview.'] },
   fr: { heading: 'Revue de conception — plateforme web', back: '← Tous les écrans', full: 'Ouvrir en pleine page', of: 'sur',
-        public: ['Site public', 'Visiteurs et acheteurs. Navigation en haut, mises en page larges. Le vendeur est toujours un commerçant vérifié.'],
-        importer: ['Application web micro-importateur', 'Préparer les voyages, lire la demande vérifiée, tenir les registres. Navigation latérale.'],
-        trader: ['Application web commerçant', 'Découvrir voyages et importateurs, demander un approvisionnement, gérer engagements et boutique.'],
-        admin: ['Console des opérations', 'Plateforme interne distincte : confiance, conformité et facturation.'],
+        public: ['Place de marché — site public', 'Visiteurs et acheteurs, les deux portes professionnelles, une seule connexion, le sélecteur d’espace.'],
+        importer: ['Maabar Import', 'Installation et vérification importateur, puis l’espace : voyages, demande, registres.'],
+        trader: ['Maabar Trade', 'Installation commerçant avec vérification personne + activité, puis découverte, demandes, engagements, boutique.'],
+        admin: ['Maabar Admin', 'Entrée séparée avec MFA, puis la console : files, preuves, décisions, audit.'],
         brand: ['Marque', 'Kit logo et vue d’ensemble des trois rôles.'] },
   ar: { heading: 'مراجعة التصميم — منصّة ويب', back: 'كل الشاشات →', full: 'افتح الصفحة كاملة', of: 'من',
-        public: ['الموقع العام', 'الزوّار والمشترون. تنقّل علوي وتخطيطات واسعة. البائع دائماً تاجر مُتحقَّق.'],
-        importer: ['تطبيق الويب للمستورد المصغّر', 'تخطيط الرحلات، قراءة الطلب المؤكَّد، مسك السجلّات. تنقّل جانبي.'],
-        trader: ['تطبيق الويب للتاجر', 'اكتشاف الرحلات والمستوردين، طلب التوريد، إدارة الالتزامات والمتجر.'],
-        admin: ['مركز العمليات', 'منصّة داخلية منفصلة للثقة والامتثال والفوترة.'],
+        public: ['السوق — الموقع العام', 'الزوّار والمشترون، بابا المحترفين، دخول واحد، واختيار الفضاء.'],
+        importer: ['مَعْبَر · الاستيراد', 'إعداد المستورد والتحقّق، ثم فضاء العمل: الرحلات، الطلب، السجلّات.'],
+        trader: ['مَعْبَر · التجارة', 'إعداد التاجر بتحقّق الشخص والنشاط، ثم الاكتشاف والطلبات والالتزامات والمتجر.'],
+        admin: ['مَعْبَر · الإدارة', 'مدخل منفصل بخطوتين، ثم المركز: الطوابير، الأدلّة، القرارات، السجلّ.'],
         brand: ['الهوية', 'دليل الشعار ونظرة على الأدوار الثلاثة.'] }
 };
 

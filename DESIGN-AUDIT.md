@@ -263,14 +263,26 @@ Screens read them at render. `Trip Creation` displays the value cap with its eff
 
 ---
 
-## 12b. SURFACE ARCHITECTURE — three deployables, not one
+## 12b. SURFACE ARCHITECTURE — three deployables, four experiences
 
-The product ships as **three separate surfaces**. This is an architecture decision, not a routing preference.
+The product ships as **three separate surfaces** (a deployment decision, not a routing preference) carrying
+**four user-facing experiences**. `PRODUCT-ARCHITECTURE.md` is the authority for the experience layer;
+this section remains the authority for why the deployables are separate.
+
+| Experience | Deployable | Shell |
+|---|---|---|
+| Marketplace | public web | `.site` header |
+| Maabar Import | app | `.app` sidebar, workspace mark *Import* |
+| Maabar Trade | app | `.app` sidebar, workspace mark *Trade* |
+| Maabar Admin | admin | console |
+
+Import and Trade are two navigation contexts of **one** app deployable over **one** identity — not two
+applications. Active context selects navigation only and never enters an authorization decision.
 
 | Surface | Audience | Auth | Notes |
 |---|---|---|---|
 | **Public web** | Anyone, signed out | none | Marketplace, product, seller, search, compliance checker, landing. Server-rendered for SEO and WhatsApp previews — this is how consumers arrive |
-| **App** | Consumer · trader · importer, signed in | user session | One identity, roles as capabilities. Responsive: bottom tabs on phone, persistent rail from 1140px |
+| **App** | Consumer · trader · importer, signed in | user session | One identity, roles as capabilities. Desktop web at 1440px with a persistent rail; narrows gracefully (`web.css`) |
 | **Admin** | Trust & safety staff only | **separate auth, separate domain** | Never reachable from the public app. Admin code must never ship in the user bundle |
 
 **Why admin is its own deployable, not a route:**
@@ -278,7 +290,12 @@ The product ships as **three separate surfaces**. This is an architecture decisi
 - Bundle weight — queue tooling, evidence panels and the rule editor are dead weight for a shopper on 3G
 - Staff auth belongs on its own lifecycle (SSO, forced rotation, IP allowlisting) without touching consumer signup
 
-**Entry determines role.** A visitor arriving at a product page and signing up is a consumer — they are never asked whether they import. Someone who clicks *«سجّل كمستورد»* or *«سجّل كتاجر»* has already declared it, so that path opens with eligibility before asking for a phone number. There is no role-selection menu anywhere in the product.
+**Entry determines intent, not identity.** A visitor arriving at a product page and signing up is a
+consumer — they are never asked whether they import. Someone who clicks *«أنا مستورد»* or *«أنا تاجر»*
+has already declared it, so that door opens on `For Importers` / `For Traders` (what it does, what is
+required, what it is not) before asking for a phone number. There is no role-selection menu anywhere in
+the product, and the door never creates a second account: it sets an intent that becomes a capability on
+the one identity after OTP. See `AUTHENTICATION-UX-MATRIX.md` for the routing of every account state.
 
 ---
 

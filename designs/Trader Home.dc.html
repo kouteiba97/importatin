@@ -23,7 +23,7 @@
 <div class="app">
 
 <aside class="rail">
-<div class="rail-brand"><svg width="28" height="28" viewBox="0 0 48 48" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 36V23a8 8 0 0 1 16 0v13"/><path d="M24 23a8 8 0 0 1 16 0v13"/></g></svg><span class="wordmark">{{ sh.brand }}</span></div>
+<div class="rail-brand"><svg width="28" height="28" viewBox="0 0 48 48" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 36V23a8 8 0 0 1 16 0v13"/><path d="M24 23a8 8 0 0 1 16 0v13"/></g></svg><span><span class="wordmark">{{ sh.brand }}</span><sc-if value="{{ sh.hasMark }}" hint-placeholder-val="{{ true }}"><span class="mark" style="color:{{ sh.roleFg }}">{{ sh.mark }}</span></sc-if></span></div>
 <div class="rail-role" style="background:{{ sh.roleBg }};color:{{ sh.roleFg }}">{{ sh.role }}</div>
 <nav class="rail-nav" aria-label="{{ sh.navLabel }}">
 <sc-for list="{{ sh.nav }}" as="n" hint-placeholder-count="7">
@@ -218,17 +218,17 @@ class Component extends DCLogic {
       brand: 'مَعْبَر', context: 'سياق الحساب', ctx: ['أنا أستورد', 'أنا أشتري'], search: 'بحث',
       oppsTitle: 'فرص تناسبك', oppsNote: 'مبنيّة على فئاتك وولايتك',
       opps: [
-        ['رحلة مطابقة', 'تغادر بعد 6 أيام', 'إسطنبول · ألبسة نسائية', 'يغطّي فئتك الأولى، وله سعة تكفي 120 قطعة، ويسلّم في سطيف.', 'كريمة ح. · مستوردة مُتحقَّقة', 'ك ح', '84 معاملة', 'اطلب عرضاً'],
-        ['طلب مشترك', 'يُغلق بعد 3 أيام', 'انضمّ إلى طلب جماعي — عطور', '7 تجّار في وهران يجمعون 210 وحدة للوصول إلى سعر أفضل.', 'طلب مفتوح · 7 تجّار', '7', 'متوسط 61 معاملة', 'اطّلع وانضمّ'],
-        ['سعر مرجعي', 'تحديث اليوم', 'الأحذية الرجالية: النطاق نزل 8%', 'النطاق في سطيف صار 3 500 – 4 900 دج. راجع تسعيرك قبل الالتزام القادم.', 'مبنيّ على 34 معاملة مؤكَّدة', '%', 'آخر 90 يوماً', 'افتح المؤشّر']
+        ['رحلة مطابقة', 'تغادر بعد 6 أيام', 'إسطنبول · ألبسة نسائية', 'سعة 120 قطعة · تسليم في سطيف.', 'كريمة ح. · مستوردة مُتحقَّقة', 'ك ح', '84 معاملة', 'اطلب عرضاً'],
+        ['طلب مشترك', 'يُغلق بعد 3 أيام', 'انضمّ إلى طلب جماعي — عطور', '7 تجّار في وهران · 210 وحدة.', 'طلب مفتوح · 7 تجّار', '7', 'متوسط 61 معاملة', 'اطّلع وانضمّ'],
+        ['سعر مرجعي', 'تحديث اليوم', 'الأحذية الرجالية: النطاق نزل 8%', 'سطيف: 3 500 – 4 900 دج.', 'مبنيّ على 34 معاملة مؤكَّدة', '%', 'آخر 90 يوماً', 'افتح المؤشّر']
       ],
       tripsTitle: 'رحلات قادمة تخصّك', allTrips: 'كل الرحلات ←',
       trips: [['إسطنبول', '12–16 أكتوبر', 'ألبسة · حقائب · إكسسوار', 'سعة متاحة', 'كريمة ح. · 84 معاملة'], ['دبي', '19–23 أكتوبر', 'عطور · ساعات', 'سعة محدودة', 'سفيان ب. · 12 معاملة'], ['غازي عنتاب', '2–7 نوفمبر', 'منسوجات منزلية', 'سعة متاحة', 'ن. مرابط · 46 معاملة']],
       decTitle: 'يحتاج قرارك', decNote: 'مرتّبة بأقرب انتهاء',
       decisions: [
-        ['عرض على «قمصان قطنية رجالية»', 'ينتهي بعد 19 ساعة', 'ثلاثة مستوردين اقترحوا نطاقاً. قارن بعدد المعاملات المؤكَّدة لا بالسعر وحده.', 'قارن العروض', 'مدّد المهلة'],
-        ['أكّد المواصفة قبل إغلاق رحلة أكتوبر', 'يُفضَّل خلال يومين', 'القماش والمقاسات غير محدّدين. كل يوم تأخير يقلّل احتمال إدراجك في الرحلة.', 'أكّد المواصفة', 'لاحقاً'],
-        ['استلام بضاعة وصلت — معاطف', 'خلال 4 أيام', 'وصلت وجُمركت. حدّد موعد الاستلام وأكّد المطابقة عند التسليم.', 'حدّد الموعد', 'راسل']
+        ['عرض على «قمصان قطنية رجالية»', 'ينتهي بعد 19 ساعة', 'ثلاثة مستوردين اقترحوا نطاقاً.', 'قارن العروض', 'مدّد المهلة'],
+        ['أكّد المواصفة قبل إغلاق رحلة أكتوبر', 'يُفضَّل خلال يومين', 'القماش والمقاسات غير محدّدين.', 'أكّد المواصفة', 'لاحقاً'],
+        ['استلام بضاعة وصلت — معاطف', 'خلال 4 أيام', 'وصلت وجُمركت.', 'حدّد الموعد', 'راسل']
       ],
       reqTitle: 'طلباتي', all: 'الكل ←', newReq: '+ طلب توريد جديد',
       reqs: [['مطابَق', 'قمصان قطنية رجالية — 120 وحدة', '3 عروض'], ['مفتوح', 'أحذية رياضية — 80 زوجاً', 'بلا عروض · 5 أيام'], ['ملتزَم', 'معاطف نسائية — 40 قطعة', 'في الطريق']],
@@ -237,7 +237,7 @@ class Component extends DCLogic {
       recordTitle: 'سجلّك', details: 'التفاصيل ←',
       rep: [['معاملة مؤكَّدة', '52'], ['نسبة الاستلام', '96%'], ['متوسط الردّ', 'ساعتان']],
       nextStep: 'الخطوة التالية',
-      next: ['ثبّت سعرك قبل رحلة أكتوبر', 'رحلتان تغطّيان فئتك تغادران خلال أسبوع. الالتزام بنطاق سعر الآن يرفع فرصة إدراجك في قائمة الشراء.', 'راجع العروض الثلاثة'],
+      next: ['ثبّت سعرك قبل رحلة أكتوبر', 'رحلتان في فئتك تغادران خلال أسبوع.', 'راجع العروض الثلاثة'],
       navLabel: 'التنقّل', nav: ['الرئيسية', 'اكتشف', 'طلباتي', 'التزاماتي', 'الرسائل', 'حسابي']
     },
 
@@ -246,17 +246,17 @@ class Component extends DCLogic {
       brand: 'Maabar', context: 'Contexte du compte', ctx: ['J’importe', 'J’achète'], search: 'Recherche',
       oppsTitle: 'Opportunités pour vous', oppsNote: 'selon vos catégories et votre wilaya',
       opps: [
-        ['Voyage compatible', 'départ dans 6 jours', 'Istanbul · vêtements femme', 'Couvre votre première catégorie, avec une capacité de 120 pièces et une remise à Sétif.', 'Karima H. · importatrice vérifiée', 'KH', '84 transactions', 'Demander une offre'],
-        ['Demande groupée', 'clôture dans 3 jours', 'Rejoindre une demande groupée — parfums', '7 commerçants d’Oran réunissent 210 unités pour obtenir un meilleur prix.', 'Demande ouverte · 7 commerçants', '7', 'moy. 61 transactions', 'Voir et rejoindre'],
-        ['Prix de référence', 'mis à jour aujourd’hui', 'Chaussures homme : fourchette en baisse de 8 %', 'À Sétif, la fourchette est désormais de 3 500 – 4 900 DA. Revoyez vos prix avant le prochain engagement.', 'Basé sur 34 transactions confirmées', '%', '90 derniers jours', 'Ouvrir l’indicateur']
+        ['Voyage compatible', 'départ dans 6 jours', 'Istanbul · vêtements femme', 'Capacité 120 pièces · remise à Sétif.', 'Karima H. · importatrice vérifiée', 'KH', '84 transactions', 'Demander une offre'],
+        ['Demande groupée', 'clôture dans 3 jours', 'Rejoindre une demande groupée — parfums', '7 commerçants d’Oran · 210 unités.', 'Demande ouverte · 7 commerçants', '7', 'moy. 61 transactions', 'Voir et rejoindre'],
+        ['Prix de référence', 'mis à jour aujourd’hui', 'Chaussures homme : fourchette en baisse de 8 %', 'Sétif : 3 500 – 4 900 DA.', 'Basé sur 34 transactions confirmées', '%', '90 derniers jours', 'Ouvrir l’indicateur']
       ],
       tripsTitle: 'Voyages à venir pour vous', allTrips: 'Tous les voyages →',
       trips: [['Istanbul', '12–16 octobre', 'Vêtements · sacs · accessoires', 'Capacité disponible', 'Karima H. · 84 transactions'], ['Dubaï', '19–23 octobre', 'Parfums · montres', 'Capacité limitée', 'Sofiane B. · 12 transactions'], ['Gaziantep', '2–7 novembre', 'Linge de maison', 'Capacité disponible', 'N. Merabet · 46 transactions']],
       decTitle: 'En attente de votre décision', decNote: 'par échéance la plus proche',
       decisions: [
-        ['Offres sur « chemises coton homme »', 'expire dans 19 h', 'Trois importateurs ont proposé une fourchette. Comparez au nombre de transactions confirmées, pas au prix seul.', 'Comparer les offres', 'Prolonger le délai'],
-        ['Confirmez la spécification avant la clôture du voyage d’octobre', 'de préférence sous 2 jours', 'Tissu et tailles non précisés. Chaque jour de retard réduit vos chances d’être inclus.', 'Confirmer la spécification', 'Plus tard'],
-        ['Réception de marchandise arrivée — manteaux', 'sous 4 jours', 'Arrivée et dédouanée. Fixez le rendez-vous et confirmez la conformité à la remise.', 'Fixer le rendez-vous', 'Écrire']
+        ['Offres sur « chemises coton homme »', 'expire dans 19 h', 'Trois importateurs ont proposé une fourchette.', 'Comparer les offres', 'Prolonger le délai'],
+        ['Confirmez la spécification avant la clôture du voyage d’octobre', 'de préférence sous 2 jours', 'Tissu et tailles non précisés.', 'Confirmer la spécification', 'Plus tard'],
+        ['Réception de marchandise arrivée — manteaux', 'sous 4 jours', 'Arrivée et dédouanée.', 'Fixer le rendez-vous', 'Écrire']
       ],
       reqTitle: 'Mes demandes', all: 'Tout →', newReq: '+ Nouvelle demande d’approvisionnement',
       reqs: [['Appariée', 'Chemises coton homme — 120 unités', '3 offres'], ['Ouverte', 'Baskets — 80 paires', 'sans offre · 5 jours'], ['Engagée', 'Manteaux femme — 40 pièces', 'en route']],
@@ -265,7 +265,7 @@ class Component extends DCLogic {
       recordTitle: 'Votre historique', details: 'Détails →',
       rep: [['Transactions confirmées', '52'], ['Taux de réception', '96 %'], ['Délai de réponse', '2 h']],
       nextStep: 'Étape suivante',
-      next: ['Fixez votre prix avant le voyage d’octobre', 'Deux voyages couvrant votre catégorie partent cette semaine. S’engager sur une fourchette maintenant augmente vos chances d’être inclus dans la liste d’achat.', 'Voir les trois offres'],
+      next: ['Fixez votre prix avant le voyage d’octobre', 'Deux voyages de votre catégorie partent cette semaine.', 'Voir les trois offres'],
       navLabel: 'Navigation', nav: ['Accueil', 'Découvrir', 'Demandes', 'Engagements', 'Messages', 'Compte']
     },
 
@@ -274,17 +274,17 @@ class Component extends DCLogic {
       brand: 'Maabar', context: 'Account context', ctx: ['I import', 'I buy'], search: 'Search',
       oppsTitle: 'Opportunities for you', oppsNote: 'based on your categories and wilaya',
       opps: [
-        ['Matching trip', 'leaves in 6 days', 'Istanbul · women’s clothing', 'Covers your top category, has capacity for 120 pieces, and hands over in Sétif.', 'Karima H. · verified importer', 'KH', '84 transactions', 'Request an offer'],
-        ['Group request', 'closes in 3 days', 'Join a group request — perfumes', '7 traders in Oran are pooling 210 units to reach a better price.', 'Open request · 7 traders', '7', 'avg 61 transactions', 'View and join'],
-        ['Reference price', 'updated today', 'Men’s shoes: range down 8%', 'In Sétif the range is now 3,500 – 4,900 DA. Review your pricing before your next commitment.', 'Based on 34 confirmed transactions', '%', 'last 90 days', 'Open the index']
+        ['Matching trip', 'leaves in 6 days', 'Istanbul · women’s clothing', 'Capacity 120 pieces · handover in Sétif.', 'Karima H. · verified importer', 'KH', '84 transactions', 'Request an offer'],
+        ['Group request', 'closes in 3 days', 'Join a group request — perfumes', '7 traders in Oran · 210 units.', 'Open request · 7 traders', '7', 'avg 61 transactions', 'View and join'],
+        ['Reference price', 'updated today', 'Men’s shoes: range down 8%', 'Sétif: 3,500 – 4,900 DA.', 'Based on 34 confirmed transactions', '%', 'last 90 days', 'Open the index']
       ],
       tripsTitle: 'Upcoming trips for you', allTrips: 'All trips →',
       trips: [['Istanbul', '12–16 October', 'Clothing · bags · accessories', 'Capacity available', 'Karima H. · 84 transactions'], ['Dubai', '19–23 October', 'Perfumes · watches', 'Limited capacity', 'Sofiane B. · 12 transactions'], ['Gaziantep', '2–7 November', 'Home textiles', 'Capacity available', 'N. Merabet · 46 transactions']],
       decTitle: 'Needs your decision', decNote: 'sorted by nearest expiry',
       decisions: [
-        ['Offers on “men’s cotton shirts”', 'expires in 19 h', 'Three importers proposed a range. Compare by confirmed transactions, not price alone.', 'Compare offers', 'Extend deadline'],
-        ['Confirm the specification before the October trip closes', 'ideally within 2 days', 'Fabric and sizes are not set. Each day of delay lowers your chance of being included.', 'Confirm specification', 'Later'],
-        ['Collect goods that arrived — coats', 'within 4 days', 'Arrived and cleared customs. Set a collection time and confirm conformity at handover.', 'Set the time', 'Message']
+        ['Offers on “men’s cotton shirts”', 'expires in 19 h', 'Three importers proposed a range.', 'Compare offers', 'Extend deadline'],
+        ['Confirm the specification before the October trip closes', 'ideally within 2 days', 'Fabric and sizes not set.', 'Confirm specification', 'Later'],
+        ['Collect goods that arrived — coats', 'within 4 days', 'Arrived and cleared customs.', 'Set the time', 'Message']
       ],
       reqTitle: 'My requests', all: 'All →', newReq: '+ New sourcing request',
       reqs: [['Matched', 'Men’s cotton shirts — 120 units', '3 offers'], ['Open', 'Trainers — 80 pairs', 'no offers · 5 days'], ['Committed', 'Women’s coats — 40 pieces', 'in transit']],
@@ -293,7 +293,7 @@ class Component extends DCLogic {
       recordTitle: 'Your record', details: 'Details →',
       rep: [['Confirmed transactions', '52'], ['Collection rate', '96%'], ['Response time', '2 h']],
       nextStep: 'Next step',
-      next: ['Lock in your price before the October trip', 'Two trips covering your category leave within a week. Committing to a price range now raises your chance of making the buying list.', 'Review the three offers'],
+      next: ['Lock in your price before the October trip', 'Two trips in your category leave within a week.', 'Review the three offers'],
       navLabel: 'Navigation', nav: ['Home', 'Discover', 'Requests', 'Commitments', 'Messages', 'Account']
     }
   };

@@ -44,3 +44,12 @@ await __chk(['Saved', 'Onboarding'])            // EN + AR
 await __chk(['Saved'], ['en', 'fr', 'ar'])
 ```
 Each screen reports: render errors, whether a web shell is present, horizontal overflow at 1440px, any leftover 430px phone column (`PHONE`), page height and text direction.
+
+## newscreen.py + recipes/ — build a new web screen from parts
+
+`newscreen.py` assembles a `.dc.html` from the site shell or the app shell (`site_page`, `app_page`,
+`statebar`) plus the screen's CSS, markup, state and logic. Each file in `recipes/` is one screen;
+run it with `python3 tools/recipes/<name>.py` and it rewrites `designs/<Name>.dc.html`, printing any
+`{{ binding }}` the logic never defines. The shell's role labels, user name and the list of held
+experiences can be overridden per screen: `window.MaabarShell(lang, surface, active, { role, userRole,
+userName, userInitials, held: ['importer', 'trader', 'public'] })`.

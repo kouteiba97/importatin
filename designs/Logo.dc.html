@@ -38,13 +38,13 @@ h2.sh{margin:0 0 5px;font-size:var(--t-h1);font-weight:600}
 <header style="padding-bottom:26px">
 <div style="font-size:var(--t-xs);color:var(--ink-3);margin-bottom:8px">Brand identity · v3</div>
 <h1 class="wm" style="margin:0 0 10px;font-size:33px;font-weight:700;line-height:1.22">Maabar — the mark</h1>
-<p style="margin:0;font-size:16px;line-height:1.8;color:var(--ink-2);max-width:66ch"><em style="font-style:normal;font-weight:600">Maabar</em> (معبر) means <em style="font-style:normal;font-weight:600">crossing point</em>. The mark is an <strong style="font-weight:600">M built from two arches</strong> — two passages meeting on one line. Monoline geometric: one stroke weight, round caps, no gradient, no fill, no depth. That is a requirement rather than a preference — the Article 14 label is a legal obligation, often printed on single-colour thermal paper, and the mark has to survive there and at 16px as a favicon.</p>
+<p style="margin:0;font-size:16px;line-height:1.8;color:var(--ink-2);max-width:66ch"><em style="font-style:normal;font-weight:600">Maabar</em> (معبر) means <em style="font-style:normal;font-weight:600">crossing point</em>. The mark is an <strong style="font-weight:600">M built from two arches</strong> — two passages meeting on one line. Monoline geometric: one stroke weight, round caps, no gradient, no fill, no depth.</p>
 </header>
 
 <!-- ══ PRIMARY LOCKUP ══ -->
 <section class="sec">
 <h2 class="sh">Primary lockup</h2>
-<p class="lede">Latin leads. The Arabic wordmark is a localised variant used inside the Arabic interface — not a second line beneath the Latin.</p>
+<p class="lede">Latin by default. The Arabic wordmark is used only inside the Arabic interface.</p>
 <div style="border:1px solid var(--rule);border-radius:var(--r-lg);background:var(--surface);padding:56px 32px;display:grid;place-items:center">
 <div style="display:flex;align-items:center;gap:20px;color:var(--brand)">
 <svg width="74" height="74" viewBox="0 0 48 48" role="img" aria-label="Maabar">
@@ -64,7 +64,7 @@ h2.sh{margin:0 0 5px;font-size:var(--t-h1);font-weight:600}
 <!-- ══ THE MARK AT SIZE ══ -->
 <section class="sec">
 <h2 class="sh">The mark</h2>
-<p class="lede">Checked at every size it actually ships at — rail icon, favicon, app icon, print. Nothing is added or removed between sizes.</p>
+<p class="lede">Identical at every size — rail icon, favicon, app icon, print.</p>
 <div class="grid g4">
 <sc-for list="{{ sizes }}" as="m" hint-placeholder-count="4">
 <div>
@@ -85,7 +85,7 @@ h2.sh{margin:0 0 5px;font-size:var(--t-h1);font-weight:600}
 <!-- ══ VARIANTS ══ -->
 <section class="sec">
 <h2 class="sh">Variants</h2>
-<p class="lede">Four, covering every placement. No others are created.</p>
+<p class="lede">Four. No others.</p>
 <div class="grid g2">
 
 <div>
@@ -134,7 +134,7 @@ h2.sh{margin:0 0 5px;font-size:var(--t-h1);font-weight:600}
 <!-- ══ COLOUR ══ -->
 <section class="sec">
 <h2 class="sh">Colour</h2>
-<p class="lede">The mark is blue, and that blue carries <strong style="font-weight:600">no status meaning</strong>. Green, amber and red are reserved for compliance verdicts, so the logo can never be mistaken for one. Black and white are complete versions, not fallbacks.</p>
+<p class="lede">Blue carries <strong style="font-weight:600">no status meaning</strong>. Green, amber and red are reserved for compliance verdicts.</p>
 <div class="grid g4">
 <sc-for list="{{ ways }}" as="c" hint-placeholder-count="4">
 <div>
@@ -162,7 +162,7 @@ h2.sh{margin:0 0 5px;font-size:var(--t-h1);font-weight:600}
 <!-- ══ IN USE ══ -->
 <section class="sec">
 <h2 class="sh">In use</h2>
-<p class="lede">Three placements govern every decision about this mark: a 24px rail icon, an app icon, and a printed Article 14 label.</p>
+<p class="lede">A 24px rail icon, an app icon, and a printed Article 14 label.</p>
 <div class="grid g3">
 
 <div>
@@ -210,7 +210,7 @@ h2.sh{margin:0 0 5px;font-size:var(--t-h1);font-weight:600}
 <!-- ══ TYPOGRAPHY ══ -->
 <section class="sec">
 <h2 class="sh">Typography</h2>
-<p class="lede">Three scripts, three faces, one stack. Sora and Inter carry no Arabic glyphs, so Arabic resolves to IBM Plex Sans Arabic through normal per-glyph fallback — no <span class="kv">:lang()</span> rule needed.</p>
+<p class="lede">Three faces, one stack. Arabic falls back to IBM Plex Sans Arabic automatically.</p>
 <div class="grid g3">
 <div class="tile" style="align-items:start;justify-items:start;min-height:0;padding:18px">
 <div class="wm" style="font-size:31px;margin-bottom:6px">Maabar</div>
@@ -281,18 +281,18 @@ class Component extends DCLogic {
         { label: 'Rule', token: '--rule', v: 'var(--rule)' }
       ],
       dos: [
-        'Use the Latin lockup by default; the Arabic lockup only inside the Arabic interface.',
+        'Latin lockup by default; Arabic only in the Arabic interface.',
         'Keep one stroke weight and round caps at every size.',
         'Use the mark alone below 96px of available width.',
-        'On dark grounds reverse the whole lockup — mark and wordmark together.'
+        'On dark grounds, reverse the whole lockup.'
       ],
       donts: [
         'No gradient, no shadow, no 3D, no outline around the mark.',
         'Never stretch, condense, or re-track the wordmark.',
-        'Never rotate or mirror the mark — the arches always sit on one line.',
-        'Never place it inside a shape resembling a seal, emblem or official stamp.',
-        'Never render the mark in green, amber or red — those mean compliance outcomes.',
-        'Never use the teal in the mark; it is a chart colour and fails contrast as a logo.'
+        'Never rotate or mirror the mark.',
+        'Never place it inside a seal, emblem or stamp.',
+        'Never use green, amber or red — those are compliance colours.',
+        'Never use the chart teal.'
       ]
     };
   }

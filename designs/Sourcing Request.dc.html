@@ -23,7 +23,7 @@
 <div class="app">
 
 <aside class="rail">
-<div class="rail-brand"><svg width="28" height="28" viewBox="0 0 48 48" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 36V23a8 8 0 0 1 16 0v13"/><path d="M24 23a8 8 0 0 1 16 0v13"/></g></svg><span class="wordmark">{{ sh.brand }}</span></div>
+<div class="rail-brand"><svg width="28" height="28" viewBox="0 0 48 48" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 36V23a8 8 0 0 1 16 0v13"/><path d="M24 23a8 8 0 0 1 16 0v13"/></g></svg><span><span class="wordmark">{{ sh.brand }}</span><sc-if value="{{ sh.hasMark }}" hint-placeholder-val="{{ true }}"><span class="mark" style="color:{{ sh.roleFg }}">{{ sh.mark }}</span></sc-if></span></div>
 <div class="rail-role" style="background:{{ sh.roleBg }};color:{{ sh.roleFg }}">{{ sh.role }}</div>
 <nav class="rail-nav" aria-label="{{ sh.navLabel }}">
 <sc-for list="{{ sh.nav }}" as="n" hint-placeholder-count="7">
@@ -208,31 +208,31 @@ class Component extends DCLogic {
       dir: 'rtl', short: 'ع', langLabel: 'اللغة', sep: ' ', cur: 'دج',
       back: 'رجوع', views: ['إنشاء', 'منشور', 'العروض', 'الاتفاق'],
       heads: { compose: 'طلب توريد جديد', sent: 'طلبك', offers: 'العروض', agree: 'الاتفاق' },
-      composeTitle: 'ما الذي تبحث عنه؟', composeLede: 'كلّما دقّت المواصفة، قلّ الخلاف عند التسليم.',
+      composeTitle: 'ما الذي تبحث عنه؟', composeLede: 'مواصفة دقيقة = خلاف أقلّ عند التسليم.',
       category: 'الفئة', cats: ['ألبسة', 'حقائب', 'أحذية', 'تجميل', 'منزل'],
       itemName: 'اسم السلعة', item: 'قمصان قطنية رجالية',
-      spec: 'المواصفة', specPh: 'القماش، المقاسات، الألوان، أي تفصيل يهمّك', specVal: 'قطن 100%. المقاسات M · L · XL. الألوان: أبيض، أزرق فاتح، رمادي. أكمام طويلة.',
+      spec: 'المواصفة', specPh: 'القماش، المقاسات، الألوان…', specVal: 'قطن 100%. المقاسات M · L · XL. الألوان: أبيض، أزرق فاتح، رمادي. أكمام طويلة.',
       specHints: ['المقاسات', 'الألوان', 'الخامة'],
       qty: 'الكمية', deadline: 'الأجل', dl1: 'خلال شهر', dl2: 'خلال أسبوعين', dl3: 'مرن',
-      targetRange: 'النطاق السعري المستهدف — للوحدة', rangeHint: 'يُعرض كنطاق، لا كرقم واحد. سقفك الأعلى لا يظهر قبل أن يقترح المستورد.',
+      targetRange: 'النطاق السعري المستهدف — للوحدة', rangeHint: 'سقفك الأعلى لا يظهر قبل عرض المستورد.',
       wilaya: 'ولاية الاستلام', w1: 'سطيف', w2: 'الجزائر', w3: 'وهران',
-      whoSees: 'من يرى هذا الطلب', vis: [['كل المستوردين المُتحقَّقين', 'أوسع وصول وأسرع عروض.'], ['من أختارهم فقط', 'ترسله لمستوردين تعاملت معهم من قبل.']],
-      publish: 'انشر الطلب', publishNote: 'النشر يفتح محادثات مع مستوردين مُتحقَّقين. لا ينشأ أي اتفاق إلا بموافقتك الصريحة في خطوة لاحقة.',
+      whoSees: 'من يرى هذا الطلب', vis: [['كل المستوردين المُتحقَّقين', 'أوسع وصول.'], ['من أختارهم فقط', 'من تعاملت معهم.']],
+      publish: 'انشر الطلب', publishNote: 'لا ينشأ أي اتفاق إلا بموافقتك الصريحة لاحقاً.',
       published: 'منشور', sinceHrs: 'منذ 3 ساعات',
       summary: [['الكمية', '120 وحدة'], ['النطاق المستهدف', '1 800 – 2 400 دج'], ['الأجل', 'خلال شهر'], ['الاستلام', 'سطيف']],
-      matched: 'مستوردين مُتحقَّقين طابقوا طلبك', firstOffers: 'عادةً تصل أول العروض خلال يوم.', seeOffers: 'شاهد العروض', edit: 'عدّل',
+      matched: 'مستوردين مُتحقَّقين طابقوا طلبك', firstOffers: 'أول العروض عادةً خلال يوم.', seeOffers: 'شاهد العروض', edit: 'عدّل',
       offers: 'العروض', byRecord: 'مرتّبة بالسجل', message: 'راسل',
       offerList: [
-        ['كريمة ح.', 'ك ح', '84 معاملة مؤكَّدة · 97% إتمام', ['2 100 دج', '18 أكتوبر', '120'], 'تغطّي الكمية كاملة ضمن رحلة إسطنبول. اقترحت سعراً داخل نطاقك.', 'اقبل هذا العرض'],
-        ['ن. مرابط', 'ن م', '46 معاملة مؤكَّدة · 92% إتمام', ['1 950 دج', '9 نوفمبر', '80'], 'سعر أقلّ لكن الكمية جزئية والوصول بعد أجلك بأسبوعين.', 'ناقش التفاصيل'],
-        ['سفيان ب.', 'س ب', '12 معاملة مؤكَّدة · مستورد جديد', ['2 250 دج', '25 أكتوبر', '120'], 'يغطّي الكمية والأجل، لكن سجلّه قصير — اطلب صور عيّنة قبل الالتزام.', 'ناقش التفاصيل']
+        ['كريمة ح.', 'ك ح', '84 معاملة مؤكَّدة · 97% إتمام', ['2 100 دج', '18 أكتوبر', '120'], 'الكمية كاملة، والسعر داخل نطاقك.', 'اقبل هذا العرض'],
+        ['ن. مرابط', 'ن م', '46 معاملة مؤكَّدة · 92% إتمام', ['1 950 دج', '9 نوفمبر', '80'], 'سعر أقلّ، كمية جزئية، وصول بعد الأجل.', 'ناقش التفاصيل'],
+        ['سفيان ب.', 'س ب', '12 معاملة مؤكَّدة · مستورد جديد', ['2 250 دج', '25 أكتوبر', '120'], 'الكمية والأجل مغطّيان. السجل قصير.', 'ناقش التفاصيل']
       ],
       cellKeys: ['السعر المقترح', 'تاريخ الوصول', 'الكمية'],
-      agreeTitle: 'راجع الاتفاق', agreeLede: 'هذا توثيق لما اتّفقتما عليه. يصير ملزماً بينكما عند موافقة الطرفين.',
+      agreeTitle: 'راجع الاتفاق', agreeLede: 'يصير ملزماً عند موافقة الطرفين.',
       cpInitials: 'ك ح', cpName: 'كريمة ح.', cpMeta: 'رحلة إسطنبول · تصل 18 أكتوبر',
       terms: [['السلعة', 'قمصان قطنية رجالية'], ['المواصفة', 'قطن 100% · M · L · XL'], ['الكمية', '120 وحدة'], ['نطاق السعر', '2 100 دج ± 8%'], ['صلاحية النطاق', 'حتى 14 أكتوبر'], ['الاستلام', 'سطيف · 20 أكتوبر']],
-      ifPrice: 'إن تغيّر السعر', ifPriceBody: 'إذا خرج السعر النهائي عن النطاق المتّفق عليه، يُعلمك المستورد قبل الشراء ولك أن تقبل أو تنسحب بلا التزام.',
-      moneyNote: 'أي مبلغ بينكما يُصرَّح به من الطرفين للتوثيق فقط. مَعْبَر لا تستلمه ولا تحتفظ به ولا تضمنه ولا تردّه.',
+      ifPrice: 'إن تغيّر السعر', ifPriceBody: 'إذا خرج السعر عن النطاق، يُعلمك المستورد قبل الشراء. لك أن تقبل أو تنسحب.',
+      moneyNote: 'المبلغ بينكما للتوثيق فقط. مَعْبَر لا تستلمه ولا تضمنه.',
       accept: 'أوافق على الاتفاق', propose: 'اقترح تعديلاً'
     },
 
@@ -240,31 +240,31 @@ class Component extends DCLogic {
       dir: 'ltr', short: 'FR', langLabel: 'Langue', sep: ' ', cur: 'DA',
       back: 'Retour', views: ['Création', 'Publiée', 'Offres', 'Accord'],
       heads: { compose: 'Nouvelle demande d’approvisionnement', sent: 'Votre demande', offers: 'Offres', agree: 'Accord' },
-      composeTitle: 'Que recherchez-vous ?', composeLede: 'Plus la spécification est précise, moins il y a de désaccord à la remise.',
+      composeTitle: 'Que recherchez-vous ?', composeLede: 'Une spécification précise évite les désaccords à la remise.',
       category: 'Catégorie', cats: ['Vêtements', 'Sacs', 'Chaussures', 'Beauté', 'Maison'],
       itemName: 'Article', item: 'Chemises coton homme',
-      spec: 'Spécification', specPh: 'Tissu, tailles, coloris, tout détail qui compte', specVal: 'Coton 100 %. Tailles M · L · XL. Coloris : blanc, bleu clair, gris. Manches longues.',
+      spec: 'Spécification', specPh: 'Tissu, tailles, coloris…', specVal: 'Coton 100 %. Tailles M · L · XL. Coloris : blanc, bleu clair, gris. Manches longues.',
       specHints: ['Tailles', 'Coloris', 'Matière'],
       qty: 'Quantité', deadline: 'Délai', dl1: 'Sous un mois', dl2: 'Sous deux semaines', dl3: 'Flexible',
-      targetRange: 'Fourchette de prix visée — à l’unité', rangeHint: 'Affichée comme fourchette, pas comme un chiffre unique. Votre plafond n’est pas visible avant que l’importateur propose.',
+      targetRange: 'Fourchette de prix visée — à l’unité', rangeHint: 'Votre plafond reste caché jusqu’à l’offre de l’importateur.',
       wilaya: 'Wilaya de remise', w1: 'Sétif', w2: 'Alger', w3: 'Oran',
-      whoSees: 'Qui voit cette demande', vis: [['Tous les importateurs vérifiés', 'La plus large audience, les offres les plus rapides.'], ['Seulement ceux que je choisis', 'Envoyée aux importateurs avec qui vous avez déjà traité.']],
-      publish: 'Publier la demande', publishNote: 'La publication ouvre des conversations avec des importateurs vérifiés. Aucun accord n’existe sans votre consentement explicite, à une étape ultérieure.',
+      whoSees: 'Qui voit cette demande', vis: [['Tous les importateurs vérifiés', 'Audience la plus large.'], ['Seulement ceux que je choisis', 'Vos contacts.']],
+      publish: 'Publier la demande', publishNote: 'Aucun accord sans votre consentement explicite, à une étape ultérieure.',
       published: 'Publiée', sinceHrs: 'il y a 3 heures',
       summary: [['Quantité', '120 unités'], ['Fourchette visée', '1 800 – 2 400 DA'], ['Délai', 'sous un mois'], ['Remise', 'Sétif']],
-      matched: 'importateurs vérifiés correspondent à votre demande', firstOffers: 'Les premières offres arrivent généralement sous un jour.', seeOffers: 'Voir les offres', edit: 'Modifier',
+      matched: 'importateurs vérifiés correspondent à votre demande', firstOffers: 'Premières offres généralement sous un jour.', seeOffers: 'Voir les offres', edit: 'Modifier',
       offers: 'Offres', byRecord: 'classées par historique', message: 'Écrire',
       offerList: [
-        ['Karima H.', 'KH', '84 transactions confirmées · 97 % d’achèvement', ['2 100 DA', '18 octobre', '120'], 'Couvre toute la quantité dans le voyage d’Istanbul, avec un prix dans votre fourchette.', 'Accepter cette offre'],
-        ['N. Merabet', 'NM', '46 transactions confirmées · 92 % d’achèvement', ['1 950 DA', '9 novembre', '80'], 'Prix plus bas, mais quantité partielle et arrivée deux semaines après votre délai.', 'Discuter des détails'],
-        ['Sofiane B.', 'SB', '12 transactions confirmées · nouvel importateur', ['2 250 DA', '25 octobre', '120'], 'Couvre quantité et délai, mais l’historique est court — demandez des photos d’échantillon avant de vous engager.', 'Discuter des détails']
+        ['Karima H.', 'KH', '84 transactions confirmées · 97 % d’achèvement', ['2 100 DA', '18 octobre', '120'], 'Quantité complète, prix dans votre fourchette.', 'Accepter cette offre'],
+        ['N. Merabet', 'NM', '46 transactions confirmées · 92 % d’achèvement', ['1 950 DA', '9 novembre', '80'], 'Prix plus bas, quantité partielle, arrivée après le délai.', 'Discuter des détails'],
+        ['Sofiane B.', 'SB', '12 transactions confirmées · nouvel importateur', ['2 250 DA', '25 octobre', '120'], 'Quantité et délai couverts. Historique court.', 'Discuter des détails']
       ],
       cellKeys: ['Prix proposé', 'Arrivée', 'Quantité'],
-      agreeTitle: 'Vérifiez l’accord', agreeLede: 'Ceci consigne ce que vous avez convenu. Il vous engage tous deux une fois accepté par chacun.',
+      agreeTitle: 'Vérifiez l’accord', agreeLede: 'Vous engage tous deux une fois accepté par chacun.',
       cpInitials: 'KH', cpName: 'Karima H.', cpMeta: 'Voyage Istanbul · arrivée le 18 octobre',
       terms: [['Article', 'Chemises coton homme'], ['Spécification', 'Coton 100 % · M · L · XL'], ['Quantité', '120 unités'], ['Fourchette de prix', '2 100 DA ± 8 %'], ['Validité de la fourchette', 'jusqu’au 14 octobre'], ['Remise', 'Sétif · 20 octobre']],
-      ifPrice: 'Si le prix change', ifPriceBody: 'Si le prix final sort de la fourchette convenue, l’importateur vous prévient avant l’achat ; vous pouvez accepter ou vous retirer sans engagement.',
-      moneyNote: 'Tout montant entre vous est déclaré par les deux parties, pour mémoire uniquement. Maabar ne le reçoit pas, ne le conserve pas, ne le garantit pas et ne le rembourse pas.',
+      ifPrice: 'Si le prix change', ifPriceBody: 'Si le prix sort de la fourchette, l’importateur vous prévient avant l’achat. Vous acceptez ou vous retirez.',
+      moneyNote: 'Montant déclaré pour mémoire uniquement. Maabar ne le reçoit ni ne le garantit.',
       accept: 'J’accepte l’accord', propose: 'Proposer une modification'
     },
 
@@ -272,31 +272,31 @@ class Component extends DCLogic {
       dir: 'ltr', short: 'EN', langLabel: 'Language', sep: ',', cur: 'DA',
       back: 'Back', views: ['Compose', 'Published', 'Offers', 'Agreement'],
       heads: { compose: 'New sourcing request', sent: 'Your request', offers: 'Offers', agree: 'Agreement' },
-      composeTitle: 'What are you looking for?', composeLede: 'The more precise the specification, the fewer disagreements at handover.',
+      composeTitle: 'What are you looking for?', composeLede: 'A precise specification avoids disputes at handover.',
       category: 'Category', cats: ['Clothing', 'Bags', 'Shoes', 'Beauty', 'Home'],
       itemName: 'Item', item: 'Men’s cotton shirts',
-      spec: 'Specification', specPh: 'Fabric, sizes, colours, any detail that matters', specVal: '100% cotton. Sizes M · L · XL. Colours: white, light blue, grey. Long sleeves.',
+      spec: 'Specification', specPh: 'Fabric, sizes, colours…', specVal: '100% cotton. Sizes M · L · XL. Colours: white, light blue, grey. Long sleeves.',
       specHints: ['Sizes', 'Colours', 'Material'],
       qty: 'Quantity', deadline: 'Deadline', dl1: 'Within a month', dl2: 'Within two weeks', dl3: 'Flexible',
-      targetRange: 'Target price range — per unit', rangeHint: 'Shown as a range, not a single number. Your upper limit isn’t visible until an importer proposes.',
+      targetRange: 'Target price range — per unit', rangeHint: 'Your upper limit stays hidden until an importer proposes.',
       wilaya: 'Handover wilaya', w1: 'Sétif', w2: 'Algiers', w3: 'Oran',
-      whoSees: 'Who sees this request', vis: [['All verified importers', 'Widest reach, fastest offers.'], ['Only those I choose', 'Sent to importers you’ve dealt with before.']],
-      publish: 'Publish the request', publishNote: 'Publishing opens conversations with verified importers. No agreement exists without your explicit consent at a later step.',
+      whoSees: 'Who sees this request', vis: [['All verified importers', 'Widest reach.'], ['Only those I choose', 'Your contacts.']],
+      publish: 'Publish the request', publishNote: 'No agreement without your explicit consent at a later step.',
       published: 'Published', sinceHrs: '3 hours ago',
       summary: [['Quantity', '120 units'], ['Target range', '1,800 – 2,400 DA'], ['Deadline', 'within a month'], ['Handover', 'Sétif']],
-      matched: 'verified importers matched your request', firstOffers: 'First offers usually arrive within a day.', seeOffers: 'See offers', edit: 'Edit',
+      matched: 'verified importers matched your request', firstOffers: 'First offers usually within a day.', seeOffers: 'See offers', edit: 'Edit',
       offers: 'Offers', byRecord: 'sorted by record', message: 'Message',
       offerList: [
-        ['Karima H.', 'KH', '84 confirmed transactions · 97% completion', ['2,100 DA', '18 October', '120'], 'Covers the full quantity on the Istanbul trip, with a price inside your range.', 'Accept this offer'],
-        ['N. Merabet', 'NM', '46 confirmed transactions · 92% completion', ['1,950 DA', '9 November', '80'], 'Lower price, but partial quantity and arrival two weeks after your deadline.', 'Discuss details'],
-        ['Sofiane B.', 'SB', '12 confirmed transactions · new importer', ['2,250 DA', '25 October', '120'], 'Covers quantity and deadline, but the record is short — ask for sample photos before committing.', 'Discuss details']
+        ['Karima H.', 'KH', '84 confirmed transactions · 97% completion', ['2,100 DA', '18 October', '120'], 'Full quantity, price inside your range.', 'Accept this offer'],
+        ['N. Merabet', 'NM', '46 confirmed transactions · 92% completion', ['1,950 DA', '9 November', '80'], 'Lower price, partial quantity, arrives after your deadline.', 'Discuss details'],
+        ['Sofiane B.', 'SB', '12 confirmed transactions · new importer', ['2,250 DA', '25 October', '120'], 'Quantity and deadline covered. Short record.', 'Discuss details']
       ],
       cellKeys: ['Proposed price', 'Arrival', 'Quantity'],
-      agreeTitle: 'Review the agreement', agreeLede: 'This records what you agreed. It binds you both once each party accepts.',
+      agreeTitle: 'Review the agreement', agreeLede: 'Binds you both once each party accepts.',
       cpInitials: 'KH', cpName: 'Karima H.', cpMeta: 'Istanbul trip · arrives 18 October',
       terms: [['Item', 'Men’s cotton shirts'], ['Specification', '100% cotton · M · L · XL'], ['Quantity', '120 units'], ['Price range', '2,100 DA ± 8%'], ['Range valid until', '14 October'], ['Handover', 'Sétif · 20 October']],
-      ifPrice: 'If the price changes', ifPriceBody: 'If the final price falls outside the agreed range, the importer tells you before buying — you can accept or withdraw with no obligation.',
-      moneyNote: 'Any amount between you is declared by both parties for the record only. Maabar does not receive, hold, guarantee or refund it.',
+      ifPrice: 'If the price changes', ifPriceBody: 'If the price leaves the range, the importer tells you before buying. Accept or withdraw.',
+      moneyNote: 'Amount declared for the record only. Maabar does not receive or guarantee it.',
       accept: 'I accept the agreement', propose: 'Propose a change'
     }
   };

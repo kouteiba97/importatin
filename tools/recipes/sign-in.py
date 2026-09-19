@@ -1,0 +1,189 @@
+import sys, os; sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
+from newscreen import build, site_header, statebar, SITE_FOOT
+
+CSS = '''
+.otp-row{display:flex;gap:10px;margin:8px 0 22px}
+.err{display:flex;gap:10px;padding:12px 14px;border:1px solid var(--prohibited);border-radius:var(--r-sm);background:var(--prohibited-bg);color:var(--prohibited-ink);font-size:var(--t-sm);margin-bottom:16px}
+.warn{display:flex;gap:10px;padding:12px 14px;border:1px solid var(--rule-strong);border-radius:var(--r-sm);background:var(--surface-2);color:var(--ink-2);font-size:var(--t-sm);margin-bottom:16px}
+.route{padding:22px;border:1px solid var(--rule);border-radius:var(--r-lg);background:var(--surface);display:flex;gap:16px;align-items:center}
+.route .ic{flex:none;width:48px;height:48px;border-radius:var(--r);display:grid;place-items:center}
+.route .n{font-size:var(--t-h3);font-weight:600}
+.route .s{font-size:var(--t-sm);color:var(--ink-2);margin-top:2px}
+.prog{height:4px;border-radius:2px;background:var(--rule);overflow:hidden;margin-top:18px}
+.prog i{display:block;height:100%;width:62%;background:var(--brand)}
+.fine{font-size:var(--t-xs);color:var(--ink-3);line-height:1.6;margin-top:18px}
+.phone{display:flex;align-items:center;gap:10px;height:48px;padding:0 14px;border:1px solid var(--rule-strong);border-radius:var(--r-sm);background:var(--surface)}
+.phone input{flex:1;min-width:0;border:0;background:transparent;font-size:17px;outline:none;color:inherit}
+.phone .cc{font-size:var(--t-body);color:var(--ink-2);padding-inline-end:10px;border-inline-end:1px solid var(--rule)}
+'''
+
+INNER = '''<div class="auth">
+<section class="auth-main">
+<div class="auth-card">
+
+<sc-if value="{{ isPhone }}" hint-placeholder-val="{{ true }}">
+<h1>{{ t.phoneTitle }}</h1>
+<p class="lede">{{ phoneLede }}</p>
+<label class="fld" for="ph">{{ t.phoneLabel }}</label>
+<div class="phone" dir="ltr"><span class="cc num">+213</span><input id="ph" class="num" inputMode="tel" placeholder="5 55 12 34 56"></div>
+<button type="button" onClick="{{ next }}" class="btn btn-primary btn-lg btn-block" style="margin-top:18px">{{ t.sendCode }}</button>
+<sc-if value="{{ isConsumer }}" hint-placeholder-val="{{ true }}">
+<div class="divider">{{ t.or }}</div>
+<button type="button" class="btn btn-lg btn-block">{{ t.browse }}</button>
+</sc-if>
+<p class="fine">{{ t.terms }}</p>
+</sc-if>
+
+<sc-if value="{{ isOtp }}" hint-placeholder-val="{{ false }}">
+<h1>{{ t.otpTitle }}</h1>
+<p class="lede">{{ t.otpLede }} <span class="num" dir="ltr"><bdi>+213 5 55 12 34 56</bdi></span> · <button type="button" class="link">{{ t.changeNumber }}</button></p>
+<sc-if value="{{ isWrong }}" hint-placeholder-val="{{ false }}"><div class="err" role="alert"><span>!</span><span>{{ t.wrong }}</span></div></sc-if>
+<sc-if value="{{ isLocked }}" hint-placeholder-val="{{ false }}"><div class="err" role="alert"><span>!</span><span>{{ t.locked }}</span></div></sc-if>
+<sc-if value="{{ isOffline }}" hint-placeholder-val="{{ false }}"><div class="warn"><span>◌</span><span>{{ t.offline }}</span></div></sc-if>
+<div class="otp-row" dir="ltr">
+<sc-for list="{{ otpCells }}" as="c" hint-placeholder-count="6"><input class="otp num" inputMode="numeric" maxLength="1" value="{{ c.v }}" aria-label="{{ c.a }}"></sc-for>
+</div>
+<button type="button" onClick="{{ next }}" class="btn btn-primary btn-lg btn-block" disabled="{{ isLocked }}">{{ t.confirm }}</button>
+<button type="button" class="link" style="display:block;margin:16px auto 0">{{ t.resend }} <span class="num"><bdi>(0:42)</bdi></span></button>
+</sc-if>
+
+<sc-if value="{{ isProfile }}" hint-placeholder-val="{{ false }}">
+<h1>{{ profTitle }}</h1>
+<p class="lede">{{ profLede }}</p>
+<label class="fld" for="nm">{{ profName }}</label><input id="nm" class="inp" placeholder="{{ profPh }}">
+<label class="fld" for="wl" style="margin-top:16px">{{ t.wilaya }}</label>
+<select id="wl" class="inp"><option>{{ t.w1 }}</option><option>{{ t.w2 }}</option><option>{{ t.w3 }}</option><option>{{ t.w4 }}</option></select>
+<span class="fld" style="margin-top:16px">{{ t.uiLang }}</span>
+<div style="display:flex;gap:8px">
+<sc-for list="{{ langs }}" as="l" hint-placeholder-count="3"><button type="button" onClick="{{ l.pick }}" aria-pressed="{{ l.on }}" class="btn" style="background:{{ l.bg }};color:{{ l.fg }}">{{ l.label }}</button></sc-for>
+</div>
+<button type="button" onClick="{{ next }}" class="btn btn-primary btn-lg btn-block" style="margin-top:24px">{{ profCta }}</button>
+</sc-if>
+
+<sc-if value="{{ isRouted }}" hint-placeholder-val="{{ false }}">
+<h1>{{ routedTitle }}</h1>
+<p class="lede">{{ routedLede }}</p>
+<div class="route">
+<span class="ic" style="background:{{ route.bg }};color:{{ route.fg }}">{{ route.icon }}</span>
+<div style="flex:1;min-width:0"><div class="n">{{ route.name }}</div><div class="s">{{ route.sub }}</div></div>
+</div>
+<div class="prog"><i></i></div>
+<p class="fine">{{ t.routedFine }}</p>
+</sc-if>
+
+</div>
+</section>
+
+<aside class="auth-side">
+<div>
+<div style="display:flex;align-items:center;gap:10px;margin-bottom:34px"><svg width="26" height="26" viewBox="0 0 48 48" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 36V23a8 8 0 0 1 16 0v13"/><path d="M24 23a8 8 0 0 1 16 0v13"/></g></svg><span class="wordmark" style="color:#fff">{{ sh.brand }}</span><sc-if value="{{ hasSideMark }}" hint-placeholder-val="{{ true }}"><span style="opacity:.6">·</span><span style="font-size:14px;font-weight:600">{{ sideMark }}</span></sc-if></div>
+<h2>{{ side.title }}</h2>
+<p>{{ side.body }}</p>
+<div class="pts">
+<sc-for list="{{ side.pts }}" as="p" hint-placeholder-count="3"><div class="pt"><span class="ok">✓</span><span>{{ p }}</span></div></sc-for>
+</div>
+</div>
+<p style="font-size:var(--t-xs);color:oklch(0.7 0.01 257)">{{ t.oneIdentity }}</p>
+</aside>
+</div>'''
+
+TEMPLATE = f'''<div ref="{{{{ rootRef }}}}" dir="rtl" lang="ar" class="tier-public web site-page">
+{site_header(False)}{statebar('views')}{statebar('intents', 'intentLabel')}<main class="site-main" style="padding:0">
+{INNER}
+</main>
+{SITE_FOOT}</div>
+'''
+
+LOGIC = r'''
+  L = {
+    ar: { dir: 'rtl', short: 'ع', label: 'العربية',
+      phoneTitle: 'دخول أو تسجيل', phoneLabel: 'رقم الهاتف', sendCode: 'أرسل الرمز', or: 'أو', browse: 'تصفّح بدون حساب',
+      terms: 'بالمتابعة توافق على شروط الاستعمال وسياسة الخصوصية.',
+      phoneLede: { consumer: 'رقمك يكفي. لا كلمة مرور، ولا وثائق.', importer: 'حساب واحد لكل مَعْبَر. إن كان لديك حساب، سنتعرّف عليه.', trader: 'حساب واحد لكل مَعْبَر. إن كان لديك حساب، سنتعرّف عليه.' },
+      otpTitle: 'أدخل الرمز', otpLede: 'أرسلنا رمزاً من 6 أرقام إلى', changeNumber: 'غيّر الرقم', confirm: 'تأكيد', resend: 'لم يصلني الرمز — أعد الإرسال',
+      wrong: 'الرمز غير صحيح. بقيت 4 محاولات.', locked: 'محاولات كثيرة. حاول بعد 10 دقائق.', offline: 'أنت غير متصل. سيُرسل الرمز عند عودة الاتصال.', digit: 'الرقم',
+      profTitle: { consumer: 'عرّفنا بك', importer: 'عرّفنا بك', trader: 'عرّفنا بك' },
+      profLede: { consumer: 'اسمك يظهر للبائع عند المراسلة فقط.', importer: 'اسمك كما في وثائقك. الوثائق نفسها تأتي لاحقاً.', trader: 'اسمك كما في بطاقة تعريفك. نشاطك التجاري في الخطوة التالية.' },
+      profName: { consumer: 'الاسم', importer: 'الاسم واللقب', trader: 'الاسم واللقب' }, profPh: { consumer: 'سمية لعمارة', importer: 'سفيان بن عمارة', trader: 'نادية رحماني' },
+      profCta: { consumer: 'ابدأ التصفّح', importer: 'متابعة إلى إعداد المستورد', trader: 'متابعة إلى إعداد التاجر' },
+      wilaya: 'الولاية', w1: 'الجزائر', w2: 'سطيف', w3: 'وهران', w4: 'قسنطينة', uiLang: 'لغة الواجهة',
+      routedTitle: 'أهلاً بعودتك، كريمة', routedLede: 'تعرّفنا على حسابك. نفتح لك فضاءك.', routedFine: 'لا حاجة لإعادة التحقّق. وثائقك سارية حتى جوان 2027.',
+      routes: { importer: ['مَعْبَر · الاستيراد', 'مستوردة مُتحقَّقة'], trader: ['مَعْبَر · التجارة', 'تاجر مُتحقَّق'], consumer: ['السوق', 'نعيدك إلى الصفحة التي جئت منها'] },
+      side: {
+        consumer: ['حساب واحد، بلا كلمة مرور.', 'رقم هاتفك ورمز تأكيد. هذا كل ما نطلبه من المشتري.', ['احفظ المنتجات والمتاجر', 'راسل البائعين', 'مراجعات من مشترياتك']],
+        importer: ['خطوتك الأولى نحو مَعْبَر · الاستيراد.', 'اليوم: حساب. بعدها: ملفك، ثم وثائقك، ثم المراجعة. فضاؤك يفتح بعد الموافقة.', ['حساب ← إعداد ← وثائق ← مراجعة', 'الوثائق تُرفع على مراحل وتبقى خاصّة', 'التحقّق عادةً خلال يوم عمل']],
+        trader: ['خطوتك الأولى نحو مَعْبَر · التجارة.', 'اليوم: حساب. بعدها: نشاطك، ثم هويتك وسجلّك التجاري، ثم المراجعة.', ['حساب ← نشاطك ← وثائق ← مراجعة', 'البحث والمراسلة متاحان قبل انتهاء التحقّق', 'المتجر العام يفتح مع السجل التجاري']]
+      },
+      oneIdentity: 'حساب مَعْبَر واحد يحمل كل فضاءاتك. لا تسجّل مرّتين.'
+    },
+    fr: { dir: 'ltr', short: 'FR', label: 'Français',
+      phoneTitle: 'Connexion ou inscription', phoneLabel: 'Numéro de téléphone', sendCode: 'Envoyer le code', or: 'ou', browse: 'Parcourir sans compte',
+      terms: 'En continuant, vous acceptez les conditions d’utilisation et la politique de confidentialité.',
+      phoneLede: { consumer: 'Votre numéro suffit. Pas de mot de passe, pas de documents.', importer: 'Un seul compte pour tout Maabar. Si vous en avez un, nous le reconnaîtrons.', trader: 'Un seul compte pour tout Maabar. Si vous en avez un, nous le reconnaîtrons.' },
+      otpTitle: 'Entrez le code', otpLede: 'Code à 6 chiffres envoyé au', changeNumber: 'changer de numéro', confirm: 'Confirmer', resend: 'Code non reçu — renvoyer',
+      wrong: 'Ce code n’est pas correct. 4 essais restants.', locked: 'Trop d’essais. Réessayez dans 10 minutes.', offline: 'Vous êtes hors ligne. Le code partira au retour de la connexion.', digit: 'Chiffre',
+      profTitle: { consumer: 'Présentez-vous', importer: 'Présentez-vous', trader: 'Présentez-vous' },
+      profLede: { consumer: 'Votre nom n’apparaît au vendeur qu’au moment d’un message.', importer: 'Votre nom comme sur vos documents. Les documents viennent ensuite.', trader: 'Votre nom comme sur votre carte d’identité. Votre activité à l’étape suivante.' },
+      profName: { consumer: 'Nom', importer: 'Nom et prénom', trader: 'Nom et prénom' }, profPh: { consumer: 'Soumia Lamara', importer: 'Sofiane Benamara', trader: 'Nadia Rahmani' },
+      profCta: { consumer: 'Commencer à parcourir', importer: 'Continuer vers l’installation importateur', trader: 'Continuer vers l’installation commerçant' },
+      wilaya: 'Wilaya', w1: 'Alger', w2: 'Sétif', w3: 'Oran', w4: 'Constantine', uiLang: 'Langue de l’interface',
+      routedTitle: 'Bon retour, Karima', routedLede: 'Compte reconnu. Nous ouvrons votre espace.', routedFine: 'Aucune nouvelle vérification. Vos documents sont valides jusqu’en juin 2027.',
+      routes: { importer: ['Maabar Import', 'Importatrice vérifiée'], trader: ['Maabar Trade', 'Commerçant vérifié'], consumer: ['Place de marché', 'Retour à la page d’où vous veniez'] },
+      side: {
+        consumer: ['Un compte, sans mot de passe.', 'Votre numéro et un code. C’est tout ce que nous demandons à un acheteur.', ['Enregistrez produits et boutiques', 'Écrivez aux vendeurs', 'Des avis issus de vos achats']],
+        importer: ['Première étape vers Maabar Import.', 'Aujourd’hui : un compte. Ensuite : votre profil, vos documents, la vérification. L’espace s’ouvre après approbation.', ['Compte → installation → documents → vérification', 'Documents déposés par étapes, toujours privés', 'Vérification en général sous un jour ouvré']],
+        trader: ['Première étape vers Maabar Trade.', 'Aujourd’hui : un compte. Ensuite : votre activité, votre identité et votre registre, la vérification.', ['Compte → activité → documents → vérification', 'Recherche et messages disponibles avant la fin', 'La boutique publique s’ouvre avec le registre']]
+      },
+      oneIdentity: 'Un compte Maabar porte tous vos espaces. Vous ne vous inscrivez jamais deux fois.'
+    },
+    en: { dir: 'ltr', short: 'EN', label: 'English',
+      phoneTitle: 'Sign in or sign up', phoneLabel: 'Phone number', sendCode: 'Send the code', or: 'or', browse: 'Browse without an account',
+      terms: 'By continuing you accept the terms of use and the privacy policy.',
+      phoneLede: { consumer: 'Your number is enough. No password, no documents.', importer: 'One account for all of Maabar. If you already have one, we’ll recognise it.', trader: 'One account for all of Maabar. If you already have one, we’ll recognise it.' },
+      otpTitle: 'Enter the code', otpLede: '6-digit code sent to', changeNumber: 'change number', confirm: 'Confirm', resend: 'Code didn’t arrive — resend',
+      wrong: 'That code isn’t right. 4 attempts left.', locked: 'Too many attempts. Try again in 10 minutes.', offline: 'You’re offline. The code will send when you’re back.', digit: 'Digit',
+      profTitle: { consumer: 'Tell us who you are', importer: 'Tell us who you are', trader: 'Tell us who you are' },
+      profLede: { consumer: 'Your name reaches the seller only when you message them.', importer: 'Your name as on your documents. The documents themselves come later.', trader: 'Your name as on your ID card. Your business comes in the next step.' },
+      profName: { consumer: 'Name', importer: 'Full name', trader: 'Full name' }, profPh: { consumer: 'Soumia Lamara', importer: 'Sofiane Benamara', trader: 'Nadia Rahmani' },
+      profCta: { consumer: 'Start browsing', importer: 'Continue to importer setup', trader: 'Continue to trader setup' },
+      wilaya: 'Wilaya', w1: 'Algiers', w2: 'Sétif', w3: 'Oran', w4: 'Constantine', uiLang: 'Interface language',
+      routedTitle: 'Welcome back, Karima', routedLede: 'Account recognised. Opening your workspace.', routedFine: 'No verification needed again. Your documents are valid until June 2027.',
+      routes: { importer: ['Maabar Import', 'Verified importer'], trader: ['Maabar Trade', 'Verified trader'], consumer: ['Marketplace', 'Back to the page you came from'] },
+      side: {
+        consumer: ['One account, no password.', 'Your number and a code. That is all we ask of a shopper.', ['Save products and shops', 'Message sellers', 'Reviews from your own purchases']],
+        importer: ['Your first step towards Maabar Import.', 'Today: an account. Then: your profile, your documents, review. The workspace opens after approval.', ['Account → setup → documents → review', 'Documents uploaded in stages, always private', 'Verification usually within one working day']],
+        trader: ['Your first step towards Maabar Trade.', 'Today: an account. Then: your business, your identity and register, review.', ['Account → business → documents → review', 'Search and messaging open before the end', 'The public shop opens with the register']]
+      },
+      oneIdentity: 'One Maabar account carries all your experiences. You never sign up twice.'
+    }
+  };
+  VIEWS = ['phone', 'otp', 'wrong', 'locked', 'offline', 'profile', 'routed'];
+  VIEW_LABELS = { ar: ['الهاتف', 'الرمز', 'رمز خاطئ', 'مقفل', 'بلا اتصال', 'الملف', 'تعرّفنا عليك'], fr: ['Téléphone', 'Code', 'Code faux', 'Bloqué', 'Hors ligne', 'Profil', 'Reconnu'], en: ['Phone', 'Code', 'Wrong code', 'Locked', 'Offline', 'Profile', 'Recognised'] };
+  INTENTS = ['consumer', 'importer', 'trader'];
+  INTENT_LABELS = { ar: ['باب المشتري', 'باب المستورد', 'باب التاجر'], fr: ['Porte acheteur', 'Porte importateur', 'Porte commerçant'], en: ['Consumer door', 'Importer door', 'Trader door'] };
+  TINT = { importer: ['var(--role-importer-bg)', 'var(--role-importer-ink)'], trader: ['var(--role-trader-bg)', 'var(--role-trader-ink)'], consumer: ['var(--role-consumer-bg)', 'var(--role-consumer-ink)'] };
+  renderVals() {
+    const lang = this.state.lang, t = this.L[lang], v = this.state.view, it = this.state.intent;
+    const sh = window.MaabarShell(lang, 'public', '');
+    const side = t.side[it];
+    const R = window.React;
+    const glyph = R.createElement('svg', { width: 22, height: 22, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 1.8, strokeLinecap: 'round', strokeLinejoin: 'round' }, R.createElement('path', { d: it === 'importer' ? 'M3 15l18-7-7 18-2.5-8z' : 'M4 8h16l-1.2 11a1 1 0 0 1-1 .9H6.2a1 1 0 0 1-1-.9zM8.5 8a3.5 3.5 0 0 1 7 0' }));
+    const order = ['phone', 'otp', 'profile', 'routed'];
+    const next = () => { const cur = ['wrong', 'locked', 'offline'].includes(v) ? 'otp' : v; const i = order.indexOf(cur); this.setState({ view: order[Math.min(i + 1, order.length - 1)] }); };
+    return {
+      rootRef: this.root, t, langs: this.langsFor(lang), sh,
+      stateLabel: ({ ar: 'الحالة', fr: 'État', en: 'State' })[lang], intentLabel: ({ ar: 'المدخل', fr: 'Entrée', en: 'Entry' })[lang],
+      views: this.sw(this.VIEWS, 'view', this.VIEW_LABELS[lang]), intents: this.sw(this.INTENTS, 'intent', this.INTENT_LABELS[lang]),
+      isPhone: v === 'phone', isOtp: ['otp', 'wrong', 'locked', 'offline'].includes(v), isWrong: v === 'wrong', isLocked: v === 'locked', isOffline: v === 'offline',
+      isProfile: v === 'profile', isRouted: v === 'routed', isConsumer: it === 'consumer',
+      phoneLede: t.phoneLede[it], profTitle: t.profTitle[it], profLede: t.profLede[it], profName: t.profName[it], profPh: t.profPh[it], profCta: t.profCta[it],
+      routedTitle: t.routedTitle, routedLede: t.routedLede,
+      route: { name: t.routes[it][0], sub: t.routes[it][1], bg: this.TINT[it][0], fg: this.TINT[it][1], icon: glyph },
+      hasSideMark: it !== 'consumer', sideMark: it === 'importer' ? sh.experiences ? (lang === 'ar' ? 'الاستيراد' : 'Import') : '' : (lang === 'ar' ? 'التجارة' : 'Trade'),
+      side: { title: side[0], body: side[1], pts: side[2] },
+      otpCells: ['4', '7', '2', '', '', ''].map((x, i) => ({ v: v === 'wrong' ? ['4','7','2','9','1','0'][i] : x, a: t.digit + ' ' + (i + 1) })),
+      next
+    };
+  }
+'''
+build(dict(name='Sign In', w=1440, h=900, css=CSS, state="view: 'phone', intent: 'importer'", template=TEMPLATE, logic=LOGIC))

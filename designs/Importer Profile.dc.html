@@ -27,7 +27,7 @@
 <div class="app">
 
 <aside class="rail">
-<div class="rail-brand"><svg width="28" height="28" viewBox="0 0 48 48" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 36V23a8 8 0 0 1 16 0v13"/><path d="M24 23a8 8 0 0 1 16 0v13"/></g></svg><span class="wordmark">{{ sh.brand }}</span></div>
+<div class="rail-brand"><svg width="28" height="28" viewBox="0 0 48 48" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 36V23a8 8 0 0 1 16 0v13"/><path d="M24 23a8 8 0 0 1 16 0v13"/></g></svg><span><span class="wordmark">{{ sh.brand }}</span><sc-if value="{{ sh.hasMark }}" hint-placeholder-val="{{ true }}"><span class="mark" style="color:{{ sh.roleFg }}">{{ sh.mark }}</span></sc-if></span></div>
 <div class="rail-role" style="background:{{ sh.roleBg }};color:{{ sh.roleFg }}">{{ sh.role }}</div>
 <nav class="rail-nav" aria-label="{{ sh.navLabel }}">
 <sc-for list="{{ sh.nav }}" as="n" hint-placeholder-count="7">
@@ -200,20 +200,20 @@ class Component extends DCLogic {
     ar: {
       dir: 'rtl', short: 'ع', langLabel: 'اللغة', sep: ' ',
       back: 'رجوع', title: 'الملف', report: 'إبلاغ', verified: 'مُتحقَّق',
-      name: 'كريمة ح.', initials: 'ك ح', role: 'مستوردة مُتحقَّقة · ألبسة نسائية وإكسسوار', since: 'على المنصّة منذ مارس 2023',
+      name: 'كريمة ح.', initials: 'ك ح', role: 'مستوردة مُتحقَّقة · ألبسة نسائية', since: 'على المنصّة منذ مارس 2023',
       tx: { one: 'معاملة مؤكَّدة', two: 'معاملتان مؤكَّدتان', few: 'معاملات مؤكَّدة', many: 'معاملة مؤكَّدة' },
       txHint: 'أكّدها الطرفان عند التسليم',
       stats: [['نسبة الإتمام', '97%'], ['متوسط الردّ', 'ساعة'], ['ثبات السعر', '95%']],
       sheets: {
-        done: ['كيف حُسبت نسبة الإتمام', 'الالتزامات التي سُلّمت داخل الأجل المتّفق عليه، مقسومة على كل الالتزامات المقبولة.',
+        done: ['كيف حُسبت نسبة الإتمام', 'الالتزامات المسلَّمة في الأجل ÷ الالتزامات المقبولة.',
           [['التزامات مقبولة', '87'], ['سُلّمت في الأجل', '84'], ['تأخّرت', '2'], ['أُلغيت من طرفها', '1'], ['حُجزت في الجمارك — لا تُحتسب', '1']],
-          'التأخير الناتج عن حجز جمركي موثّق لا يُحتسب ضدّ المستورد. القرار ليس بيده.'],
-        resp: ['كيف حُسب متوسط الردّ', 'الوسيط (لا المتوسط الحسابي) لزمن أول ردّ على رسالة جديدة، خلال آخر 90 يوماً.',
+          'الحجز الجمركي الموثّق لا يُحتسب.'],
+        resp: ['كيف حُسب متوسط الردّ', 'وسيط زمن أول ردّ، آخر 90 يوماً.',
           [['رسائل واردة', '212'], ['رُدّ عليها', '204'], ['وسيط زمن الردّ', '58 دقيقة'], ['بلا ردّ', '8']],
-          'نستعمل الوسيط حتى لا ترفع حالة واحدة بطيئة المتوسط بشكل مضلّل.'],
-        price: ['كيف حُسب ثبات السعر', 'الالتزامات التي بقي سعرها النهائي داخل النطاق المُعلَن وقت الاتفاق.',
+          'الوسيط لا المتوسط.'],
+        price: ['كيف حُسب ثبات السعر', 'الالتزامات التي بقي سعرها داخل النطاق المُعلَن.',
           [['التزامات بنطاق معلن', '80'], ['بقيت داخل النطاق', '76'], ['خرجت عن النطاق', '4'], ['متوسط الانحراف عند الخروج', '6%']],
-          'أكثر شكوى يرفعها التجّار هي تغيّر السعر بعد الاتفاق — لذلك يُقاس ويُعرض.']
+          'يُقاس عند كل التزام بنطاق معلن.']
       },
       activityTitle: 'النشاط', last12: 'آخر 12 شهراً', monthTip: n => n + ' معاملة', monthFrom: 'أكتوبر 2025', monthTo: 'سبتمبر 2026',
       activity: [['رحلة منجزة', '31'], ['آخر رحلة', 'قبل 11 يوماً']],
@@ -225,8 +225,8 @@ class Component extends DCLogic {
       reviewsTitle: 'المراجعات', rev: { one: 'مراجعة واحدة', two: 'مراجعتان', few: 'مراجعات', many: 'مراجعة' },
       recordedTx: 'معاملة مسجَّلة', replyPrefix: 'ردّ',
       reviews: [
-        ['ياسين ب. · سطيف', 'قبل 12 يوماً', 'المواصفة مطابقة تماماً والتسليم في الموعد. أبلغتني بتغيّر بسيط في اللون قبل الشراء لا بعده — وهذا نادر.', ''],
-        ['نادية ر. · قسنطينة', 'قبل شهر', 'تأخّر التسليم ثلاثة أيام عن الموعد. البضاعة سليمة لكن التأخير أربكني مع زبائني.', 'محقّة. الرحلة تأخّرت بسبب مراجعة جمركية على دفعة كاملة. عوّضتُ الفرق في الشحن الداخلي، وسأترك هامش يومين في المواعيد القادمة.']
+        ['ياسين ب. · سطيف', 'قبل 12 يوماً', 'مواصفة مطابقة وتسليم في الموعد. أبلغتني بتغيّر اللون قبل الشراء.', ''],
+        ['نادية ر. · قسنطينة', 'قبل شهر', 'تأخّر التسليم ثلاثة أيام. البضاعة سليمة لكن التأخير أربكني.', 'محقّة. تأخّرت الرحلة بسبب مراجعة جمركية. عوّضتُ فرق الشحن الداخلي.']
       ],
       disputeTitle: 'لا نزاع مفتوح', disputeMeta: 'نزاع واحد خلال 3 سنوات · أُغلق بالتراضي في 2025',
       message: 'راسل', requestOffer: 'اطلب عرضاً', breakdown: 'تفصيل الرقم', close: 'إغلاق'
@@ -235,20 +235,20 @@ class Component extends DCLogic {
     fr: {
       dir: 'ltr', short: 'FR', langLabel: 'Langue', sep: ' ',
       back: 'Retour', title: 'Profil', report: 'Signaler', verified: 'Vérifiée',
-      name: 'Karima H.', initials: 'KH', role: 'Importatrice vérifiée · vêtements femme et accessoires', since: 'Sur la plateforme depuis mars 2023',
+      name: 'Karima H.', initials: 'KH', role: 'Importatrice vérifiée · vêtements femme', since: 'Sur la plateforme depuis mars 2023',
       tx: { one: 'transaction confirmée', many: 'transactions confirmées' },
       txHint: 'Confirmées par les deux parties à la remise',
       stats: [['Taux d’achèvement', '97 %'], ['Délai de réponse', '1 h'], ['Tenue des prix', '95 %']],
       sheets: {
-        done: ['Comment le taux d’achèvement est calculé', 'Les engagements livrés dans le délai convenu, divisés par l’ensemble des engagements acceptés.',
+        done: ['Comment le taux d’achèvement est calculé', 'Engagements livrés dans les délais ÷ engagements acceptés.',
           [['Engagements acceptés', '87'], ['Livrés dans les délais', '84'], ['En retard', '2'], ['Annulés de son fait', '1'], ['Retenus en douane — non comptés', '1']],
-          'Un retard dû à une retenue douanière documentée n’est pas compté contre l’importateur. La décision ne lui appartient pas.'],
-        resp: ['Comment le délai de réponse est calculé', 'La médiane (et non la moyenne) du délai de première réponse à un nouveau message, sur les 90 derniers jours.',
+          'Une retenue douanière documentée n’est pas comptée.'],
+        resp: ['Comment le délai de réponse est calculé', 'Délai médian de première réponse, 90 derniers jours.',
           [['Messages reçus', '212'], ['Avec réponse', '204'], ['Délai médian', '58 min'], ['Sans réponse', '8']],
-          'Nous utilisons la médiane pour qu’un seul cas lent ne gonfle pas le chiffre de façon trompeuse.'],
-        price: ['Comment la tenue des prix est calculée', 'Les engagements dont le prix final est resté dans la fourchette annoncée à l’accord.',
+          'Médiane, pas moyenne.'],
+        price: ['Comment la tenue des prix est calculée', 'Engagements dont le prix final est resté dans la fourchette annoncée.',
           [['Engagements avec fourchette', '80'], ['Restés dans la fourchette', '76'], ['Sortis de la fourchette', '4'], ['Écart moyen en cas de sortie', '6 %']],
-          'La plainte la plus fréquente des commerçants est un prix modifié après l’accord — c’est pourquoi il est mesuré et affiché.']
+          'Mesuré sur chaque engagement avec fourchette.']
       },
       activityTitle: 'Activité', last12: '12 derniers mois', monthTip: n => n + ' transactions', monthFrom: 'octobre 2025', monthTo: 'septembre 2026',
       activity: [['Voyages effectués', '31'], ['Dernier voyage', 'il y a 11 jours']],
@@ -260,8 +260,8 @@ class Component extends DCLogic {
       reviewsTitle: 'Avis', rev: { one: 'avis', many: 'avis' },
       recordedTx: 'Transaction enregistrée', replyPrefix: 'Réponse de',
       reviews: [
-        ['Yacine B. · Sétif', 'il y a 12 jours', 'Spécification parfaitement conforme et livraison à l’heure. Elle m’a signalé un léger changement de couleur avant l’achat, pas après — c’est rare.', ''],
-        ['Nadia R. · Constantine', 'il y a un mois', 'Livraison en retard de trois jours. Marchandise intacte, mais le retard m’a mise en difficulté avec mes clients.', 'C’est juste. Le voyage a été retardé par un contrôle douanier sur un lot entier. J’ai pris en charge la différence de transport intérieur et je prévoirai deux jours de marge désormais.']
+        ['Yacine B. · Sétif', 'il y a 12 jours', 'Spécification conforme, livraison à l’heure. Changement de couleur signalé avant l’achat.', ''],
+        ['Nadia R. · Constantine', 'il y a un mois', 'Livraison en retard de trois jours. Marchandise intacte, mais le retard m’a gênée.', 'C’est juste. Contrôle douanier sur le voyage. J’ai pris en charge le transport intérieur.']
       ],
       disputeTitle: 'Aucun litige en cours', disputeMeta: 'Un litige en 3 ans · clos à l’amiable en 2025',
       message: 'Écrire', requestOffer: 'Demander une offre', breakdown: 'Détail du chiffre', close: 'Fermer'
@@ -270,20 +270,20 @@ class Component extends DCLogic {
     en: {
       dir: 'ltr', short: 'EN', langLabel: 'Language', sep: ',',
       back: 'Back', title: 'Profile', report: 'Report', verified: 'Verified',
-      name: 'Karima H.', initials: 'KH', role: 'Verified importer · women’s clothing and accessories', since: 'On the platform since March 2023',
+      name: 'Karima H.', initials: 'KH', role: 'Verified importer · women’s clothing', since: 'On the platform since March 2023',
       tx: { one: 'confirmed transaction', many: 'confirmed transactions' },
       txHint: 'Confirmed by both parties at handover',
       stats: [['Completion rate', '97%'], ['Response time', '1 h'], ['Price holding', '95%']],
       sheets: {
-        done: ['How the completion rate is calculated', 'Commitments delivered within the agreed date, divided by all accepted commitments.',
+        done: ['How the completion rate is calculated', 'Commitments delivered on time ÷ accepted commitments.',
           [['Accepted commitments', '87'], ['Delivered on time', '84'], ['Late', '2'], ['Cancelled by her', '1'], ['Held at customs — not counted', '1']],
-          'A delay caused by a documented customs hold is not counted against the importer. The decision isn’t theirs.'],
-        resp: ['How response time is calculated', 'The median (not the mean) time to first reply to a new message, over the last 90 days.',
+          'A documented customs hold is not counted.'],
+        resp: ['How response time is calculated', 'Median time to first reply, last 90 days.',
           [['Messages received', '212'], ['Replied to', '204'], ['Median reply time', '58 min'], ['No reply', '8']],
-          'We use the median so a single slow case can’t inflate the figure misleadingly.'],
-        price: ['How price holding is calculated', 'Commitments whose final price stayed within the range declared at agreement.',
+          'Median, not mean.'],
+        price: ['How price holding is calculated', 'Commitments whose final price stayed within the declared range.',
           [['Commitments with a range', '80'], ['Stayed within range', '76'], ['Went outside range', '4'], ['Average deviation when outside', '6%']],
-          'The most common complaint from traders is a price changed after agreement — so it is measured and shown.']
+          'Measured on every commitment with a range.']
       },
       activityTitle: 'Activity', last12: 'Last 12 months', monthTip: n => n + ' transactions', monthFrom: 'October 2025', monthTo: 'September 2026',
       activity: [['Trips completed', '31'], ['Last trip', '11 days ago']],
@@ -295,8 +295,8 @@ class Component extends DCLogic {
       reviewsTitle: 'Reviews', rev: { one: 'review', many: 'reviews' },
       recordedTx: 'Recorded transaction', replyPrefix: 'Reply from',
       reviews: [
-        ['Yacine B. · Sétif', '12 days ago', 'Specification matched exactly and delivery was on time. She told me about a small colour change before buying, not after — that’s rare.', ''],
-        ['Nadia R. · Constantine', 'a month ago', 'Delivery was three days late. Goods were fine, but the delay caused me trouble with my customers.', 'Fair point. The trip was held up by a customs inspection of a whole batch. I covered the domestic shipping difference and will leave two days’ margin from now on.']
+        ['Yacine B. · Sétif', '12 days ago', 'Spec matched, delivered on time. Told me about a colour change before buying.', ''],
+        ['Nadia R. · Constantine', 'a month ago', 'Delivery was three days late. Goods were fine, but the delay hurt.', 'Fair point. Customs inspection held the trip. I covered the domestic shipping.']
       ],
       disputeTitle: 'No open disputes', disputeMeta: 'One dispute in 3 years · settled amicably in 2025',
       message: 'Message', requestOffer: 'Request an offer', breakdown: 'How this number works', close: 'Close'

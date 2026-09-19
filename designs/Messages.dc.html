@@ -34,7 +34,7 @@
 <div class="app">
 
 <aside class="rail">
-<div class="rail-brand"><svg width="28" height="28" viewBox="0 0 48 48" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 36V23a8 8 0 0 1 16 0v13"/><path d="M24 23a8 8 0 0 1 16 0v13"/></g></svg><span class="wordmark">{{ sh.brand }}</span></div>
+<div class="rail-brand"><svg width="28" height="28" viewBox="0 0 48 48" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 36V23a8 8 0 0 1 16 0v13"/><path d="M24 23a8 8 0 0 1 16 0v13"/></g></svg><span><span class="wordmark">{{ sh.brand }}</span><sc-if value="{{ sh.hasMark }}" hint-placeholder-val="{{ true }}"><span class="mark" style="color:{{ sh.roleFg }}">{{ sh.mark }}</span></sc-if></span></div>
 <div class="rail-role" style="background:{{ sh.roleBg }};color:{{ sh.roleFg }}">{{ sh.role }}</div>
 <nav class="rail-nav" aria-label="{{ sh.navLabel }}">
 <sc-for list="{{ sh.nav }}" as="n" hint-placeholder-count="7">
@@ -194,7 +194,7 @@ class Component extends DCLogic {
             ['أجل التسليم', '20 أكتوبر · سطيف']
           ],
           cta1: 'أوافق على الاتفاق', cta2: 'عدّل' },
-        { who: 'me', text: 'واخّا. إذا تغيّر السعر خارج النطاق نعلمك قبل ما نشري، ما نشريش وندير حسابي وحدي.', time: '09:36' },
+        { who: 'me', text: 'واخّا. إذا خرج السعر عن النطاق نعلمك قبل ما نشري.', time: '09:36' },
         { kind: 'handover', time: '18 أكتوبر', glyph: '↓', tone: 'cond',
           cardTitle: 'وصلت البضاعة — أكّد الاستلام',
           rows: [
@@ -228,7 +228,7 @@ class Component extends DCLogic {
             ['Délai de livraison', '20 octobre · Sétif']
           ],
           cta1: 'J’accepte l’accord', cta2: 'Modifier' },
-        { who: 'me', text: 'D’accord. Si le prix sort de la fourchette je vous préviens avant d’acheter — je n’achète pas et je ne décide pas seul.', time: '09:36' },
+        { who: 'me', text: 'D’accord. Si le prix sort de la fourchette, je vous préviens avant d’acheter.', time: '09:36' },
         { kind: 'handover', time: '18 octobre', glyph: '↓', tone: 'cond',
           cardTitle: 'Marchandise arrivée — confirmez la réception',
           rows: [
@@ -262,7 +262,7 @@ class Component extends DCLogic {
             ['Delivery date', '20 October · Sétif']
           ],
           cta1: 'I accept the agreement', cta2: 'Amend' },
-        { who: 'me', text: 'Fine. If the price moves outside the range I’ll tell you before buying — I won’t buy and decide on my own.', time: '09:36' },
+        { who: 'me', text: 'Fine. If the price leaves the range I’ll tell you before buying.', time: '09:36' },
         { kind: 'handover', time: '18 October', glyph: '↓', tone: 'cond',
           cardTitle: 'Goods arrived — confirm receipt',
           rows: [

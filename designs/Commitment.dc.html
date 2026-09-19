@@ -23,7 +23,7 @@
 <div class="app">
 
 <aside class="rail">
-<div class="rail-brand"><svg width="28" height="28" viewBox="0 0 48 48" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 36V23a8 8 0 0 1 16 0v13"/><path d="M24 23a8 8 0 0 1 16 0v13"/></g></svg><span class="wordmark">{{ sh.brand }}</span></div>
+<div class="rail-brand"><svg width="28" height="28" viewBox="0 0 48 48" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 36V23a8 8 0 0 1 16 0v13"/><path d="M24 23a8 8 0 0 1 16 0v13"/></g></svg><span><span class="wordmark">{{ sh.brand }}</span><sc-if value="{{ sh.hasMark }}" hint-placeholder-val="{{ true }}"><span class="mark" style="color:{{ sh.roleFg }}">{{ sh.mark }}</span></sc-if></span></div>
 <div class="rail-role" style="background:{{ sh.roleBg }};color:{{ sh.roleFg }}">{{ sh.role }}</div>
 <nav class="rail-nav" aria-label="{{ sh.navLabel }}">
 <sc-for list="{{ sh.nav }}" as="n" hint-placeholder-count="7">
@@ -171,23 +171,23 @@ class Component extends DCLogic {
       back: 'رجوع', title: 'الاتفاق', lifecycle: 'مسار الاتفاق', message: 'راسل',
       cpInitials: 'ك ح', cpName: 'كريمة ح.', cpMeta: 'مستوردة مُتحقَّقة · 84 معاملة مؤكَّدة',
       deposit: 'العربون', depositDeclared: 'صرّح به الطرفان', depositDate: '12 أكتوبر',
-      depositNote: 'مبلغ متّفق عليه بينكما ومسجَّل للتوثيق. مَعْبَر لا تستلمه ولا تحتفظ به ولا تضمنه ولا تردّه.',
+      depositNote: 'مسجَّل للتوثيق فقط. مَعْبَر لا تستلمه ولا تضمنه.',
       flow: [
         ['اقتُرح الاتفاق', '9 أكتوبر'], ['وافق الطرفان', '9 أكتوبر'],
-        ['صُرّح بالعربون', '12 أكتوبر', 'صرّح به الطرفان — المنصّة لا تستلمه'],
+        ['صُرّح بالعربون', '12 أكتوبر', 'المنصّة لا تستلمه'],
         ['الشراء في الخارج', '13 أكتوبر'], ['في الطريق والجمركة', '17 أكتوبر'],
         ['التسليم', '20 أكتوبر'], ['مكتمل ومؤكَّد', '']
       ],
       switch: ['موافق', 'عربون', 'في الطريق', 'تسليم', 'مكتمل', 'نزاع', 'ملغى', 'منتهٍ'],
       st: {
-        accepted: ['وافق الطرفان', 'الاتفاق قائم. الخطوة التالية أن تتّفقا على العربون إن أردتما.', 'صرّح بالعربون', 'راسل'],
-        secured: ['العربون مُصرَّح به', 'كلاكما سجّل المبلغ. الشراء يبدأ عند سفر المستوردة.', 'تتبّع الرحلة', 'راسل'],
-        transit: ['البضاعة في الطريق', 'وصلت إلى الجمركة. سنعلمك فور الإفراج عنها.', 'تتبّع الرحلة', 'راسل'],
-        handover: ['جاهزة للاستلام', 'حدّدا نقطة وموعد التسليم. أكّد الاستلام بعد المعاينة.', 'أكّد الاستلام', 'اعترض'],
-        done: ['الاتفاق مكتمل', 'أكّد الطرفان التسليم والمطابقة. تقدر دابا تترك مراجعة.', 'اترك مراجعة', ''],
-        disputed: ['في نزاع', 'فُتح بلاغ عدم مطابقة. الاتفاق موقوف حتى صدور القرار.', 'تابع البلاغ', 'راسل'],
-        cancelled: ['أُلغي الاتفاق', 'ألغته المستوردة قبل الشراء بسبب عدم توفّر المواصفة. لم يُخصم شيء.', 'ابحث عن بديل', ''],
-        expired: ['انتهت صلاحية العرض', 'لم يُقبل الاتفاق قبل 14 أكتوبر. تقدر تطلب تجديده.', 'اطلب تجديداً', '']
+        accepted: ['وافق الطرفان', 'اتّفقا على العربون إن أردتما.', 'صرّح بالعربون', 'راسل'],
+        secured: ['العربون مُصرَّح به', 'الشراء يبدأ عند سفر المستوردة.', 'تتبّع الرحلة', 'راسل'],
+        transit: ['البضاعة في الطريق', 'في الجمركة. سنعلمك عند الإفراج.', 'تتبّع الرحلة', 'راسل'],
+        handover: ['جاهزة للاستلام', 'أكّد الاستلام بعد المعاينة.', 'أكّد الاستلام', 'اعترض'],
+        done: ['الاتفاق مكتمل', 'أكّد الطرفان التسليم. اترك مراجعة.', 'اترك مراجعة', ''],
+        disputed: ['في نزاع', 'بلاغ مفتوح. الاتفاق موقوف حتى القرار.', 'تابع البلاغ', 'راسل'],
+        cancelled: ['أُلغي الاتفاق', 'ألغته المستوردة قبل الشراء. لم يُخصم شيء.', 'ابحث عن بديل', ''],
+        expired: ['انتهت صلاحية العرض', 'لم يُقبل قبل 14 أكتوبر.', 'اطلب تجديداً', '']
       },
       terms: [
         ['السلعة', 'معاطف نسائية شتوية'], ['المواصفة', 'صوف مخلوط 60% · M · L · XL'], ['الكمية', '18 وحدة'],
@@ -200,23 +200,23 @@ class Component extends DCLogic {
       back: 'Retour', title: 'L’accord', lifecycle: 'Déroulement de l’accord', message: 'Écrire',
       cpInitials: 'KH', cpName: 'Karima H.', cpMeta: 'Importatrice vérifiée · 84 transactions confirmées',
       deposit: 'Arrhes', depositDeclared: 'Déclarées par les deux parties', depositDate: '12 octobre',
-      depositNote: 'Montant convenu entre vous et enregistré pour mémoire. Maabar ne le reçoit pas, ne le conserve pas, ne le garantit pas et ne le rembourse pas.',
+      depositNote: 'Enregistré pour mémoire uniquement. Maabar ne le reçoit ni ne le garantit.',
       flow: [
         ['Accord proposé', '9 octobre'], ['Accepté par les deux parties', '9 octobre'],
-        ['Arrhes déclarées', '12 octobre', 'Déclarées par les deux parties — la plateforme ne les reçoit pas'],
+        ['Arrhes déclarées', '12 octobre', 'La plateforme ne les reçoit pas'],
         ['Achat à l’étranger', '13 octobre'], ['En route et en douane', '17 octobre'],
         ['Remise', '20 octobre'], ['Terminé et confirmé', '']
       ],
       switch: ['Accepté', 'Arrhes', 'En route', 'Remise', 'Terminé', 'Litige', 'Annulé', 'Expiré'],
       st: {
-        accepted: ['Accepté par les deux parties', 'L’accord est en place. Étape suivante : convenir d’arrhes, si vous le souhaitez.', 'Déclarer les arrhes', 'Écrire'],
-        secured: ['Arrhes déclarées', 'Vous avez tous deux enregistré le montant. L’achat commence au départ de l’importatrice.', 'Suivre le voyage', 'Écrire'],
-        transit: ['Marchandise en route', 'Elle est arrivée en douane. Nous vous prévenons dès sa mainlevée.', 'Suivre le voyage', 'Écrire'],
-        handover: ['Prête à être remise', 'Fixez ensemble le lieu et l’heure. Confirmez la réception après vérification.', 'Confirmer la réception', 'Contester'],
-        done: ['Accord terminé', 'Les deux parties ont confirmé la remise et la conformité. Vous pouvez laisser un avis.', 'Laisser un avis', ''],
-        disputed: ['En litige', 'Un signalement de non-conformité est ouvert. L’accord est suspendu jusqu’à la décision.', 'Suivre le signalement', 'Écrire'],
-        cancelled: ['Accord annulé', 'Annulé par l’importatrice avant l’achat, la spécification étant indisponible. Rien n’a été prélevé.', 'Chercher une alternative', ''],
-        expired: ['Offre expirée', 'L’accord n’a pas été accepté avant le 14 octobre. Vous pouvez demander son renouvellement.', 'Demander un renouvellement', '']
+        accepted: ['Accepté par les deux parties', 'Convenez d’arrhes si vous le souhaitez.', 'Déclarer les arrhes', 'Écrire'],
+        secured: ['Arrhes déclarées', 'L’achat commence au départ de l’importatrice.', 'Suivre le voyage', 'Écrire'],
+        transit: ['Marchandise en route', 'En douane. Nous vous prévenons à la mainlevée.', 'Suivre le voyage', 'Écrire'],
+        handover: ['Prête à être remise', 'Confirmez la réception après vérification.', 'Confirmer la réception', 'Contester'],
+        done: ['Accord terminé', 'Remise confirmée par les deux parties. Laissez un avis.', 'Laisser un avis', ''],
+        disputed: ['En litige', 'Signalement ouvert. Accord suspendu jusqu’à la décision.', 'Suivre le signalement', 'Écrire'],
+        cancelled: ['Accord annulé', 'Annulé par l’importatrice avant l’achat. Rien n’a été prélevé.', 'Chercher une alternative', ''],
+        expired: ['Offre expirée', 'Non accepté avant le 14 octobre.', 'Demander un renouvellement', '']
       },
       terms: [
         ['Article', 'Manteaux femme hiver'], ['Spécification', 'Laine mélangée 60 % · M · L · XL'], ['Quantité', '18 unités'],
@@ -229,23 +229,23 @@ class Component extends DCLogic {
       back: 'Back', title: 'Agreement', lifecycle: 'Agreement lifecycle', message: 'Message',
       cpInitials: 'KH', cpName: 'Karima H.', cpMeta: 'Verified importer · 84 confirmed transactions',
       deposit: 'Deposit', depositDeclared: 'Declared by both parties', depositDate: '12 October',
-      depositNote: 'An amount agreed between you and recorded for reference. Maabar does not receive, hold, guarantee or refund it.',
+      depositNote: 'Recorded for reference only. Maabar does not receive or guarantee it.',
       flow: [
         ['Agreement proposed', '9 October'], ['Accepted by both parties', '9 October'],
-        ['Deposit declared', '12 October', 'Declared by both parties — the platform does not receive it'],
+        ['Deposit declared', '12 October', 'The platform does not receive it'],
         ['Buying abroad', '13 October'], ['In transit and customs', '17 October'],
         ['Handover', '20 October'], ['Completed and confirmed', '']
       ],
       switch: ['Accepted', 'Deposit', 'In transit', 'Handover', 'Completed', 'Dispute', 'Cancelled', 'Expired'],
       st: {
-        accepted: ['Accepted by both parties', 'The agreement stands. Next, agree a deposit if you want one.', 'Declare the deposit', 'Message'],
-        secured: ['Deposit declared', 'You have both recorded the amount. Buying starts when the importer travels.', 'Track the trip', 'Message'],
-        transit: ['Goods in transit', 'They have reached customs. We’ll tell you as soon as they are released.', 'Track the trip', 'Message'],
-        handover: ['Ready for handover', 'Agree a place and time. Confirm receipt after you inspect the goods.', 'Confirm receipt', 'Object'],
-        done: ['Agreement completed', 'Both parties confirmed handover and conformity. You can now leave a review.', 'Leave a review', ''],
-        disputed: ['In dispute', 'A non-conformity report is open. The agreement is paused until a decision is issued.', 'Follow the report', 'Message'],
-        cancelled: ['Agreement cancelled', 'Cancelled by the importer before buying, as the specification was unavailable. Nothing was charged.', 'Find an alternative', ''],
-        expired: ['Offer expired', 'The agreement was not accepted before 14 October. You can ask for it to be renewed.', 'Request renewal', '']
+        accepted: ['Accepted by both parties', 'Agree a deposit if you want one.', 'Declare the deposit', 'Message'],
+        secured: ['Deposit declared', 'Buying starts when the importer travels.', 'Track the trip', 'Message'],
+        transit: ['Goods in transit', 'At customs. We’ll tell you when released.', 'Track the trip', 'Message'],
+        handover: ['Ready for handover', 'Confirm receipt after inspection.', 'Confirm receipt', 'Object'],
+        done: ['Agreement completed', 'Handover confirmed by both parties. Leave a review.', 'Leave a review', ''],
+        disputed: ['In dispute', 'Report open. Agreement paused until a decision.', 'Follow the report', 'Message'],
+        cancelled: ['Agreement cancelled', 'Cancelled by the importer before buying. Nothing was charged.', 'Find an alternative', ''],
+        expired: ['Offer expired', 'Not accepted before 14 October.', 'Request renewal', '']
       },
       terms: [
         ['Item', 'Women’s winter coats'], ['Specification', 'Wool blend 60% · M · L · XL'], ['Quantity', '18 units'],

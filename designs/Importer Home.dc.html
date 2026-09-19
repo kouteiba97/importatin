@@ -29,7 +29,7 @@
 <div class="app">
 
 <aside class="rail">
-<div class="rail-brand"><svg width="28" height="28" viewBox="0 0 48 48" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 36V23a8 8 0 0 1 16 0v13"/><path d="M24 23a8 8 0 0 1 16 0v13"/></g></svg><span class="wordmark">{{ sh.brand }}</span></div>
+<div class="rail-brand"><svg width="28" height="28" viewBox="0 0 48 48" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 36V23a8 8 0 0 1 16 0v13"/><path d="M24 23a8 8 0 0 1 16 0v13"/></g></svg><span><span class="wordmark">{{ sh.brand }}</span><sc-if value="{{ sh.hasMark }}" hint-placeholder-val="{{ true }}"><span class="mark" style="color:{{ sh.roleFg }}">{{ sh.mark }}</span></sc-if></span></div>
 <div class="rail-role" style="background:{{ sh.roleBg }};color:{{ sh.roleFg }}">{{ sh.role }}</div>
 <nav class="rail-nav" aria-label="{{ sh.navLabel }}">
 <sc-for list="{{ sh.nav }}" as="n" hint-placeholder-count="7">
@@ -243,19 +243,19 @@ class Component extends DCLogic {
       tripCounter: (i, n) => 'الرحلة ' + i + ' من ' + n + ' هذا الشهر', openList: 'افتح قائمة الشراء',
       attentionTitle: 'يحتاج انتباهك',
       attention: [
-        ['ثلاثة عروض تنتظر ردّك', 'تنتهي بعد 19 ساعة', 'تجّار في سطيف والجزائر طلبوا معاطف نسائية بكميات تدخل ضمن سعتك.', 'راجع العروض'],
-        ['رخصتك العامة تنتهي قريباً', 'بعد 34 يوماً', 'جدّدها قبل السفر القادم حتى لا تتعطّل رحلتك.', 'ابدأ التجديد'],
-        ['أكّد موعد تسليم مع ياسين ب.', 'خلال 4 أيام', 'وصلت بضاعته وجُمركت. حدّد نقطة وموعد الاستلام.', 'حدّد الموعد']
+        ['ثلاثة عروض تنتظر ردّك', 'تنتهي بعد 19 ساعة', 'معاطف نسائية من تجّار في سطيف والجزائر.', 'راجع العروض'],
+        ['رخصتك العامة تنتهي قريباً', 'بعد 34 يوماً', 'جدّدها قبل رحلتك القادمة.', 'ابدأ التجديد'],
+        ['أكّد موعد تسليم مع ياسين ب.', 'خلال 4 أيام', 'البضاعة وصلت وجُمركت.', 'حدّد الموعد']
       ],
       demandTitle: 'أكثر ما يُطلب في فئاتك', demandLink: 'لوحة الطلب ←', confirmed: 'مؤكَّد',
       interested: n => '+' + n + ' مهتمّ', band: (lo, hi) => 'سعر البيع ' + lo + ' – ' + hi + ' دج',
       demand: ['معاطف نسائية شتوية', 'حقائب يد نسائية', 'عطور نسائية 100 مل'],
       riskTitle: 'في خطر',
-      risks: [['صنفان في قائمتك بلا مشترٍ مؤكَّد', 'راجع'], ['الحجم المتبقّي لا يكفي لآخر صنف أضفته', 'عدّل']],
+      risks: [['صنفان في قائمتك بلا مشترٍ مؤكَّد', 'راجع'], ['الحجم المتبقّي لا يكفي لآخر صنف', 'عدّل']],
       recentTitle: 'آخر النشاط',
       recent: [['كريمة ح. أكّدت استلام 40 معطفاً', 'أمس'], ['نادية ر. تركت لك مراجعة', 'قبل يومين'], ['أضفت «حقائب يد نسائية» إلى قائمة الشراء', 'قبل 3 أيام']],
       nextStep: 'الخطوة التالية',
-      next: ['أكمل قائمة الشراء', 'بقي لك أكثر من نصف سعتك. ثلاثة أصناف عليها طلب مؤكَّد تدخل ضمن ما تبقّى.', 'أضف من لوحة الطلب'],
+      next: ['أكمل قائمة الشراء', 'بقي أكثر من نصف سعتك. ثلاثة أصناف بطلب مؤكَّد تدخل فيها.', 'أضف من لوحة الطلب'],
       navLabel: 'التنقّل', nav: ['الرئيسية', 'رحلتي', 'الطلب', 'الرسائل', 'حسابي']
     },
 
@@ -267,19 +267,19 @@ class Component extends DCLogic {
       tripCounter: (i, n) => 'Voyage ' + i + ' sur ' + n + ' ce mois-ci', openList: 'Ouvrir la liste d’achat',
       attentionTitle: 'À traiter',
       attention: [
-        ['Trois offres attendent votre réponse', 'expirent dans 19 h', 'Des commerçants de Sétif et d’Alger demandent des manteaux femme en quantités compatibles avec votre capacité.', 'Voir les offres'],
-        ['Votre autorisation générale expire bientôt', 'dans 34 jours', 'Renouvelez-la avant votre prochain départ pour ne pas bloquer le voyage.', 'Lancer le renouvellement'],
-        ['Confirmez une remise avec Yacine B.', 'sous 4 jours', 'Sa marchandise est arrivée et dédouanée. Fixez le lieu et l’heure de remise.', 'Fixer le rendez-vous']
+        ['Trois offres attendent votre réponse', 'expirent dans 19 h', 'Manteaux femme demandés par des commerçants de Sétif et d’Alger.', 'Voir les offres'],
+        ['Votre autorisation générale expire bientôt', 'dans 34 jours', 'Renouvelez-la avant votre prochain voyage.', 'Lancer le renouvellement'],
+        ['Confirmez une remise avec Yacine B.', 'sous 4 jours', 'Marchandise arrivée et dédouanée.', 'Fixer le rendez-vous']
       ],
       demandTitle: 'Les plus demandés dans vos catégories', demandLink: 'Tableau de la demande →', confirmed: 'confirmés',
       interested: n => '+' + n + ' intéressés', band: (lo, hi) => 'Prix de vente ' + lo + ' – ' + hi + ' DA',
       demand: ['Manteaux femme hiver', 'Sacs à main femme', 'Parfums femme 100 ml'],
       riskTitle: 'À risque',
-      risks: [['Deux articles de votre liste sans acheteur confirmé', 'Voir'], ['Le volume restant ne suffit pas pour le dernier article ajouté', 'Modifier']],
+      risks: [['Deux articles de votre liste sans acheteur confirmé', 'Voir'], ['Volume restant insuffisant pour le dernier article', 'Modifier']],
       recentTitle: 'Activité récente',
       recent: [['Karima H. a confirmé la réception de 40 manteaux', 'hier'], ['Nadia R. vous a laissé un avis', 'il y a 2 jours'], ['Vous avez ajouté « Sacs à main femme » à la liste', 'il y a 3 jours']],
       nextStep: 'Étape suivante',
-      next: ['Complétez la liste d’achat', 'Il vous reste plus de la moitié de votre capacité. Trois articles avec demande confirmée y tiennent.', 'Ajouter depuis le tableau'],
+      next: ['Complétez la liste d’achat', 'Plus de la moitié de votre capacité est libre. Trois articles à demande confirmée y tiennent.', 'Ajouter depuis le tableau'],
       navLabel: 'Navigation', nav: ['Accueil', 'Voyage', 'Demande', 'Messages', 'Compte']
     },
 
@@ -291,19 +291,19 @@ class Component extends DCLogic {
       tripCounter: (i, n) => 'Trip ' + i + ' of ' + n + ' this month', openList: 'Open the buying list',
       attentionTitle: 'Needs your attention',
       attention: [
-        ['Three offers are waiting for your reply', 'expire in 19 h', 'Traders in Sétif and Algiers asked for women’s coats in quantities that fit your capacity.', 'Review offers'],
-        ['Your general authorisation expires soon', 'in 34 days', 'Renew it before your next trip so the trip isn’t blocked.', 'Start renewal'],
-        ['Confirm a handover with Yacine B.', 'within 4 days', 'His goods have arrived and cleared customs. Set a place and time.', 'Set the time']
+        ['Three offers are waiting for your reply', 'expire in 19 h', 'Women’s coats requested by traders in Sétif and Algiers.', 'Review offers'],
+        ['Your general authorisation expires soon', 'in 34 days', 'Renew it before your next trip.', 'Start renewal'],
+        ['Confirm a handover with Yacine B.', 'within 4 days', 'Goods arrived and cleared customs.', 'Set the time']
       ],
       demandTitle: 'Most requested in your categories', demandLink: 'Demand board →', confirmed: 'confirmed',
       interested: n => '+' + n + ' interested', band: (lo, hi) => 'Selling price ' + lo + ' – ' + hi + ' DA',
       demand: ['Women’s winter coats', 'Women’s handbags', 'Women’s perfume 100 ml'],
       riskTitle: 'At risk',
-      risks: [['Two items on your list have no confirmed buyer', 'Review'], ['Remaining volume won’t fit the last item you added', 'Adjust']],
+      risks: [['Two items on your list have no confirmed buyer', 'Review'], ['Remaining volume won’t fit the last item', 'Adjust']],
       recentTitle: 'Recent activity',
       recent: [['Karima H. confirmed receipt of 40 coats', 'yesterday'], ['Nadia R. left you a review', '2 days ago'], ['You added “Women’s handbags” to the buying list', '3 days ago']],
       nextStep: 'Next step',
-      next: ['Finish the buying list', 'More than half your capacity is left. Three items with confirmed demand fit in what remains.', 'Add from the demand board'],
+      next: ['Finish the buying list', 'Over half your capacity is free. Three items with confirmed demand fit.', 'Add from the demand board'],
       navLabel: 'Navigation', nav: ['Home', 'My trip', 'Demand', 'Messages', 'Account']
     }
   };

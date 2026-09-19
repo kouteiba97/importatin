@@ -2,7 +2,7 @@
 
 This file is written for **Claude (or a person) picking up the Maabar project on another PC** with no memory of the previous sessions. It explains what the project is, every decision already made, the exact state of the work, and what to do next. Read it fully before changing anything.
 
-Last updated: **17 September 2026**. Remote: `https://github.com/kouteiba97/importatin` (branch `main`).
+Last updated: **19 September 2026**. Remote: `https://github.com/kouteiba97/importatin` (branch `main`).
 
 ---
 
@@ -56,6 +56,7 @@ These came directly from the project owner across the sessions:
 | 5. Architecture | Admin separated; consumer-first Landing with search hero; entry-driven Onboarding; worldwide destinations | `Landing`, `Onboarding`, `DESIGN-AUDIT.md` §12b |
 | 6. Rebrand (v3) | Blue/navy brand, new flat double-arch **M** logo, Sora/Inter/IBM Plex Sans Arabic, **brand colour separated from status colour**, WCAG AA verified | `designs/tokens.css`, `designs/Logo.dc.html`, commit `a075bea` |
 | 7. Three languages | All 24 screens EN/FR/AR, `?lang=` override, bidi and plural fixes | commits `9385f35` → `9f749a4` |
+| 9. **Experience separation** | One identity, four experiences: public doors, one Sign In, Importer/Trader Setup, Verification Status, Choose Experience, Admin Sign In; eight architecture documents | `PRODUCT-ARCHITECTURE.md` … `FINAL-UX-SEPARATION-AUDIT.md`, `designs/` |
 | 8. **Web platform conversion (IN PROGRESS)** | Shared web shell (`web.css`, `shell.js`), review hub (`index.html`), 18 of 22 phone-layout screens rebuilt as desktop web pages | this commit — see §6 |
 
 Older audit files in `docs/history/` are kept for context; **`DESIGN-AUDIT.md` at the root is the current audit** (the web-layout gap it lists is being closed now).
@@ -126,7 +127,11 @@ The owner said: *"it is still presented as a mobile app and I told you it is not
 | **Seller Profile** | public | ❌ **TODO** — still phone layout |
 | **Saved** | public | ❌ **TODO** — still phone layout |
 | **Compliance Checker** | public | ❌ **TODO** — still phone layout (uses `l.label` not `l.short` in its language list; pass `langKey: 'label'` to the shell) |
-| **Onboarding** | public | ❌ **TODO** — still phone layout. Suggested web form: centred signup card beside a brand/benefits panel on a full-page layout, entry-door switcher kept as the review statebar |
+| Onboarding | public | superseded — split into **Sign In** (identity), **Importer Setup** and **Trader Setup**; file kept for history, not in the hub |
+| **For Importers, For Traders, Sign In, Choose Experience** | public | ✅ new, web (`tools/newscreen.py` + `tools/recipes/`) |
+| **Importer Setup, Verification Status** | importer | ✅ new |
+| **Trader Setup** | trader | ✅ new |
+| **Admin Sign In** | admin | ✅ new |
 | Importer Home, Trip, Trip Creation, Demand Board, Messages, Records, Verification | importer | ✅ converted |
 | Trader Home, Discover, Importer Profile, Sourcing Request, Commitment, Dispute, Listing Composer | trader | ✅ converted |
 | Admin Console | admin | ✅ already desktop (separate platform, own layout) |
@@ -134,7 +139,7 @@ The owner said: *"it is still presented as a mobile app and I told you it is not
 | **Dashboards.html** (deck) | brand | ❌ **TODO** — replace the three phone mockups with browser-window frames showing the desktop screens (the hub's viewer code in `index.html` shows how to scale a 1440px iframe) |
 
 ### Next steps, in order
-1. Convert **Seller Profile, Saved, Compliance Checker, Onboarding** with the same generator (write `tools/web-shell/w-public-2.js`, modelled on `w-public-1.js`). Before writing markup, list a screen's bindings:
+1. Convert **Seller Profile, Saved, Compliance Checker** with the same generator (write `tools/web-shell/w-public-2.js`, modelled on `w-public-1.js`). Before writing markup, list a screen's bindings:
    `awk '/<\/helmet>/,/<\/x-dc>/' "designs/Saved.dc.html" | grep -o "{{[^}]*}}" | sort -u`
 2. Update **`Dashboards.html`** to show desktop screens in browser frames.
 3. Run QA (see `tools/README.md`) on all screens in EN and AR; view each in the hub in all three languages.

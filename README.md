@@ -16,7 +16,8 @@ Maabar connects the micro-importer, the trader, and the consumer through discove
 |---|---|
 | **[`HANDOFF.md`](HANDOFF.md)** | Full context for anyone (or Claude) continuing on another machine: decisions, history, current state, next steps. **Read this first.** |
 | **[`DESIGN-AUDIT.md`](DESIGN-AUDIT.md)** | The audit. Verdict, role/capability matrix, screen inventory, user journeys, state coverage, legal holds. |
-| **`designs/`** | 24 product screens, `index.html` (review hub), `tokens.css` (colours/type), `web.css` + `shell.js` (web platform layout and navigation), `Logo.dc.html` (brand kit), `Dashboards.html` (three-role deck) |
+| **[`PRODUCT-ARCHITECTURE.md`](PRODUCT-ARCHITECTURE.md)** | One identity, four experiences (Marketplace · Maabar Import · Maabar Trade · Maabar Admin). With `EXPERIENCE-MAP.md`, `ROLE-ONBOARDING-MATRIX.md`, `NAVIGATION-MATRIX.md`, `KYC-ARCHITECTURE.md`, `AUTHENTICATION-UX-MATRIX.md`, `DESIGN-ARCHITECTURE-IMPACT.md`, `FINAL-UX-SEPARATION-AUDIT.md`. |
+| **`designs/`** | 32 product screens, `index.html` (review hub), `tokens.css` (colours/type), `web.css` + `shell.js` (web platform layout and navigation), `Logo.dc.html` (brand kit), `Dashboards.html` (three-role deck) |
 | **`tools/`** | The generator used to convert screens to the web layout, and a QA check |
 | **`docs/history/`** | Strategy, Claude Design prompts, earlier audits |
 | **`preview/`** | Local server for viewing the screens |
@@ -69,7 +70,7 @@ Boards with a chip row at the top or bottom are **state-switchable** — click t
 
 **Design complete. No application code yet.**
 
-24 screens in three languages, one token layer, both directions supported throughout. Every P0 user journey is drawn end to end.
+32 screens in three languages, one token layer, both directions supported throughout. Every P0 user journey is drawn end to end.
 
 **One module is held pending Algerian legal review:** the deposit declaration in `Commitment` — see `DESIGN-AUDIT.md` §9.2. Everything else is buildable.
 
@@ -94,6 +95,6 @@ Ten decisions were settled during design. Do not re-open them while implementing
 
 ## Known gaps
 
-- All 24 screens are trilingual (EN / FR / AR). The French and Arabic copy has not yet been reviewed by native commercial writers.
-- **Maabar is a web platform, not a mobile app.** 20 of 24 screens now use the desktop web layout (public website header, or importer/trader sidebar app); the operations console was already desktop. **Still to convert:** Seller Profile, Saved, Compliance Checker, Onboarding, and the `Dashboards.html` deck (still shows phone frames). See `HANDOFF.md` §6.
+- All 32 screens are trilingual (EN / FR / AR). The French and Arabic copy has not yet been reviewed by native commercial writers.
+- **Maabar is a web platform, not a mobile app.** Every new screen uses the desktop web shells. **Still to convert:** Seller Profile, Saved, Compliance Checker, and the `Dashboards.html` deck (still shows phone frames). `Onboarding` is superseded by `Sign In`, `Importer Setup` and `Trader Setup`. See `HANDOFF.md` §6.
 - Product imagery uses designed category placeholders, not real photography.

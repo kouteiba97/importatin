@@ -25,7 +25,7 @@
 <div class="app">
 
 <aside class="rail">
-<div class="rail-brand"><svg width="28" height="28" viewBox="0 0 48 48" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 36V23a8 8 0 0 1 16 0v13"/><path d="M24 23a8 8 0 0 1 16 0v13"/></g></svg><span class="wordmark">{{ sh.brand }}</span></div>
+<div class="rail-brand"><svg width="28" height="28" viewBox="0 0 48 48" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 36V23a8 8 0 0 1 16 0v13"/><path d="M24 23a8 8 0 0 1 16 0v13"/></g></svg><span><span class="wordmark">{{ sh.brand }}</span><sc-if value="{{ sh.hasMark }}" hint-placeholder-val="{{ true }}"><span class="mark" style="color:{{ sh.roleFg }}">{{ sh.mark }}</span></sc-if></span></div>
 <div class="rail-role" style="background:{{ sh.roleBg }};color:{{ sh.roleFg }}">{{ sh.role }}</div>
 <nav class="rail-nav" aria-label="{{ sh.navLabel }}">
 <sc-for list="{{ sh.nav }}" as="n" hint-placeholder-count="7">
@@ -204,72 +204,72 @@ class Component extends DCLogic {
     ar: {
       dir: 'rtl', short: 'ع', langLabel: 'اللغة', sep: ' ', cur: 'دج',
       back: 'رجوع', views: ['إنشاء', 'معاينة', 'قيد المراجعة', 'بلا صلاحية'], newProduct: 'منتج جديد', preview: 'معاينة',
-      blockedTitle: 'هذه الميزة للتجّار', blockedBody: 'العرض للجمهور في السوق يحتاج سجلاً تجارياً. صفة المستورد المصغّر وحدها لا تكفي.',
+      blockedTitle: 'هذه الميزة للتجّار', blockedBody: 'العرض في السوق يحتاج سجلاً تجارياً.',
       canDoTitle: 'ما تقدر تديره بصفتك مستورداً', addTrader: 'أضف صفة تاجر', backToBoard: 'ارجع للوحة الطلب',
-      canDo: ['نشر رحلة واستقبال طلبات التجّار', 'عرض ما تجلبه في لوحة الطلب للتجّار', 'بيع البضاعة لتاجر يعرضها بدوره للجمهور'],
+      canDo: ['نشر رحلة واستقبال طلبات التجّار', 'عرض ما تجلبه في لوحة الطلب', 'البيع لتاجر يعرضها للجمهور'],
       photos: 'الصور', addPhoto: 'أضف صورة', cover: 'الغلاف', remove: 'احذف',
-      photoHint: 'صوّر القطعة الفعلية بضوء طبيعي. الصور تمرّ على المراجعة قبل الظهور.',
+      photoHint: 'القطعة الفعلية بضوء طبيعي. تُراجع قبل الظهور.',
       name: 'اسم المنتج', nameVal: 'معطف نسائي شتوي — صوف مخلوط', category: 'الفئة',
       cats: ['ألبسة', 'حقائب', 'أحذية', 'تجميل', 'ساعات'],
       desc: 'الوصف', descVal: 'قصّة مستقيمة، بطانة داخلية، جيبان جانبيان وأزرار معدنية.',
       unitPrice: 'السعر للوحدة', qty: 'الكمية', details: 'التفاصيل',
       attrs: [['المقاسات', 'S · M · L · XL'], ['الألوان', 'أسود · بيج · كحلي'], ['الخامة', 'صوف مخلوط 60%']],
       source: 'المصدر', srcInitials: 'ك ح', srcTrip: 'من رحلة كريمة ح. — إسطنبول', srcMeta: 'اشتريتَ 18 وحدة · وصلت 18 أكتوبر',
-      srcHint: 'يظهر للمشتري «المصدر: تركيا» فقط. لا يُعرض اسم المستورد ولا سعر شرائك.',
+      srcHint: 'يرى المشتري «المصدر: تركيا» فقط.',
       delivery: 'التسليم', deliveryOpts: ['استلام من المحل', 'توصيل داخل الولاية', 'شحن خارج الولاية'],
       previewPublish: 'معاينة ونشر', buyerSees: 'هكذا يراه المشتري', shop: 'بوتيك نادية',
-      checks: ['صورتان مرفوعتان — الحدّ الأدنى واحدة', 'السعر والكمية محدّدان', 'المقاسات والألوان مذكورة', 'لم تُذكر بيانات المستورد — جيّد'],
+      checks: ['صورتان مرفوعتان', 'السعر والكمية محدّدان', 'المقاسات والألوان مذكورة', 'بلا بيانات المستورد'],
       publish: 'انشر في السوق', saveDraft: 'احفظ كمسوّدة',
-      pendingTitle: 'قيد المراجعة', pendingBody: 'الصور والوصف يمرّان على مراجعة سريعة قبل الظهور للجمهور. عادةً خلال ساعات.',
-      after: ['سيصلك إشعار عند الموافقة أو عند طلب تعديل.', 'تقدر تعدّل المنتج أو تخفيه في أي وقت.', 'المنتج يظهر تلقائياً في ملف متجرك بعد الموافقة.'],
+      pendingTitle: 'قيد المراجعة', pendingBody: 'مراجعة سريعة قبل الظهور. عادةً خلال ساعات.',
+      after: ['إشعار عند الموافقة أو طلب تعديل.', 'تعديل أو إخفاء في أي وقت.', 'يظهر في متجرك بعد الموافقة.'],
       addAnother: 'أضف منتجاً آخر'
     },
 
     fr: {
       dir: 'ltr', short: 'FR', langLabel: 'Langue', sep: ' ', cur: 'DA',
       back: 'Retour', views: ['Création', 'Aperçu', 'En modération', 'Sans autorisation'], newProduct: 'Nouveau produit', preview: 'Aperçu',
-      blockedTitle: 'Fonction réservée aux commerçants', blockedBody: 'La mise en vente au public exige un registre de commerce. Le statut de micro-importateur seul ne suffit pas.',
+      blockedTitle: 'Fonction réservée aux commerçants', blockedBody: 'La mise en vente au public exige un registre du commerce.',
       canDoTitle: 'Ce que vous pouvez faire en tant qu’importateur', addTrader: 'Ajouter le statut de commerçant', backToBoard: 'Retour au tableau de la demande',
-      canDo: ['Publier un voyage et recevoir les demandes des commerçants', 'Montrer ce que vous rapportez aux commerçants sur le tableau de la demande', 'Vendre la marchandise à un commerçant, qui la propose ensuite au public'],
+      canDo: ['Publier un voyage et recevoir des demandes', 'Montrer ce que vous rapportez sur le tableau de la demande', 'Vendre à un commerçant, qui propose au public'],
       photos: 'Photos', addPhoto: 'Ajouter une photo', cover: 'Couverture', remove: 'Supprimer',
-      photoHint: 'Photographiez la pièce réelle en lumière naturelle. Les photos sont vérifiées avant publication.',
+      photoHint: 'Pièce réelle en lumière naturelle. Vérifiées avant publication.',
       name: 'Nom du produit', nameVal: 'Manteau femme hiver — laine mélangée', category: 'Catégorie',
       cats: ['Vêtements', 'Sacs', 'Chaussures', 'Beauté', 'Montres'],
       desc: 'Description', descVal: 'Coupe droite, doublure intérieure, deux poches latérales et boutons métalliques.',
       unitPrice: 'Prix unitaire', qty: 'Quantité', details: 'Détails',
       attrs: [['Tailles', 'S · M · L · XL'], ['Coloris', 'Noir · beige · bleu marine'], ['Matière', 'Laine mélangée 60 %']],
       source: 'Provenance', srcInitials: 'KH', srcTrip: 'Du voyage de Karima H. — Istanbul', srcMeta: 'Vous avez acheté 18 unités · arrivées le 18 octobre',
-      srcHint: 'L’acheteur voit uniquement « Origine : Turquie ». Ni le nom de l’importateur ni votre prix d’achat ne sont affichés.',
+      srcHint: 'L’acheteur voit uniquement « Origine : Turquie ».',
       delivery: 'Remise', deliveryOpts: ['Retrait en boutique', 'Livraison dans la wilaya', 'Expédition hors wilaya'],
       previewPublish: 'Aperçu et publication', buyerSees: 'Ce que voit l’acheteur', shop: 'Boutique Nadia',
-      checks: ['Deux photos déposées — minimum une', 'Prix et quantité renseignés', 'Tailles et coloris indiqués', 'Aucune donnée de l’importateur mentionnée — bien'],
+      checks: ['Deux photos déposées', 'Prix et quantité renseignés', 'Tailles et coloris indiqués', 'Aucune donnée de l’importateur'],
       publish: 'Publier sur la place', saveDraft: 'Enregistrer comme brouillon',
-      pendingTitle: 'En modération', pendingBody: 'Les photos et la description passent une vérification rapide avant d’être visibles. En général, quelques heures.',
-      after: ['Vous serez notifié à l’approbation ou si une modification est demandée.', 'Vous pouvez modifier ou masquer le produit à tout moment.', 'Une fois approuvé, le produit apparaît automatiquement sur votre fiche boutique.'],
+      pendingTitle: 'En modération', pendingBody: 'Vérification rapide avant publication. En général, quelques heures.',
+      after: ['Notification à l’approbation ou si une modification est demandée.', 'Modifiable ou masquable à tout moment.', 'Apparaît sur votre boutique une fois approuvé.'],
       addAnother: 'Ajouter un autre produit'
     },
 
     en: {
       dir: 'ltr', short: 'EN', langLabel: 'Language', sep: ',', cur: 'DA',
       back: 'Back', views: ['Compose', 'Preview', 'In moderation', 'Not permitted'], newProduct: 'New product', preview: 'Preview',
-      blockedTitle: 'This feature is for traders', blockedBody: 'Listing to the public requires a commercial register. Micro-importer status alone is not enough.',
+      blockedTitle: 'This feature is for traders', blockedBody: 'Listing to the public requires a commercial register.',
       canDoTitle: 'What you can do as an importer', addTrader: 'Add trader status', backToBoard: 'Back to the demand board',
-      canDo: ['Publish a trip and receive traders’ requests', 'Show traders what you’re bringing on the demand board', 'Sell goods to a trader, who then lists them to the public'],
+      canDo: ['Publish a trip and receive requests', 'Show what you’re bringing on the demand board', 'Sell to a trader, who lists to the public'],
       photos: 'Photos', addPhoto: 'Add a photo', cover: 'Cover', remove: 'Remove',
-      photoHint: 'Photograph the actual piece in natural light. Photos are reviewed before they appear.',
+      photoHint: 'Actual piece in natural light. Reviewed before they appear.',
       name: 'Product name', nameVal: 'Women’s winter coat — wool blend', category: 'Category',
       cats: ['Clothing', 'Bags', 'Shoes', 'Beauty', 'Watches'],
       desc: 'Description', descVal: 'Straight cut, full lining, two side pockets and metal buttons.',
       unitPrice: 'Unit price', qty: 'Quantity', details: 'Details',
       attrs: [['Sizes', 'S · M · L · XL'], ['Colours', 'Black · beige · navy'], ['Material', 'Wool blend 60%']],
       source: 'Source', srcInitials: 'KH', srcTrip: 'From Karima H.’s trip — Istanbul', srcMeta: 'You bought 18 units · arrived 18 October',
-      srcHint: 'Buyers see only “Origin: Türkiye”. Neither the importer’s name nor your purchase price is shown.',
+      srcHint: 'Buyers see only “Origin: Türkiye”.',
       delivery: 'Handover', deliveryOpts: ['Collect in store', 'Delivery within the wilaya', 'Shipping outside the wilaya'],
       previewPublish: 'Preview and publish', buyerSees: 'What the buyer sees', shop: 'Boutique Nadia',
-      checks: ['Two photos uploaded — minimum is one', 'Price and quantity set', 'Sizes and colours listed', 'No importer details mentioned — good'],
+      checks: ['Two photos uploaded', 'Price and quantity set', 'Sizes and colours listed', 'No importer details'],
       publish: 'Publish to the marketplace', saveDraft: 'Save as draft',
-      pendingTitle: 'In moderation', pendingBody: 'Photos and description get a quick review before going public. Usually within hours.',
-      after: ['You’ll be notified on approval, or if a change is requested.', 'You can edit or hide the product at any time.', 'Once approved, the product appears on your shop profile automatically.'],
+      pendingTitle: 'In moderation', pendingBody: 'Quick review before going public. Usually within hours.',
+      after: ['Notified on approval or if a change is requested.', 'Edit or hide at any time.', 'Appears on your shop once approved.'],
       addAnother: 'Add another product'
     }
   };

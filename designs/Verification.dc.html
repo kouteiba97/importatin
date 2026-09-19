@@ -26,7 +26,7 @@
 <div class="app">
 
 <aside class="rail">
-<div class="rail-brand"><svg width="28" height="28" viewBox="0 0 48 48" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 36V23a8 8 0 0 1 16 0v13"/><path d="M24 23a8 8 0 0 1 16 0v13"/></g></svg><span class="wordmark">{{ sh.brand }}</span></div>
+<div class="rail-brand"><svg width="28" height="28" viewBox="0 0 48 48" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 36V23a8 8 0 0 1 16 0v13"/><path d="M24 23a8 8 0 0 1 16 0v13"/></g></svg><span><span class="wordmark">{{ sh.brand }}</span><sc-if value="{{ sh.hasMark }}" hint-placeholder-val="{{ true }}"><span class="mark" style="color:{{ sh.roleFg }}">{{ sh.mark }}</span></sc-if></span></div>
 <div class="rail-role" style="background:{{ sh.roleBg }};color:{{ sh.roleFg }}">{{ sh.role }}</div>
 <nav class="rail-nav" aria-label="{{ sh.navLabel }}">
 <sc-for list="{{ sh.nav }}" as="n" hint-placeholder-count="7">
@@ -109,6 +109,7 @@
 </div>
 <div style="height:7px;border-radius:4px;background:var(--neutral-bg);overflow:hidden"><i style="display:block;height:100%;width:50%;background:var(--brand)"></i></div>
 <div style="font-size:var(--t-sm);color:var(--ink-2);margin-top:10px">{{ oneStep }}</div>
+<button type="button" class="btn btn-block" style="margin-top:14px">{{ t.seeStatus }}</button>
 </div></section>
 <div class="note"><span class="i">i</span><span>{{ t.noteA }} <strong style="font-weight:600;color:var(--ink)">{{ t.noteB }}</strong> {{ t.noteC }}</span></div>
 </aside>
@@ -169,73 +170,7 @@
 </section>
 </sc-if>
 
-<sc-if value="{{ isReview }}" hint-placeholder-val="{{ false }}">
-<div class="split">
-<section class="panel">
-<div class="panel-b" style="display:flex;gap:16px;align-items:center;border-bottom:1px solid var(--rule-faint)">
-<span aria-hidden="true" style="flex:none;width:56px;height:56px;border-radius:50%;background:var(--conditional-bg);color:var(--conditional-ink);font-size:24px;display:grid;place-items:center">⏱</span>
-<div><h2 style="margin:0 0 5px;font-size:24px;font-weight:600">{{ t.reviewTitle }}</h2><p style="margin:0;color:var(--ink-2)">{{ t.reviewLede }}</p></div>
-</div>
-<div class="rows">
-<sc-for list="{{ submitted }}" as="d" hint-placeholder-count="4">
-<div style="display:flex;align-items:center;gap:12px;padding:14px 20px"><span aria-hidden="true" style="flex:none;width:20px;height:20px;border-radius:50%;background:{{ d.bg }};display:grid;place-items:center;font-size:11px;color:{{ d.fg }}">{{ d.glyph }}</span><span style="flex:1;font-size:var(--t-body)">{{ d.label }}</span><span style="font-size:var(--t-sm);color:var(--ink-3)">{{ d.state }}</span></div>
-</sc-for>
-</div>
-</section>
-<aside class="stack sticky"><button type="button" class="btn btn-lg btn-block">{{ t.whatNow }}</button></aside>
-</div>
-</sc-if>
 
-<sc-if value="{{ isFix }}" hint-placeholder-val="{{ false }}">
-<div class="split">
-<div class="stack">
-<div style="display:flex;gap:14px;padding:20px;border:1px solid var(--conditional-bd);border-radius:var(--r-lg);background:var(--conditional-bg)">
-<span aria-hidden="true" style="flex:none;width:34px;height:34px;border-radius:50%;background:var(--conditional);color:#fff;display:grid;place-items:center;font-weight:600">!</span>
-<div><div style="font-size:var(--t-h2);font-weight:600;margin-bottom:5px">{{ t.fixTitle }}</div><p style="margin:0;color:var(--ink-2);line-height:1.7">{{ t.fixLede }}</p></div>
-</div>
-<div class="cols cols-2">
-<section class="panel"><div class="panel-h"><h2>{{ t.problem }}</h2></div><div class="panel-b">
-<sc-for list="{{ problems }}" as="p" hint-placeholder-count="2"><div style="display:flex;gap:10px;padding:7px 0"><span aria-hidden="true" style="flex:none;width:7px;height:7px;border-radius:50%;background:var(--conditional);margin-top:8px"></span><span style="font-size:var(--t-sm);line-height:1.65;color:var(--ink-2)">{{ p }}</span></div></sc-for>
-</div></section>
-<section class="panel"><div class="panel-h"><h2>{{ t.todo }}</h2></div><div class="panel-b">
-<sc-for list="{{ fixes }}" as="f" hint-placeholder-count="2"><div style="display:flex;gap:10px;padding:7px 0"><span aria-hidden="true" style="flex:none;width:18px;height:18px;border-radius:50%;background:var(--allowed-bg);display:grid;place-items:center;font-size:10px;color:var(--allowed-ink)">✓</span><span style="font-size:var(--t-sm);line-height:1.65">{{ f }}</span></div></sc-for>
-</div></section>
-</div>
-</div>
-<aside class="stack sticky">
-<button type="button" onClick="{{ goCapture }}" class="btn btn-primary btn-lg btn-block">{{ t.reshoot }}</button>
-<button type="button" class="btn btn-lg btn-block">{{ t.support }}</button>
-</aside>
-</div>
-</sc-if>
-
-<sc-if value="{{ isDone }}" hint-placeholder-val="{{ false }}">
-<section class="panel center" style="padding:40px">
-<span aria-hidden="true" style="display:inline-grid;place-items:center;width:72px;height:72px;border-radius:50%;background:var(--allowed-bg);color:var(--allowed-ink);font-size:32px;margin-bottom:16px">✓</span>
-<h2 style="margin:0 0 8px;font-size:28px;font-weight:600">{{ doneTitle }}</h2>
-<p style="margin:0 0 24px;font-size:var(--t-body);color:var(--ink-2)">{{ doneLede }}</p>
-<div class="cols cols-2" style="text-align:start;margin-bottom:24px">
-<sc-for list="{{ newUnlocks }}" as="u" hint-placeholder-count="4"><div style="display:flex;align-items:center;gap:10px;padding:12px 14px;border:1px solid var(--rule);border-radius:var(--r)"><span aria-hidden="true" style="flex:none;width:20px;height:20px;border-radius:50%;background:var(--allowed-bg);display:grid;place-items:center;font-size:10px;color:var(--allowed-ink)">✓</span><span style="font-size:var(--t-sm)">{{ u }}</span></div></sc-for>
-</div>
-<div style="display:flex;gap:12px;justify-content:center"><button type="button" class="btn btn-primary btn-lg">{{ doneCta }}</button><button type="button" class="btn btn-lg">{{ t.later }}</button></div>
-<p style="margin:18px 0 0;font-size:var(--t-sm);color:var(--ink-3)">{{ validity }}</p>
-</section>
-</sc-if>
-
-<sc-if value="{{ isExpired }}" hint-placeholder-val="{{ false }}">
-<div class="split">
-<div class="stack">
-<div style="display:flex;gap:14px;padding:20px;border:1px solid var(--prohibited-bd);border-radius:var(--r-lg);background:var(--prohibited-bg)">
-<span aria-hidden="true" style="flex:none;width:34px;height:34px;border-radius:50%;background:var(--prohibited);color:#fff;display:grid;place-items:center;font-weight:600">!</span>
-<div><div style="font-size:var(--t-h2);font-weight:600;margin-bottom:5px">{{ t.expiredTitle }}</div><p class="num" style="margin:0;color:var(--ink-2)"><bdi>{{ expiredLede }}</bdi></p></div>
-</div>
-<section class="panel"><div class="rows">
-<sc-for list="{{ frozen }}" as="f" hint-placeholder-count="3"><div style="display:flex;align-items:center;gap:12px;padding:14px 20px"><span aria-hidden="true" style="flex:none;width:20px;height:20px;border-radius:50%;background:{{ f.bg }};display:grid;place-items:center;font-size:11px;color:{{ f.fg }}">{{ f.glyph }}</span><span style="font-size:var(--t-body);color:{{ f.tone }}">{{ f.label }}</span></div></sc-for>
-</div></section>
-</div>
-<aside class="sticky"><button type="button" onClick="{{ goNeed }}" class="btn btn-dark btn-lg btn-block">{{ t.uploadNew }}</button></aside>
-</div>
-</sc-if>
 
 </div>
 </div>
@@ -293,7 +228,7 @@ class Component extends DCLogic {
     ar: {
       dir: 'rtl', short: 'ع', langLabel: 'اللغة', sep: ' ',
       back: 'رجوع', title: 'التحقّق', role: 'الدور', roles: ['مستورد', 'تاجر'],
-      views: ['السلّم', 'الوثيقة', 'المعاينة', 'الإرسال', 'قيد المراجعة', 'تصحيح', 'مقبول', 'منتهية'],
+      views: ['السلّم', 'الوثيقة', 'المعاينة', 'الإرسال'], seeStatus: 'حالة التحقّق ←',
       currentLevelName: 'هوية مؤكَّدة', currentLevel: 'مستواك الحالي',
       oneStep: { importer: 'خطوة واحدة تفصلك عن نشر رحلة.', trader: 'خطوة واحدة تفصلك عن عرض منتجاتك للجمهور.' },
       levelsTitle: 'المستويات', required: 'المطلوب', unlocks: 'يفتح لك',
@@ -312,31 +247,31 @@ class Component extends DCLogic {
           ['سجل مُثبَت', ['10 معاملات مؤكَّدة', 'بلا نزاع مفتوح'], ['شارة السجل', 'أولوية في نتائج البحث']]
         ]
       },
-      noteA: 'مَعْبَر تتحقّق من وثائقك ومن صلاحيتها.', noteB: 'لا تمنحك المنصّة حقّ الاستيراد', noteC: '— هذا الحق تحصل عليه من الجهات الرسمية، ونحن نتأكّد فقط أنك تملكه.',
+      noteA: 'مَعْبَر تتحقّق من وثائقك ومن صلاحيتها.', noteB: 'لا تمنحك المنصّة حقّ الاستيراد', noteC: '— نتأكّد فقط أنك تملكه.',
       docs: {
-        importer: ['الرخصة العامة', 'الوثيقة التي تسلّمها وزارة التجارة الخارجية وتسمح لك بممارسة الاستيراد المصغّر.', 'حتى يرى التاجر أنك مؤهّل فعلاً قبل أن يلتزم معك، ولتنبيهك قبل انتهاء صلاحيتها.'],
-        trader: ['السجل التجاري', 'المستخرج الذي يثبت قيدك في السجل التجاري ويسمح لك بالبيع للجمهور.', 'لأن العرض للمستهلك يتطلّب صفة تاجر مقيَّد. بدونه يمكنك الشراء والتواصل، لكن لا يمكنك نشر منتج في السوق.']
+        importer: ['الرخصة العامة', 'من وزارة التجارة الخارجية. تسمح لك بالاستيراد المصغّر.', 'ليرى التاجر أنك مؤهّل قبل الالتزام، ولننبّهك قبل انتهائها.'],
+        trader: ['السجل التجاري', 'يثبت قيدك ويسمح لك بالبيع للجمهور.', 'البيع للمستهلك يتطلّب تاجراً مقيَّداً.']
       },
       why: 'لماذا نطلبها', photoRules: 'شروط الصورة',
       tips: ['الوثيقة كاملة داخل الإطار', 'النص واضح وغير منعكس', 'بلا ظلّ يغطّي المعلومات', 'الصورة ملوّنة لا بالأبيض والأسود'],
       shoot: 'صوّر الوثيقة', pickPhoto: 'اختر صورة من الجهاز',
-      storage: 'وثائقك تُحفظ داخل الجزائر ولا تظهر لأي مستخدم آخر. تُستعمل للتحقّق فقط.',
+      storage: 'تُحفظ داخل الجزائر، للتحقّق فقط، ولا تظهر لأي مستخدم.',
       checkPhoto: 'تأكّد من الصورة', docImage: 'صورة الوثيقة',
       checks: ['الوثيقة كاملة في الصورة', 'النص مقروء', 'الإضاءة كافية'],
       sendReview: 'أرسل للمراجعة', retake: 'أعد التصوير',
       sending: 'جارٍ الإرسال', progress: (a, b) => a + ' من ' + b + ' ميغا',
-      resume: 'إذا انقطع الاتصال سنُكمل الإرسال تلقائياً عند عودته. تقدر تغلق الشاشة.', cancel: 'ألغِ',
-      reviewTitle: 'وثائقك قيد المراجعة', reviewLede: 'عادةً خلال يوم عمل. سيصلك إشعار فور صدور القرار.',
+      resume: 'يُستأنف الإرسال تلقائياً إذا انقطع الاتصال.', cancel: 'ألغِ',
+      reviewTitle: 'وثائقك قيد المراجعة', reviewLede: 'عادةً خلال يوم عمل. سيصلك إشعار.',
       submitted: [['بطاقة التعريف الوطنية', 'مقبولة'], ['بطاقة المقاول الذاتي', 'مقبولة'], ['الرخصة العامة', 'قيد المراجعة'], ['الانتساب إلى CASNOS', 'مقبولة']],
       whatNow: 'ما الذي يمكنني فعله الآن؟',
-      fixTitle: 'نحتاج صورة أوضح', fixLede: 'حسابك لم يُرفض. نحتاج فقط تصحيح وثيقة واحدة وتكمل من حيث توقّفت.',
+      fixTitle: 'نحتاج صورة أوضح', fixLede: 'حسابك لم يُرفض. صحّح وثيقة واحدة فقط.',
       problem: 'ما المشكلة', todo: 'ما عليك فعله',
-      problems: ['الزاوية السفلية من الوثيقة خارج الصورة، وتاريخ الانتهاء غير ظاهر.', 'انعكاس ضوء على الختم يمنع قراءته.'],
-      fixes: ['ضع الوثيقة على سطح مستوٍ وصوّر من فوقها مباشرة.', 'ابتعد عن الضوء المباشر أو أطفئ الفلاش.'],
+      problems: ['الزاوية السفلية خارج الصورة، وتاريخ الانتهاء غير ظاهر.', 'انعكاس ضوء على الختم.'],
+      fixes: ['صوّر من فوق الوثيقة مباشرة.', 'أطفئ الفلاش.'],
       reshoot: 'صوّر الوثيقة من جديد', support: 'تواصل مع الدعم',
       done: {
-        importer: ['صرت مستورداً مُتحقَّقاً', 'تقدر دابا تنشر رحلة وتستقبل طلبات التجّار.', 'أنشئ رحلتك الأولى', ['نشر رحلة واستقبال طلبات', 'الظهور في نتائج المطابقة', 'رؤية لوحة الطلب كاملة', 'الدفتر المبسّط ومولّد الوسم'], 'رخصتك سارية حتى جوان 2027. سننبّهك قبل شهر من انتهائها.'],
-        trader: ['صرت تاجراً مُتحقَّقاً', 'تقدر دابا تعرض منتجاتك للجمهور في السوق.', 'أضف منتجك الأول', ['عرض منتجات للجمهور', 'ملف متجر عام', 'الالتزام بعربون', 'الظهور في نتائج البحث'], 'سجلّك التجاري مُتحقَّق منه. سننبّهك إن تغيّر وضعه.']
+        importer: ['صرت مستورداً مُتحقَّقاً', 'تقدر دابا تنشر رحلة وتستقبل طلبات التجّار.', 'أنشئ رحلتك الأولى', ['نشر رحلة واستقبال طلبات', 'الظهور في نتائج المطابقة', 'رؤية لوحة الطلب كاملة', 'الدفتر المبسّط ومولّد الوسم'], 'رخصتك سارية حتى جوان 2027.'],
+        trader: ['صرت تاجراً مُتحقَّقاً', 'تقدر دابا تعرض منتجاتك للجمهور في السوق.', 'أضف منتجك الأول', ['عرض منتجات للجمهور', 'ملف متجر عام', 'الالتزام بعربون', 'الظهور في نتائج البحث'], 'سجلّك التجاري مُتحقَّق منه.']
       },
       later: 'لاحقاً',
       expiredTitle: 'انتهت صلاحية رخصتك', expiredLede: 'انتهت في 30 جوان 2026. رحلاتك متوقّفة حتى التجديد.',
@@ -347,7 +282,7 @@ class Component extends DCLogic {
     fr: {
       dir: 'ltr', short: 'FR', langLabel: 'Langue', sep: ' ',
       back: 'Retour', title: 'Vérification', role: 'Rôle', roles: ['Importateur', 'Commerçant'],
-      views: ['Niveaux', 'Document', 'Aperçu', 'Envoi', 'En examen', 'Correction', 'Validé', 'Expiré'],
+      views: ['Niveaux', 'Document', 'Aperçu', 'Envoi'], seeStatus: 'État de la vérification →',
       currentLevelName: 'Identité confirmée', currentLevel: 'Votre niveau actuel',
       oneStep: { importer: 'Une étape vous sépare de la publication d’un voyage.', trader: 'Une étape vous sépare de la mise en vente au public.' },
       levelsTitle: 'Niveaux', required: 'Requis', unlocks: 'Donne accès à',
@@ -366,31 +301,31 @@ class Component extends DCLogic {
           ['Historique établi', ['10 transactions confirmées', 'Aucun litige ouvert'], ['Badge d’historique', 'Priorité dans les résultats']]
         ]
       },
-      noteA: 'Maabar vérifie vos documents et leur validité.', noteB: 'La plateforme ne vous accorde pas le droit d’importer', noteC: '— ce droit vient des autorités ; nous vérifions seulement que vous le détenez.',
+      noteA: 'Maabar vérifie vos documents et leur validité.', noteB: 'La plateforme ne vous accorde pas le droit d’importer', noteC: '— nous vérifions seulement que vous le détenez.',
       docs: {
-        importer: ['Autorisation générale', 'Le document délivré par le ministère du Commerce extérieur qui vous permet d’exercer l’importation de faible valeur.', 'Pour que le commerçant voie que vous êtes réellement habilité avant de s’engager, et pour vous prévenir avant expiration.'],
-        trader: ['Registre de commerce', 'L’extrait qui prouve votre inscription au registre et vous permet de vendre au public.', 'Parce que vendre au consommateur exige la qualité de commerçant inscrit. Sans lui, vous pouvez acheter et échanger, mais pas publier un produit sur la place.']
+        importer: ['Autorisation générale', 'Délivrée par le ministère du Commerce extérieur. Elle vous permet d’importer.', 'Pour que le commerçant voie que vous êtes habilité, et pour vous prévenir avant expiration.'],
+        trader: ['Registre de commerce', 'Prouve votre inscription et vous permet de vendre au public.', 'Vendre au consommateur exige un commerçant inscrit.']
       },
       why: 'Pourquoi nous le demandons', photoRules: 'Règles de prise de vue',
       tips: ['Le document entier dans le cadre', 'Texte net, sans reflet', 'Aucune ombre sur les informations', 'Photo en couleur, pas en noir et blanc'],
       shoot: 'Photographier le document', pickPhoto: 'Choisir une photo sur l’appareil',
-      storage: 'Vos documents sont stockés en Algérie et ne sont visibles par aucun autre utilisateur. Ils servent uniquement à la vérification.',
+      storage: 'Stockés en Algérie, pour la vérification uniquement, visibles par aucun utilisateur.',
       checkPhoto: 'Vérifiez la photo', docImage: 'Photo du document',
       checks: ['Document entier sur la photo', 'Texte lisible', 'Éclairage suffisant'],
       sendReview: 'Envoyer pour examen', retake: 'Reprendre',
       sending: 'Envoi en cours', progress: (a, b) => a + ' sur ' + b + ' Mo',
-      resume: 'Si la connexion est coupée, l’envoi reprend automatiquement à son retour. Vous pouvez fermer l’écran.', cancel: 'Annuler',
-      reviewTitle: 'Vos documents sont en examen', reviewLede: 'En général sous un jour ouvré. Vous serez notifié dès la décision.',
+      resume: 'L’envoi reprend automatiquement si la connexion est coupée.', cancel: 'Annuler',
+      reviewTitle: 'Vos documents sont en examen', reviewLede: 'En général sous un jour ouvré. Vous serez notifié.',
       submitted: [['Carte d’identité nationale', 'Acceptée'], ['Carte d’auto-entrepreneur', 'Acceptée'], ['Autorisation générale', 'En examen'], ['Affiliation CASNOS', 'Acceptée']],
       whatNow: 'Que puis-je faire en attendant ?',
-      fixTitle: 'Il nous faut une photo plus nette', fixLede: 'Votre compte n’est pas refusé. Il suffit de corriger un document et vous reprenez où vous en étiez.',
+      fixTitle: 'Il nous faut une photo plus nette', fixLede: 'Votre compte n’est pas refusé. Corrigez un seul document.',
       problem: 'Le problème', todo: 'Ce que vous devez faire',
-      problems: ['Le coin inférieur du document est hors cadre et la date d’expiration n’apparaît pas.', 'Un reflet sur le cachet empêche de le lire.'],
-      fixes: ['Posez le document à plat et photographiez-le directement du dessus.', 'Évitez la lumière directe ou éteignez le flash.'],
+      problems: ['Coin inférieur hors cadre, date d’expiration invisible.', 'Reflet sur le cachet.'],
+      fixes: ['Photographiez directement du dessus.', 'Éteignez le flash.'],
       reshoot: 'Photographier à nouveau', support: 'Contacter l’assistance',
       done: {
-        importer: ['Vous êtes importateur vérifié', 'Vous pouvez maintenant publier un voyage et recevoir les demandes des commerçants.', 'Créer votre premier voyage', ['Publier un voyage et recevoir des demandes', 'Apparaître dans les résultats d’appariement', 'Voir le tableau de la demande en entier', 'Registre simplifié et générateur d’étiquette'], 'Votre autorisation est valide jusqu’en juin 2027. Nous vous prévenons un mois avant expiration.'],
-        trader: ['Vous êtes commerçant vérifié', 'Vous pouvez maintenant proposer vos produits au public sur la place.', 'Ajouter votre premier produit', ['Vendre au public', 'Fiche boutique publique', 'S’engager avec des arrhes', 'Apparaître dans les résultats'], 'Votre registre de commerce est vérifié. Nous vous prévenons si son statut change.']
+        importer: ['Vous êtes importateur vérifié', 'Vous pouvez maintenant publier un voyage et recevoir les demandes des commerçants.', 'Créer votre premier voyage', ['Publier un voyage et recevoir des demandes', 'Apparaître dans les résultats d’appariement', 'Voir le tableau de la demande en entier', 'Registre simplifié et générateur d’étiquette'], 'Autorisation valide jusqu’en juin 2027.'],
+        trader: ['Vous êtes commerçant vérifié', 'Vous pouvez maintenant proposer vos produits au public sur la place.', 'Ajouter votre premier produit', ['Vendre au public', 'Fiche boutique publique', 'S’engager avec des arrhes', 'Apparaître dans les résultats'], 'Registre de commerce vérifié.']
       },
       later: 'Plus tard',
       expiredTitle: 'Votre autorisation a expiré', expiredLede: 'Expirée le 30 juin 2026. Vos voyages sont suspendus jusqu’au renouvellement.',
@@ -401,7 +336,7 @@ class Component extends DCLogic {
     en: {
       dir: 'ltr', short: 'EN', langLabel: 'Language', sep: ',',
       back: 'Back', title: 'Verification', role: 'Role', roles: ['Importer', 'Trader'],
-      views: ['Levels', 'Document', 'Preview', 'Uploading', 'Under review', 'Correction', 'Approved', 'Expired'],
+      views: ['Levels', 'Document', 'Preview', 'Uploading'], seeStatus: 'Verification status →',
       currentLevelName: 'Identity confirmed', currentLevel: 'Your current level',
       oneStep: { importer: 'One step away from publishing a trip.', trader: 'One step away from listing products to the public.' },
       levelsTitle: 'Levels', required: 'Required', unlocks: 'Unlocks',
@@ -420,31 +355,31 @@ class Component extends DCLogic {
           ['Established record', ['10 confirmed transactions', 'No open dispute'], ['Record badge', 'Search priority']]
         ]
       },
-      noteA: 'Maabar checks your documents and that they are valid.', noteB: 'The platform does not grant you the right to import', noteC: '— that right comes from the authorities; we only confirm you hold it.',
+      noteA: 'Maabar checks your documents and that they are valid.', noteB: 'The platform does not grant you the right to import', noteC: '— we only confirm you hold it.',
       docs: {
-        importer: ['General authorisation', 'The document issued by the Ministry of Foreign Trade that allows you to practise low-value importing.', 'So traders can see you are genuinely qualified before committing, and so we can warn you before it expires.'],
-        trader: ['Commercial register', 'The extract proving your registration, which allows you to sell to the public.', 'Because selling to consumers requires registered-trader status. Without it you can buy and message, but not list a product on the marketplace.']
+        importer: ['General authorisation', 'Issued by the Ministry of Foreign Trade. It lets you import.', 'So traders see you are qualified, and so we can warn you before it expires.'],
+        trader: ['Commercial register', 'Proves your registration and lets you sell to the public.', 'Selling to consumers requires a registered trader.']
       },
       why: 'Why we ask for it', photoRules: 'Photo requirements',
       tips: ['The whole document inside the frame', 'Text sharp, no glare', 'No shadow over the details', 'In colour, not black and white'],
       shoot: 'Photograph the document', pickPhoto: 'Choose a photo from the device',
-      storage: 'Your documents are stored inside Algeria and never shown to any other user. They are used for verification only.',
+      storage: 'Stored inside Algeria, for verification only, never shown to any user.',
       checkPhoto: 'Check the photo', docImage: 'Document photo',
       checks: ['Whole document in the photo', 'Text readable', 'Lighting sufficient'],
       sendReview: 'Send for review', retake: 'Retake',
       sending: 'Uploading', progress: (a, b) => a + ' of ' + b + ' MB',
-      resume: 'If the connection drops, the upload resumes automatically when it’s back. You can close the screen.', cancel: 'Cancel',
-      reviewTitle: 'Your documents are under review', reviewLede: 'Usually within one working day. You’ll be notified as soon as there’s a decision.',
+      resume: 'The upload resumes automatically if the connection drops.', cancel: 'Cancel',
+      reviewTitle: 'Your documents are under review', reviewLede: 'Usually within one working day. You’ll be notified.',
       submitted: [['National ID card', 'Accepted'], ['Auto-entrepreneur card', 'Accepted'], ['General authorisation', 'Under review'], ['CASNOS affiliation', 'Accepted']],
       whatNow: 'What can I do meanwhile?',
-      fixTitle: 'We need a clearer photo', fixLede: 'Your account has not been rejected. Just correct one document and continue where you left off.',
+      fixTitle: 'We need a clearer photo', fixLede: 'Your account is not rejected. Correct one document only.',
       problem: 'The problem', todo: 'What to do',
-      problems: ['The bottom corner of the document is cut off and the expiry date isn’t visible.', 'Glare on the stamp makes it unreadable.'],
-      fixes: ['Lay the document flat and photograph it from directly above.', 'Move away from direct light or turn off the flash.'],
+      problems: ['Bottom corner cut off, expiry date not visible.', 'Glare on the stamp.'],
+      fixes: ['Photograph from directly above.', 'Turn off the flash.'],
       reshoot: 'Photograph it again', support: 'Contact support',
       done: {
-        importer: ['You’re a verified importer', 'You can now publish a trip and receive traders’ requests.', 'Create your first trip', ['Publish trips and receive requests', 'Appear in matching results', 'See the full demand board', 'Simplified ledger and label generator'], 'Your authorisation is valid until June 2027. We’ll remind you a month before it expires.'],
-        trader: ['You’re a verified trader', 'You can now list your products to the public on the marketplace.', 'Add your first product', ['List products to the public', 'Public shop profile', 'Commit with a deposit', 'Appear in search results'], 'Your commercial register is verified. We’ll tell you if its status changes.']
+        importer: ['You’re a verified importer', 'You can now publish a trip and receive traders’ requests.', 'Create your first trip', ['Publish trips and receive requests', 'Appear in matching results', 'See the full demand board', 'Simplified ledger and label generator'], 'Authorisation valid until June 2027.'],
+        trader: ['You’re a verified trader', 'You can now list your products to the public on the marketplace.', 'Add your first product', ['List products to the public', 'Public shop profile', 'Commit with a deposit', 'Appear in search results'], 'Commercial register verified.']
       },
       later: 'Later',
       expiredTitle: 'Your authorisation has expired', expiredLede: 'Expired on 30 June 2026. Your trips are paused until renewal.',
@@ -460,7 +395,7 @@ class Component extends DCLogic {
     importer: [[true], [true, true], [true, false, true, true], [false, true]],
     trader: [[true], [true, true], [false, true, true], [false, true]]
   };
-  VIEW_IDS = ['ladder', 'need', 'preview', 'uploading', 'review', 'fix', 'done', 'expired'];
+  VIEW_IDS = ['ladder', 'need', 'preview', 'uploading'];
   CHECK_OK = [true, true, false];
   SUBMITTED_OK = [true, true, null, true];
   FROZEN_OK = [false, false, true];
@@ -474,7 +409,7 @@ class Component extends DCLogic {
 
     return {
       rootRef: this.root,
-      sh: window.MaabarShell(this.state.lang, 'importer', 'ver'),
+      sh: window.MaabarShell(this.state.lang, this.state.role, 'ver', { userRole: this.L[this.state.lang].currentLevelName, held: [this.state.role, 'public'] }),
       stateLabel: ({ ar: 'الحالة', fr: 'État de l’écran', en: 'Screen state' })[this.state.lang], t, langs: this.langsFor(s.lang),
       backFlip: t.dir === 'rtl' ? -1 : 1,
       oneStep: t.oneStep[role],

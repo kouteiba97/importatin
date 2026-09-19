@@ -132,65 +132,65 @@ class Component extends DCLogic {
     ar: {
       label: 'ع', dir: 'rtl', brand: 'مَعْبَر', langLabel: 'اللغة',
       title: 'هل يمكنني استيراد هذا؟',
-      subtitle: 'اكتب اسم السلعة وتعرف الجواب فوراً.',
+      subtitle: 'اكتب السلعة واعرف الجواب فوراً.',
       placeholder: 'مثال: عطور نسائية 100 مل',
       fieldLabel: 'السلعة', cta: 'افحص',
       quick: ['ألبسة', 'عطور', 'أحذية', 'حقائب', 'ساعات'],
       subject: 'عطور نسائية 100 مل · من تركيا',
       vLabel: 'مسموح بشرط',
-      reason: 'يمكنك استيرادها، لكن يجب أن يتبقّى أكثر من نصف مدة الصلاحية عند دخول البضاعة.',
+      reason: 'مسموح، بشرط أن يتبقّى أكثر من نصف مدة الصلاحية عند الدخول.',
       nextLabel: 'ما عليك فعله',
-      steps: ['تحقّق من تاريخَي الإنتاج والانتهاء على العبوة قبل الشراء.', 'احتفظ بفاتورة الشراء.'],
+      steps: ['تحقّق من تاريخَي الإنتاج والانتهاء قبل الشراء.', 'احتفظ بفاتورة الشراء.'],
       discs: [
         { id: 'law', label: 'الأساس القانوني', hint: 'المادة 6',
-          body: 'المرسوم التنفيذي 25-170 يشترط أن تكون مدة الصلاحية المتبقية عند تاريخ الاستيراد أكثر من نصف المدة الإجمالية للاستهلاك.' },
+          body: 'المرسوم 25-170: مدة الصلاحية المتبقية عند الاستيراد يجب أن تتجاوز نصف المدة الإجمالية.' },
         { id: 'src', label: 'المصدر وتاريخ التحديث', hint: '29 جوان 2025',
-          body: 'الجريدة الرسمية للجمهورية الجزائرية، العدد 40، الصادرة في 29 جوان 2025.', link: 'افتح النص الرسمي' }
+          body: 'الجريدة الرسمية، العدد 40، 29 جوان 2025.', link: 'افتح النص الرسمي' }
       ],
       shareCta: 'شارك النتيجة',
-      disclaimer: 'معلومة استرشادية. القرار النهائي عند الدخول يعود لمصالح الجمارك.'
+      disclaimer: 'معلومة استرشادية. القرار النهائي للجمارك.'
     },
     fr: {
       label: 'FR', dir: 'ltr', brand: 'Maabar', langLabel: 'Langue',
       title: 'Puis-je importer ceci ?',
-      subtitle: 'Saisissez la marchandise, obtenez la réponse immédiatement.',
+      subtitle: 'Saisissez la marchandise, la réponse est immédiate.',
       placeholder: 'Ex. : parfums femme 100 ml',
       fieldLabel: 'Marchandise', cta: 'Vérifier',
       quick: ['Vêtements', 'Parfums', 'Chaussures', 'Sacs', 'Montres'],
       subject: 'Parfums femme 100 ml · de Turquie',
       vLabel: 'Autorisé sous condition',
-      reason: "Vous pouvez l'importer, à condition qu'il reste plus de la moitié de la durée de validité à l'entrée de la marchandise.",
+      reason: "Autorisé, à condition qu'il reste plus de la moitié de la durée de validité à l'entrée.",
       nextLabel: 'Ce que vous devez faire',
-      steps: ["Vérifiez les dates de fabrication et de péremption sur l'emballage avant l'achat.", "Conservez la facture d'achat."],
+      steps: ["Vérifiez les dates de fabrication et de péremption avant l'achat.", "Conservez la facture d'achat."],
       discs: [
         { id: 'law', label: 'Base légale', hint: 'Art. 6',
-          body: "Le décret exécutif 25-170 exige que la durée de validité restante à la date d'importation dépasse la moitié de la durée globale de consommation." },
+          body: "Décret 25-170 : la durée de validité restante à l'importation doit dépasser la moitié de la durée totale." },
         { id: 'src', label: 'Source et mise à jour', hint: '29 juin 2025',
-          body: "Journal officiel de la République algérienne, n° 40 du 29 juin 2025.", link: 'Ouvrir le texte officiel' }
+          body: "Journal officiel n° 40 du 29 juin 2025.", link: 'Ouvrir le texte officiel' }
       ],
       shareCta: 'Partager le résultat',
-      disclaimer: "Information indicative. La décision finale à l'entrée appartient aux services des douanes."
+      disclaimer: "Information indicative. La décision finale appartient aux douanes."
     },
     en: {
       label: 'EN', dir: 'ltr', brand: 'Maabar', langLabel: 'Language',
       title: 'Can I import this?',
-      subtitle: 'Type the goods, get the answer straight away.',
+      subtitle: 'Type the goods, get the answer instantly.',
       placeholder: 'e.g. women’s perfume 100 ml',
       fieldLabel: 'Goods', cta: 'Check',
       quick: ['Clothing', 'Fragrance', 'Shoes', 'Bags', 'Watches'],
       subject: 'Women’s perfume 100 ml · from Turkey',
       vLabel: 'Allowed with a condition',
-      reason: 'You can import it, provided more than half of the shelf life remains when the goods enter.',
+      reason: 'Allowed, provided more than half the shelf life remains on entry.',
       nextLabel: 'What to do',
-      steps: ['Check the production and expiry dates on the packaging before buying.', 'Keep the purchase invoice.'],
+      steps: ['Check production and expiry dates before buying.', 'Keep the purchase invoice.'],
       discs: [
         { id: 'law', label: 'Legal basis', hint: 'Art. 6',
-          body: 'Executive decree 25-170 requires the shelf life remaining on the import date to exceed half of the product’s total consumption period.' },
+          body: 'Decree 25-170: remaining shelf life on the import date must exceed half the total.' },
         { id: 'src', label: 'Source and last update', hint: '29 June 2025',
-          body: 'Official Journal of the Algerian Republic, no. 40 of 29 June 2025.', link: 'Open the official text' }
+          body: 'Official Journal no. 40, 29 June 2025.', link: 'Open the official text' }
       ],
       shareCta: 'Share the result',
-      disclaimer: 'Indicative guidance. The final decision on entry rests with customs.'
+      disclaimer: 'Indicative guidance. The final decision rests with customs.'
     }
   };
 

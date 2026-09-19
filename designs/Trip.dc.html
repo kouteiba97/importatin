@@ -29,7 +29,7 @@
 <div class="app">
 
 <aside class="rail">
-<div class="rail-brand"><svg width="28" height="28" viewBox="0 0 48 48" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 36V23a8 8 0 0 1 16 0v13"/><path d="M24 23a8 8 0 0 1 16 0v13"/></g></svg><span class="wordmark">{{ sh.brand }}</span></div>
+<div class="rail-brand"><svg width="28" height="28" viewBox="0 0 48 48" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 36V23a8 8 0 0 1 16 0v13"/><path d="M24 23a8 8 0 0 1 16 0v13"/></g></svg><span><span class="wordmark">{{ sh.brand }}</span><sc-if value="{{ sh.hasMark }}" hint-placeholder-val="{{ true }}"><span class="mark" style="color:{{ sh.roleFg }}">{{ sh.mark }}</span></sc-if></span></div>
 <div class="rail-role" style="background:{{ sh.roleBg }};color:{{ sh.roleFg }}">{{ sh.role }}</div>
 <nav class="rail-nav" aria-label="{{ sh.navLabel }}">
 <sc-for list="{{ sh.nav }}" as="n" hint-placeholder-count="7">
@@ -216,7 +216,7 @@ class Component extends DCLogic {
       dest: 'إسطنبول', dates: '12 – 16 أكتوبر · يصل 18 أكتوبر', status: 'مفتوحة للطلب',
       stages: ['التخطيط', 'جمع الطلب', 'السفر', 'الجمركة', 'التسليم'],
       capTitle: 'ما تبقّى من سعتك', of: 'من',
-      caps: [['القيمة', 'دج', 'الحدّ القانوني لكل رحلة'], ['الوزن', 'كغ', 'حسب سماح الطيران الذي حدّدته'], ['الحجم', 'م³', 'حسب حقائبك التي حدّدتها']],
+      caps: [['القيمة', 'دج', 'الحدّ القانوني لكل رحلة'], ['الوزن', 'كغ', 'حدّك أنت'], ['الحجم', 'م³', 'حدّك أنت']],
       listTitle: 'قائمة الشراء', addItem: 'أضف صنفاً ←', total: 'الإجمالي',
       list: [['معاطف نسائية شتوية', 'مطلوبة بالكامل'], ['حقائب يد نسائية', 'مطلوبة جزئياً'], ['عطور نسائية 100 مل', 'بلا مشترٍ مؤكَّد']],
       noBuyer: 'بلا مشترٍ بعد',
@@ -234,7 +234,7 @@ class Component extends DCLogic {
       dest: 'Istanbul', dates: '12 – 16 octobre · arrivée 18 octobre', status: 'Ouvert aux demandes',
       stages: ['Préparation', 'Collecte', 'Voyage', 'Douane', 'Remise'],
       capTitle: 'Capacité restante', of: 'sur',
-      caps: [['Valeur', 'DA', 'plafond légal par voyage'], ['Poids', 'kg', 'selon la franchise bagages que vous avez fixée'], ['Volume', 'm³', 'selon les bagages que vous avez déclarés']],
+      caps: [['Valeur', 'DA', 'plafond légal par voyage'], ['Poids', 'kg', 'votre limite'], ['Volume', 'm³', 'votre limite']],
       listTitle: 'Liste d’achat', addItem: 'Ajouter un article →', total: 'Total',
       list: [['Manteaux femme hiver', 'Entièrement demandé'], ['Sacs à main femme', 'Partiellement demandé'], ['Parfums femme 100 ml', 'Aucun acheteur confirmé']],
       noBuyer: 'Pas encore d’acheteur',
@@ -252,7 +252,7 @@ class Component extends DCLogic {
       dest: 'Istanbul', dates: '12 – 16 October · arrives 18 October', status: 'Open to requests',
       stages: ['Planning', 'Collecting', 'Travel', 'Customs', 'Handover'],
       capTitle: 'Capacity remaining', of: 'of',
-      caps: [['Value', 'DA', 'legal limit per trip'], ['Weight', 'kg', 'per the baggage allowance you set'], ['Volume', 'm³', 'per the luggage you declared']],
+      caps: [['Value', 'DA', 'legal limit per trip'], ['Weight', 'kg', 'your limit'], ['Volume', 'm³', 'your limit']],
       listTitle: 'Buying list', addItem: 'Add an item →', total: 'Total',
       list: [['Women’s winter coats', 'Fully requested'], ['Women’s handbags', 'Partly requested'], ['Women’s perfume 100 ml', 'No confirmed buyer']],
       noBuyer: 'No buyer yet',

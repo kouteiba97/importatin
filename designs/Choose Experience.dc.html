@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+<script src="./shell.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./tokens.css">
+<link rel="stylesheet" href="./web.css">
+<style>
+
+.wrapc{max-width:560px;margin:0 auto;padding:48px 0 64px}
+.wrapc h1{margin:0 0 6px;font-size:28px;font-weight:600}
+.wrapc .lede{margin:0 0 26px;color:var(--ink-2)}
+.xp-card .st{font-size:var(--t-xs);margin-top:4px;display:inline-flex;align-items:center;gap:6px}
+.xp-card .st i{width:7px;height:7px;border-radius:50%}
+.sub-h{font-size:var(--t-xs);font-weight:600;color:var(--ink-3);letter-spacing:.06em;text-transform:uppercase;margin:26px 0 10px}
+[lang="ar"] .sub-h{letter-spacing:0;text-transform:none}
+.setup{padding:18px 20px;border:1px solid var(--rule);border-radius:var(--r-lg);background:var(--surface)}
+
+</style>
+</helmet>
+<div ref="{{ rootRef }}" dir="rtl" lang="ar" class="tier-public web site-page">
+<header class="site">
+<div class="container site-in">
+<div class="site-brand"><svg width="28" height="28" viewBox="0 0 48 48" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 36V23a8 8 0 0 1 16 0v13"/><path d="M24 23a8 8 0 0 1 16 0v13"/></g></svg><span class="wordmark">{{ sh.brand }}</span></div>
+<nav class="site-nav" aria-label="{{ sh.navLabel }}">
+<sc-for list="{{ sh.nav }}" as="n" hint-placeholder-count="4">
+<button type="button" class="site-link" aria-current="{{ n.on }}">{{ n.label }}</button>
+</sc-for>
+</nav>
+<div style="flex:1"></div>
+<div class="langsw" role="group" aria-label="{{ sh.langLabel }}">
+<sc-for list="{{ langs }}" as="l" hint-placeholder-count="3">
+<button type="button" onClick="{{ l.pick }}" aria-pressed="{{ l.on }}" style="background:{{ l.bg }};color:{{ l.fg }}">{{ l.short }}</button>
+</sc-for>
+</div>
+<button type="button" class="iconbtn" aria-label="{{ sh.saved }}">{{ sh.icHeart }}</button>
+<button type="button" class="iconbtn" aria-label="{{ sh.messages }}">{{ sh.icMsg }}</button>
+<span class="av" style="width:40px;height:40px;font-size:12px;background:{{ sh.roleBg }};color:{{ sh.roleFg }}">{{ sh.userInitials }}</span>
+</div>
+</header>
+<div class="statebar">
+<span class="lbl">{{ stateLabel }}</span>
+<sc-for list="{{ views }}" as="sv" hint-placeholder-count="5">
+<button type="button" onClick="{{ sv.pick }}" aria-pressed="{{ sv.on }}" class="sw" style="background:{{ sv.bg }};color:{{ sv.fg }}">{{ sv.label }}</button>
+</sc-for>
+</div>
+<main class="site-main">
+<div class="container"><div class="wrapc">
+<h1>{{ greeting }}</h1>
+<p class="lede">{{ t.lede }}</p>
+
+<div class="xp">
+<sc-for list="{{ cards }}" as="c" hint-placeholder-count="3">
+<button type="button" class="xp-card">
+<span class="ic" style="background:{{ c.bg }};color:{{ c.fg }}">{{ c.icon }}</span>
+<span class="t"><span class="n">{{ c.name }}</span><span class="s">{{ c.sub }}</span><span class="st" style="color:{{ c.stFg }}"><i style="background:{{ c.stDot }}"></i>{{ c.st }}</span></span>
+<span class="go">{{ c.go }}</span>
+</button>
+</sc-for>
+</div>
+
+<sc-if value="{{ hasSetup }}" hint-placeholder-val="{{ false }}">
+<div class="sub-h">{{ t.setupH }}</div>
+<div class="setup">
+<div style="display:flex;align-items:center;gap:12px;margin-bottom:14px"><span class="doc-ic" data-s="todo">3</span><div style="flex:1"><div style="font-weight:600">{{ setup.title }}</div><div style="font-size:var(--t-sm);color:var(--ink-2)">{{ setup.sub }}</div></div></div>
+<div class="steps">
+<sc-for list="{{ setup.steps }}" as="s" hint-placeholder-count="4"><div class="step" data-s="{{ s.s }}"><span class="n">{{ s.n }}</span><span>{{ s.label }}</span></div></sc-for>
+</div>
+<button type="button" class="btn btn-primary btn-block" style="margin-top:14px">{{ setup.cta }}</button>
+</div>
+</sc-if>
+
+<sc-if value="{{ hasBecome }}" hint-placeholder-val="{{ true }}">
+<div class="sub-h">{{ t.moreH }}</div>
+<div class="xp">
+<sc-for list="{{ become }}" as="b" hint-placeholder-count="2">
+<button type="button" class="xp-card" data-kind="become">
+<span class="ic">+</span>
+<span class="t"><span class="n">{{ b.label }}</span><span class="s">{{ b.sub }}</span></span>
+<span class="go">{{ t.learn }}</span>
+</button>
+</sc-for>
+</div>
+</sc-if>
+
+<p style="font-size:var(--t-xs);color:var(--ink-3);margin-top:26px;line-height:1.6">{{ t.fine }}</p>
+</div></div>
+</main>
+<footer class="site-foot">
+<div class="container site-foot-in">
+<span class="site-brand"><svg width="20" height="20" viewBox="0 0 48 48" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 36V23a8 8 0 0 1 16 0v13"/><path d="M24 23a8 8 0 0 1 16 0v13"/></g></svg><span class="wordmark" style="font-size:16px">{{ sh.brand }}</span></span>
+<span class="grow">{{ sh.foot }}</span>
+<span>{{ sh.terms }}</span><span>{{ sh.privacy }}</span><span>{{ sh.help }}</span>
+</div>
+</footer>
+</div>
+
+</x-dc>
+
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:900}}">
+class Component extends DCLogic {
+  /* Locale: ?lang= in the URL, else the browser, else French. */
+  static FALLBACK = 'fr';
+  static detect() {
+    const q = typeof location !== 'undefined' ? new URLSearchParams(location.search).get('lang') : null;
+    const tag = (q || (typeof navigator !== 'undefined' && navigator.language) || '').slice(0, 2).toLowerCase();
+    return ['ar', 'fr', 'en'].includes(tag) ? tag : Component.FALLBACK;
+  }
+  state = { view: 'both', lang: Component.detect() };
+  root = React.createRef();
+  componentDidMount() { this._apply(); }
+  componentDidUpdate() { this._apply(); }
+  _apply() {
+    const el = this.root.current;
+    if (el) { el.setAttribute('dir', this.L[this.state.lang].dir); el.setAttribute('lang', this.state.lang); }
+  }
+  iso(s) { if (/[\u0600-\u06FF]/.test(s)) s = s.replace(/\d[\d ,.:]*\d%?|\d%?/g, m => '\u2066' + m + '\u2069'); return '\u2068' + s + '\u2069'; }
+  fmt(n, sep) { return '\u2066' + String(n).replace(/\B(?=(\d{3})+(?!\d))/g, sep === undefined ? ' ' : sep) + '\u2069'; }
+  langsFor(cur) {
+    return ['ar', 'fr', 'en'].map(id => ({
+      short: this.L[id].short, label: this.L[id].label, on: cur === id,
+      bg: cur === id ? 'var(--ink)' : 'var(--surface)',
+      fg: cur === id ? 'var(--ink-on)' : 'var(--ink-2)',
+      pick: () => this.setState({ lang: id })
+    }));
+  }
+  sw(list, key, labels) {
+    return list.map((id, i) => ({ id, label: labels[i], on: this.state[key] === id,
+      bg: this.state[key] === id ? 'var(--ink)' : 'var(--surface)', fg: this.state[key] === id ? 'var(--ink-on)' : 'var(--ink-2)',
+      pick: () => this.setState({ [key]: id }) }));
+  }
+
+  L = {
+    ar: { dir: 'rtl', short: 'ع', label: 'العربية',
+      greet: n => 'مساء الخير، ' + n, lede: 'إلى أين تريد أن تذهب؟',
+      go: 'افتح', current: 'الفضاء الحالي', learn: 'اعرف أكثر',
+      st: { ok: 'مُتحقَّق', pending: 'التحقّق قيد المراجعة', fix: 'التحقّق يحتاج انتباهك', expired: 'الرخصة منتهية — جدّد', none: '' },
+      subs: { importer: 'رحلاتك، الطلب، السجلّات', trader: 'الاكتشاف، الطلبات، متجرك', public: 'تصفّح واشترِ كمشترٍ' },
+      setupH: 'إعداد غير مكتمل', moreH: 'فضاءات أخرى',
+      setup: { title: 'إعداد المستورد', sub: 'توقّفت عند الوثائق. أكمل من حيث توقّفت.', steps: ['الحساب', 'الملف', 'الوثائق', 'المراجعة'], cta: 'أكمل إعداد المستورد' },
+      become: { importer: ['كن مستورداً', 'تُضاف إلى حسابك نفسه'], trader: ['كن تاجراً', 'تُضاف إلى حسابك نفسه'] },
+      fine: 'حساب واحد، رقم واحد.'
+    },
+    fr: { dir: 'ltr', short: 'FR', label: 'Français',
+      greet: n => 'Bonsoir, ' + n, lede: 'Où voulez-vous aller ?',
+      go: 'Ouvrir', current: 'Espace actuel', learn: 'En savoir plus',
+      st: { ok: 'Vérifié', pending: 'Vérification en cours', fix: 'Vérification à corriger', expired: 'Autorisation expirée — renouveler', none: '' },
+      subs: { importer: 'Vos voyages, la demande, vos registres', trader: 'Découverte, demandes, votre boutique', public: 'Parcourir et acheter comme acheteur' },
+      setupH: 'Installation incomplète', moreH: 'Autres espaces',
+      setup: { title: 'Installation importateur', sub: 'Vous vous êtes arrêté aux documents. Reprenez où vous en étiez.', steps: ['Compte', 'Profil', 'Documents', 'Vérification'], cta: 'Continuer l’installation importateur' },
+      become: { importer: ['Devenir importateur', 'S’ajoute à ce même compte'], trader: ['Devenir commerçant', 'S’ajoute à ce même compte'] },
+      fine: 'Un compte, un numéro.'
+    },
+    en: { dir: 'ltr', short: 'EN', label: 'English',
+      greet: n => 'Good evening, ' + n, lede: 'Where do you want to go?',
+      go: 'Open', current: 'Current workspace', learn: 'Learn more',
+      st: { ok: 'Verified', pending: 'Verification under review', fix: 'Verification needs attention', expired: 'Authorisation expired — renew', none: '' },
+      subs: { importer: 'Your trips, demand, records', trader: 'Discovery, requests, your shop', public: 'Browse and buy as a shopper' },
+      setupH: 'Incomplete setup', moreH: 'Other experiences',
+      setup: { title: 'Importer setup', sub: 'You stopped at documents. Pick up where you left off.', steps: ['Account', 'Profile', 'Documents', 'Review'], cta: 'Continue importer setup' },
+      become: { importer: ['Become an importer', 'Added to this same account'], trader: ['Become a trader', 'Added to this same account'] },
+      fine: 'One account, one number.'
+    }
+  };
+  VIEWS = ['both', 'one', 'setup', 'pending', 'expired'];
+  VIEW_LABELS = { ar: ['مستورد + تاجر', 'تاجر فقط', 'إعداد غير مكتمل', 'تحقّق قيد المراجعة', 'رخصة منتهية'], fr: ['Importateur + commerçant', 'Commerçant seul', 'Installation incomplète', 'Vérification en cours', 'Autorisation expirée'], en: ['Importer + trader', 'Trader only', 'Incomplete setup', 'Verification pending', 'Expired authorisation'] };
+  NAMES = { ar: 'أحمد', fr: 'Ahmed', en: 'Ahmed' };
+  renderVals() {
+    const lang = this.state.lang, t = this.L[lang], v = this.state.view;
+    const held = { both: ['importer', 'trader'], one: ['trader'], setup: ['trader', 'importer'], pending: ['importer'], expired: ['importer'] }[v];
+    const state = { both: { importer: 'ok', trader: 'ok' }, one: { trader: 'ok' }, setup: { trader: 'ok', importer: 'setup' }, pending: { importer: 'pending' }, expired: { importer: 'expired' } }[v];
+    const sh = window.MaabarShell(lang, 'public', '', { held: held.concat(['public']) });
+    const DOT = { ok: 'var(--allowed)', pending: 'var(--ink-3)', fix: 'var(--conditional)', expired: 'var(--prohibited)', none: 'transparent' };
+    const INK = { ok: 'var(--allowed-ink)', pending: 'var(--ink-2)', fix: 'var(--conditional-ink)', expired: 'var(--prohibited-ink)', none: 'var(--ink-3)' };
+    const cards = sh.experiences.filter(x => state[x.id] !== 'setup').map(x => {
+      const s = x.id === 'public' ? 'none' : state[x.id];
+      return { name: x.name, sub: t.subs[x.id], icon: x.icon, bg: x.bg, fg: x.fg, st: t.st[s], stDot: DOT[s], stFg: INK[s], go: t.go + ' →' };
+    });
+    const become = sh.become.filter(b => state[b.id] !== 'setup').map(b => ({ label: t.become[b.id][0], sub: t.become[b.id][1] }));
+    const steps = t.setup.steps.map((label, i) => ({ label, n: String(i + 1), s: i < 2 ? 'done' : i === 2 ? 'now' : 'todo' }));
+    return {
+      rootRef: this.root, t, langs: this.langsFor(lang), sh,
+      stateLabel: ({ ar: 'الحالة', fr: 'État', en: 'State' })[lang], views: this.sw(this.VIEWS, 'view', this.VIEW_LABELS[lang]),
+      greeting: t.greet(this.NAMES[lang]), cards,
+      hasSetup: v === 'setup', setup: { ...t.setup, steps },
+      hasBecome: become.length > 0, become
+    };
+  }
+}
+</script>
+</body>
+</html>
