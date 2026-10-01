@@ -254,7 +254,7 @@ class Component extends DCLogic {
       brand: 'مَعْبَر', opsCenter: 'مركز العمليات', adminInitials: 'أ ب', adminName: 'أمين ب.', adminTeam: 'الثقة والسلامة',
       groups: [
         ['الثقة والسلامة', [['طلبات التحقّق', 'أقدم بند: 19 ساعة · الحدّ 24'], ['مخاطرة', 'أقدم بند: 3 ساعات'], ['إشراف المحتوى', 'أقدم بند: 8 ساعات'], ['نزاعات', 'أقدم بند: يومان']]],
-        ['الامتثال', [['أصناف تحتاج مراجعة', 'أقدم بند: يوم'], ['قواعد قيد النشر', 'مسودّة v7']]],
+        ['الامتثال', [['أصناف تحتاج مراجعة', 'أقدم بند: يوم'], ['صفحات القوانين', 'مادّتان بانتظار المصادقة']]],
         ['الفوترة', [['تأكيد اشتراكات', 'تحويلات CCP بانتظار التأكيد']]]
       ],
       items: { one: 'بند واحد', two: 'بندان', few: 'بنود', many: 'بنداً' },
@@ -291,7 +291,7 @@ class Component extends DCLogic {
       brand: 'Maabar', opsCenter: 'Centre des opérations', adminInitials: 'AB', adminName: 'Amine B.', adminTeam: 'Confiance et sécurité',
       groups: [
         ['Confiance et sécurité', [['Demandes de vérification', 'plus ancien : 19 h · limite 24'], ['Risque', 'plus ancien : 3 h'], ['Modération', 'plus ancien : 8 h'], ['Litiges', 'plus ancien : 2 jours']]],
-        ['Conformité', [['Articles à examiner', 'plus ancien : 1 jour'], ['Règles en attente de publication', 'brouillon v7']]],
+        ['Conformité', [['Articles à examiner', 'plus ancien : 1 jour'], ['Pages des règles', '2 articles à approuver']]],
         ['Facturation', [['Confirmation d’abonnements', 'virements CCP en attente']]]
       ],
       items: { one: 'élément', many: 'éléments' },
@@ -328,7 +328,7 @@ class Component extends DCLogic {
       brand: 'Maabar', opsCenter: 'Operations centre', adminInitials: 'AB', adminName: 'Amine B.', adminTeam: 'Trust & Safety',
       groups: [
         ['Trust & Safety', [['Verification requests', 'oldest: 19 h · limit 24'], ['Risk', 'oldest: 3 h'], ['Content moderation', 'oldest: 8 h'], ['Disputes', 'oldest: 2 days']]],
-        ['Compliance', [['Items needing review', 'oldest: 1 day'], ['Rules pending publication', 'draft v7']]],
+        ['Compliance', [['Items needing review', 'oldest: 1 day'], ['Rules pages', '2 articles awaiting approval']]],
         ['Billing', [['Subscription confirmations', 'CCP transfers awaiting confirmation']]]
       ],
       items: { one: 'item', many: 'items' },
@@ -365,7 +365,7 @@ class Component extends DCLogic {
   // beside goods-related work, or the console implies Maabar settles trade.
   GROUPS = [
     [{ id: 'ver', n: 14, risk: 'var(--conditional)' }, { id: 'risk', n: 6, risk: 'var(--prohibited)' }, { id: 'mod', n: 23, risk: 'var(--conditional)' }, { id: 'dis', n: 4, risk: 'var(--prohibited)' }],
-    [{ id: 'rev', n: 9, risk: 'var(--conditional)' }, { id: 'rul', n: 1, risk: 'var(--ink-3)' }],
+    [{ id: 'rev', n: 9, risk: 'var(--conditional)' }, { id: 'rul', n: 2, risk: 'var(--ink-3)' }],
     [{ id: 'bil', n: 7, risk: 'var(--ink-3)' }]
   ];
   ROWS = [

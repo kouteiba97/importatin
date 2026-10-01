@@ -255,6 +255,7 @@ Screens read them at render. `Trip Creation` displays the value cap with its eff
 | Item | Priority | Note |
 |---|---|---|
 | Native-speaker review of FR and AR copy | P1 | All 24 screens are trilingual; copy is accurate but not yet reviewed by native commercial writers |
+| ~~Rules pages~~ | **Done** | Public **Rules** page (shoppers: why products are missing; micro-importers; traders) built from structured, sourced articles with live regulatory values; managed in the console (**Admin Rules**) with draft → review → publish and author ≠ publisher. See `docs/architecture/RULES-CONTENT.md` |
 | ~~Web platform layout~~ | **Done** | Every screen is a desktop web page on the shared shells (`designs/web.css`, `designs/shell.js`): header site for the public, sidebar app for importers and traders. The deck shows the real desktop dashboards. Verified in EN/FR/AR at 1440px. Details in `HANDOFF.md` §6 |
 | Real product photography | P1 | Placeholders are designed but are placeholders. **Needed before the client demo** |
 | Per-queue admin evidence panels | P2 | Layout established; contents differ |

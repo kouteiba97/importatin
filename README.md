@@ -17,7 +17,7 @@ Maabar connects the micro-importer, the trader, and the consumer through discove
 | **[`HANDOFF.md`](HANDOFF.md)** | Full context for anyone (or Claude) continuing on another machine: decisions, history, current state, next steps. **Read this first.** |
 | **[`DESIGN-AUDIT.md`](DESIGN-AUDIT.md)** | The audit. Verdict, role/capability matrix, screen inventory, user journeys, state coverage, legal holds. |
 | **[`PRODUCT-ARCHITECTURE.md`](PRODUCT-ARCHITECTURE.md)** | One identity, four experiences (Marketplace · Maabar Import · Maabar Trade · Maabar Admin). With `EXPERIENCE-MAP.md`, `ROLE-ONBOARDING-MATRIX.md`, `NAVIGATION-MATRIX.md`, `KYC-ARCHITECTURE.md`, `AUTHENTICATION-UX-MATRIX.md`, `DESIGN-ARCHITECTURE-IMPACT.md`, `FINAL-UX-SEPARATION-AUDIT.md`. |
-| **`designs/`** | 32 product screens, `index.html` (review hub), `tokens.css` (colours/type), `web.css` + `shell.js` (web platform layout and navigation), `Logo.dc.html` (brand kit), `Dashboards.html` (three-role deck) |
+| **`designs/`** | 34 product screens (incl. the public **Rules** page and the console's **Admin Rules**), `index.html` (review hub), `tokens.css` (colours/type), `web.css` + `shell.js` (web platform layout and navigation), `Logo.dc.html` (brand kit), `Dashboards.html` (three-role deck) |
 | **`tools/`** | The generator used to convert screens to the web layout, and a QA check |
 | **`docs/history/`** | Strategy, Claude Design prompts, earlier audits |
 | **`preview/`** | Local server for viewing the screens |
@@ -98,3 +98,4 @@ Ten decisions were settled during design. Do not re-open them while implementing
 - All 32 screens are trilingual (EN / FR / AR). The French and Arabic copy has not yet been reviewed by native commercial writers.
 - **Maabar is a web platform, not a mobile app.** Every screen now uses the desktop web layout — a public website with a top header, and importer/trader web apps with a sidebar; the operations console is its own desktop platform. The `Dashboards.html` deck shows the real desktop dashboards in browser frames. (`Onboarding` is superseded by `Sign In`, `Importer Setup` and `Trader Setup`.)
 - Product imagery uses designed category placeholders, not real photography.
+- The Finance Law 2026 flat-tax rate (0.5%) is **not** shown to users: it sits as an unapproved draft in Admin Rules until the official text is confirmed. See `docs/architecture/RULES-CONTENT.md`.

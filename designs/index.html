@@ -88,16 +88,16 @@ const GROUPS = [
   { id: 'public', h: 1500, screens: [
     ['Landing', 'maabar.dz'], ['For Importers', 'maabar.dz/for-importers'], ['For Traders', 'maabar.dz/for-traders'], ['Sign In', 'maabar.dz/sign-in'], ['Choose Experience', 'maabar.dz/choose'],
     ['Marketplace', 'maabar.dz/marketplace'], ['Search', 'maabar.dz/search'], ['Product Detail', 'maabar.dz/p/coat-wool'],
-    ['Seller Profile', 'maabar.dz/shop/boutique-nadia'], ['Consumer Home', 'maabar.dz/home'], ['Saved', 'maabar.dz/saved'], ['Compliance Checker', 'maabar.dz/check'] ] },
+    ['Seller Profile', 'maabar.dz/shop/boutique-nadia'], ['Consumer Home', 'maabar.dz/home'], ['Saved', 'maabar.dz/saved'], ['Compliance Checker', 'maabar.dz/check'], ['Rules (shoppers)', 'maabar.dz/rules'] ] },
   { id: 'importer', h: 1200, screens: [
     ['Importer Setup', 'maabar.dz/import/setup'], ['Verification', 'maabar.dz/import/verification'], ['Verification Status', 'maabar.dz/import/status'],
     ['Importer Home', 'maabar.dz/import'], ['Demand Board', 'maabar.dz/import/demand'], ['Trip', 'maabar.dz/import/trips/T-26-0412'], ['Trip Creation', 'maabar.dz/import/trips/new'],
-    ['Messages', 'maabar.dz/import/messages'], ['Records', 'maabar.dz/import/records'] ] },
+    ['Messages', 'maabar.dz/import/messages'], ['Records', 'maabar.dz/import/records'], ['Rules (importers)', 'maabar.dz/rules?for=importers'] ] },
   { id: 'trader', h: 1200, screens: [
     ['Trader Setup', 'maabar.dz/trade/setup'], ['Trader Home', 'maabar.dz/trade'], ['Discover', 'maabar.dz/trade/discover'], ['Importer Profile', 'maabar.dz/trade/importers/karima-h'],
     ['Sourcing Request', 'maabar.dz/trade/requests/new'], ['Commitment', 'maabar.dz/trade/commitments/CMT-26-0331'], ['Dispute', 'maabar.dz/trade/disputes/new'],
-    ['Listing Composer', 'maabar.dz/trade/shop/new'] ] },
-  { id: 'admin', h: 900, screens: [['Admin Sign In', 'ops.maabar.dz/login'], ['Admin Console', 'ops.maabar.dz']] },
+    ['Listing Composer', 'maabar.dz/trade/shop/new'], ['Rules (traders)', 'maabar.dz/rules?for=traders'] ] },
+  { id: 'admin', h: 900, screens: [['Admin Sign In', 'ops.maabar.dz/login'], ['Admin Console', 'ops.maabar.dz'], ['Admin Rules', 'ops.maabar.dz/rules']] },
   { id: 'brand', h: 2000, screens: [['Logo', 'brand'], ['Dashboards', 'deck']] }
 ];
 
@@ -125,8 +125,13 @@ const T = {
 const FLAT = GROUPS.flatMap(g => g.screens.map(([name, url]) => ({ name, url, h: g.h, group: g.id })));
 let lang = new URLSearchParams(location.search).get('lang') || 'en';
 
-function fileOf(name) { return name === 'Dashboards' ? './Dashboards.html' : './' + encodeURIComponent(name) + '.dc.html'; }
-function srcOf(name) { return fileOf(name) + '?lang=' + lang; }
+/* one screen file shown for several audiences: hub name → [file, query] */
+const VARIANT = { 'Rules (shoppers)': ['Rules', 'aud=shopper'], 'Rules (importers)': ['Rules', 'aud=importer'], 'Rules (traders)': ['Rules', 'aud=trader'] };
+function fileOf(name) {
+  if (VARIANT[name]) return './' + VARIANT[name][0] + '.dc.html?' + VARIANT[name][1];
+  return name === 'Dashboards' ? './Dashboards.html' : './' + encodeURIComponent(name) + '.dc.html';
+}
+function srcOf(name) { const f = fileOf(name); return f + (f.includes('?') ? '&' : '?') + 'lang=' + lang; }
 
 function renderGallery() {
   const t = T[lang];

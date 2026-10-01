@@ -110,13 +110,13 @@ textarea.input { height: auto; min-height: 110px; padding: 12px 14px; line-heigh
 .site-page { min-height: 100vh; display: flex; flex-direction: column; background: var(--paper-public); }
 .site { position: sticky; top: 0; z-index: 30; background: var(--surface); border-bottom: 1px solid var(--rule); }
 .container { width: 100%; max-width: 1280px; margin-inline: auto; padding-inline: 32px; }
-.site-in { height: 70px; display: flex; align-items: center; gap: 22px; }
+.site-in { height: 70px; display: flex; align-items: center; gap: 18px; }
 .site-brand { display: flex; align-items: center; gap: 10px; color: var(--brand); flex: none; }
 .site-nav { display: flex; gap: 2px; }
-.site-link { height: 38px; padding: 0 13px; border: 0; border-radius: var(--r-sm); background: none; color: var(--ink-2); font-size: var(--t-body); cursor: pointer; white-space: nowrap; }
+.site-link { height: 38px; padding: 0 11px; border: 0; border-radius: var(--r-sm); background: none; color: var(--ink-2); font-size: var(--t-body); cursor: pointer; white-space: nowrap; }
 .site-link:hover { color: var(--ink); background: var(--surface-2); }
 .site-link[aria-current="true"] { color: var(--ink); font-weight: 600; }
-.site-search { flex: 1 1 260px; min-width: 210px; max-width: 400px; white-space: nowrap; overflow: hidden; display: flex; align-items: center; gap: 9px; height: 42px; padding-inline: 14px; border: 1px solid var(--rule-strong); border-radius: 999px; background: var(--surface-2); color: var(--ink-3); font-size: var(--t-sm); }
+.site-search { flex: 1 1 260px; min-width: 46px; max-width: 400px; white-space: nowrap; overflow: hidden; display: flex; align-items: center; gap: 9px; height: 42px; padding-inline: 14px; border: 1px solid var(--rule-strong); border-radius: 999px; background: var(--surface-2); color: var(--ink-3); font-size: var(--t-sm); }
 .site-search span { overflow: hidden; text-overflow: ellipsis; }
 .site-main { flex: 1; padding-block: 30px 56px; }
 .site-foot { border-top: 1px solid var(--rule); background: var(--surface); }

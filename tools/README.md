@@ -45,7 +45,12 @@ await __chk(['Saved'], ['en', 'fr', 'ar'])
 ```
 Each screen reports: render errors, whether a web shell is present, horizontal overflow at 1440px, any leftover 430px phone column (`PHONE`), page height and text direction.
 
-## newscreen.py + recipes/ — build a new web screen from parts
+## newscreen.py / newscreen.js + recipes/ — build a new web screen from parts
+
+`newscreen.js` is the Node port (for machines without Python): `node tools/recipes/rules.js`,
+`node tools/recipes/admin-rules.js`. Same parts: `sitePage(inner, { signedIn, search })`, `statebar()`,
+`build({ name, w, h, css, template, state, logic, extraHead, web })` — `web: false` for console screens.
+
 
 `newscreen.py` assembles a `.dc.html` from the site shell or the app shell (`site_page`, `app_page`,
 `statebar`) plus the screen's CSS, markup, state and logic. Each file in `recipes/` is one screen;

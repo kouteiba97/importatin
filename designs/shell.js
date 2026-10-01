@@ -26,7 +26,8 @@
     market: 'M4 8h16l-1.2 11a1 1 0 0 1-1 .9H6.2a1 1 0 0 1-1-.9zM8.5 8a3.5 3.5 0 0 1 7 0',
     forimp: 'M3 15l18-7-7 18-2.5-8z',
     fortrader: 'M4 8h16l-1.2 11a1 1 0 0 1-1 .9H6.2a1 1 0 0 1-1-.9z',
-    admin: 'M12 3l7 3v5c0 5-3.5 8.5-7 10-3.5-1.5-7-5-7-10V6z'
+    admin: 'M12 3l7 3v5c0 5-3.5 8.5-7 10-3.5-1.5-7-5-7-10V6z',
+    rules: 'M5 4.5A1.5 1.5 0 0 1 6.5 3H19v15H6.5A1.5 1.5 0 0 0 5 19.5zM5 19.5A1.5 1.5 0 0 0 6.5 21H19v-3M9 7.5h6M9 11h6'
   };
 
   function icon(d, size) {
@@ -44,11 +45,11 @@
       experiences: { importer: ['Maabar Import', 'Verified importer'], trader: ['Maabar Trade', 'Verified trader'], public: ['Marketplace', 'Browse as a shopper'] },
       brand: 'Maabar', navLabel: 'Main navigation', search: 'Search products, trips, importers…', alerts: 'Notifications', langLabel: 'Language',
       roles: { importer: 'Micro-importer workspace', trader: 'Trader workspace' },
-      importer: [['home', 'Home'], ['demand', 'Demand'], ['trip', 'Trips'], ['cmt', 'Commitments'], ['msg', 'Messages', 3], ['rec', 'Records & labels'], ['ver', 'Verification']],
-      trader: [['home', 'Home'], ['disc', 'Discover'], ['req', 'Requests', 2], ['cmt', 'Commitments'], ['shop', 'My shop'], ['msg', 'Messages', 5], ['rec', 'Records'], ['ver', 'Verification']],
+      importer: [['home', 'Home'], ['demand', 'Demand'], ['trip', 'Trips'], ['cmt', 'Commitments'], ['msg', 'Messages', 3], ['rec', 'Records & labels'], ['ver', 'Verification'], ['rules', 'Rules & limits']],
+      trader: [['home', 'Home'], ['disc', 'Discover'], ['req', 'Requests', 2], ['cmt', 'Commitments'], ['shop', 'My shop'], ['msg', 'Messages', 5], ['rec', 'Records'], ['ver', 'Verification'], ['rules', 'Rules']],
       settings: 'Account settings',
       users: { importer: ['SB', 'Sofiane B.', 'Verified micro-importer'], trader: ['YB', 'Yacine B.', 'Verified trader · Sétif'], public: ['SL', 'Soumia L.', 'Shopper'] },
-      pub: [['market', 'Marketplace'], ['check', 'Can I import this?'], ['forimp', 'For importers'], ['fortrader', 'For traders']],
+      pub: [['market', 'Marketplace'], ['check', 'Can I import this?'], ['forimp', 'For importers'], ['fortrader', 'For traders'], ['rules', 'Rules']],
       pubSearch: 'Search products or shops', business: 'For importers & traders', saved: 'Saved', messages: 'Messages',
       foot: ['Maabar connects micro-importers, traders and shoppers. It does not sell, hold money, or grant the right to import.', 'Terms', 'Privacy', 'Help']
     },
@@ -59,11 +60,11 @@
       experiences: { importer: ['Maabar Import', 'Importateur vérifié'], trader: ['Maabar Trade', 'Commerçant vérifié'], public: ['Place de marché', 'Parcourir comme acheteur'] },
       brand: 'Maabar', navLabel: 'Navigation principale', search: 'Chercher produits, voyages, importateurs…', alerts: 'Notifications', langLabel: 'Langue',
       roles: { importer: 'Espace micro-importateur', trader: 'Espace commerçant' },
-      importer: [['home', 'Accueil'], ['demand', 'Demande'], ['trip', 'Voyages'], ['cmt', 'Engagements'], ['msg', 'Messages', 3], ['rec', 'Registres et étiquettes'], ['ver', 'Vérification']],
-      trader: [['home', 'Accueil'], ['disc', 'Découvrir'], ['req', 'Demandes', 2], ['cmt', 'Engagements'], ['shop', 'Ma boutique'], ['msg', 'Messages', 5], ['rec', 'Registres'], ['ver', 'Vérification']],
+      importer: [['home', 'Accueil'], ['demand', 'Demande'], ['trip', 'Voyages'], ['cmt', 'Engagements'], ['msg', 'Messages', 3], ['rec', 'Registres et étiquettes'], ['ver', 'Vérification'], ['rules', 'Règles et plafonds']],
+      trader: [['home', 'Accueil'], ['disc', 'Découvrir'], ['req', 'Demandes', 2], ['cmt', 'Engagements'], ['shop', 'Ma boutique'], ['msg', 'Messages', 5], ['rec', 'Registres'], ['ver', 'Vérification'], ['rules', 'Règles']],
       settings: 'Paramètres du compte',
       users: { importer: ['SB', 'Sofiane B.', 'Micro-importateur vérifié'], trader: ['YB', 'Yacine B.', 'Commerçant vérifié · Sétif'], public: ['SL', 'Soumia L.', 'Acheteuse'] },
-      pub: [['market', 'Place de marché'], ['check', 'Puis-je importer ceci ?'], ['forimp', 'Importateurs'], ['fortrader', 'Commerçants']],
+      pub: [['market', 'Marché'], ['check', 'Puis-je importer ?'], ['forimp', 'Importateurs'], ['fortrader', 'Commerçants'], ['rules', 'Règles']],
       pubSearch: 'Chercher un produit ou une boutique', business: 'Importateurs et commerçants', saved: 'Enregistrés', messages: 'Messages',
       foot: ['Maabar relie micro-importateurs, commerçants et acheteurs. Elle ne vend pas, ne détient pas d’argent et n’accorde pas le droit d’importer.', 'Conditions', 'Confidentialité', 'Aide']
     },
@@ -74,11 +75,11 @@
       experiences: { importer: ['مَعْبَر · الاستيراد', 'مستورد مُتحقَّق'], trader: ['مَعْبَر · التجارة', 'تاجر مُتحقَّق'], public: ['السوق', 'تصفّح كمشترٍ'] },
       brand: 'مَعْبَر', navLabel: 'التنقّل الرئيسي', search: 'ابحث عن منتجات، رحلات، مستوردين…', alerts: 'التنبيهات', langLabel: 'اللغة',
       roles: { importer: 'فضاء المستورد المصغّر', trader: 'فضاء التاجر' },
-      importer: [['home', 'الرئيسية'], ['demand', 'الطلب'], ['trip', 'الرحلات'], ['cmt', 'الالتزامات'], ['msg', 'الرسائل', 3], ['rec', 'السجلّات والوسم'], ['ver', 'التحقّق']],
-      trader: [['home', 'الرئيسية'], ['disc', 'اكتشف'], ['req', 'طلبات التوريد', 2], ['cmt', 'الالتزامات'], ['shop', 'متجري'], ['msg', 'الرسائل', 5], ['rec', 'السجلّات'], ['ver', 'التحقّق']],
+      importer: [['home', 'الرئيسية'], ['demand', 'الطلب'], ['trip', 'الرحلات'], ['cmt', 'الالتزامات'], ['msg', 'الرسائل', 3], ['rec', 'السجلّات والوسم'], ['ver', 'التحقّق'], ['rules', 'القوانين والحدود']],
+      trader: [['home', 'الرئيسية'], ['disc', 'اكتشف'], ['req', 'طلبات التوريد', 2], ['cmt', 'الالتزامات'], ['shop', 'متجري'], ['msg', 'الرسائل', 5], ['rec', 'السجلّات'], ['ver', 'التحقّق'], ['rules', 'القوانين']],
       settings: 'إعدادات الحساب',
       users: { importer: ['س ب', 'سفيان ب.', 'مستورد مصغّر مُتحقَّق'], trader: ['ي ب', 'ياسين ب.', 'تاجر مُتحقَّق · سطيف'], public: ['س ل', 'سمية ل.', 'مشترية'] },
-      pub: [['market', 'السوق'], ['check', 'هل يمكنني استيراد هذا؟'], ['forimp', 'للمستوردين'], ['fortrader', 'للتجّار']],
+      pub: [['market', 'السوق'], ['check', 'هل يمكنني استيراد هذا؟'], ['forimp', 'للمستوردين'], ['fortrader', 'للتجّار'], ['rules', 'القوانين']],
       pubSearch: 'ابحث عن منتج أو متجر', business: 'للمستوردين والتجّار', saved: 'المحفوظات', messages: 'الرسائل',
       foot: ['مَعْبَر تربط المستوردين المصغّرين بالتجّار والمشترين. لا تبيع، ولا تحتفظ بأموال، ولا تمنح حقّ الاستيراد.', 'الشروط', 'الخصوصية', 'المساعدة']
     }

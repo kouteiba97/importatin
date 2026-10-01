@@ -11,5 +11,6 @@ Non-negotiables, in short:
 - **`designs/tokens.css` is the only colour source. Brand blue ≠ status green/amber/red.**
 - Logical CSS properties only; follow the bidi rules in `HANDOFF.md` §8.
 - Regulatory values (1,800,000 DZD, 2 trips/month, 5%…) are configuration with effective dates, never constants in logic.
+- Legal/rules content shown to users is structured and admin-controlled (`docs/architecture/RULES-CONTENT.md`): no figures typed into texts — use value placeholders; only facts from official texts are published; a different admin publishes than the one who wrote it.
 - Verify every change in the review hub (`node preview/server.js` → http://localhost:4321) in all three languages, then commit and push to `main`.
 - The owner is not technical: report results plainly and briefly.

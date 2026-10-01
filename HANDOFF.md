@@ -57,7 +57,8 @@ These came directly from the project owner across the sessions:
 | 6. Rebrand (v3) | Blue/navy brand, new flat double-arch **M** logo, Sora/Inter/IBM Plex Sans Arabic, **brand colour separated from status colour**, WCAG AA verified | `designs/tokens.css`, `designs/Logo.dc.html`, commit `a075bea` |
 | 7. Three languages | All 24 screens EN/FR/AR, `?lang=` override, bidi and plural fixes | commits `9385f35` → `9f749a4` |
 | 9. **Experience separation** | One identity, four experiences: public doors, one Sign In, Importer/Trader Setup, Verification Status, Choose Experience, Admin Sign In; eight architecture documents | `PRODUCT-ARCHITECTURE.md` … `FINAL-UX-SEPARATION-AUDIT.md`, `designs/` |
-| 8. **Web platform conversion (IN PROGRESS)** | Shared web shell (`web.css`, `shell.js`), review hub (`index.html`), 18 of 22 phone-layout screens rebuilt as desktop web pages | this commit — see §6 |
+| 8. Web platform conversion | Shared web shell (`web.css`, `shell.js`), review hub (`index.html`), every phone-layout screen rebuilt as a desktop web page | §6 |
+| 10. **Rules pages (admin-controlled)** | Public **Rules** page for shoppers / micro-importers / traders built from structured articles; console screen **Admin Rules** where a sub-admin drafts and a different approver publishes; regulatory values inserted as placeholders | `designs/Rules.dc.html`, `designs/Admin Rules.dc.html`, `designs/rules-content.js`, `docs/architecture/RULES-CONTENT.md` |
 
 Older audit files in `docs/history/` are kept for context; **`DESIGN-AUDIT.md` at the root is the current audit** (the web-layout gap it lists is being closed now).
 
@@ -75,12 +76,14 @@ designs/
   tokens.css          ← the ONLY source of colours, type, spacing, radii, shadows
   web.css             ← web platform layout: .app shell (sidebar) and .site shell (public header)
   shell.js            ← navigation data for each surface in EN/FR/AR (window.MaabarShell)
+  rules-content.js    ← sample rule articles + regulatory values read by Rules and Admin Rules (stand-in for the database)
   support.js          ← Claude Design runtime (do not edit)
   *.dc.html           ← 24 screens (Claude Design artboard format) + Logo.dc.html
   Dashboards.html     ← three-role overview deck: the real desktop dashboards in browser frames
 preview/server.js     ← local server; injects React so .dc.html files render outside Claude Design
 tools/
   web-shell/          ← generator used to convert screens to the web shell (see tools/README.md)
+  newscreen.py / newscreen.js ← build a NEW web screen from parts (Python or Node — same API); recipes/ holds one file per screen
   qa.js               ← browser QA check (errors, shell present, overflow, direction)
 docs/history/         ← strategy, master prompts, earlier audits
 .claude/launch.json   ← preview server config for Claude Code's Browser pane
@@ -135,6 +138,8 @@ The owner said: *"it is still presented as a mobile app and I told you it is not
 | Importer Home, Trip, Trip Creation, Demand Board, Messages, Records, Verification | importer | ✅ converted |
 | Trader Home, Discover, Importer Profile, Sourcing Request, Commitment, Dispute, Listing Composer | trader | ✅ converted |
 | Admin Console | admin | ✅ already desktop (separate platform, own layout) |
+| **Rules** | public (+ importer/trader sidebars) | ✅ new — one template, three audiences via `?aud=shopper|importer|trader`; content from `rules-content.js` |
+| **Admin Rules** | admin | ✅ new — Compliance → Rules pages: articles editor (EN/FR/AR tabs, placeholders, legal reference, live preview, checks, workflow, versions) + regulatory values with impact preview; "Viewing as" editor / approver / superadmin |
 | Logo | brand | n/a |
 | Dashboards.html (deck) | brand | ✅ browser-window frames showing the real 1440px dashboards, scaled to fit, EN/FR/AR |
 
@@ -142,6 +147,7 @@ The owner said: *"it is still presented as a mobile app and I told you it is not
 All 31 screens in the hub were loaded at 1440px in EN, FR and AR (93 loads): no render errors, every user-facing screen sits in a web shell, no horizontal overflow, no leftover 430px phone column, correct text direction. The recipe for the last three screens is `tools/web-shell/w-public-2.js`.
 
 ### Possible next steps (none blocking)
+0. Link Product Detail and "Can I import this?" to the shopper Rules page when a category is excluded.
 1. Optional: move **Landing** onto the shared `.site` header for exact consistency (it already has its own web header).
 2. Native-speaker review of the French and Arabic copy.
 3. Real product photography to replace the category placeholders before the client demo.
