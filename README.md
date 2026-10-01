@@ -96,5 +96,5 @@ Ten decisions were settled during design. Do not re-open them while implementing
 ## Known gaps
 
 - All 32 screens are trilingual (EN / FR / AR). The French and Arabic copy has not yet been reviewed by native commercial writers.
-- **Maabar is a web platform, not a mobile app.** Every new screen uses the desktop web shells. **Still to convert:** Seller Profile, Saved, Compliance Checker, and the `Dashboards.html` deck (still shows phone frames). `Onboarding` is superseded by `Sign In`, `Importer Setup` and `Trader Setup`. See `HANDOFF.md` §6.
+- **Maabar is a web platform, not a mobile app.** Every screen now uses the desktop web layout — a public website with a top header, and importer/trader web apps with a sidebar; the operations console is its own desktop platform. The `Dashboards.html` deck shows the real desktop dashboards in browser frames. (`Onboarding` is superseded by `Sign In`, `Importer Setup` and `Trader Setup`.)
 - Product imagery uses designed category placeholders, not real photography.

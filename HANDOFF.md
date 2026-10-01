@@ -77,7 +77,7 @@ designs/
   shell.js            ← navigation data for each surface in EN/FR/AR (window.MaabarShell)
   support.js          ← Claude Design runtime (do not edit)
   *.dc.html           ← 24 screens (Claude Design artboard format) + Logo.dc.html
-  Dashboards.html     ← three-role overview deck (still shows phone frames — to update)
+  Dashboards.html     ← three-role overview deck: the real desktop dashboards in browser frames
 preview/server.js     ← local server; injects React so .dc.html files render outside Claude Design
 tools/
   web-shell/          ← generator used to convert screens to the web shell (see tools/README.md)
@@ -100,10 +100,10 @@ In Claude Code on the other PC, the Browser pane can start it with the `maabar-p
 
 ---
 
-## 6. CURRENT STATE — the web platform conversion
+## 6. CURRENT STATE — web platform conversion: COMPLETE
 
 ### Why
-The owner said: *"it is still presented as a mobile app and I told you it is not."* Screens were a 430px column with bottom tab bars; the deck showed phone frames. Everything is being rebuilt as a desktop web platform.
+The owner said: *"it is still presented as a mobile app and I told you it is not."* Screens were a 430px column with bottom tab bars; the deck showed phone frames. Every screen has been rebuilt as a desktop web platform (finished 1 October 2026).
 
 ### How (the pattern — follow it exactly)
 - Each converted screen links `web.css` and loads `shell.js` (after `support.js`).
@@ -124,9 +124,9 @@ The owner said: *"it is still presented as a mobile app and I told you it is not
 | Marketplace | public | ✅ converted (filter sidebar + 3-col grid) |
 | Search | public | ✅ converted |
 | Product Detail | public | ✅ converted (gallery + info two-column) |
-| **Seller Profile** | public | ❌ **TODO** — still phone layout |
-| **Saved** | public | ❌ **TODO** — still phone layout |
-| **Compliance Checker** | public | ❌ **TODO** — still phone layout (uses `l.label` not `l.short` in its language list; pass `langKey: 'label'` to the shell) |
+| Seller Profile | public | ✅ converted (cover + identity header, stats/verification sidebar, 3-col listings, reviews) |
+| Saved | public | ✅ converted (tabs, 4-col product grid, shop and trip cards, empty state) |
+| Compliance Checker | public | ✅ converted (centred search hero, verdict panel + legal basis/source aside) |
 | Onboarding | public | superseded — split into **Sign In** (identity), **Importer Setup** and **Trader Setup**; file kept for history, not in the hub |
 | **For Importers, For Traders, Sign In, Choose Experience** | public | ✅ new, web (`tools/newscreen.py` + `tools/recipes/`) |
 | **Importer Setup, Verification Status** | importer | ✅ new |
@@ -136,15 +136,16 @@ The owner said: *"it is still presented as a mobile app and I told you it is not
 | Trader Home, Discover, Importer Profile, Sourcing Request, Commitment, Dispute, Listing Composer | trader | ✅ converted |
 | Admin Console | admin | ✅ already desktop (separate platform, own layout) |
 | Logo | brand | n/a |
-| **Dashboards.html** (deck) | brand | ❌ **TODO** — replace the three phone mockups with browser-window frames showing the desktop screens (the hub's viewer code in `index.html` shows how to scale a 1440px iframe) |
+| Dashboards.html (deck) | brand | ✅ browser-window frames showing the real 1440px dashboards, scaled to fit, EN/FR/AR |
 
-### Next steps, in order
-1. Convert **Seller Profile, Saved, Compliance Checker** with the same generator (write `tools/web-shell/w-public-2.js`, modelled on `w-public-1.js`). Before writing markup, list a screen's bindings:
-   `awk '/<\/helmet>/,/<\/x-dc>/' "designs/Saved.dc.html" | grep -o "{{[^}]*}}" | sort -u`
-2. Update **`Dashboards.html`** to show desktop screens in browser frames.
-3. Run QA (see `tools/README.md`) on all screens in EN and AR; view each in the hub in all three languages.
-4. Update `README.md` "Known gaps" and `DESIGN-AUDIT.md` §12 to say the web conversion is complete.
-5. Commit and push. Then give the owner the hub URL to review.
+### Verification done
+All 31 screens in the hub were loaded at 1440px in EN, FR and AR (93 loads): no render errors, every user-facing screen sits in a web shell, no horizontal overflow, no leftover 430px phone column, correct text direction. The recipe for the last three screens is `tools/web-shell/w-public-2.js`.
+
+### Possible next steps (none blocking)
+1. Optional: move **Landing** onto the shared `.site` header for exact consistency (it already has its own web header).
+2. Native-speaker review of the French and Arabic copy.
+3. Real product photography to replace the category placeholders before the client demo.
+4. Client review in the hub; then, only when the owner says so, the build phase (see the architecture documents).
 
 ### Gotchas learned the hard way
 - **Do not re-run** a `w-*.js` recipe on a screen that is already converted — `logic` replacements (e.g. Marketplace) would apply twice. The recipes are records and templates.

@@ -59,7 +59,7 @@
 .table td { padding: 14px 20px; border-bottom: 1px solid var(--rule-faint); font-size: var(--t-sm); vertical-align: middle; }
 .table tr:last-child td { border-bottom: 0; }
 
-.tabs-h { display: flex; gap: 2px; border-bottom: 1px solid var(--rule); margin-bottom: 24px; overflow-x: auto; }
+.tabs-h { display: flex; gap: 2px; border-bottom: 1px solid var(--rule); margin-bottom: 24px; overflow-x: auto; overflow-y: hidden; scrollbar-width: none; }
 .tab-h { height: 44px; padding: 0 16px; border: 0; border-bottom: 2px solid transparent; background: none; color: var(--ink-2); font-size: var(--t-body); cursor: pointer; margin-bottom: -1px; white-space: nowrap; display: inline-flex; align-items: center; gap: 7px; }
 .tab-h[aria-current="true"] { border-bottom-color: var(--ink); color: var(--ink); font-weight: 600; }
 
@@ -116,7 +116,8 @@ textarea.input { height: auto; min-height: 110px; padding: 12px 14px; line-heigh
 .site-link { height: 38px; padding: 0 13px; border: 0; border-radius: var(--r-sm); background: none; color: var(--ink-2); font-size: var(--t-body); cursor: pointer; white-space: nowrap; }
 .site-link:hover { color: var(--ink); background: var(--surface-2); }
 .site-link[aria-current="true"] { color: var(--ink); font-weight: 600; }
-.site-search { flex: 1; max-width: 440px; display: flex; align-items: center; gap: 9px; height: 42px; padding-inline: 14px; border: 1px solid var(--rule-strong); border-radius: 999px; background: var(--surface-2); color: var(--ink-3); font-size: var(--t-sm); }
+.site-search { flex: 1 1 260px; min-width: 210px; max-width: 400px; white-space: nowrap; overflow: hidden; display: flex; align-items: center; gap: 9px; height: 42px; padding-inline: 14px; border: 1px solid var(--rule-strong); border-radius: 999px; background: var(--surface-2); color: var(--ink-3); font-size: var(--t-sm); }
+.site-search span { overflow: hidden; text-overflow: ellipsis; }
 .site-main { flex: 1; padding-block: 30px 56px; }
 .site-foot { border-top: 1px solid var(--rule); background: var(--surface); }
 .site-foot-in { padding-block: 26px; display: flex; gap: 20px; align-items: center; flex-wrap: wrap; font-size: var(--t-sm); color: var(--ink-3); }
