@@ -47,7 +47,7 @@ empty-state copy in EN / FR / AR to `states.js`.
 With the preview server running and the hub open (http://localhost:4321), paste the contents of `qa.js` into the browser console (or serve it), then:
 
 ```js
-await __chk(['Saved', 'Onboarding'])            // EN + AR
+await __chk(['Saved', 'Sign In'])               // EN + AR
 await __chk(['Saved'], ['en', 'fr', 'ar'])
 ```
 Each screen reports: render errors, whether a web shell is present, horizontal overflow at 1440px, any leftover 430px phone column (`PHONE`), page height and text direction.

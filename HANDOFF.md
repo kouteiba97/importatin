@@ -79,7 +79,7 @@ designs/
   states.js           ← shared page states (loading skeleton / empty / error / offline) + per-screen empty copy in EN/FR/AR (window.MaabarStates)
   rules-content.js    ← sample rule articles + regulatory values read by Rules and Admin Rules (stand-in for the database)
   support.js          ← Claude Design runtime (do not edit)
-  *.dc.html           ← 24 screens (Claude Design artboard format) + Logo.dc.html
+  *.dc.html           ← 34 screens (Claude Design artboard format) + Logo.dc.html
   Dashboards.html     ← three-role overview deck: the real desktop dashboards in browser frames
 preview/server.js     ← local server; injects React so .dc.html files render outside Claude Design
 tools/
@@ -131,7 +131,7 @@ The owner said: *"it is still presented as a mobile app and I told you it is not
 | Seller Profile | public | ✅ converted (cover + identity header, stats/verification sidebar, 3-col listings, reviews) |
 | Saved | public | ✅ converted (tabs, 4-col product grid, shop and trip cards, empty state) |
 | Compliance Checker | public | ✅ converted (centred search hero, verdict panel + legal basis/source aside) |
-| Onboarding | public | superseded — split into **Sign In** (identity), **Importer Setup** and **Trader Setup**; file kept for history, not in the hub |
+| Onboarding | — | **deleted** (12 November 2026) — replaced by **Sign In**, **Importer Setup** and **Trader Setup**; still in the git history |
 | **For Importers, For Traders, Sign In, Choose Experience** | public | ✅ new, web (`tools/newscreen.py` + `tools/recipes/`) |
 | **Importer Setup, Verification Status** | importer | ✅ new |
 | **Trader Setup** | trader | ✅ new |
@@ -146,9 +146,10 @@ The owner said: *"it is still presented as a mobile app and I told you it is not
 | Dashboards.html (deck) | brand | ✅ browser-window frames showing the real 1440px dashboards, scaled to fit, EN/FR/AR |
 
 ### Verification done
-All 31 screens in the hub were loaded at 1440px in EN, FR and AR (93 loads): no render errors, every user-facing screen sits in a web shell, no horizontal overflow, no leftover 430px phone column, correct text direction. The recipe for the last three screens is `tools/web-shell/w-public-2.js`.
+All 34 screens in the hub were loaded at 1440px in EN, FR and AR (last full run: 12 November 2026): no render errors, every user-facing screen sits in a web shell, no horizontal overflow, no leftover 430px phone column, correct text direction. The recipe for the last three screens is `tools/web-shell/w-public-2.js`.
 
 ### Possible next steps (none blocking)
+0. `tools/recipes/*.py` (seven screens) need Python; this PC only has Node. They are kept as records — edit those screens directly, or port a recipe to `tools/newscreen.js` if a full rebuild is ever needed. Give the Admin Console an "empty queue" state. Phone layout for the importer/trader workspaces (V1).
 1. Optional: move **Landing** onto the shared `.site` header for exact consistency (it already has its own web header).
 2. Native-speaker review of the French and Arabic copy.
 3. Real product photography to replace the category placeholders before the client demo.

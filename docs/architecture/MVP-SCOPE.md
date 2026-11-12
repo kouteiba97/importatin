@@ -73,7 +73,7 @@ whole screens.
 | Trader (8) | Trader Setup · Trader Home · Discover · Importer Profile · Sourcing Request · Commitment · Dispute · Listing Composer |
 | Admin (4) | Admin Sign In · Admin Console · Admin Rules · Admin Team |
 
-`Onboarding` was replaced by Sign In + Importer Setup + Trader Setup. Verification, Messages, Commitment and Dispute are shared by importers and traders.
+The old `Onboarding` screen was replaced by `Sign In`, `Importer Setup` and `Trader Setup` and its file was deleted on 12 November 2026 (it is still in the git history). Where an older document cites `Onboarding`, read `Sign In`. Verification, Messages, Commitment and Dispute are shared by importers and traders.
 
 Three screens ship with a reduced feature inside them:
 

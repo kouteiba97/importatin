@@ -26,7 +26,7 @@ classified as *no impact*, *UX only*, or *needs implementation documentation lat
 | New admin page | `Admin Sign In` |
 | Shell: marks, doors, switcher data, `Verification` in the trader nav, label overrides | `designs/shell.js`, `designs/web.css` |
 | Hub groups renamed to the four experiences; routes shown per experience prefix | `designs/index.html` |
-| `Onboarding.dc.html` superseded by `Sign In` + the two Setup screens; kept on disk for history, removed from the hub | — |
+| `Onboarding.dc.html` superseded by `Sign In` + the two Setup screens; removed from the hub, file deleted on 12 November 2026 (kept in git history) | — |
 
 ## 3. Needs implementation documentation later (no lock change)
 

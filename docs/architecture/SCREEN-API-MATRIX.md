@@ -238,7 +238,7 @@ Every approved screen, including the simple ones. Screens 1–24 are the origina
 
 ## Shared (5)
 
-### 19. `Onboarding` — **superseded** by `Sign In` (25), `Importer Setup` (29) and `Trader Setup` (30); kept for the API mapping
+### 19. `Onboarding` — **superseded** by `Sign In` (25), `Importer Setup` (29) and `Trader Setup` (30); screen file deleted, entry kept for the API mapping
 | | |
 |---|---|
 | **Actor** | — public → authenticated |
@@ -334,8 +334,9 @@ Every approved screen, including the simple ones. Screens 1–24 are the origina
 
 | | Count |
 |---|---|
-| Screens in the review hub | 34 (+ the superseded `Onboarding`) |
-| Screens mapped above | **35** |
+| Screens in the review hub | 34 |
+| Entries above | 35 (34 screens + the superseded `Onboarding`, kept for its API mapping) |
+| Screens mapped above | **34 of 34** |
 | Screens with no implementation path | **0** |
 | Screens blocked by an unresolved question | **0** (`Commitment` ships with `secured` disabled; `Sourcing Request` ships with the audit's stricter authorization pending AD-044) |
 

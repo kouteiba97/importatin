@@ -35,7 +35,7 @@ Eleven new screens closing every remaining P0/P1 gap.
 
 | Screen | Closes |
 |---|---|
-| **Onboarding** | Phone → OTP → profile → capability selection → done. One identity, multiple contexts |
+| **Sign In** (+ Importer Setup / Trader Setup) | Phone → code → profile; then the chosen experience's setup. One identity, several experiences |
 | **Verification** | Trust ladder **for both importer and trader**, plus the full document journey: requirement → capture → preview → upload → under review → needs correction → approved → expired |
 | **Seller Profile** | The public trader storefront the marketplace links to |
 | **Sourcing Request** | Compose → published → offers → agreement |
@@ -72,7 +72,7 @@ Eleven new screens closing every remaining P0/P1 gap.
 `Trader Home` · `Discover` · `Sourcing Request` · `Listing Composer`
 
 ### Shared
-`Onboarding` · `Verification` · `Messages` · `Commitment` · `Dispute`
+`Sign In` · `Verification` · `Messages` · `Commitment` · `Dispute`
 
 ### Admin
 `Admin Console`
@@ -122,11 +122,11 @@ Roles are **capabilities on one identity**, not separate accounts. A user may ho
 ## 6. USER JOURNEYS — walked end to end
 
 ### A · Importer
-`Onboarding` → `Verification` (ladder → document → review → approved) → `Importer Home` → `Demand Board` → `Trip Creation` → `Trip` → `Sourcing Request` (receives) → `Commitment` → `Messages` (handover) → `Records`
+`Sign In` → `Importer Setup` → `Verification` (ladder → document → review → approved) → `Importer Home` → `Demand Board` → `Trip Creation` → `Trip` → `Sourcing Request` (receives) → `Commitment` → `Messages` (handover) → `Records`
 **No gap.**
 
 ### B · Trader
-`Onboarding` → `Verification` (trader path, RC) → `Trader Home` → `Discover` (trips / importers) → `Importer Profile` → `Sourcing Request` (compose → offers → agreement) → `Commitment` → `Messages` → review
+`Sign In` → `Trader Setup` → `Verification` (trader path, RC) → `Trader Home` → `Discover` (trips / importers) → `Importer Profile` → `Sourcing Request` (compose → offers → agreement) → `Commitment` → `Messages` → review
 **No gap.** Also: `Listing Composer` → `Seller Profile` → consumer marketplace.
 
 ### C · Consumer
@@ -160,7 +160,7 @@ Roles are **capabilities on one identity**, not separate accounts. A user may ho
 | Disputed | `Commitment`, `Dispute` |
 | Blocked / no capability | `Listing Composer` — importer cannot publish publicly |
 | Partial | `Trip` (buy list: fully committed / partially / no buyer) |
-| Success | `Onboarding`, `Verification`, `Trip Creation`, `Dispute` |
+| Success | `Sign In`, `Importer Setup`, `Trader Setup`, `Verification`, `Trip Creation`, `Dispute` |
 | Needs action | `Importer Home`, `Trader Home` (ranked, with deadlines) |
 
 **Principle applied throughout:** every state answers *what happened · why · what can I do next*. No generic placeholders.
