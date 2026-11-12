@@ -139,6 +139,7 @@ The owner said: *"it is still presented as a mobile app and I told you it is not
 | Trader Home, Discover, Importer Profile, Sourcing Request, Commitment, Dispute, Listing Composer | trader | ✅ converted |
 | Admin Console | admin | ✅ already desktop (separate platform, own layout) |
 | **Rules** | public (+ importer/trader sidebars) | ✅ new — one template, three audiences via `?aud=shopper|importer|trader`; content from `rules-content.js` |
+| **Admin Team** | admin | ✅ new — Administration → Team & roles: the superadmin invites admins and sub-admins, assigns roles (one per function), suspends/reinstates; nobody edits their own roles; superadmin holds no deciding role; last active superadmin protected; read-only view for other admins (`tools/recipes/admin-team.js`) |
 | **Admin Rules** | admin | ✅ new — Compliance → Rules pages: articles editor (EN/FR/AR tabs, placeholders, legal reference, live preview, checks, workflow, versions) + regulatory values with impact preview; "Viewing as" editor / approver / superadmin |
 | Logo | brand | n/a |
 | Dashboards.html (deck) | brand | ✅ browser-window frames showing the real 1440px dashboards, scaled to fit, EN/FR/AR |

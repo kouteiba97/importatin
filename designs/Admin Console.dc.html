@@ -255,7 +255,8 @@ class Component extends DCLogic {
       groups: [
         ['الثقة والسلامة', [['طلبات التحقّق', 'أقدم بند: 19 ساعة · الحدّ 24'], ['مخاطرة', 'أقدم بند: 3 ساعات'], ['إشراف المحتوى', 'أقدم بند: 8 ساعات'], ['نزاعات', 'أقدم بند: يومان']]],
         ['الامتثال', [['أصناف تحتاج مراجعة', 'أقدم بند: يوم'], ['صفحات القوانين', 'مادّتان بانتظار المصادقة']]],
-        ['الفوترة', [['تأكيد اشتراكات', 'تحويلات CCP بانتظار التأكيد']]]
+        ['الفوترة', [['تأكيد اشتراكات', 'تحويلات CCP بانتظار التأكيد']]],
+        ['الإدارة', [['الفريق والأدوار', '']]]
       ],
       items: { one: 'بند واحد', two: 'بندان', few: 'بنود', many: 'بنداً' },
       rows: [
@@ -292,7 +293,8 @@ class Component extends DCLogic {
       groups: [
         ['Confiance et sécurité', [['Demandes de vérification', 'plus ancien : 19 h · limite 24'], ['Risque', 'plus ancien : 3 h'], ['Modération', 'plus ancien : 8 h'], ['Litiges', 'plus ancien : 2 jours']]],
         ['Conformité', [['Articles à examiner', 'plus ancien : 1 jour'], ['Pages des règles', '2 articles à approuver']]],
-        ['Facturation', [['Confirmation d’abonnements', 'virements CCP en attente']]]
+        ['Facturation', [['Confirmation d’abonnements', 'virements CCP en attente']]],
+        ['Administration', [['Équipe et rôles', '']]]
       ],
       items: { one: 'élément', many: 'éléments' },
       rows: [
@@ -329,7 +331,8 @@ class Component extends DCLogic {
       groups: [
         ['Trust & Safety', [['Verification requests', 'oldest: 19 h · limit 24'], ['Risk', 'oldest: 3 h'], ['Content moderation', 'oldest: 8 h'], ['Disputes', 'oldest: 2 days']]],
         ['Compliance', [['Items needing review', 'oldest: 1 day'], ['Rules pages', '2 articles awaiting approval']]],
-        ['Billing', [['Subscription confirmations', 'CCP transfers awaiting confirmation']]]
+        ['Billing', [['Subscription confirmations', 'CCP transfers awaiting confirmation']]],
+        ['Administration', [['Team & roles', '']]]
       ],
       items: { one: 'item', many: 'items' },
       rows: [
@@ -366,7 +369,8 @@ class Component extends DCLogic {
   GROUPS = [
     [{ id: 'ver', n: 14, risk: 'var(--conditional)' }, { id: 'risk', n: 6, risk: 'var(--prohibited)' }, { id: 'mod', n: 23, risk: 'var(--conditional)' }, { id: 'dis', n: 4, risk: 'var(--prohibited)' }],
     [{ id: 'rev', n: 9, risk: 'var(--conditional)' }, { id: 'rul', n: 2, risk: 'var(--ink-3)' }],
-    [{ id: 'bil', n: 7, risk: 'var(--ink-3)' }]
+    [{ id: 'bil', n: 7, risk: 'var(--ink-3)' }],
+    [{ id: 'team', n: 8, risk: 'var(--ink-3)', link: true }]
   ];
   ROWS = [
     { ref: 'VER-26-0881', risk: 'high' }, { ref: 'VER-26-0884', risk: 'mid' }, { ref: 'VER-26-0886', risk: 'low' },
@@ -398,7 +402,7 @@ class Component extends DCLogic {
           dot: x.risk,
           n: this.fmt(x.n, t.sep),
           nFg: x.id === s.q ? 'var(--ink)' : 'var(--ink-2)',
-          pick: () => this.setState({ q: x.id, row: 0 })
+          pick: x.link ? () => {} : () => this.setState({ q: x.id, row: 0 })
         }))
       })),
 

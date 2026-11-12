@@ -334,7 +334,8 @@ const LOGIC = `
       groups: [
         ['الثقة والسلامة', ['طلبات التحقّق', 'مخاطرة', 'إشراف المحتوى', 'نزاعات']],
         ['الامتثال', ['أصناف تحتاج مراجعة', 'صفحات القوانين']],
-        ['الفوترة', ['تأكيد اشتراكات']]
+        ['الفوترة', ['تأكيد اشتراكات']],
+        ['الإدارة', ['الفريق والأدوار']]
       ],
       title: 'صفحات القوانين', newArticle: '+ مادة جديدة',
       viewsL: ['المواد', 'القيم التنظيمية'],
@@ -371,7 +372,8 @@ const LOGIC = `
       groups: [
         ['Confiance et sécurité', ['Demandes de vérification', 'Risque', 'Modération', 'Litiges']],
         ['Conformité', ['Articles à examiner', 'Pages des règles']],
-        ['Facturation', ['Confirmation d’abonnements']]
+        ['Facturation', ['Confirmation d’abonnements']],
+        ['Administration', ['Équipe et rôles']]
       ],
       title: 'Pages des règles', newArticle: '+ Nouvel article',
       viewsL: ['Articles', 'Valeurs réglementaires'],
@@ -408,7 +410,8 @@ const LOGIC = `
       groups: [
         ['Trust & Safety', ['Verification requests', 'Risk', 'Content moderation', 'Disputes']],
         ['Compliance', ['Items needing review', 'Rules pages']],
-        ['Billing', ['Subscription confirmations']]
+        ['Billing', ['Subscription confirmations']],
+        ['Administration', ['Team & roles']]
       ],
       title: 'Rules pages', newArticle: '+ New article',
       viewsL: ['Articles', 'Regulatory values'],
@@ -444,7 +447,8 @@ const LOGIC = `
   GROUPS = [
     [{ id: 'ver', n: 14, dot: 'var(--conditional)' }, { id: 'risk', n: 6, dot: 'var(--prohibited)' }, { id: 'mod', n: 23, dot: 'var(--conditional)' }, { id: 'dis', n: 4, dot: 'var(--prohibited)' }],
     [{ id: 'rev', n: 9, dot: 'var(--conditional)' }, { id: 'rul', n: 2, dot: 'var(--ink-3)' }],
-    [{ id: 'bil', n: 7, dot: 'var(--ink-3)' }]
+    [{ id: 'bil', n: 7, dot: 'var(--ink-3)' }],
+    [{ id: 'team', n: 8, dot: 'var(--ink-3)' }]
   ];
   USERS = { editor: 'ADM-031', approver: 'ADM-007', superadmin: 'ADM-001' };
   STATUS_CHIP = { draft: 'chip-neutral', review: 'chip-brand', published: 'chip-verified', superseded: 'chip-neutral' };

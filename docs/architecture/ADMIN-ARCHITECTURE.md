@@ -203,6 +203,20 @@ asked in.
 
 ---
 
+## 7b. Team and roles (`Admin Team`)
+
+Admins and sub-admins are created only by invitation from a `superadmin` (valid 48 h, MFA enrolled at
+first sign-in). Each admin holds one or more function roles from `AUTHORIZATION-MATRIX.md` §5; the
+"sub-admin" for content is `rules_editor`. Enforced rules, all drawn on the screen:
+
+- nobody changes their own roles;
+- `superadmin` is exclusive — it never combines with a deciding role;
+- the last active superadmin cannot be suspended or lose the role;
+- an admin needs at least one role; suspension keeps the history;
+- every invitation, grant, removal and suspension is an audit row, and the affected admin is notified.
+
+Admins without the superadmin role see only their own roles.
+
 ## 8. Desktop-only
 
 The whole product is a desktop-first web platform; the console is the one surface that is
