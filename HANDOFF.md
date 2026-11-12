@@ -151,7 +151,7 @@ The owner said: *"it is still presented as a mobile app and I told you it is not
 All 34 screens in the hub were loaded at 1440px in EN, FR and AR (last full run: 12 November 2026): no render errors, every user-facing screen sits in a web shell, no horizontal overflow, no leftover 430px phone column, correct text direction. The recipe for the last three screens is `tools/web-shell/w-public-2.js`.
 
 ### Possible next steps (none blocking)
-0. `tools/recipes/*.py` (seven screens) need Python; this PC only has Node. They are kept as records — edit those screens directly, or port a recipe to `tools/newscreen.js` if a full rebuild is ever needed. Give the Admin Console an "empty queue" state. On a phone, Messages shows list and thread stacked — a list → thread drill-down would be better when the app is built.
+0. `tools/recipes/*.py` (seven screens) need Python; this PC only has Node. They are kept as records — edit those screens directly, or port a recipe to `tools/newscreen.js` if a full rebuild is ever needed. On a phone, Messages shows list and thread stacked — a list → thread drill-down would be better when the app is built.
 1. Optional: move **Landing** onto the shared `.site` header for exact consistency (it already has its own web header).
 2. Native-speaker review of the French and Arabic copy.
 3. Real product photography to replace the category placeholders before the client demo.

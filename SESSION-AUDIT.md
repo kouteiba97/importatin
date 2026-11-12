@@ -33,6 +33,8 @@ Maabar is still **design and documentation only** — no application code (the o
 | `89563ac` | **Public pages on phone and tablet** (header wraps, navigation becomes a strip that scrolls sideways) |
 | `c3337e6` | **Clean-up.** `Onboarding` screen deleted (replaced by Sign In + Importer Setup + Trader Setup; still in git history) |
 | `a46adb1` | **Workspaces on phone and tablet** (sidebar becomes a header with the same navigation strip; CSS only) |
+| `096f774` | **New logo: Bab** (on the Mac). A solid block with a horseshoe-arch doorway replaces the double-arch M on every screen, the brand kit, the deck, the hub and the generators. One filled path, `currentColor`. Chosen by the owner from a Claude Design exploration |
+| next commit | **Admin Console empty queue.** Review-only switcher (Ready · Empty queue) at the top of the console; the empty state shows the queue at 0, "This queue is clear" and a button to the next queue that has items. EN / FR / AR |
 
 ## 3. How to run it on the Mac
 
@@ -83,18 +85,17 @@ In Claude Code, the Browser pane can start it with the `maabar-preview` config i
 
 ## 7. Known gaps and honest notes
 
-- **Admin Console** has no "empty queue" state.
 - **Messages on a phone** stacks the list above the conversation; a list → conversation drill-down would be better at build time.
 - **French and Arabic copy** has not been reviewed by a native commercial writer (this includes all the rule texts written this session).
 - **Legal texts**: rule articles are plain-language summaries of Decree 25-170 and Laws 18-05 / 09-03, written from the verified article table in `docs/history/01-PRODUCT-STRATEGY.md` §3.2. They should be read by an Algerian lawyer before real users see them.
 - **Product photos** are still placeholders.
 - **Deposit declaration** in `Commitment` is still held pending legal review (`DESIGN-AUDIT.md` §9.2).
-- The phone check was automated (page width, no overflow) plus a visual look at about ten screens — not every screen was looked at by eye at phone width.
+- The phone check is automated (page width, no overflow): re-run after the new logo on 30 screens × EN/FR/AR at 390px and 820px with no problems, plus a visual look at about fourteen screens — not every screen was looked at by eye at phone width.
 - `Dashboards.html` (the client deck) was not re-checked after this session's changes.
 
 ## 8. Sensible next steps (none started)
 
 1. Owner review of the new screens in the hub: `Rules` (three audiences), `Admin Rules`, `Admin Team`.
 2. Native-speaker and legal review of the rule texts.
-3. Empty-queue state for the Admin Console; eyeball every screen at phone width.
+3. Eyeball the remaining screens at phone width (the automated check passes on all of them).
 4. Only when the owner says so: the build phase — start from `docs/architecture/EXECUTIVE-SUMMARY.md` and `ARCHITECTURE-LOCK.md`.
