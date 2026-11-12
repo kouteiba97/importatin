@@ -154,6 +154,9 @@ All 31 screens in the hub were loaded at 1440px in EN, FR and AR (93 loads): no 
 3. Real product photography to replace the category placeholders before the client demo.
 4. Client review in the hub; then, only when the owner says so, the build phase (see the architecture documents).
 
+### Phone and tablet widths (public site)
+The product stays desktop-first, but the 13 public pages were checked at 390px and 820px in FR and AR: no sideways scrolling. Below 980px the header wraps (brand + account, then search, then the navigation as a strip that scrolls sideways with the language switch); grids drop to two or one column. Rules are at the end of `web.css`. The importer and trader workspaces and the console were **not** given a phone layout (planned for V1; the sidebar simply hides below 980px).
+
 ### Page states
 Every data screen has a review-only "Screen state" switcher. 11 screens use the shared pattern in `designs/states.js` (Ready · Loading · Empty · Error · Offline; styles `.pstate` / `.sk` in `web.css`; applied by `node tools/add-states.js`, which skips screens already done — add a new screen to its list and its empty copy to `states.js`). The Compliance Checker instead switches between its four answers (conditional · allowed · not allowed · no answer yet). Screens with their own flows (setup, verification, commitment, dispute, search, saved…) already had their own switchers.
 

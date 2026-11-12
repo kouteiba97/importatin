@@ -141,7 +141,6 @@ textarea.input { height: auto; min-height: 110px; padding: 12px 14px; line-heigh
   .rail { display: none; }
   .split, .split-wide, .split-l, .cols-3 { grid-template-columns: 1fr; }
   .cols-4, .pgrid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .site-nav { display: none; }
   .page, .container { padding-inline: 20px; }
   .topbar, .statebar { padding-inline: 20px; }
   .sticky { position: static; }
@@ -248,3 +247,38 @@ textarea.input { height: auto; min-height: 110px; padding: 12px 14px; line-heigh
 @media (prefers-reduced-motion: reduce) { .sk { animation: none; } }
 @media (max-width: 980px) { .sk-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 640px) { .sk-grid { grid-template-columns: 1fr; } .pstate { margin-block: 40px 56px; } }
+
+/* ── Public site on tablet and phone browsers ──
+   The header wraps instead of hiding the navigation: brand + account on the first row,
+   then the search, then the navigation as a strip that scrolls sideways. */
+@media (max-width: 980px) {
+  .site-in { height: auto; flex-wrap: wrap; padding-block: 12px; row-gap: 10px; }
+  .site-nav { order: 6; flex: 1 1 100%; min-width: 0; overflow-x: auto; scrollbar-width: none; margin-inline: -6px; }
+  .site-nav::-webkit-scrollbar { display: none; }
+  .site-link { flex: none; }
+  .hero { grid-template-columns: 1fr !important; }
+  .cta-band { flex-wrap: wrap; }
+  .aud { grid-template-columns: 1fr !important; }
+  .figs { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+  .rules-split { grid-template-columns: 1fr !important; }
+  .auth { min-height: 0; }
+  .auth-card { margin: 0 auto; }
+}
+@media (max-width: 640px) {
+  .page, .container { padding-inline: 16px; }
+  .statebar { padding-inline: 16px; }
+  .site-in { column-gap: 8px; }
+  .site-search { order: 5; flex: 1 1 100%; max-width: none; }
+  .site-nav { order: 6; flex: 1 1 calc(100% - 140px); }
+  .site-in > .langsw { order: 7; flex: none; }
+  .site-actions .btn-dark { display: none; }
+  .cols-3, .cols-4 { grid-template-columns: 1fr; }
+  .pgrid { gap: 12px; }
+  .site-foot-in { gap: 10px 16px; }
+  .site-foot-in .grow { flex: 1 1 100%; }
+  .page-head h1 { font-size: 24px; }
+  .paths { grid-template-columns: 1fr !important; }
+  .catrow, .cgrid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; gap: 12px !important; }
+  .pgrid3, .simgrid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; gap: 12px !important; }
+  .vis { max-width: 100%; }
+}

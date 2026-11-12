@@ -46,6 +46,7 @@
 .rfoot{display:flex;flex-wrap:wrap;align-items:center;gap:6px 18px;margin-top:14px;padding-top:12px;border-top:1px solid var(--rule-faint);font-size:var(--t-xs);color:var(--ink-3)}
 .rfoot .law{color:var(--ink-2);font-weight:500}
 .rfoot a{color:var(--brand-ink);font-weight:500}
+.rules-split{grid-template-columns:270px minmax(0,1fr)}
 .side h3{margin:0 0 10px;font-size:var(--t-xs);font-weight:600;color:var(--ink-3);text-transform:uppercase;letter-spacing:.06em}
 [lang="ar"] .side h3{text-transform:none;letter-spacing:0}
 
@@ -97,7 +98,7 @@
 </div>
 </sc-if>
 
-<div class="split split-l" style="grid-template-columns:270px minmax(0,1fr)">
+<div class="split split-l rules-split">
 <aside class="stack sticky side">
 <section class="panel"><div class="panel-b">
 <h3>{{ t.toc }}</h3>
