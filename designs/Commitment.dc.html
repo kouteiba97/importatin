@@ -23,7 +23,7 @@
 <div class="app">
 
 <aside class="rail">
-<div class="rail-brand"><svg width="28" height="28" viewBox="0 0 48 48" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 36V23a8 8 0 0 1 16 0v13"/><path d="M24 23a8 8 0 0 1 16 0v13"/></g></svg><span><span class="wordmark">{{ sh.brand }}</span><sc-if value="{{ sh.hasMark }}" hint-placeholder-val="{{ true }}"><span class="mark" style="color:{{ sh.roleFg }}">{{ sh.mark }}</span></sc-if></span></div>
+<div class="rail-brand"><svg width="28" height="28" viewBox="0 0 48 48" aria-hidden="true"><path fill="currentColor" fill-rule="evenodd" d="M12 4h24a6 6 0 0 1 6 6v34H6V10a6 6 0 0 1 6-6ZM17 44V30.14a10 10 0 1 1 14 0V44Z"/></svg><span><span class="wordmark">{{ sh.brand }}</span><sc-if value="{{ sh.hasMark }}" hint-placeholder-val="{{ true }}"><span class="mark" style="color:{{ sh.roleFg }}">{{ sh.mark }}</span></sc-if></span></div>
 <div class="rail-role" style="background:{{ sh.roleBg }};color:{{ sh.roleFg }}">{{ sh.role }}</div>
 <nav class="rail-nav" aria-label="{{ sh.navLabel }}">
 <sc-for list="{{ sh.nav }}" as="n" hint-placeholder-count="7">

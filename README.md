@@ -30,7 +30,7 @@ Maabar connects the micro-importer, the trader, and the consumer through discove
 
 **Maabar** — مَعْبَر, *crossing point*. The name is the product.
 
-The mark is an **M built from two arches**: two passages meeting on one line. Monoline geometric — one stroke weight, round caps, no gradient, no fill, no depth. That is a constraint rather than a style: the Article 14 label is a legal obligation, frequently printed on single-colour thermal paper, and the mark has to survive there and at 16px as a favicon. The full kit is `designs/Logo.dc.html`.
+The mark is **Bab** (باب, *gate*): a horseshoe-arch doorway cut through one solid block — the passage the name describes, drawn in the arch of Maghrebi architecture. One silhouette, one colour, no gradient, no outline, no depth. That is a constraint rather than a style: the Article 14 label is a legal obligation, frequently printed on single-colour thermal paper, and the mark has to survive there and at 16px as a favicon. The full kit is `designs/Logo.dc.html`.
 
 **The logo is Latin in all three interfaces.** `مَعْبَر` is a localised wordmark variant used only inside the Arabic interface — never a second line under the Latin.
 

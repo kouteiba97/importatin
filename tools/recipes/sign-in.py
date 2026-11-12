@@ -76,7 +76,7 @@ INNER = '''<div class="auth">
 
 <aside class="auth-side">
 <div>
-<div style="display:flex;align-items:center;gap:10px;margin-bottom:34px"><svg width="26" height="26" viewBox="0 0 48 48" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 36V23a8 8 0 0 1 16 0v13"/><path d="M24 23a8 8 0 0 1 16 0v13"/></g></svg><span class="wordmark" style="color:#fff">{{ sh.brand }}</span><sc-if value="{{ hasSideMark }}" hint-placeholder-val="{{ true }}"><span style="opacity:.6">·</span><span style="font-size:14px;font-weight:600">{{ sideMark }}</span></sc-if></div>
+<div style="display:flex;align-items:center;gap:10px;margin-bottom:34px"><svg width="26" height="26" viewBox="0 0 48 48" aria-hidden="true"><path fill="currentColor" fill-rule="evenodd" d="M12 4h24a6 6 0 0 1 6 6v34H6V10a6 6 0 0 1 6-6ZM17 44V30.14a10 10 0 1 1 14 0V44Z"/></svg><span class="wordmark" style="color:#fff">{{ sh.brand }}</span><sc-if value="{{ hasSideMark }}" hint-placeholder-val="{{ true }}"><span style="opacity:.6">·</span><span style="font-size:14px;font-weight:600">{{ sideMark }}</span></sc-if></div>
 <h2>{{ side.title }}</h2>
 <p>{{ side.body }}</p>
 <div class="pts">

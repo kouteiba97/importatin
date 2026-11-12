@@ -5,7 +5,7 @@ import json, os, re
 
 ROOT = os.path.join(os.path.dirname(__file__), '..', 'designs')
 
-LOGO = '<svg width="28" height="28" viewBox="0 0 48 48" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 36V23a8 8 0 0 1 16 0v13"/><path d="M24 23a8 8 0 0 1 16 0v13"/></g></svg>'
+LOGO = '<svg width="28" height="28" viewBox="0 0 48 48" aria-hidden="true"><path fill="currentColor" fill-rule="evenodd" d="M12 4h24a6 6 0 0 1 6 6v34H6V10a6 6 0 0 1 6-6ZM17 44V30.14a10 10 0 1 1 14 0V44Z"/></svg>'
 LOGO_S = LOGO.replace('width="28" height="28"', 'width="20" height="20"')
 
 LANGSW = '''<div class="langsw" role="group" aria-label="{{ sh.langLabel }}">

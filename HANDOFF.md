@@ -54,7 +54,8 @@ These came directly from the project owner across the sessions:
 | 3. Design remediation | 24 screens rebuilt, one token file, states, RTL fixes, legal holds | `designs/`, `DESIGN-AUDIT.md` |
 | 4. Client clean-up | Removed all explanatory/"rules" text from screens | commits before `9ea661d` |
 | 5. Architecture | Admin separated; consumer-first Landing with search hero; entry-driven Onboarding; worldwide destinations | `Landing`, `Onboarding`, `DESIGN-AUDIT.md` §12b |
-| 6. Rebrand (v3) | Blue/navy brand, new flat double-arch **M** logo, Sora/Inter/IBM Plex Sans Arabic, **brand colour separated from status colour**, WCAG AA verified | `designs/tokens.css`, `designs/Logo.dc.html`, commit `a075bea` |
+| 6. Rebrand (v3) | Blue/navy brand, flat double-arch **M** logo (replaced by **Bab** in phase 11), Sora/Inter/IBM Plex Sans Arabic, **brand colour separated from status colour**, WCAG AA verified | `designs/tokens.css`, `designs/Logo.dc.html`, commit `a075bea` |
+| 11. **New logo: Bab** (12 November 2026) | The double-arch M was replaced on every screen by **Bab**: a solid block with a horseshoe-arch doorway (chosen by the owner from a Claude Design exploration). One filled path, `viewBox 0 0 48 48`, `currentColor`. Colours, wordmark and fonts unchanged | `designs/Logo.dc.html`, every screen, `tools/newscreen.*`, `tools/web-shell/weblib.js` |
 | 7. Three languages | All 24 screens EN/FR/AR, `?lang=` override, bidi and plural fixes | commits `9385f35` → `9f749a4` |
 | 9. **Experience separation** | One identity, four experiences: public doors, one Sign In, Importer/Trader Setup, Verification Status, Choose Experience, Admin Sign In; eight architecture documents | `PRODUCT-ARCHITECTURE.md` … `FINAL-UX-SEPARATION-AUDIT.md`, `designs/` |
 | 8. Web platform conversion | Shared web shell (`web.css`, `shell.js`), review hub (`index.html`), every phone-layout screen rebuilt as a desktop web page | §6 |
