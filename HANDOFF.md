@@ -2,7 +2,7 @@
 
 This file is written for **Claude (or a person) picking up the Maabar project on another PC** with no memory of the previous sessions. It explains what the project is, every decision already made, the exact state of the work, and what to do next. Read it fully before changing anything.
 
-Last updated: **19 September 2026**. Remote: `https://github.com/kouteiba97/importatin` (branch `main`).
+Last updated: **12 November 2026**. For what changed most recently and the exact current state, read **`SESSION-AUDIT.md`** first. Remote: `https://github.com/kouteiba97/importatin` (branch `main`).
 
 ---
 
@@ -67,6 +67,7 @@ Older audit files in `docs/history/` are kept for context; **`DESIGN-AUDIT.md` a
 ## 4. Repository map
 
 ```
+SESSION-AUDIT.md      ← latest session: what changed, current state, how to continue on another machine
 HANDOFF.md            ← this file
 CLAUDE.md             ← short rules auto-loaded by Claude Code
 README.md             ← product overview for humans

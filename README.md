@@ -14,6 +14,7 @@ Maabar connects the micro-importer, the trader, and the consumer through discove
 
 | | |
 |---|---|
+| **[`SESSION-AUDIT.md`](SESSION-AUDIT.md)** | Latest session audit: what changed, the current state, how to run it on another machine, known gaps. |
 | **[`HANDOFF.md`](HANDOFF.md)** | Full context for anyone (or Claude) continuing on another machine: decisions, history, current state, next steps. **Read this first.** |
 | **[`DESIGN-AUDIT.md`](DESIGN-AUDIT.md)** | The audit. Verdict, role/capability matrix, screen inventory, user journeys, state coverage, legal holds. |
 | **`docs/architecture/`** | The technical plan for developers (one copy of each document — start with `EXECUTIVE-SUMMARY.md` and `ARCHITECTURE-LOCK.md`; rules pages in `RULES-CONTENT.md`). |

@@ -1,6 +1,6 @@
 # CLAUDE.md — Maabar
 
-**Read `HANDOFF.md` before doing anything.** It holds the full context, the owner's rules, the current work item and the next steps.
+**Read `SESSION-AUDIT.md` (latest state) and `HANDOFF.md` before doing anything.** It holds the full context, the owner's rules, the current work item and the next steps.
 
 Non-negotiables, in short:
 
