@@ -35,6 +35,13 @@ Workflow for a screen:
 2. Write the web markup using only those bindings (plus `sh.*` and `langs`).
 3. Run the recipe, then QA, then view it in the hub in EN / FR / AR.
 
+## add-states.js — shared page states
+
+`node tools/add-states.js` adds the loading / empty / error / offline states to the screens in its list
+(it skips any screen that already has them). The copy and logic live in `designs/states.js`; the
+styles in `designs/web.css`. To cover a new screen: add it to the list with a key, and add that key's
+empty-state copy in EN / FR / AR to `states.js`.
+
 ## qa.js — browser check
 
 With the preview server running and the hub open (http://localhost:4321), paste the contents of `qa.js` into the browser console (or serve it), then:

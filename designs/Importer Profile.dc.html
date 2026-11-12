@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script src="./support.js"></script>
 <script src="./shell.js"></script>
+<script src="./states.js"></script>
 </head>
 <body>
 <x-dc>
@@ -54,7 +55,15 @@
 <button type="button" class="iconbtn" aria-label="{{ sh.alerts }}">{{ sh.icBell }}<span class="dot"></span></button>
 </header>
 
+<div class="statebar">
+<span class="lbl">{{ ps.label }}</span>
+<sc-for list="{{ ps.views }}" as="pv" hint-placeholder-count="5">
+<button type="button" onClick="{{ pv.pick }}" aria-pressed="{{ pv.on }}" class="sw" style="background:{{ pv.bg }};color:{{ pv.fg }}">{{ pv.label }}</button>
+</sc-for>
+</div>
 <div class="page">
+<sc-if value="{{ ps.ok }}" hint-placeholder-val="{{ true }}">
+
 
 <div class="crumb"><button type="button" aria-label="{{ t.back }}" style="display:inline-flex;align-items:center;gap:6px"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="transform:scaleX({{ backFlip }})"><path d="M15 5l-7 7 7 7"/></svg>{{ sh.current }}</button></div>
 
@@ -144,6 +153,24 @@
 </div>
 </sc-if>
 
+</sc-if>
+<sc-if value="{{ ps.other }}" hint-placeholder-val="{{ false }}">
+<sc-if value="{{ ps.loading }}" hint-placeholder-val="{{ false }}">
+<div class="pskel" role="status" aria-label="{{ ps.loadingLabel }}">
+<div class="sk sk-title"></div><div class="sk sk-line"></div>
+<div class="sk-grid"><sc-for list="{{ ps.skel }}" as="sk" hint-placeholder-count="6"><div class="sk sk-card"></div></sc-for></div>
+</div>
+</sc-if>
+<sc-if value="{{ ps.msg }}" hint-placeholder-val="{{ false }}">
+<div class="pstate">
+<span class="pstate-ic" aria-hidden="true" style="background:{{ ps.icBg }};color:{{ ps.icFg }}">{{ ps.glyph }}</span>
+<h2>{{ ps.title }}</h2>
+<p>{{ ps.body }}</p>
+<div class="pstate-act"><button type="button" class="btn btn-dark">{{ ps.cta }}</button><sc-if value="{{ ps.hasAlt }}" hint-placeholder-val="{{ false }}"><button type="button" class="btn">{{ ps.alt }}</button></sc-if></div>
+<sc-if value="{{ ps.hasRef }}" hint-placeholder-val="{{ false }}"><div class="ref">{{ ps.ref }}</div></sc-if>
+</div>
+</sc-if>
+</sc-if>
 </div>
 </div>
 
@@ -318,6 +345,7 @@ class Component extends DCLogic {
 
     return {
       rootRef: this.root,
+      ps: window.MaabarStates(this, this.state.lang, 'iprofile'),
       sh: window.MaabarShell(this.state.lang, 'trader', 'disc'), t, langs: this.langsFor(s.lang),
       backFlip: t.dir === 'rtl' ? -1 : 1,
 

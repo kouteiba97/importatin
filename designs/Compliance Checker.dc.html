@@ -49,6 +49,12 @@
 </div>
 </header>
 
+<div class="statebar">
+<span class="lbl">{{ vStateLabel }}</span>
+<sc-for list="{{ vviews }}" as="vv" hint-placeholder-count="4">
+<button type="button" onClick="{{ vv.pick }}" aria-pressed="{{ vv.on }}" class="sw" style="background:{{ vv.bg }};color:{{ vv.fg }}">{{ vv.label }}</button>
+</sc-for>
+</div>
 <main class="site-main">
 <div class="container">
 
@@ -122,7 +128,7 @@ class Component extends DCLogic {
     const tag = (q || (typeof navigator !== 'undefined' && navigator.language) || '').slice(0, 2).toLowerCase();
     return ['ar', 'fr', 'en'].includes(tag) ? tag : Component.FALLBACK;
   }
-  state = { lang: Component.detect(), open: null };
+  state = { lang: Component.detect(), open: null, verdict: 'cond' };
   root = React.createRef();
   componentDidMount() { this._apply(); }
   componentDidUpdate() { this._apply(); }
@@ -197,22 +203,63 @@ class Component extends DCLogic {
     }
   };
 
+  /* The other three answers the checker can give. Figures are placeholders filled from the regulatory values. */
+  VERDICTS = {
+    en: {
+      ok: { subject: 'Women’s winter coats · from Turkey', vLabel: 'Allowed', reason: 'Allowed. Clothing is not an excluded category.',
+            steps: ['Stay within {cap} per trip.', 'Keep the purchase invoice.'], lawHint: 'Art. 2', lawBody: 'Decree 25-170: goods bought for resale as they are, up to {cap} per trip.' },
+      no: { subject: 'Medicines · from France', vLabel: 'Not allowed', reason: 'Not allowed. Pharmaceutical products are excluded from micro-importing.',
+            steps: ['Do not buy this item for resale.', 'Check another product.'], lawHint: 'Art. 9', lawBody: 'Decree 25-170: pharmaceutical products are excluded from this regime.' },
+      unk: { subject: 'Portable power station 500 Wh', vLabel: 'No answer yet', reason: 'We don’t have a verdict for this item yet. Our team will review it.',
+            steps: ['Describe the item more precisely.', 'Ask for a review — you’ll be told the answer.'], lawHint: '—', lawBody: 'No rule is linked to this item yet.' }
+    },
+    fr: {
+      ok: { subject: 'Manteaux d’hiver femme · de Turquie', vLabel: 'Autorisé', reason: 'Autorisé. Les vêtements ne sont pas une catégorie exclue.',
+            steps: ['Restez sous {cap} par voyage.', "Conservez la facture d'achat."], lawHint: 'Art. 2', lawBody: 'Décret 25-170 : marchandises destinées à la revente en l’état, jusqu’à {cap} par voyage.' },
+      no: { subject: 'Médicaments · de France', vLabel: 'Interdit', reason: 'Interdit. Les produits pharmaceutiques sont exclus de l’importation de faible valeur.',
+            steps: ['N’achetez pas cet article pour le revendre.', 'Vérifiez un autre produit.'], lawHint: 'Art. 9', lawBody: 'Décret 25-170 : les produits pharmaceutiques sont exclus de ce régime.' },
+      unk: { subject: 'Station électrique portable 500 Wh', vLabel: 'Pas encore de réponse', reason: 'Nous n’avons pas encore de verdict pour cet article. Notre équipe va l’examiner.',
+            steps: ['Décrivez l’article plus précisément.', 'Demandez un examen — vous recevrez la réponse.'], lawHint: '—', lawBody: 'Aucune règle n’est encore liée à cet article.' }
+    },
+    ar: {
+      ok: { subject: 'معاطف شتوية نسائية · من تركيا', vLabel: 'مسموح', reason: 'مسموح. الألبسة ليست من الفئات المستثناة.',
+            steps: ['ابقَ في حدود {cap} في كل تنقّل.', 'احتفظ بفاتورة الشراء.'], lawHint: 'المادة 2', lawBody: 'المرسوم 25-170: سلع تُشترى لإعادة بيعها على حالتها، في حدود {cap} في كل تنقّل.' },
+      no: { subject: 'أدوية · من فرنسا', vLabel: 'ممنوع', reason: 'ممنوع. المنتجات الصيدلانية مستثناة من الاستيراد المصغّر.',
+            steps: ['لا تشترِ هذا الصنف لإعادة بيعه.', 'افحص منتجاً آخر.'], lawHint: 'المادة 9', lawBody: 'المرسوم 25-170: المنتجات الصيدلانية مستثناة من هذا النظام.' },
+      unk: { subject: 'محطة طاقة محمولة 500 واط ساعي', vLabel: 'لا جواب بعد', reason: 'لا نملك حكماً لهذا الصنف بعد. سيراجعه فريقنا.',
+            steps: ['صِف الصنف بدقّة أكبر.', 'اطلب مراجعة — وسيصلك الجواب.'], lawHint: '—', lawBody: 'لا توجد قاعدة مرتبطة بهذا الصنف بعد.' }
+    }
+  };
+  VSTYLE = {
+    cond: ['!', 'var(--conditional-ink)', 'var(--conditional-bg)', 'var(--conditional-bd)'],
+    ok: ['✓', 'var(--allowed-ink)', 'var(--allowed-bg)', 'var(--allowed-bd)'],
+    no: ['✕', 'var(--prohibited-ink)', 'var(--prohibited-bg)', 'var(--prohibited-bd)'],
+    unk: ['?', 'var(--ink-2)', 'var(--neutral-bg)', 'var(--neutral-bd)']
+  };
+  VLABELS = { en: ['Screen state', 'Conditional', 'Allowed', 'Not allowed', 'No answer yet'], fr: ['État de l’écran', 'Sous condition', 'Autorisé', 'Interdit', 'Sans réponse'], ar: ['حالة الشاشة', 'بشرط', 'مسموح', 'ممنوع', 'لا جواب'] };
+
   renderVals() {
-    const lang = this.state.lang, t = this.L[lang], open = this.state.open;
+    const lang = this.state.lang, vk = this.state.verdict, open = this.state.open;
+    const t = Object.assign({}, this.L[lang], vk === 'cond' ? null : this.VERDICTS[lang][vk]);
+    const F = x => window.MaabarRules.fill(x, lang), vs = this.VSTYLE[vk];
     return {
       ...t,
       rootRef: this.root,
       sh: window.MaabarShell(this.state.lang, 'public', 'check'),
       query: '', onQuery: () => {}, submit: () => {}, share: () => {},
-      reason: window.MaabarRules.fill(t.reason, lang),
-      vGlyph: '!',
-      vFg: 'var(--conditional-ink)',
-      vBg: 'var(--conditional-bg)',
-      vBd: 'var(--conditional-bd)',
-      steps: t.steps.map((s, i) => ({ n: String(i + 1), t: s })),
+      reason: F(t.reason),
+      vGlyph: vs[0], vFg: vs[1], vBg: vs[2], vBd: vs[3],
+      vStateLabel: this.VLABELS[lang][0],
+      vviews: ['cond', 'ok', 'no', 'unk'].map((id, i) => ({
+        label: this.VLABELS[lang][i + 1], on: vk === id,
+        bg: vk === id ? 'var(--ink)' : 'var(--surface)', fg: vk === id ? 'var(--ink-on)' : 'var(--ink-2)',
+        pick: () => this.setState({ verdict: id, open: null })
+      })),
+      steps: t.steps.map((s, i) => ({ n: String(i + 1), t: F(s) })),
       discs: t.discs.map(d => ({
         ...d,
-        body: window.MaabarRules.fill(d.body, lang),
+        hint: d.id === 'law' && t.lawHint ? t.lawHint : d.hint,
+        body: F(d.id === 'law' && t.lawBody ? t.lawBody : d.body),
         open: open === d.id,
         rot: open === d.id ? 180 : 0,
         hasLink: !!d.link,

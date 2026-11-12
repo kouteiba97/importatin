@@ -238,7 +238,7 @@
     return i.replace(/\B(?=(\d{3})+(?!\d))/g, sep) + (f ? (lang === 'fr' ? ',' : '.') + f : '');
   }
   function valueText(v, lang) {
-    if (v.kind === 'money') return lang === 'ar' ? LRI + fmtNum(v.n, lang) + PDI + ' دج' : LRI + fmtNum(v.n, lang) + ' ' + ({ en: 'DZD', fr: 'DA' })[lang] + PDI;
+    if (v.kind === 'money') return lang === 'ar' ? LRI + fmtNum(v.n, lang) + PDI + ' دج' : LRI + fmtNum(v.n, lang) + ' ' + 'DA' + PDI;
     if (v.kind === 'pct') return LRI + fmtNum(v.n, lang) + (lang === 'fr' ? ' %' : '%') + PDI;
     return LRI + fmtNum(v.n, lang) + PDI;
   }

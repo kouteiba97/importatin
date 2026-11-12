@@ -76,6 +76,7 @@ designs/
   tokens.css          ← the ONLY source of colours, type, spacing, radii, shadows
   web.css             ← web platform layout: .app shell (sidebar) and .site shell (public header)
   shell.js            ← navigation data for each surface in EN/FR/AR (window.MaabarShell)
+  states.js           ← shared page states (loading skeleton / empty / error / offline) + per-screen empty copy in EN/FR/AR (window.MaabarStates)
   rules-content.js    ← sample rule articles + regulatory values read by Rules and Admin Rules (stand-in for the database)
   support.js          ← Claude Design runtime (do not edit)
   *.dc.html           ← 24 screens (Claude Design artboard format) + Logo.dc.html
@@ -152,6 +153,9 @@ All 31 screens in the hub were loaded at 1440px in EN, FR and AR (93 loads): no 
 2. Native-speaker review of the French and Arabic copy.
 3. Real product photography to replace the category placeholders before the client demo.
 4. Client review in the hub; then, only when the owner says so, the build phase (see the architecture documents).
+
+### Page states
+Every data screen has a review-only "Screen state" switcher. 11 screens use the shared pattern in `designs/states.js` (Ready · Loading · Empty · Error · Offline; styles `.pstate` / `.sk` in `web.css`; applied by `node tools/add-states.js`, which skips screens already done — add a new screen to its list and its empty copy to `states.js`). The Compliance Checker instead switches between its four answers (conditional · allowed · not allowed · no answer yet). Screens with their own flows (setup, verification, commitment, dispute, search, saved…) already had their own switchers.
 
 ### Gotchas learned the hard way
 - **Do not re-run** a `w-*.js` recipe on a screen that is already converted — `logic` replacements (e.g. Marketplace) would apply twice. The recipes are records and templates.

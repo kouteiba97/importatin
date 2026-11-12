@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script src="./support.js"></script>
 <script src="./shell.js"></script>
+<script src="./states.js"></script>
 </head>
 <body>
 <x-dc>
@@ -47,7 +48,15 @@
 </div>
 </header>
 
+<div class="statebar">
+<span class="lbl">{{ ps.label }}</span>
+<sc-for list="{{ ps.views }}" as="pv" hint-placeholder-count="5">
+<button type="button" onClick="{{ pv.pick }}" aria-pressed="{{ pv.on }}" class="sw" style="background:{{ pv.bg }};color:{{ pv.fg }}">{{ pv.label }}</button>
+</sc-for>
+</div>
 <main class="site-main">
+<sc-if value="{{ ps.ok }}" hint-placeholder-val="{{ true }}">
+
 <div class="container">
 
 <section class="block">
@@ -104,6 +113,24 @@
 </div>
 
 </div>
+</sc-if>
+<sc-if value="{{ ps.other }}" hint-placeholder-val="{{ false }}">
+<sc-if value="{{ ps.loading }}" hint-placeholder-val="{{ false }}">
+<div class="container"><div class="pskel" role="status" aria-label="{{ ps.loadingLabel }}">
+<div class="sk sk-title"></div><div class="sk sk-line"></div>
+<div class="sk-grid"><sc-for list="{{ ps.skel }}" as="sk" hint-placeholder-count="6"><div class="sk sk-card"></div></sc-for></div>
+</div></div>
+</sc-if>
+<sc-if value="{{ ps.msg }}" hint-placeholder-val="{{ false }}">
+<div class="container"><div class="pstate">
+<span class="pstate-ic" aria-hidden="true" style="background:{{ ps.icBg }};color:{{ ps.icFg }}">{{ ps.glyph }}</span>
+<h2>{{ ps.title }}</h2>
+<p>{{ ps.body }}</p>
+<div class="pstate-act"><button type="button" class="btn btn-dark">{{ ps.cta }}</button><sc-if value="{{ ps.hasAlt }}" hint-placeholder-val="{{ false }}"><button type="button" class="btn">{{ ps.alt }}</button></sc-if></div>
+<sc-if value="{{ ps.hasRef }}" hint-placeholder-val="{{ false }}"><div class="ref">{{ ps.ref }}</div></sc-if>
+</div></div>
+</sc-if>
+</sc-if>
 </main>
 
 <footer class="site-foot">
@@ -245,6 +272,7 @@ class Component extends DCLogic {
 
     return {
       rootRef: this.root,
+      ps: window.MaabarStates(this, this.state.lang, 'home'),
       sh: window.MaabarShell(this.state.lang, 'public', 'home'),
       t,
       arrow: t.dir === 'rtl' ? 1 : -1,
