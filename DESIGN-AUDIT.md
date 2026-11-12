@@ -47,7 +47,7 @@ Eleven new screens closing every remaining P0/P1 gap.
 | **Commitment** | Full lifecycle with eight states including disputed, cancelled, expired |
 | **Dispute** | Issue type → evidence → submitted → under review → needs more → decision |
 
-**Deck: 24 screens**, all on one token file, all Arabic-first RTL.
+**Deck: 34 screens** (list in `HANDOFF.md` §6), all on one token file, all in EN / FR / AR with both directions.
 
 ---
 
@@ -170,7 +170,7 @@ Roles are **capabilities on one identity**, not separate accounts. A user may ho
 ## 8. RTL / MULTILINGUAL — HONEST STATUS
 
 **Complete:**
-- All 24 screens render correctly in RTL and flip cleanly — direction is a layout property, not a content assumption
+- All screens render correctly in RTL and flip cleanly — direction is a layout property, not a content assumption
 - Zero physical `left`/`right` in layout across the whole deck
 - All 14 number formatters wrap output in `U+2066…U+2069`
 - Arabic plural forms implemented as counted nouns (`صنف واحد` / `صنفان` / `3 أصناف` / `11 صنفاً`)
@@ -181,7 +181,7 @@ Roles are **capabilities on one identity**, not separate accounts. A user may ho
 
 The **logo is Latin in all three interfaces** — `Maabar`. `مَعْبَر` exists as a localised wordmark variant used only inside the Arabic interface, never as a second line beneath the Latin.
 
-**Complete — all 24 screens carry EN, FR and AR.** Every screen has a compact language switch; direction, number separators, decimals and plurals follow the active locale.
+**Complete — all screens carry EN, FR and AR.** Every screen has a compact language switch; direction, number separators, decimals and plurals follow the active locale.
 
 - **Locale resolution:** `?lang=` in the URL, else the browser language, else **French**. One value (`FALLBACK`) per screen; in the build it becomes one config value
 - **Numbers:** Western digits in all three. Group separator is a space in AR/FR, a comma in EN; the decimal mark is a comma in FR only
@@ -236,7 +236,7 @@ Screens read them at render. `Trip Creation` displays the value cap with its eff
 
 ## 11. DESIGN SYSTEM STATE
 
-- **One token file**, `designs/tokens.css` v3 — every colour, size, spacing, radius, shadow, density value. 24 of 24 screens consume it. Zero screens define their own palette
+- **One token file**, `designs/tokens.css` v3 — every colour, size, spacing, radius, shadow, density value. Every screen consumes it. Zero screens define their own palette
 - **Brand and status are separate colour systems.** This is the defining rule of v3 and it fixes a real flaw in v2. Blue `--brand` carries the identity: logo, rail active state, primary CTAs, selection, progress. Green / amber / red carry compliance verdicts *only*. In v2 green did both jobs on a product whose core feature is a compliance verdict — 214 `--allowed` usages of which only 21 were actually verdicts. **No brand element may use `--allowed`, and no verdict may use `--brand`**
 - **Four density tiers**: public (low, imagery-led) · operational (medium, cards + rules) · compliance (progressive disclosure, no brand colour on a verdict) · admin (high, tables and panels)
 - **Cards for comparable entities, rules for data within one entity**
@@ -254,7 +254,7 @@ Screens read them at render. `Trip Creation` displays the value cap with its eff
 
 | Item | Priority | Note |
 |---|---|---|
-| Native-speaker review of FR and AR copy | P1 | All 24 screens are trilingual; copy is accurate but not yet reviewed by native commercial writers |
+| Native-speaker review of FR and AR copy | P1 | All screens are trilingual; copy is accurate but not yet reviewed by native commercial writers |
 | ~~Rules pages~~ | **Done** | Public **Rules** page (shoppers: why products are missing; micro-importers; traders) built from structured, sourced articles with live regulatory values; managed in the console (**Admin Rules**) with draft → review → publish and author ≠ publisher. See `docs/architecture/RULES-CONTENT.md` |
 | ~~Web platform layout~~ | **Done** | Every screen is a desktop web page on the shared shells (`designs/web.css`, `designs/shell.js`): header site for the public, sidebar app for importers and traders. The deck shows the real desktop dashboards. Verified in EN/FR/AR at 1440px. Details in `HANDOFF.md` §6 |
 | Real product photography | P1 | Placeholders are designed but are placeholders. **Needed before the client demo** |
@@ -327,6 +327,6 @@ Then open `http://localhost:4321`. Screens are Claude Design artboards (`.dc.htm
 ```
 importatin/
 ├── DESIGN-AUDIT.md     this file
-├── designs/            24 screens + tokens.css
+├── designs/            34 screens + tokens.css, web.css, shell.js, rules-content.js
 └── preview/server.js   local preview server
 ```

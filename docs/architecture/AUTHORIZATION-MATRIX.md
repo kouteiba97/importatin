@@ -125,9 +125,10 @@ by self-service.
 | `moderation` | Content moderation | Listings, images, message reports. **No KYC binaries** |
 | `disputes` | Disputes | The dispute's evidence bundle and referenced conversation only |
 | `compliance` | Category review, rule drafts | Regulatory data. No personal documents |
-| `regulatory` | Rule publication | Draft → approve. **Separation of duty: cannot approve own draft** |
+| `rules_editor` | Rules pages (drafts) — the "sub-admin" for content | Rule articles and proposed regulatory values. Can draft, edit and submit; **cannot publish**. No personal data |
+| `regulatory` | Rule publication, Rules pages (approval) | Draft → approve. **Separation of duty: cannot approve own draft** — applies to regulatory values and to rule articles (`RULES-CONTENT.md`) |
 | `billing` | Subscription confirmation | `billing` schema only. **No commercial data** |
-| `superadmin` | Role administration | Cannot decide queue items — granting and deciding are separated |
+| `superadmin` | Role administration (`Admin Team`: invite, assign roles, suspend) | Cannot decide queue items, write or publish rules — granting and deciding are separated |
 
 Requirements for every admin action: MFA enrolled and satisfied; a `reason_code` from
 `decision_reasons`; a stored `user_facing_consequence`; an audit row. Corrections are new
@@ -135,7 +136,7 @@ decisions referencing the old (AD-024).
 
 Two separations of duty are deliberate and asserted by tests:
 
-1. A `regulatory` admin cannot approve a rule version they drafted.
+1. A `regulatory` admin cannot approve a rule version or a rule article they drafted.
 2. A `superadmin` can grant roles but cannot decide queue items — otherwise one compromised
    account could both grant itself trust powers and clear the evidence.
 

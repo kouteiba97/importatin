@@ -33,7 +33,7 @@ legalised micro-import trade. It connects micro-importers, traders, consumers an
 It is **not** a seller, buyer, escrow, payment processor, customs broker, shipper, currency
 exchange or commission-taking marketplace operator.
 
-The approved design is complete: 24 screens, one token layer, Arabic-first RTL throughout, every
+The approved design is complete: every screen (list in `HANDOFF.md` §6), one token layer, a desktop-first web platform in three equal languages (EN / FR / AR) with full RTL support, every
 P0 journey drawn end to end, with one module held pending Algerian legal review.
 
 **Recommended architecture:** a **modular monolith** — NestJS API, Next.js web tier, PostgreSQL 16,
@@ -390,7 +390,7 @@ Arabic is the source language, not a translation. Fallback is `fr→ar` and `en�
 Arabic string is a build failure.
 
 One component set, two directions: logical properties only, enforced by stylelint — the deck
-achieved zero physical directional properties across 24 screens and the implementation must not
+achieved zero physical directional properties across every screen and the implementation must not
 regress it. Arabic is never letter-spaced (it breaks joining) and never uppercased.
 
 **Numbers are LTR-isolated at the formatter, never by callers.** `U+2066…U+2069` around every
@@ -403,9 +403,8 @@ two bugs the RTL review actually caught: `60%` rendering as `%60`, and `S · M �
 Month names are **content, not `Intl` output**: the deck uses the Maghrebi set (`جوان`, not
 `يونيو`), and legal citations must match the Official Journal wording exactly.
 
-Honest status: full RTL and Arabic on 24/24; French and English copy on 2/24. A P1 content task
-with the architecture proven, scheduled into the first sprint and completed for the
-launch-critical set in Phase 12.
+Status: English, French and Arabic copy and both directions on every screen. Remaining: a
+native-speaker review of the French and Arabic wording before launch.
 
 ---
 
@@ -515,7 +514,7 @@ Transliteration of arbitrary user content is explicitly out of scope; the design
 
 ## 27. Performance
 
-Mobile-first on Algerian networks. Targets: API p95 < 300 ms reads / < 600 ms transitions; LCP
+Desktop-first layouts, but **performance is budgeted for phones on Algerian mobile networks**, because many shoppers will open the public pages in a phone browser. Targets: API p95 < 300 ms reads / < 600 ms transitions; LCP
 < 2.5 s on throttled 3G for public pages; initial JS < 180 KB gzipped on public routes; CLS < 0.05.
 
 The bottlenecks that will actually bite first, in order: image weight on the marketplace grid
@@ -530,6 +529,8 @@ achievable without JavaScript.
 ---
 
 ## 28. PWA and offline
+
+Maabar is a website, not a native app; "PWA" here only means the website can be pinned and can send Web Push.
 
 MVP: installability, app-shell caching, **resumable uploads**, Web Push, and the two offline states
 the design actually draws — `Search` cached-results banner and `Verification` resumable upload.
@@ -629,13 +630,13 @@ Twenty-two threats with attack surface, impact, mitigation and enforcement layer
 
 ## 34. MVP boundaries
 
-**In:** all 24 screens, the full trust ladder for both roles, three-axis capacity with the
+**In:** all screens, the full trust ladder for both roles, three-axis capacity with the
 regulatory cap, the commitment machine without `secured`, messaging with action cards, reviews and
 disputes, the compliance checker in three languages, the regulatory engine, subscriptions with both
 payment paths, notifications with Web Push, the admin console.
 
 **Out, deliberately:** deposit declaration (legal hold) · group sourcing (AD-041) · reference price
-index (AD-042) · email · SMS product notifications · desktop layouts beyond admin · analytics
+index (AD-042) · email · SMS product notifications · phone-width polish of the workspaces · analytics
 screens · separate requests/commitments list screens · consumer profile screen · French and English
 beyond the launch-critical set.
 
@@ -769,7 +770,7 @@ Assessed against the brief's stated conditions:
 | KYC security defined | ✅ Residency, signed URLs, audit-before-issue, no owner endpoint, sanitisation pipeline |
 | Regulatory configuration defined | ✅ Versioned, time-anchored, dual-approved, impact-previewed, stamped on records |
 | Frontend/backend responsibilities clear | ✅ Thin BFF; no rule or authorization decision in the web tier |
-| Every approved screen has an implementation path | ✅ 24/24 mapped in `SCREEN-API-MATRIX.md`; zero without a path. Three screens (`Records`, `Compliance Checker`, `Demand Board`) need a **data-source decision**, not a design change — §36.1 |
+| Every approved screen has an implementation path | ✅ all mapped in `SCREEN-API-MATRIX.md`; zero without a path. Three screens (`Records`, `Compliance Checker`, `Demand Board`) need a **data-source decision**, not a design change — §36.1 |
 | Critical concurrency addressed | ✅ Capacity, dual review, dual confirmation, duplicate transition, double-charge |
 | Deployment architecture defined | ✅ Topology, environments, migrations, backup/restore with RPO and RTO |
 | Testing covers the critical invariants | ✅ Seven non-overridable suites plus a generated authorization matrix |

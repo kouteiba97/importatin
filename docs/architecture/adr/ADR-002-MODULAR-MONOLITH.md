@@ -8,7 +8,7 @@
 
 ## Context
 
-Maabar is a single-market, single-currency, single-tenant product with 24 screens and a team of
+Maabar is a single-market, single-currency, single-tenant product with about 34 screens and a team of
 three to four engineers. It has three unusually hard correctness requirements: trip-capacity
 concurrency, atomic audit of admin decisions, and a legal invariant enforced by a foreign key.
 

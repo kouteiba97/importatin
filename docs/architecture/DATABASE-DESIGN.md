@@ -649,6 +649,7 @@ which is exactly the friction intended.
 | `app` notify | `notifications`, `notification_deliveries`, `push_subscriptions` |
 | `app` compliance | `compliance_items`, `compliance_verdicts` |
 | `app` regulatory | `regulatory_rules`, `regulatory_rule_versions` |
+| `app` rules pages | `legal_instruments`, `rule_articles`, `rule_article_versions` — model in `RULES-CONTENT.md` §2 (per-language text as `jsonb`, CHECK `approved_by <> created_by`, one published version per article) |
 | `app` media | `media_objects`, `upload_sessions` |
 | `app` admin | `admin_users`, `admin_queues`, `admin_decisions`, `decision_reasons` |
 | `app` infra | `outbox`, `reference_sequences`, `rate_limit_counters`, `feature_flags` |

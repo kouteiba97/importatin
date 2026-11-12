@@ -1,6 +1,6 @@
 # Maabar — Screen → Domain → API Matrix
 
-All 24 approved screens, including the simple ones. Column meanings:
+Every approved screen, including the simple ones. Screens 1–24 are the original set; 25–35 were added afterwards (entry pages, sign-in, setup, rules, admin). Column meanings:
 
 - **Actor / policy** — required capability and derived level (`—` = public)
 - **API** — endpoints from `API-CONTRACT.md`
@@ -238,7 +238,7 @@ All 24 approved screens, including the simple ones. Column meanings:
 
 ## Shared (5)
 
-### 19. `Onboarding`
+### 19. `Onboarding` — **superseded** by `Sign In` (25), `Importer Setup` (29) and `Trader Setup` (30); kept for the API mapping
 | | |
 |---|---|
 | **Actor** | — public → authenticated |
@@ -312,12 +312,30 @@ All 24 approved screens, including the simple ones. Column meanings:
 
 ---
 
+## Added after the original set (11)
+
+| # | Screen | Actor | Route | API | States / invariants |
+|---|---|---|---|---|---|
+| 25 | `Sign In` | — public | `/sign-in` | `POST /auth/otp/request` · `POST /auth/otp/verify` · `PATCH /users/me` · `GET /auth/me` | Phone → code → profile (new) or welcome back (returning). One identity; the door (shopper / importer / trader) only chooses where to go next |
+| 26 | `Choose Experience` | authenticated | `/choose` | `GET /auth/me` · `GET /capabilities` | Lists only the experiences the identity holds; "Become…" for the others |
+| 27 | `For Importers` | — public | `/for-importers` | `GET /regulatory/rules` (figures) | Marketing page; legal figures come from the regulatory engine |
+| 28 | `For Traders` | — public | `/for-traders` | — | Marketing page |
+| 29 | `Importer Setup` | authenticated | `/import/setup` | `POST /capabilities` · `GET /verification/requirements` · upload session · `POST /verification/cases` · `/submit` | Information → documents → review → sent |
+| 30 | `Trader Setup` | authenticated | `/trade/setup` | same as 29 with the trader ladder | Commercial register required before public listings (Law 18-05) |
+| 31 | `Verification Status` | importer / trader | `/import/status`, `/trade/status` | `GET /verification/cases/:id` · `GET /verification/documents/:id/status` | Pending · needs fixes · approved · expired |
+| 32 | `Rules` | — public | `/rules?for=` | `GET /rules?audience=` | Only published articles; values filled from the regulatory engine; three audiences |
+| 33 | `Admin Sign In` | admin | `ops.…/login` | admin auth + MFA | No sign-up, MFA cannot be skipped, "no access" state |
+| 34 | `Admin Rules` | `rules_editor` / `regulatory` | `ops.…/rules` | `/admin/rule-articles…` · `/admin/regulatory/…` | Draft → review → published; author ≠ publisher; blocked until 3 languages + official source + approved values |
+| 35 | `Admin Team` | `superadmin` | `ops.…/team` | `/admin/team…` | Invite, assign roles, suspend; cannot change own roles; last superadmin cannot be removed |
+
+---
+
 ## Coverage check
 
 | | Count |
 |---|---|
-| Screens in `DESIGN-AUDIT.md` §4 | 24 |
-| Screens mapped above | **24** |
+| Screens in the review hub | 34 (+ the superseded `Onboarding`) |
+| Screens mapped above | **35** |
 | Screens with no implementation path | **0** |
 | Screens blocked by an unresolved question | **0** (`Commitment` ships with `secured` disabled; `Sourcing Request` ships with the audit's stricter authorization pending AD-044) |
 

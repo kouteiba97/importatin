@@ -90,8 +90,8 @@ because that is the part with actual value.
 | `max_value_per_trip` | money | 180,000,000 centimes (1,800,000 DZD) | Decree 25-170, JO 40, 29 June 2025 |
 | `max_trips_per_month` | integer | 2 | Decree 25-170 |
 | `customs_duty_rate` | ratio | 0.05 | Decree 25-170 |
-| `flat_tax_rate` | ratio | ⚪ to confirm | Decree 25-170 |
-| `authorisation_validity_months` | duration | ⚪ to confirm | Ministry of Foreign Trade |
+| `flat_tax_rate` | ratio | ⚪ to confirm (0.5% reported, official text not verified) | Finance Law 2026 (to verify) |
+| `authorisation_validity_months` | duration | 12 (one year, renewable) | Decree 25-170 **art. 12** |
 | `shelf_life_min_remaining_ratio` | ratio | 0.5 | Decree 25-170 **art. 6** |
 | `restricted_categories` | list | category codes | Decree 25-170 |
 | `required_documents_per_role` | list | ANAE card, general authorisation, NIF, CASNOS / commercial register, NIF, address | Decree 25-170 art. 4; Law 18-05 |

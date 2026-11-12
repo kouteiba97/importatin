@@ -367,6 +367,7 @@ not zero, which would be a lie, and not an error, which would break the page.
 | GET | `/compliance/categories` | Quick chips | — |
 | GET | `/regulatory/rules` | Effective values with sources | — |
 | GET | `/regulatory/rules/:key?as_of=` | Value at a date | — |
+| GET | `/rules?audience=shopper\|importer\|trader` | Published rule articles for the public Rules page: topics, level, text in the request language with values already filled, legal reference, source, reviewed date | — **public**, cacheable |
 
 Response shape follows the designed disclosure order exactly — verdict, reason, what to do, then
 *collapsed* legal basis, then *collapsed* source and last-updated (settled decision 8):
@@ -421,6 +422,9 @@ a signature before doing anything, including logging the body.
 | POST | `/admin/users/:id/suspend` · `/reinstate` | Account action | `trust_safety` |
 | GET | `/admin/regulatory/rules` · POST `/versions` · POST `/versions/:id/approve` | Rule lifecycle | `regulatory` (approver ≠ drafter) |
 | GET | `/admin/regulatory/versions/:id/impact` | Impact preview before publication | `regulatory` |
+| GET | `/admin/rule-articles` · POST · PATCH `/:id` (draft only) · POST `/:id/submit` · POST `/:id/withdraw` | Rules pages: draft and submit | `rules_editor` |
+| POST | `/admin/rule-articles/:id/publish` · `/return` · `/unpublish` | Rules pages: approve | `regulatory`; `403` if the caller is the author; `422` if a language, the legal source or a value is missing |
+| GET | `/admin/team` · POST `/invitations` · PATCH `/:id/roles` · POST `/:id/suspend` · `/reinstate` | Admin accounts and roles | `superadmin` only; cannot change own roles; every change audited |
 | GET | `/admin/billing/receipts` · POST `/:id/confirm` | Manual subscription confirmation | `billing` |
 | GET | `/admin/audit?resource=&actor=` | Audit query | `superadmin`, itself audited |
 

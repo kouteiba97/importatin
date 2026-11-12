@@ -1,6 +1,6 @@
 # Maabar — Admin Architecture
 
-The `Admin Console` artboard is the only desktop layout in the deck (1240×840) and the only
+The operations console (`Admin Sign In`, `Admin Console`, `Admin Rules`, `Admin Team`) is a separate desktop platform and the only
 `tier-admin` surface. Its structure is a specification for a *reusable primitive*, not for five
 separate tools.
 
@@ -203,14 +203,14 @@ asked in.
 
 ---
 
-## 8. Desktop-only, and why that is fine for now
+## 8. Desktop-only
 
-The admin console is the single desktop layout in the deck; everything else is mobile-first
-(`DESIGN-AUDIT.md` §12 lists desktop layouts for the rest as P1). Admin work is document review
-on a large screen, so this is a correct scoping decision rather than a gap.
+The whole product is a desktop-first web platform; the console is the one surface that is
+**desktop-only** (no narrow-width layout). Admin work is document review on a large screen, so this
+is a correct scoping decision rather than a gap.
 
-Consequences: the admin bundle is a separate route group with its own code split, does not ship to
-the mobile app shell, uses `tier-admin` density (9px padding, 8px gaps) and tables rather than
+Consequences: the admin bundle is a separate route group with its own code split, does not ship with
+the public or workspace bundles, uses `tier-admin` density (9px padding, 8px gaps) and tables rather than
 cards, and **never uses the commercial accent colour** — `tokens.css` reserves terracotta for the
 public tier and bans it from compliance and admin surfaces, so a moderation screen can never look
 like a shop.

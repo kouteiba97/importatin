@@ -12,7 +12,7 @@ this system.
 | Channel | MVP | Use | Cost | Notes |
 |---|---|---|---|---|
 | **In-app** | ✅ | Everything | None | The authoritative feed; every notification lands here |
-| **Web Push** | ✅ | Time-sensitive, user opted in | None | VAPID; the PWA is installable so this is the phone-reaching channel |
+| **Web Push** | ✅ | Time-sensitive, user opted in | None | VAPID; works in the browser on desktop and phone (the website can be pinned), so this is the channel that reaches people away from the site |
 | **SMS** | ✅ **OTP only** | Authentication | **High** | Never used for product notifications at MVP |
 | **Email** | ⛔ V1 | Receipts, digests | Low | The design never collects an email address. Adding it would be new product |
 

@@ -1,8 +1,9 @@
 # Maabar — Internationalization, RTL and Number Handling
 
-Arabic is first-class, not a translation of a French original. The approved deck is Arabic-first
-RTL across all 24 screens with zero physical `left`/`right` in layout. This document turns that
-into an implementation contract.
+English, French and Arabic are **three equal languages**: none is the source and none is the default
+(locale = `?lang=`, else the browser, else French). Arabic is first-class, not a translation — every
+screen runs RTL with zero physical `left`/`right` in layout. This document turns that into an
+implementation contract.
 
 ---
 
@@ -10,11 +11,11 @@ into an implementation contract.
 
 From `DESIGN-AUDIT.md` §8:
 
-- **Complete:** 24/24 screens Arabic-first RTL; zero physical directional properties; all 14
+- **Complete:** every screen works in both directions (RTL for Arabic, LTR for French and English); zero physical directional properties; all
   number formatters wrap output in `U+2066…U+2069`; Arabic counted nouns implemented; Western
   digits with tabular figures and non-breaking thousands separators.
-- **Partial:** French and English copy exists on **2 of 24 screens** (`Landing`,
-  `Compliance Checker`). The other 22 carry Arabic strings only.
+- **Complete:** English, French and Arabic copy exists on **every screen**. What remains is a
+  native-speaker review of the French and Arabic wording.
 
 The architecture is proven — `dir` flips correctly, no component has a fixed width, French runs
 roughly 20% longer and is absorbed. The remainder is a **content task**, and the string
@@ -56,7 +57,7 @@ whole layout reflows with no duplicated markup.
 | Directional transforms on icons | `[dir="rtl"] .icon-directional { transform: scaleX(-1) }`, applied only to genuinely directional glyphs (arrows, chevrons) |
 
 A stylelint rule fails the build on any physical directional property in component CSS. The deck
-achieved zero occurrences across 24 screens; the implementation must not regress it.
+achieved zero occurrences across every screen; the implementation must not regress it.
 
 **Never letter-space or uppercase Arabic.** `tokens.css` already enforces
 `[lang="ar"] { letter-spacing: 0 }` — letter-spacing breaks Arabic joining, and Arabic has no
@@ -236,8 +237,8 @@ share of first paint, so the subsets are built in CI, not hand-maintained.
 | Notification bodies | They arrive out of context |
 | The importer *blocked* explanation in `Listing Composer` | It teaches the legal boundary — its whole purpose |
 
-The remaining marketing and helper copy can ship Arabic-first and follow, which is what
-`DESIGN-AUDIT.md` §12 means by a P1 content task.
+All three languages ship together: a screen is not done until its English, French and Arabic copy
+are all present (the same rule the Rules pages enforce before publication).
 
 ---
 

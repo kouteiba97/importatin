@@ -164,7 +164,7 @@ Plus structural assertions:
 | LTR isolation | Every formatter output starts `U+2066`, ends `U+2069` |
 | Bidi regression | `60%` renders as `60%`; `S · M · L · XL` keeps order inside Arabic — the two failures the RTL review caught |
 | No physical directions | Stylelint across component CSS |
-| Direction flip | Visual regression of all 24 screens in `ar` and `fr` |
+| Direction flip | Visual regression of every screen in `ar`, `fr` and `en` |
 | Overflow | French at 130% of Arabic length does not clip |
 | No Arabic letter-spacing or uppercase | Computed-style assertion on `[lang="ar"]` |
 | Arabic search | `معطف` ↔ `المعاطف`; `عطر` ↔ `عطور`; Arabic-Indic digits match Western |

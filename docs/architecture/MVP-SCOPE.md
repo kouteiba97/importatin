@@ -46,7 +46,7 @@ with a named owner, not a pull request.
 | **SMS product notifications** | | ✅ V1 | Cost. SMS is OTP-only at MVP |
 | **Group / pooled sourcing** | | ✅ V1 | One opportunity card, no flow, no lifecycle. Building it means inventing product |
 | **Reference price index** | | ✅ V1 | No methodology, no minimum sample, no anti-gaming rules. Publishing a thin market signal is a real harm |
-| **Desktop layouts** (beyond admin) | | ✅ V1 | Design is mobile-first; a max-width container ships at MVP as a stopgap |
+| **Phone-width polish of the workspaces** | | ✅ V1 | The design is desktop-first. Public pages must work on a phone browser at MVP; the importer and trader workspaces get their narrow-width polish in V1 |
 | **Advanced analytics** | | ✅ V1 | Metrics specified, screens not drawn. Operational queue counters ship with the console — those are controls, not analytics |
 | **Abstract `Product` separate from `ProductListing`** | | ✅ V1 | Pays off only for cross-trader price comparison. Additive migration later |
 | **Requests list / Commitments list screens** | | ✅ V1 | Filtered views over existing data; the pattern exists in `Trader Home` and `Saved` |
@@ -61,18 +61,19 @@ with a named owner, not a pull request.
 
 ---
 
-## 2. The 24 screens — all MVP
+## 2. The screens — all MVP
 
 Every approved screen ships. The scope reductions above are **capabilities inside screens**, never
 whole screens.
 
 | Group | Screens |
 |---|---|
-| Public / consumer (8) | Landing · Consumer Home · Marketplace · Search · Product Detail · Seller Profile · Saved · Compliance Checker |
-| Importer (6) | Importer Home · Demand Board · Trip · Trip Creation · Records · Importer Profile |
-| Trader (4) | Trader Home · Discover · Sourcing Request · Listing Composer |
-| Shared (5) | Onboarding · Verification · Messages · Commitment · Dispute |
-| Admin (1) | Admin Console |
+| Public (13) | Landing · For Importers · For Traders · Sign In · Choose Experience · Consumer Home · Marketplace · Search · Product Detail · Seller Profile · Saved · Compliance Checker · Rules |
+| Importer (9) | Importer Setup · Verification · Verification Status · Importer Home · Demand Board · Trip · Trip Creation · Messages · Records |
+| Trader (8) | Trader Setup · Trader Home · Discover · Importer Profile · Sourcing Request · Commitment · Dispute · Listing Composer |
+| Admin (4) | Admin Sign In · Admin Console · Admin Rules · Admin Team |
+
+`Onboarding` was replaced by Sign In + Importer Setup + Trader Setup. Verification, Messages, Commitment and Dispute are shared by importers and traders.
 
 Three screens ship with a reduced feature inside them:
 
@@ -88,9 +89,9 @@ Three screens ship with a reduced feature inside them:
 
 | Metric | Value |
 |---|---|
-| Screens | 24 |
+| Screens | 34 |
 | Backend modules | 11 |
-| Database tables | 34 (+1 flagged off) |
+| Database tables | 34 (+1 flagged off) + 3 for the Rules pages (`RULES-CONTENT.md`) |
 | API endpoint groups | ~20 |
 | State machines | 1 primary (commitment) + 8 supporting |
 | Non-overridable test suites | 6 |

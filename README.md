@@ -16,6 +16,7 @@ Maabar connects the micro-importer, the trader, and the consumer through discove
 |---|---|
 | **[`HANDOFF.md`](HANDOFF.md)** | Full context for anyone (or Claude) continuing on another machine: decisions, history, current state, next steps. **Read this first.** |
 | **[`DESIGN-AUDIT.md`](DESIGN-AUDIT.md)** | The audit. Verdict, role/capability matrix, screen inventory, user journeys, state coverage, legal holds. |
+| **`docs/architecture/`** | The technical plan for developers (one copy of each document — start with `EXECUTIVE-SUMMARY.md` and `ARCHITECTURE-LOCK.md`; rules pages in `RULES-CONTENT.md`). |
 | **[`PRODUCT-ARCHITECTURE.md`](PRODUCT-ARCHITECTURE.md)** | One identity, four experiences (Marketplace · Maabar Import · Maabar Trade · Maabar Admin). With `EXPERIENCE-MAP.md`, `ROLE-ONBOARDING-MATRIX.md`, `NAVIGATION-MATRIX.md`, `KYC-ARCHITECTURE.md`, `AUTHENTICATION-UX-MATRIX.md`, `DESIGN-ARCHITECTURE-IMPACT.md`, `FINAL-UX-SEPARATION-AUDIT.md`. |
 | **`designs/`** | 34 product screens (incl. the public **Rules** page and the console's **Admin Rules**), `index.html` (review hub), `tokens.css` (colours/type), `web.css` + `shell.js` (web platform layout and navigation), `Logo.dc.html` (brand kit), `Dashboards.html` (three-role deck) |
 | **`tools/`** | The generator used to convert screens to the web layout, and a QA check |
@@ -46,7 +47,7 @@ Brand colour and status colour are deliberately disjoint. On a product whose cor
 
 ## Languages
 
-**Three equals: English, French, Arabic** — on all 24 screens. Arabic is not the source language and not the default. Locale comes from `?lang=` in the URL, else the browser, else **French**; direction derives from the locale rather than being hardcoded. Append `?lang=en`, `?lang=fr` or `?lang=ar` to any screen to open it in that language.
+**Three equals: English, French, Arabic** — on every screen. Arabic is not the source language and not the default. Locale comes from `?lang=` in the URL, else the browser, else **French**; direction derives from the locale rather than being hardcoded. Append `?lang=en`, `?lang=fr` or `?lang=ar` to any screen to open it in that language.
 
 One thing never translates: the **Article 14 label** is legally Arabic, so its preview stays Arabic in every interface language.
 
@@ -70,7 +71,7 @@ Boards with a chip row at the top or bottom are **state-switchable** — click t
 
 **Design complete. No application code yet.**
 
-32 screens in three languages, one token layer, both directions supported throughout. Every P0 user journey is drawn end to end.
+34 screens in three languages, one token layer, both directions supported throughout. Every P0 user journey is drawn end to end.
 
 **One module is held pending Algerian legal review:** the deposit declaration in `Commitment` — see `DESIGN-AUDIT.md` §9.2. Everything else is buildable.
 
@@ -95,7 +96,7 @@ Ten decisions were settled during design. Do not re-open them while implementing
 
 ## Known gaps
 
-- All 32 screens are trilingual (EN / FR / AR). The French and Arabic copy has not yet been reviewed by native commercial writers.
+- All screens are trilingual (EN / FR / AR). The French and Arabic copy has not yet been reviewed by native commercial writers.
 - **Maabar is a web platform, not a mobile app.** Every screen now uses the desktop web layout — a public website with a top header, and importer/trader web apps with a sidebar; the operations console is its own desktop platform. The `Dashboards.html` deck shows the real desktop dashboards in browser frames. (`Onboarding` is superseded by `Sign In`, `Importer Setup` and `Trader Setup`.)
 - Product imagery uses designed category placeholders, not real photography.
 - The Finance Law 2026 flat-tax rate (0.5%) is **not** shown to users: it sits as an unapproved draft in Admin Rules until the official text is confirmed. See `docs/architecture/RULES-CONTENT.md`.

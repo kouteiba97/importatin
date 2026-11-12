@@ -32,7 +32,7 @@ design and the settled boundaries.
 | G12 | Group sourcing request appears once with no flow behind it | **P2** |
 | G13 | Reference price index has no stated methodology | **P2** |
 | G14 | Four live scope counts on every search | **P3** |
-| G15 | Desktop layouts exist only for admin | **P3** |
+| G15 | ~~Desktop layouts exist only for admin~~ — **closed**: every screen is a desktop web layout | — |
 | G16 | Product imagery is placeholders | **P3** |
 | G17 | Mixed Arabic register (darija and MSA) must be preserved, not "corrected" | **P3** |
 
@@ -395,13 +395,11 @@ action at MVP.
 
 ---
 
-## G15 — Desktop layouts exist only for admin · **P3**
+## G15 — Desktop layouts exist only for admin · **CLOSED**
 
-Named by the audit itself (§12, P1). Mobile-first layouts will stretch awkwardly on desktop,
-particularly `Marketplace`, `Product Detail` and `Seller Profile` — the three surfaces most likely
-to be opened from a search engine on a laptop. Mitigation at MVP: a max-width container and a
-responsive grid on the public tier only, which is a layout change, not a redesign. Full desktop
-treatment stays P1 as the audit scheduled it.
+Closed on 1 October 2026: every screen was rebuilt as a desktop web page (`designs/web.css`,
+`designs/shell.js`). The remaining, smaller item is the reverse one — checking the public pages at
+phone and tablet widths (the responsive rules exist in `web.css`).
 
 ---
 

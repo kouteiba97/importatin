@@ -1,3 +1,5 @@
+> **Updated 12 November 2026.** Maabar is a **desktop-first web platform** (public website + importer and trader web apps + a separate operations console), in **three equal languages — English, French, Arabic** — with French as the fallback. Earlier wording in this document that said "mobile-first" or "Arabic-first" has been corrected. The current screen list is in `HANDOFF.md` §6.
+
 # Maabar — Technical Architecture Executive Summary
 
 **Phase:** pre-build architecture blueprint · no application code written
@@ -27,8 +29,7 @@ by proxy · no customs declaration · no transaction guarantee · no government 
 activity is personal and non-transferable (Decree 25-170, arts. 3 and 12). Import pre-declaration
 happens exclusively on `anae.dz`.
 
-The design phase is complete: **24 approved screens**, one design-token layer, Arabic-first RTL
-throughout, every P0 user journey drawn end to end. This document summarises the technical
+The design phase is complete: every screen approved (list in `HANDOFF.md` §6), one design-token layer, three equal languages (EN / FR / AR) with full RTL support, every P0 user journey drawn end to end. This document summarises the technical
 architecture derived from that design.
 
 ---
@@ -79,7 +80,7 @@ Two findings worth stating:
 | Search | **Postgres FTS + `pg_trgm`, no Elasticsearch** | The corpus is roughly 1,200 listings and tens of profiles. A search cluster would be the largest operational burden in the system, serving a table that fits in memory |
 | Jobs | **pg-boss** (Postgres-backed), no Redis/RabbitMQ/Kafka | Jobs enqueue in the same transaction as the state change that caused them, which eliminates the "committed but never notified" class of bug |
 | Object storage | **Self-hosted MinIO inside Algeria** | The design position is that KYC documents are stored in Algeria. S3 / R2 / Spaces fail residency before the open legal question is even answered |
-| CSS | **`tokens.css` + CSS Modules, no Tailwind** | The approved deck has zero physical `left`/`right` across 24 screens. Tailwind's physical-direction utilities would fight the RTL discipline |
+| CSS | **`tokens.css` + CSS Modules, no Tailwind** | The approved deck has zero physical `left`/`right` across every screen. Tailwind's physical-direction utilities would fight the RTL discipline |
 | Cache | **No Redis at MVP** | Sessions and rate-limit counters live in Postgres. One fewer stateful service to run and back up; interfaces are written so the store is swappable |
 
 **Three processes:** `web`, `api`, `worker`. `api` and `worker` share one image with different
@@ -340,13 +341,13 @@ Phases 3–5 can partially parallelise across backend and frontend once Phase 2 
 
 ### MVP · V1 · Future
 
-**MVP:** all 24 screens, both verification ladders, three-axis capacity with the regulatory cap,
+**MVP:** all screens, both verification ladders, three-axis capacity with the regulatory cap,
 the commitment machine without `secured`, messaging with action cards, reviews and disputes, the
 public compliance checker in three languages, the regulatory engine, subscriptions with both
 payment paths, notifications with Web Push, the admin console.
 
 **Deliberately out of MVP:** deposit declaration (legal hold) · group / pooled sourcing · reference
-price index · email channel · SMS product notifications · desktop layouts beyond admin · analytics
+price index · email channel · SMS product notifications · phone-width polish of the workspaces · analytics
 screens · separate requests and commitments list screens · consumer profile screen · French and
 English beyond the launch-critical set.
 
@@ -375,7 +376,7 @@ Every gate condition is met:
 | KYC security defined | ✅ Residency, signed URLs, audit-before-issue, no owner endpoint, sanitisation pipeline |
 | Regulatory configuration defined | ✅ Versioned, time-anchored, dual-approved, impact-previewed, stamped on records |
 | Frontend/backend responsibilities clear | ✅ Thin BFF; no rule or authorization decision in the web tier |
-| Every approved screen has an implementation path | ✅ 24/24 mapped; three need a **data-source decision**, not a design change |
+| Every approved screen has an implementation path | ✅ all mapped; three need a **data-source decision**, not a design change |
 | Critical concurrency addressed | ✅ Capacity, dual review, dual confirmation, duplicate transition, double-charge |
 | Deployment architecture defined | ✅ Topology, environments, migrations, backup/restore with RPO and RTO |
 | Testing covers the critical invariants | ✅ Seven non-overridable suites plus a generated authorization matrix |
@@ -422,5 +423,5 @@ a verdict the system cannot stand behind — the one thing this product cannot s
 | `DEPLOYMENT-ARCHITECTURE.md` | Hosting, environments, CI/CD, migrations, backup and recovery |
 | `IMPLEMENTATION-ROADMAP.md` | 13 phases with dependencies and acceptance criteria |
 | `ARCHITECTURE-DECISIONS.md` | 48 decisions with reason, alternatives, consequence, status |
-| `SCREEN-API-MATRIX.md` | All 24 screens → actor → domain → data → API → mutations → states |
+| `SCREEN-API-MATRIX.md` | All screens → actor → domain → data → API → mutations → states |
 | `DESIGN-IMPLEMENTATION-GAPS.md` | 17 gaps with technical issue, impact, recommendation, priority |
