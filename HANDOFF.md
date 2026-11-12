@@ -148,7 +148,6 @@ The owner said: *"it is still presented as a mobile app and I told you it is not
 All 31 screens in the hub were loaded at 1440px in EN, FR and AR (93 loads): no render errors, every user-facing screen sits in a web shell, no horizontal overflow, no leftover 430px phone column, correct text direction. The recipe for the last three screens is `tools/web-shell/w-public-2.js`.
 
 ### Possible next steps (none blocking)
-0. Link Product Detail and "Can I import this?" to the shopper Rules page when a category is excluded.
 1. Optional: move **Landing** onto the shared `.site` header for exact consistency (it already has its own web header).
 2. Native-speaker review of the French and Arabic copy.
 3. Real product photography to replace the category placeholders before the client demo.

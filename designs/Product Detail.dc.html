@@ -118,6 +118,7 @@
 </sc-if>
 </div>
 </sc-for>
+<a href="#" class="disc" style="border-top:1px solid var(--rule-faint);text-decoration:none;font-size:var(--t-sm);font-weight:500;color:var(--brand-ink)">{{ rulesLink }}</a>
 </aside>
 </div>
 
@@ -288,6 +289,7 @@ class Component extends DCLogic {
       save: () => this.setState(st => ({ saved: !st.saved })),
 
       availChip: 'chip-verified', availLabel: t.avail,
+      rulesLink: ({ ar: 'لماذا بعض المنتجات غير موجودة على مَعْبَر؟', fr: 'Pourquoi certains produits sont absents de Maabar', en: 'Why some products aren’t on Maabar' })[s.lang],
 
       thumbs: ['ph-coat', 'ph-coat', 'ph-bag', 'ph-coat'].map((ph, i) => ({ ph, bd: i === 0 ? 'var(--ink)' : 'var(--rule)' })),
 

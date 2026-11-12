@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script src="./support.js"></script>
 <script src="./shell.js"></script>
+<script src="./rules-content.js"></script>
 </head>
 <body>
 <x-dc>
@@ -208,7 +209,7 @@ class Component extends DCLogic {
       lede: 'فضاء عمل للمستورد المصغّر المقنَّن: طلب مُتحقَّق من تجّار حقيقيين، عدّادات حدّك القانوني، وسجلّ يبني سمعتك.',
       start: 'ابدأ كمستورد', become: 'أضف صفة مستورد', already: 'مستورد بالفعل؟ ادخل',
       visBar: 'مَعْبَر · الاستيراد', visTrip: 'رحلتك القادمة', visDest: 'إسطنبول · 12 – 16 أكتوبر',
-      meterK: ['القيمة', 'الوزن', 'الحجم'], meterV: ['560 000 / 1 800 000 دج', '8 / 46 كغ', '0,3 / 1,2 م³'],
+      meterK: ['القيمة', 'الوزن', 'الحجم'], meterV: ['دج', '8 / 46 كغ', '0,3 / 1,2 م³'],
       doesTitle: 'ماذا يفعل لك', doesSub: 'ثلاث أدوات، لا أكثر.',
       does: [['طلب مُتحقَّق', 'ما يطلبه التجّار في فئاتك، بكميات ونطاق سعر، قبل أن تسافر.'], ['حدّك القانوني', 'القيمة والوزن والحجم في ثلاثة عدّادات. الحدّ القانوني مقفل ومحدَّث من التنظيم.'], ['سجلّ وسمعة', 'التزامات موثَّقة، مراجعات من معاملات حقيقية، دفتر مبسّط ووسم المادة 14.']],
       needTitle: 'ما تحتاجه', needSub: 'الوثائق تُرفع بعد التسجيل، على مراحل. تبقى خاصّة.',
@@ -225,7 +226,7 @@ class Component extends DCLogic {
       lede: 'L’espace de travail du micro-importateur déclaré : demande vérifiée de vrais commerçants, compteurs de votre plafond légal, et un historique qui construit votre réputation.',
       start: 'Commencer comme importateur', become: 'Ajouter le rôle importateur', already: 'Déjà importateur ? Connexion',
       visBar: 'Maabar Import', visTrip: 'Votre prochain voyage', visDest: 'Istanbul · 12 – 16 octobre',
-      meterK: ['Valeur', 'Poids', 'Volume'], meterV: ['560 000 / 1 800 000 DA', '8 / 46 kg', '0,3 / 1,2 m³'],
+      meterK: ['Valeur', 'Poids', 'Volume'], meterV: ['DA', '8 / 46 kg', '0,3 / 1,2 m³'],
       doesTitle: 'Ce qu’il fait pour vous', doesSub: 'Trois outils, pas plus.',
       does: [['Demande vérifiée', 'Ce que les commerçants demandent dans vos catégories, en quantités et fourchettes de prix, avant de partir.'], ['Votre plafond légal', 'Valeur, poids et volume en trois compteurs. Le plafond légal est verrouillé et mis à jour depuis la réglementation.'], ['Historique et réputation', 'Engagements documentés, avis issus de transactions réelles, registre simplifié et étiquette art. 14.']],
       needTitle: 'Ce qu’il vous faut', needSub: 'Les documents se déposent après l’inscription, par étapes. Ils restent privés.',
@@ -242,7 +243,7 @@ class Component extends DCLogic {
       lede: 'The workspace for the licensed micro-importer: verified demand from real traders, meters for your legal cap, and a record that builds your reputation.',
       start: 'Start as an importer', become: 'Add the importer role', already: 'Already an importer? Sign in',
       visBar: 'Maabar Import', visTrip: 'Your next trip', visDest: 'Istanbul · 12 – 16 October',
-      meterK: ['Value', 'Weight', 'Volume'], meterV: ['560,000 / 1,800,000 DA', '8 / 46 kg', '0.3 / 1.2 m³'],
+      meterK: ['Value', 'Weight', 'Volume'], meterV: ['DA', '8 / 46 kg', '0.3 / 1.2 m³'],
       doesTitle: 'What it does for you', doesSub: 'Three tools, no more.',
       does: [['Verified demand', 'What traders in your categories want, in quantities and price ranges, before you travel.'], ['Your legal cap', 'Value, weight and volume on three meters. The legal limit is locked and updated from the regulation.'], ['Record and reputation', 'Documented commitments, reviews from real transactions, a simplified ledger and the Article 14 label.']],
       needTitle: 'What you need', needSub: 'Documents are uploaded after sign-up, in stages. They stay private.',
@@ -269,7 +270,8 @@ class Component extends DCLogic {
       views: this.sw(this.VIEWS, 'view', this.VIEW_LABELS[lang]),
       isAnon: !member, isMember: member,
       startCta: member ? t.become : t.start,
-      meters: t.meterK.map((k, i) => ({ k, v: t.meterV[i], w: W[i] })),
+      /* value meter: the cap is the regulatory value, formatted for the language; digits stay one LTR run */
+      meters: t.meterK.map((k, i) => ({ k, w: W[i], v: i ? t.meterV[i] : '\u2066' + [560000, window.MaabarRules.values.cap.n].map(n => String(n).replace(/\B(?=(\d{3})+(?!\d))/g, lang === 'en' ? ',' : ' ')).join(' / ') + '\u2069 ' + t.meterV[0] })),
       does: t.does.map(([tt, d]) => ({ t: tt, d })),
       needs: t.needs.map(([tt, d], i) => ({ t: tt, d, i: this.ICONS[i] })),
       how: t.how.map(([tt, d], i) => ({ n: String(i + 1), t: tt, d })),

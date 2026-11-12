@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script src="./support.js"></script>
 <script src="./shell.js"></script>
+<script src="./rules-content.js"></script>
 </head>
 <body>
 <x-dc>
@@ -267,8 +268,8 @@ class Component extends DCLogic {
 
   STAGES = [{ done: true }, { done: true, now: true }, { done: false }, { done: false }, { done: false }];
 
-  // The 1,800,000 DA value is configuration with an effective date, not a constant.
-  CAPS = [{ used: 560000, cap: 1800000, d: 0 }, { used: 24, cap: 46, d: 0 }, { used: 0.42, cap: 1.2, d: 2 }];
+  // The value cap is configuration with an effective date (rules-content.js), not a constant.
+  CAPS = [{ used: 560000, cap: window.MaabarRules.values.cap.n, d: 0 }, { used: 24, cap: 46, d: 0 }, { used: 0.42, cap: 1.2, d: 2 }];
 
   LIST = [{ ph: 'ph-coat', q: 30, buyers: 3, kind: 'ok' }, { ph: 'ph-bag', q: 20, buyers: 2, kind: 'cond' }, { ph: 'ph-perfume', q: 40, buyers: 0, kind: 'risk' }];
   BUYER_TONE = [0, 1, 2];

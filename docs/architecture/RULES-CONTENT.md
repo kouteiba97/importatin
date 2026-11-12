@@ -115,8 +115,11 @@ text incomplete, official text not confirmed, `{tax}` not approved → cannot be
 - Public site: **Rules** in the main navigation (`/rules`, three audience tabs).
 - Importer and trader workspaces: **Rules & limits** / **Rules** in the sidebar, opening the
   page on their audience.
-- Shoppers (to wire in a later pass): Product pages and "Can I import this?" should link to the shopper rules when a
-  product category is excluded (explains "why it isn't here").
+- Product Detail ("Why some products aren't on Maabar"), "Can I import this?" ("All micro-import rules") and
+  Trip Creation ("All rules and limits") link to the Rules page.
+- **One source for figures in every screen:** Trip, Trip Creation, Importer Home, Demand Board, For Importers,
+  Records and the Compliance Checker read the cap, trips per month, duty rate, shelf-life ratio and effective
+  date from the same regulatory values (`designs/rules-content.js` in the design) — none is typed in a screen.
 - Console: **Compliance → Rules pages** (`Admin Rules`), tabs *Articles* and *Regulatory values*.
 
 ---

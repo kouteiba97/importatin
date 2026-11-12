@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script src="./support.js"></script>
 <script src="./shell.js"></script>
+<script src="./rules-content.js"></script>
 </head>
 <body>
 <x-dc>
@@ -270,7 +271,8 @@ class Component extends DCLogic {
   };
 
   // Regulatory values come from configuration with effective dates, not constants.
-  TRIP = { value: 1800000, weight: 46, volume: 1.2, no: 1, max: 2 };
+  /* Legal limits come from the regulatory values (rules-content.js), never typed here. */
+  TRIP = { value: window.MaabarRules.values.cap.n, weight: 46, volume: 1.2, no: 1, max: window.MaabarRules.values.trips.n };
   FILTER_IDS = ['all', 'clothes', 'bags', 'cosm', 'shoes'];
 
   ITEMS = [

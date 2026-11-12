@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script src="./support.js"></script>
 <script src="./shell.js"></script>
+<script src="./rules-content.js"></script>
 </head>
 <body>
 <x-dc>
@@ -92,6 +93,7 @@
 </sc-for>
 </section>
 <button type="button" onClick="{{ share }}" class="btn btn-lg btn-block"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="6" cy="12" r="2.4"/><circle cx="17" cy="6" r="2.4"/><circle cx="17" cy="18" r="2.4"/><path d="M8.2 10.9l6.6-3.6M8.2 13.1l6.6 3.6"/></svg>{{ shareCta }}</button>
+<button type="button" class="btn btn-block">{{ rulesCta }}</button>
 <p style="margin:0;font-size:var(--t-sm);line-height:1.65;color:var(--ink-3)">{{ disclaimer }}</p>
 </aside>
 </div>
@@ -139,16 +141,16 @@ class Component extends DCLogic {
       quick: ['ألبسة', 'عطور', 'أحذية', 'حقائب', 'ساعات'],
       subject: 'عطور نسائية 100 مل · من تركيا',
       vLabel: 'مسموح بشرط',
-      reason: 'مسموح، بشرط أن يتبقّى أكثر من نصف مدة الصلاحية عند الدخول.',
+      reason: 'مسموح، بشرط أن يتبقّى أكثر من {shelf} من مدة الصلاحية عند الدخول.',
       nextLabel: 'ما عليك فعله',
       steps: ['تحقّق من تاريخَي الإنتاج والانتهاء قبل الشراء.', 'احتفظ بفاتورة الشراء.'],
       discs: [
         { id: 'law', label: 'الأساس القانوني', hint: 'المادة 6',
-          body: 'المرسوم 25-170: مدة الصلاحية المتبقية عند الاستيراد يجب أن تتجاوز نصف المدة الإجمالية.' },
+          body: 'المرسوم 25-170: مدة الصلاحية المتبقية عند الاستيراد يجب أن تتجاوز {shelf} من المدة الإجمالية.' },
         { id: 'src', label: 'المصدر وتاريخ التحديث', hint: '29 جوان 2025',
           body: 'الجريدة الرسمية، العدد 40، 29 جوان 2025.', link: 'افتح النص الرسمي' }
       ],
-      shareCta: 'شارك النتيجة',
+      shareCta: 'شارك النتيجة', rulesCta: 'كل قوانين الاستيراد المصغّر',
       disclaimer: 'معلومة استرشادية. القرار النهائي للجمارك.'
     },
     fr: {
@@ -160,16 +162,16 @@ class Component extends DCLogic {
       quick: ['Vêtements', 'Parfums', 'Chaussures', 'Sacs', 'Montres'],
       subject: 'Parfums femme 100 ml · de Turquie',
       vLabel: 'Autorisé sous condition',
-      reason: "Autorisé, à condition qu'il reste plus de la moitié de la durée de validité à l'entrée.",
+      reason: "Autorisé, à condition qu'il reste plus de {shelf} de la durée de validité à l'entrée.",
       nextLabel: 'Ce que vous devez faire',
       steps: ["Vérifiez les dates de fabrication et de péremption avant l'achat.", "Conservez la facture d'achat."],
       discs: [
         { id: 'law', label: 'Base légale', hint: 'Art. 6',
-          body: "Décret 25-170 : la durée de validité restante à l'importation doit dépasser la moitié de la durée totale." },
+          body: "Décret 25-170 : la durée de validité restante à l'importation doit dépasser {shelf} de la durée totale." },
         { id: 'src', label: 'Source et mise à jour', hint: '29 juin 2025',
           body: "Journal officiel n° 40 du 29 juin 2025.", link: 'Ouvrir le texte officiel' }
       ],
-      shareCta: 'Partager le résultat',
+      shareCta: 'Partager le résultat', rulesCta: 'Toutes les règles d’importation',
       disclaimer: "Information indicative. La décision finale appartient aux douanes."
     },
     en: {
@@ -181,16 +183,16 @@ class Component extends DCLogic {
       quick: ['Clothing', 'Fragrance', 'Shoes', 'Bags', 'Watches'],
       subject: 'Women’s perfume 100 ml · from Turkey',
       vLabel: 'Allowed with a condition',
-      reason: 'Allowed, provided more than half the shelf life remains on entry.',
+      reason: 'Allowed, provided more than {shelf} of the shelf life remains on entry.',
       nextLabel: 'What to do',
       steps: ['Check production and expiry dates before buying.', 'Keep the purchase invoice.'],
       discs: [
         { id: 'law', label: 'Legal basis', hint: 'Art. 6',
-          body: 'Decree 25-170: remaining shelf life on the import date must exceed half the total.' },
+          body: 'Decree 25-170: remaining shelf life on the import date must exceed {shelf} of the total.' },
         { id: 'src', label: 'Source and last update', hint: '29 June 2025',
           body: 'Official Journal no. 40, 29 June 2025.', link: 'Open the official text' }
       ],
-      shareCta: 'Share the result',
+      shareCta: 'Share the result', rulesCta: 'All micro-import rules',
       disclaimer: 'Indicative guidance. The final decision rests with customs.'
     }
   };
@@ -202,6 +204,7 @@ class Component extends DCLogic {
       rootRef: this.root,
       sh: window.MaabarShell(this.state.lang, 'public', 'check'),
       query: '', onQuery: () => {}, submit: () => {}, share: () => {},
+      reason: window.MaabarRules.fill(t.reason, lang),
       vGlyph: '!',
       vFg: 'var(--conditional-ink)',
       vBg: 'var(--conditional-bg)',
@@ -209,6 +212,7 @@ class Component extends DCLogic {
       steps: t.steps.map((s, i) => ({ n: String(i + 1), t: s })),
       discs: t.discs.map(d => ({
         ...d,
+        body: window.MaabarRules.fill(d.body, lang),
         open: open === d.id,
         rot: open === d.id ? 180 : 0,
         hasLink: !!d.link,

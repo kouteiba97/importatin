@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script src="./support.js"></script>
 <script src="./shell.js"></script>
+<script src="./rules-content.js"></script>
 </head>
 <body>
 <x-dc>
@@ -130,6 +131,7 @@
 </div>
 <div class="num" style="font-size:30px;font-weight:600"><bdi>{{ maxValue }}</bdi></div>
 <div class="num" style="font-size:var(--t-sm);color:var(--ink-2);margin-top:6px"><bdi>{{ valueNote }}</bdi></div>
+<a href="#" style="display:inline-block;margin-top:10px;font-size:var(--t-sm);font-weight:500">{{ t.rulesLink }}</a>
 </div></div>
 <div class="panel"><div class="panel-b">
 <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
@@ -268,7 +270,7 @@ class Component extends DCLogic {
       cats: ['ألبسة نسائية', 'ألبسة رجالية', 'حقائب', 'أحذية', 'تجميل وعطور', 'ساعات', 'منزل'],
       s1Note: 'بعض الفئات ممنوعة أو مشروطة. سنعلمك عند الحاجة.',
       s2Title: 'شحال تقدر تجيب؟', s2Lede: 'ثلاثة حدود مختلفة. واحد فقط منها قانوني.',
-      value: 'القيمة', legalLock: 'الحدّ القانوني — لا يمكن تعديله', valueNote: e => 'لكل تنقّل · ساري منذ ' + e, effective: '29 جوان 2025',
+      value: 'القيمة', legalLock: 'الحدّ القانوني — لا يمكن تعديله', valueNote: e => 'لكل تنقّل · ساري منذ ' + e, rulesLink: 'كل القوانين والحدود',
       wv: 'الوزن والحجم', wvHint: 'حدودك أنت', weightKg: 'الوزن (كغ)', volM3: 'الحجم (م³)',
       presets: ['حقيبتان 23 كغ', 'حقيبة + يد', 'شحن مرافق'],
       s3Title: 'شكون يشوف رحلتك؟', s3Lede: 'مورّدوك وميزانيتك لا يظهران أبداً.',
@@ -295,7 +297,7 @@ class Component extends DCLogic {
       cats: ['Vêtements femme', 'Vêtements homme', 'Sacs', 'Chaussures', 'Beauté et parfums', 'Montres', 'Maison'],
       s1Note: 'Certaines catégories sont interdites ou sous conditions. Nous vous prévenons.',
       s2Title: 'Combien pouvez-vous rapporter ?', s2Lede: 'Trois limites différentes. Une seule est légale.',
-      value: 'Valeur', legalLock: 'Plafond légal — non modifiable', valueNote: e => 'par déplacement · en vigueur depuis le ' + e, effective: '29 juin 2025',
+      value: 'Valeur', legalLock: 'Plafond légal — non modifiable', valueNote: e => 'par déplacement · en vigueur depuis le ' + e, rulesLink: 'Toutes les règles et plafonds',
       wv: 'Poids et volume', wvHint: 'Vos propres limites', weightKg: 'Poids (kg)', volM3: 'Volume (m³)',
       presets: ['2 valises de 23 kg', 'Valise + cabine', 'Fret accompagné'],
       s3Title: 'Qui voit votre voyage ?', s3Lede: 'Vos fournisseurs et votre budget ne sont jamais affichés.',
@@ -322,7 +324,7 @@ class Component extends DCLogic {
       cats: ['Women’s clothing', 'Men’s clothing', 'Bags', 'Shoes', 'Beauty & perfume', 'Watches', 'Home'],
       s1Note: 'Some categories are prohibited or conditional. We’ll flag them.',
       s2Title: 'How much can you bring?', s2Lede: 'Three different limits. Only one of them is legal.',
-      value: 'Value', legalLock: 'Legal limit — cannot be changed', valueNote: e => 'per trip · in force since ' + e, effective: '29 June 2025',
+      value: 'Value', legalLock: 'Legal limit — cannot be changed', valueNote: e => 'per trip · in force since ' + e, rulesLink: 'All rules and limits',
       wv: 'Weight and volume', wvHint: 'Your own limits', weightKg: 'Weight (kg)', volM3: 'Volume (m³)',
       presets: ['2 × 23 kg bags', 'Bag + cabin', 'Accompanied cargo'],
       s3Title: 'Who sees your trip?', s3Lede: 'Your suppliers and budget are never shown.',
@@ -344,7 +346,8 @@ class Component extends DCLogic {
   VIS_IDS = ['all', 'cats', 'known'];
 
   // Regulatory values come from configuration, never from a constant in a screen.
-  PARAMS = { maxValue: 1800000, maxTrips: 2, tripIndex: 1 };
+  /* Legal limits and their effective date come from the regulatory values (rules-content.js). */
+  PARAMS = { maxValue: window.MaabarRules.values.cap.n, maxTrips: window.MaabarRules.values.trips.n, tripIndex: 1 };
 
   renderVals() {
     const s = this.state, t = this.L[s.lang];
@@ -397,7 +400,7 @@ class Component extends DCLogic {
       }),
 
       maxValue: money,
-      valueNote: this.iso(t.valueNote(t.effective)),
+      valueNote: this.iso(t.valueNote(window.MaabarRules.date(window.MaabarRules.values.cap.since, s.lang))),
       presets: t.presets,
 
       visibility: this.VIS_IDS.map((id, i) => {
