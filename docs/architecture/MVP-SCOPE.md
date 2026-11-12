@@ -46,7 +46,7 @@ with a named owner, not a pull request.
 | **SMS product notifications** | | ✅ V1 | Cost. SMS is OTP-only at MVP |
 | **Group / pooled sourcing** | | ✅ V1 | One opportunity card, no flow, no lifecycle. Building it means inventing product |
 | **Reference price index** | | ✅ V1 | No methodology, no minimum sample, no anti-gaming rules. Publishing a thin market signal is a real harm |
-| **Phone-width polish of the workspaces** | | ✅ V1 | The design is desktop-first. Public pages must work on a phone browser at MVP; the importer and trader workspaces get their narrow-width polish in V1 |
+| **Phone layout** | ✅ | | Desktop-first design that also fits phone and tablet browsers (public pages and both workspaces; rules in `designs/web.css`). The console is desktop-only |
 | **Advanced analytics** | | ✅ V1 | Metrics specified, screens not drawn. Operational queue counters ship with the console — those are controls, not analytics |
 | **Abstract `Product` separate from `ProductListing`** | | ✅ V1 | Pays off only for cross-trader price comparison. Additive migration later |
 | **Requests list / Commitments list screens** | | ✅ V1 | Filtered views over existing data; the pattern exists in `Trader Home` and `Saved` |

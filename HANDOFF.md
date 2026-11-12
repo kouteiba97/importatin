@@ -149,14 +149,14 @@ The owner said: *"it is still presented as a mobile app and I told you it is not
 All 34 screens in the hub were loaded at 1440px in EN, FR and AR (last full run: 12 November 2026): no render errors, every user-facing screen sits in a web shell, no horizontal overflow, no leftover 430px phone column, correct text direction. The recipe for the last three screens is `tools/web-shell/w-public-2.js`.
 
 ### Possible next steps (none blocking)
-0. `tools/recipes/*.py` (seven screens) need Python; this PC only has Node. They are kept as records — edit those screens directly, or port a recipe to `tools/newscreen.js` if a full rebuild is ever needed. Give the Admin Console an "empty queue" state. Phone layout for the importer/trader workspaces (V1).
+0. `tools/recipes/*.py` (seven screens) need Python; this PC only has Node. They are kept as records — edit those screens directly, or port a recipe to `tools/newscreen.js` if a full rebuild is ever needed. Give the Admin Console an "empty queue" state. On a phone, Messages shows list and thread stacked — a list → thread drill-down would be better when the app is built.
 1. Optional: move **Landing** onto the shared `.site` header for exact consistency (it already has its own web header).
 2. Native-speaker review of the French and Arabic copy.
 3. Real product photography to replace the category placeholders before the client demo.
 4. Client review in the hub; then, only when the owner says so, the build phase (see the architecture documents).
 
-### Phone and tablet widths (public site)
-The product stays desktop-first, but the 13 public pages were checked at 390px and 820px in FR and AR: no sideways scrolling. Below 980px the header wraps (brand + account, then search, then the navigation as a strip that scrolls sideways with the language switch); grids drop to two or one column. Rules are at the end of `web.css`. The importer and trader workspaces and the console were **not** given a phone layout (planned for V1; the sidebar simply hides below 980px).
+### Phone and tablet widths (whole product except the console)
+Desktop-first, but every public page and every importer/trader workspace screen fits a phone (390px) and a tablet (820px) with no sideways scrolling — checked in FR and AR on 12 November 2026. It is still a website: **no bottom tab bar**. Below 980px the public header wraps (brand + account, search, then a navigation strip that scrolls sideways with the language switch), and the workspace sidebar becomes a header (brand + account, then the same kind of navigation strip, then search / language / notifications). Grids drop to two or one column, Messages stacks the conversation list above the thread, wide tables scroll inside their panel. All rules are at the end of `web.css` (they target class names used inside individual screens, so a new screen with a new multi-column grid needs a line there). The operations console stays desktop-only.
 
 ### Page states
 Every data screen has a review-only "Screen state" switcher. 11 screens use the shared pattern in `designs/states.js` (Ready · Loading · Empty · Error · Offline; styles `.pstate` / `.sk` in `web.css`; applied by `node tools/add-states.js`, which skips screens already done — add a new screen to its list and its empty copy to `states.js`). The Compliance Checker instead switches between its four answers (conditional · allowed · not allowed · no answer yet). Screens with their own flows (setup, verification, commitment, dispute, search, saved…) already had their own switchers.

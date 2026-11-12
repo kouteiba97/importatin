@@ -89,7 +89,7 @@ Additional states walked: wrong code, locked, offline (Sign In); needs correctio
 ## 3. Known limits of this pass
 
 - Phone-width artboards are not drawn (owner decision: desktop web first). The public pages were checked
-  at phone and tablet widths on 12 November 2026 and fit; the workspaces' phone layout is a V1 item.
+  and the importer/trader workspaces were checked at phone and tablet widths on 12 November 2026 and fit.
 - `Verification.dc.html` was trimmed to the **capture journey only** (ladder → document → preview →
   uploading) and links to `Verification Status`, which is now the single owner of *under review*,
   *needs correction*, *approved* and *expired*. No state is drawn on two screens.

@@ -6,7 +6,9 @@
    · .app  — the business web app (importers, traders): persistent
      sidebar, top bar with global search, multi-column pages.
    Everything uses logical properties, so it mirrors cleanly in RTL.
-   It narrows gracefully on small screens; it is not a phone app.
+   Desktop first. On tablet and phone browsers both shells turn their navigation
+   into a header strip that scrolls sideways (rules at the end of this file);
+   it is still a website, not a phone app — no bottom tab bar.
    ============================================================ */
 
 .web { min-height: 100vh; color: var(--ink); }
@@ -138,7 +140,6 @@ textarea.input { height: auto; min-height: 110px; padding: 12px 14px; line-heigh
 }
 @media (max-width: 980px) {
   .app { grid-template-columns: 1fr; }
-  .rail { display: none; }
   .split, .split-wide, .split-l, .cols-3 { grid-template-columns: 1fr; }
   .cols-4, .pgrid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .page, .container { padding-inline: 20px; }
@@ -281,4 +282,68 @@ textarea.input { height: auto; min-height: 110px; padding: 12px 14px; line-heigh
   .catrow, .cgrid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; gap: 12px !important; }
   .pgrid3, .simgrid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; gap: 12px !important; }
   .vis { max-width: 100%; }
+}
+
+/* ── Importer and trader workspaces on tablet and phone browsers ──
+   The sidebar becomes a header: brand + account on the first row, then the workspace
+   navigation as a strip that scrolls sideways (same pattern as the public site). */
+@media (max-width: 980px) {
+  .rail { position: static; height: auto; display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; border-inline-end: 0; border-bottom: 1px solid var(--rule); }
+  .rail-brand { grid-column: 1; grid-row: 1; padding: 12px 20px 6px; }
+  .rail-role { display: none; }
+  .rail-user { grid-column: 2; grid-row: 1; border-top: 0; padding: 10px 20px 4px; }
+  .rail-user > div, .rail-user .sw-ic { display: none; }
+  .rail-nav { grid-column: 1 / -1; flex-direction: row; align-items: center; overflow-x: auto; overflow-y: hidden; padding: 4px 14px 10px; gap: 4px; scrollbar-width: none; }
+  .rail-nav::-webkit-scrollbar { display: none; }
+  .rail-link { width: auto; flex: none; min-height: 38px; gap: 8px; white-space: nowrap; }
+  .rail-link .lbl { flex: none; }
+  .rail-sep { flex: none; width: 1px; height: 22px; margin: 0 4px; }
+  .topbar { height: 60px; gap: 10px; }
+  .gsearch { min-width: 0; }
+  .gsearch span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .gsearch kbd { display: none; }
+}
+@media (max-width: 640px) {
+  .rail-brand { padding-inline: 16px; }
+  .rail-user { padding-inline: 16px; }
+  .rail-nav { padding-inline: 10px; }
+  .topbar { padding-inline: 16px; }
+  .page { padding: 20px 16px 48px; }
+  .page-head { margin-bottom: 18px; }
+  .page-head .grow { min-width: 0; flex-basis: 100%; }
+  .panel-h { padding: 14px 16px; flex-wrap: wrap; }
+  .panel-b { padding: 14px 16px; }
+  .panel-f { padding: 12px 16px; }
+  .stats { grid-template-columns: 1fr 1fr; }
+}
+/* workspace page layouts on small screens (class names come from the individual screens) */
+@media (max-width: 980px) {
+  .setup-grid { grid-template-columns: 1fr !important; }
+  .fgrid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+  .inbox3 { grid-template-columns: 1fr !important; height: auto !important; }
+  .inbox3 .col-list { border-inline-end: 0; border-bottom: 1px solid var(--rule); max-height: 236px; overflow: auto; }
+  .inbox3 .col-thread { height: 600px; }
+}
+@media (max-width: 640px) {
+  .form .row, .rev, .welcome, .dgrid, .fgrid { grid-template-columns: 1fr !important; }
+  .rev { gap: 2px 0 !important; }
+  .rev > :nth-child(even) { margin-bottom: 10px; }
+  .hero-meters, .meters3, .stats3 { grid-template-columns: 1fr !important; gap: 16px !important; }
+  .page [style*="grid-template-columns:repeat(3"], .page [style*="grid-template-columns:repeat(4"] { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+  .drow, .status-hero, .foot-actions { flex-wrap: wrap; }
+  .foot-actions .btn { flex: 1 1 auto; }
+  .bub { max-width: 86% !important; }
+  .welcome { padding: 22px !important; }
+}
+@media (max-width: 980px) {
+  .panel:has(> .table) { overflow-x: auto; }
+  .panel > .table { min-width: 560px; }
+}
+@media (max-width: 980px) {
+  .topbar > div:not([class]) { display: none; }
+  .topbar .gsearch { flex: 1 1 0; max-width: none; }
+}
+@media (max-width: 640px) {
+  .trip-hero { padding: 20px 18px !important; }
+  .trip-hero > div:first-child { flex-wrap: wrap; }
 }
