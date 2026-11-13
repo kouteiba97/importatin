@@ -123,9 +123,13 @@
 <div><div style="font-size:var(--t-xs);font-weight:600;color:var(--ink-3);margin-bottom:10px">{{ g.title }}</div>
 <div class="rev"><sc-for list="{{ g.items }}" as="d" hint-placeholder-count="4"><span class="k">{{ d.name }}</span><span style="display:flex;align-items:center;gap:8px"><span class="doc-ic" data-s="ok" style="width:20px;height:20px;font-size:11px">✓</span>{{ d.sub }}</span></sc-for></div></div>
 </sc-for>
+<div><div style="font-size:var(--t-xs);font-weight:600;color:var(--ink-3);margin-bottom:10px">{{ t.declTitle }}</div>
+<div class="stack" style="gap:10px"><sc-for list="{{ decls }}" as="d" hint-placeholder-count="2">
+<button type="button" onClick="{{ d.pick }}" aria-pressed="{{ d.on }}" style="display:flex;gap:12px;align-items:flex-start;text-align:start;padding:12px 14px;border:1px solid {{ d.bd }};border-radius:var(--r);background:var(--surface);color:inherit;cursor:pointer;font:inherit;line-height:1.5"><span aria-hidden="true" style="flex:none;width:20px;height:20px;border-radius:4px;border:2px solid {{ d.bd }};background:{{ d.bg }};color:var(--ink-on);display:grid;place-items:center;font-size:12px">{{ d.mark }}</span><span>{{ d.label }}</span></button>
+</sc-for></div></div>
 <div class="note"><span class="i">i</span><span>{{ t.reviewNote }}</span></div>
 </div>
-<div class="panel-f foot-actions"><button type="button" onClick="{{ back }}" class="btn">{{ t.edit }}</button><button type="button" onClick="{{ next }}" class="btn btn-primary btn-lg">{{ t.submit }}</button></div>
+<div class="panel-f foot-actions"><button type="button" onClick="{{ back }}" class="btn">{{ t.edit }}</button><button type="button" onClick="{{ next }}" disabled="{{ declMissing }}" class="btn btn-primary btn-lg">{{ t.submit }}</button></div>
 </section>
 </sc-if>
 
@@ -155,7 +159,7 @@ class Component extends DCLogic {
     const tag = (q || (typeof navigator !== 'undefined' && navigator.language) || '').slice(0, 2).toLowerCase();
     return ['ar', 'fr', 'en'].includes(tag) ? tag : Component.FALLBACK;
   }
-  state = { view: 'docs', lang: Component.detect() };
+  state = { view: 'docs', decl: [false, false], lang: Component.detect() };
   root = React.createRef();
   componentDidMount() { this._apply(); }
   componentDidUpdate() { this._apply(); }
@@ -192,7 +196,7 @@ class Component extends DCLogic {
       groups: [['هوية شخصية', [['بطاقة التعريف الوطنية', 'صورة الوجهين'], ['صورة حيّة', 'من الكاميرا مباشرة']]], ['أهلية الاستيراد', [['بطاقة المقاول الذاتي', 'ميدان الاستيراد المصغّر'], ['الرخصة العامة', 'وزارة التجارة الخارجية'], ['الرقم الجبائي', 'صورة'], ['الانتساب إلى CASNOS', 'صورة'], ['حساب بالعملة الصعبة لدى BEA', 'شهادة بنكية'], ['الإقامة في الجزائر', 'شهادة الإقامة']]]],
       docCta: { todo: 'ارفع', ok: 'استبدل' }, docOk: 'مرفوعة', docTodo: 'لم تُرفع', countOf: (a, b) => a + ' من ' + b,
       reviewTitle: 'راجع قبل الإرسال', reviewInfo: [['الاسم', 'سفيان بن عمارة'], ['الولاية', 'الجزائر'], ['الفئات', 'ألبسة نسائية · حقائب · تجميل'], ['الوجهات', 'إسطنبول · دبي']],
-      reviewNote: 'المراجعة عادةً خلال يوم عمل. نعلمك بالقرار أو بما يحتاج تصحيحاً.', edit: 'عدّل', submit: 'أرسل للمراجعة',
+      reviewNote: 'المراجعة عادةً خلال يوم عمل. نعلمك بالقرار أو بما يحتاج تصحيحاً.', edit: 'عدّل', submit: 'أرسل للمراجعة', declTitle: 'تصريحاتك', decl: ['لا أمارس أي نشاط مربح آخر: لا أجير، ولا تاجر، ولا مهنة حرة.', 'أقيم في الجزائر وسأسافر وأستورد شخصياً.'],
       sentTitle: 'وصلتنا وثائقك', sentBody: 'قيد المراجعة. سيصلك إشعار بالقرار. حتى ذلك الحين تقدر تراسل التجّار وتتصفّح السوق.', sentCta: 'تابع حالة التحقّق', sentAlt: 'إلى السوق'
     },
     fr: { dir: 'ltr', short: 'FR', label: 'Français',
@@ -207,7 +211,7 @@ class Component extends DCLogic {
       groups: [['Identité personnelle', [['Carte d’identité nationale', 'Photo recto-verso'], ['Photo en direct', 'Depuis la caméra']]], ['Éligibilité importateur', [['Carte d’auto-entrepreneur', 'Activité micro-importation'], ['Autorisation générale', 'Ministère du Commerce extérieur'], ['Numéro fiscal', 'Photo'], ['Affiliation CASNOS', 'Photo'], ['Compte devises BEA', 'Attestation bancaire'], ['Résidence en Algérie', 'Certificat de résidence']]]],
       docCta: { todo: 'Déposer', ok: 'Remplacer' }, docOk: 'Déposé', docTodo: 'Non déposé', countOf: (a, b) => a + ' sur ' + b,
       reviewTitle: 'Vérifiez avant d’envoyer', reviewInfo: [['Nom', 'Sofiane Benamara'], ['Wilaya', 'Alger'], ['Catégories', 'Vêtements femme · Sacs · Beauté'], ['Destinations', 'Istanbul · Dubaï']],
-      reviewNote: 'Examen en général sous un jour ouvré. Vous êtes notifié de la décision ou de ce qui manque.', edit: 'Modifier', submit: 'Envoyer pour examen',
+      reviewNote: 'Examen en général sous un jour ouvré. Vous êtes notifié de la décision ou de ce qui manque.', edit: 'Modifier', submit: 'Envoyer pour examen', declTitle: 'Vos déclarations', decl: ['Je n’exerce aucune autre activité rémunérée : ni salariée, ni commerciale, ni libérale.', 'Je réside en Algérie et je voyagerai et importerai personnellement.'],
       sentTitle: 'Documents reçus', sentBody: 'En cours d’examen. Vous recevrez la décision par notification. En attendant, vous pouvez écrire aux commerçants et parcourir la place.', sentCta: 'Suivre la vérification', sentAlt: 'Vers la place de marché'
     },
     en: { dir: 'ltr', short: 'EN', label: 'English',
@@ -222,7 +226,7 @@ class Component extends DCLogic {
       groups: [['Personal identity', [['National ID card', 'Both sides'], ['Live photo', 'From the camera']]], ['Importer eligibility', [['Auto-entrepreneur card', 'Micro-import activity'], ['General authorisation', 'Ministry of Foreign Trade'], ['Tax number', 'Photo'], ['CASNOS affiliation', 'Photo'], ['BEA foreign-currency account', 'Bank certificate'], ['Residence in Algeria', 'Residence certificate']]]],
       docCta: { todo: 'Upload', ok: 'Replace' }, docOk: 'Uploaded', docTodo: 'Not uploaded', countOf: (a, b) => a + ' of ' + b,
       reviewTitle: 'Review before you submit', reviewInfo: [['Name', 'Sofiane Benamara'], ['Wilaya', 'Algiers'], ['Categories', 'Women’s clothing · Bags · Beauty'], ['Destinations', 'Istanbul · Dubai']],
-      reviewNote: 'Review usually within one working day. You’re told the decision, or what needs fixing.', edit: 'Edit', submit: 'Submit for review',
+      reviewNote: 'Review usually within one working day. You’re told the decision, or what needs fixing.', edit: 'Edit', submit: 'Submit for review', declTitle: 'Your declarations', decl: ['I have no other paid activity: no salaried job, no trade, no liberal profession.', 'I live in Algeria and I will travel and import personally.'],
       sentTitle: 'We’ve received your documents', sentBody: 'Under review. You’ll be notified of the decision. Meanwhile you can message traders and browse the marketplace.', sentCta: 'Follow verification', sentAlt: 'To the marketplace'
     }
   };
@@ -248,6 +252,8 @@ class Component extends DCLogic {
       cats: t.cats.map((label, i) => ({ label, on: [0, 2, 4].includes(i) })), dests: t.dests.map((label, i) => ({ label, on: i < 2 })),
       groups, docsIncomplete: !done,
       reviewInfo: t.reviewInfo.map(([k, val]) => ({ k, v: val })),
+      decls: t.decl.map((label, i) => { const on = !!this.state.decl[i]; return { label, on, mark: on ? '✓' : '', bd: on ? 'var(--brand)' : 'var(--rule-strong)', bg: on ? 'var(--brand)' : 'transparent', pick: () => this.setState(x => { const decl = x.decl.slice(); decl[i] = !decl[i]; return { decl }; }) }; }),
+      declMissing: !this.state.decl.every(Boolean),
       next: () => this.setState({ view: order[Math.min(order.indexOf(cur) + 1, 3)] }),
       back: () => this.setState({ view: order[Math.max(order.indexOf(cur) - 1, 0)] })
     };

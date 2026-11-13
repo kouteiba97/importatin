@@ -276,7 +276,7 @@ class Component extends DCLogic {
       s3Title: 'شكون يشوف رحلتك؟', s3Lede: 'مورّدوك وميزانيتك لا يظهران أبداً.',
       vis: [['كل التجّار المُتحقَّقين', 'أوسع وصول.'], ['تجّار فئاتي فقط', 'المهتمّون بما تشتريه.'], ['من تعاملت معهم فقط', 'شبكتك الحالية.']],
       s4Title: 'راجع قبل النشر',
-      rk: ['الوجهة', 'التواريخ', 'الفئات', 'القيمة', 'الوزن والحجم', 'الظهور'],
+      rk: ['الوجهة', 'التواريخ', 'الفئات', 'القيمة', 'الرسم الجمركي والضريبة الجزافية، كحدّ أقصى', 'الوزن والحجم', 'الظهور'],
       rDates: '12 – 16 أكتوبر · يصل 18', rValue: ' — الحدّ القانوني', rWv: v => '46 كغ · ' + v + ' م³ — حدودك',
       declareTitle: 'لا تنسَ التصريح المسبق', declareBody: 'صرّح بالبضاعة على anae.dz قبل السفر. مَعْبَر لا تصرّح نيابةً عنك.',
       publish: 'انشر الرحلة', saveDraft: 'احفظ كمسوّدة',
@@ -303,7 +303,7 @@ class Component extends DCLogic {
       s3Title: 'Qui voit votre voyage ?', s3Lede: 'Vos fournisseurs et votre budget ne sont jamais affichés.',
       vis: [['Tous les commerçants vérifiés', 'Audience la plus large.'], ['Commerçants de mes catégories', 'Ceux qu’intéresse ce que vous achetez.'], ['Mes contacts uniquement', 'Votre réseau actuel.']],
       s4Title: 'Vérifiez avant de publier',
-      rk: ['Destination', 'Dates', 'Catégories', 'Valeur', 'Poids et volume', 'Visibilité'],
+      rk: ['Destination', 'Dates', 'Catégories', 'Valeur', 'Droit de douane et impôt forfaitaire, au plus', 'Poids et volume', 'Visibilité'],
       rDates: '12 – 16 octobre · arrivée le 18', rValue: ' — plafond légal', rWv: v => '46 kg · ' + v + ' m³ — vos limites',
       declareTitle: 'N’oubliez pas la pré-déclaration', declareBody: 'Déclarez la marchandise sur anae.dz avant le départ. Maabar ne déclare pas à votre place.',
       publish: 'Publier le voyage', saveDraft: 'Enregistrer comme brouillon',
@@ -330,7 +330,7 @@ class Component extends DCLogic {
       s3Title: 'Who sees your trip?', s3Lede: 'Your suppliers and budget are never shown.',
       vis: [['All verified traders', 'Widest reach.'], ['Traders in my categories', 'Those interested in what you buy.'], ['Only people I’ve dealt with', 'Your existing network.']],
       s4Title: 'Review before publishing',
-      rk: ['Destination', 'Dates', 'Categories', 'Value', 'Weight and volume', 'Visibility'],
+      rk: ['Destination', 'Dates', 'Categories', 'Value', 'Customs duty and flat tax, at most', 'Weight and volume', 'Visibility'],
       rDates: '12 – 16 October · arrives 18th', rValue: ' — legal limit', rWv: v => '46 kg · ' + v + ' m³ — your limits',
       declareTitle: 'Don’t forget the pre-declaration', declareBody: 'Declare the goods on anae.dz before you travel. Maabar does not declare for you.',
       publish: 'Publish the trip', saveDraft: 'Save as draft',
@@ -357,6 +357,9 @@ class Component extends DCLogic {
     const vis = t.vis[this.VIS_IDS.indexOf(s.vis)][0];
     const vol = (1.2).toFixed(2).replace('.', t.dec);
     const money = this.fmt(this.PARAMS.maxValue, t.sep) + ' ' + t.cur;
+    /* Duty and flat tax at the full limit, computed from the regulatory values (Finance Law 2026, art. 143). */
+    const RV = window.MaabarRules.values, dutyAmt = this.PARAMS.maxValue * RV.duty.n / 100;
+    const costs = this.fmt(Math.round(dutyAmt + (this.PARAMS.maxValue + dutyAmt) * (1 + RV.margin.n / 100) * RV.tax.n / 100), t.sep) + ' ' + t.cur;
 
     return {
       rootRef: this.root,
@@ -416,7 +419,7 @@ class Component extends DCLogic {
         };
       }),
 
-      review: [dest, this.iso(t.rDates), catNames.join(' · '), this.iso(money + t.rValue), this.iso(t.rWv(vol)), vis]
+      review: [dest, this.iso(t.rDates), catNames.join(' · '), this.iso(money + t.rValue), this.iso(costs), this.iso(t.rWv(vol)), vis]
         .map((v, i) => ({ k: t.rk[i], v }))
     };
   }
