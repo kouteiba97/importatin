@@ -196,7 +196,7 @@ class Component extends DCLogic {
         expired: ['انتهت صلاحية رخصتك العامة', 'انتهت في 30 جوان 2026. ارفع الرخصة الجديدة ليعود كل شيء كما كان.', 'ارفع الرخصة الجديدة', '', '!'],
         rejected: ['لم تتمّ الموافقة هذه المرّة', 'الاسم على الرخصة لا يطابق بطاقة التعريف. لك أن تعيد التقديم بعد التصحيح.', 'أعد التقديم', 'راسل الدعم', '×']
       },
-      docs: { importer: ['بطاقة التعريف الوطنية', 'صورة حيّة', 'بطاقة المقاول الذاتي', 'الرخصة العامة', 'الرقم الجبائي', 'الانتساب إلى CASNOS'], trader: ['بطاقة التعريف الوطنية', 'صورة حيّة', 'السجل التجاري', 'الرقم الجبائي', 'عنوان النشاط'] },
+      docs: { importer: ['بطاقة التعريف الوطنية', 'صورة حيّة', 'بطاقة المقاول الذاتي', 'الرخصة العامة', 'الرقم الجبائي', 'الانتساب إلى CASNOS', 'حساب بالعملة الصعبة لدى BEA', 'الإقامة في الجزائر'], trader: ['بطاقة التعريف الوطنية', 'صورة حيّة', 'السجل التجاري', 'الرقم الجبائي', 'عنوان النشاط'] },
       dst: { ok: 'مقبولة', review: 'قيد المراجعة', fix: 'تحتاج تصحيحاً', exp: 'منتهية', todo: 'لم تُرفع' }, countOf: (a, b) => a + ' من ' + b + ' مقبولة',
       fixes: [['بطاقة التعريف الوطنية', 'الزاوية السفلية خارج الصورة، وتاريخ الانتهاء غير ظاهر.', 'صوّر من فوق الوثيقة مباشرة.'], ['الرخصة العامة', 'انعكاس ضوء على الختم.', 'أطفئ الفلاش.']],
       frozen: [['نشر رحلة جديدة', 'موقوف', 'exp'], ['استقبال طلبات جديدة', 'موقوف', 'exp'], ['إتمام الالتزامات الجارية', 'متاح', 'ok']],
@@ -219,7 +219,7 @@ class Component extends DCLogic {
         expired: ['Votre autorisation générale a expiré', 'Expirée le 30 juin 2026. Déposez la nouvelle autorisation pour tout rétablir.', 'Déposer la nouvelle autorisation', '', '!'],
         rejected: ['Non approuvé cette fois', 'Le nom sur l’autorisation ne correspond pas à la carte d’identité. Vous pouvez soumettre à nouveau après correction.', 'Soumettre à nouveau', 'Écrire au support', '×']
       },
-      docs: { importer: ['Carte d’identité nationale', 'Photo en direct', 'Carte d’auto-entrepreneur', 'Autorisation générale', 'Numéro fiscal', 'Affiliation CASNOS'], trader: ['Carte d’identité nationale', 'Photo en direct', 'Registre du commerce', 'Numéro fiscal', 'Adresse de l’activité'] },
+      docs: { importer: ['Carte d’identité nationale', 'Photo en direct', 'Carte d’auto-entrepreneur', 'Autorisation générale', 'Numéro fiscal', 'Affiliation CASNOS', 'Compte devises BEA', 'Résidence en Algérie'], trader: ['Carte d’identité nationale', 'Photo en direct', 'Registre du commerce', 'Numéro fiscal', 'Adresse de l’activité'] },
       dst: { ok: 'Acceptée', review: 'En examen', fix: 'À corriger', exp: 'Expirée', todo: 'Non déposée' }, countOf: (a, b) => a + ' sur ' + b + ' acceptés',
       fixes: [['Carte d’identité nationale', 'Coin inférieur hors cadre, date d’expiration invisible.', 'Photographiez directement du dessus.'], ['Autorisation générale', 'Reflet sur le cachet.', 'Éteignez le flash.']],
       frozen: [['Publier un nouveau voyage', 'Suspendu', 'exp'], ['Recevoir de nouvelles demandes', 'Suspendu', 'exp'], ['Terminer les engagements en cours', 'Disponible', 'ok']],
@@ -242,7 +242,7 @@ class Component extends DCLogic {
         expired: ['Your general authorisation has expired', 'Expired on 30 June 2026. Upload the new authorisation to restore everything.', 'Upload the new authorisation', '', '!'],
         rejected: ['Not approved this time', 'The name on the authorisation doesn’t match the ID card. You can resubmit after correcting it.', 'Resubmit', 'Contact support', '×']
       },
-      docs: { importer: ['National ID card', 'Live photo', 'Auto-entrepreneur card', 'General authorisation', 'Tax number', 'CASNOS affiliation'], trader: ['National ID card', 'Live photo', 'Commercial register', 'Tax number', 'Business address'] },
+      docs: { importer: ['National ID card', 'Live photo', 'Auto-entrepreneur card', 'General authorisation', 'Tax number', 'CASNOS affiliation', 'BEA foreign-currency account', 'Residence in Algeria'], trader: ['National ID card', 'Live photo', 'Commercial register', 'Tax number', 'Business address'] },
       dst: { ok: 'Accepted', review: 'Under review', fix: 'Needs correction', exp: 'Expired', todo: 'Not uploaded' }, countOf: (a, b) => a + ' of ' + b + ' accepted',
       fixes: [['National ID card', 'Bottom corner cut off, expiry date not visible.', 'Photograph from directly above.'], ['General authorisation', 'Glare on the stamp.', 'Turn off the flash.']],
       frozen: [['Publish a new trip', 'Paused', 'exp'], ['Receive new requests', 'Paused', 'exp'], ['Complete existing commitments', 'Open', 'ok']],

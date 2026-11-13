@@ -87,11 +87,12 @@ From `DESIGN-AUDIT.md` §10, with the values visible in the deck:
 | `max_value_per_trip` | money | `180 000 000` centimes (1 800 000 DZD) | Decree 25-170, JO 40, 29 June 2025 | Trip publication, capacity checks, `Trip Creation` display |
 | `max_trips_per_month` | integer | `2` | Decree 25-170 | Trip publication ("الرحلة 1 من 2") |
 | `customs_duty_rate` | ratio | `0.05` | Decree 25-170 | `Records` ledger ("رسم جمركي 5%") |
-| `flat_tax_rate` | ratio | *to confirm* — 0.5% reported for Finance Law 2026, official text not yet verified; held as an unapproved proposal in `Admin Rules` | Finance Law 2026 (to verify) | Ledger |
+| `flat_tax_rate` | ratio | `0.005` — per import operation, in full discharge, paid to customs; effective 28 June 2025 | Law 25-17 (Finance Law 2026) **art. 143**, JO 88, 31 Dec 2025 | Ledger |
+| `flat_tax_margin` | ratio | `0.30` — flat margin in the tax base: (customs value + duty) × 1.30 | Law 25-17 art. 143 | Ledger |
 | `authorisation_validity_months` | duration | `12` (one year, renewable) | Decree 25-170 **art. 12** | Expiry warnings |
 | `shelf_life_min_remaining_ratio` | ratio | `0.5` | Decree 25-170 **art. 6** | Compliance verdict for cosmetics and fragrance |
 | `restricted_categories` | list | category codes | Decree 25-170 | Compliance, listing moderation, demand board flags |
-| `required_documents_per_role` | list | ANAE card, general authorisation, NIF, CASNOS / commercial register, NIF, address | Decree 25-170 art. 4; Law 18-05 | Verification ladders |
+| `required_documents_per_role` | list | ANAE card, general authorisation, NIF, CASNOS, BEA foreign-currency account, residence in Algeria / commercial register, NIF, address | Decree 25-170 arts. 5–6; Law 18-05 | Verification ladders |
 
 `shelf_life_min_remaining_ratio` is quoted verbatim in the `Compliance Checker` in all three
 languages — "more than half of the shelf life must remain on the import date". The *number* is

@@ -72,7 +72,7 @@ In Claude Code, the Browser pane can start it with the `maabar-preview` config i
 4. EN / FR / AR are equal; fallback French; Latin logo "Maabar".
 5. Colours only from `designs/tokens.css`; brand blue ≠ status green/amber/red.
 6. **No legal figure typed in a screen or a text** — read it from the regulatory values (`{cap}`, `{trips}`, `{duty}`, `{shelf}`).
-7. Only facts from official texts are shown to users. The Finance Law 2026 flat tax (0.5%) is **unconfirmed** and exists only as an unpublishable draft in `Admin Rules`.
+7. Only facts from official texts are shown to users. The Finance Law 2026 flat tax (0.5%, Law 25-17 art. 143) was confirmed from the Journal officiel on 13 November 2026 and is published. The unpublishable-draft example in `Admin Rules` is now `RUL-114` (advice from unofficial guides). Legal check: `docs/LEGAL-COMPLIANCE.md`.
 8. The owner is not technical: report plainly and briefly. Commit each phase and push to `main`.
 
 ## 6. How to verify a change

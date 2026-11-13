@@ -390,7 +390,7 @@ class Component extends DCLogic {
       notes: { waiting: 'بانتظار مُصادِق.', notSubmitted: 'لم يُرسلها المحرّر للمراجعة بعد.', superadmin: 'المشرف العام يمنح الأدوار، ولا يحرّر القواعد ولا ينشرها.', self: 'أنت كاتب هذه النسخة. يجب أن ينشرها مُصادِق آخر.', blocked: 'لا يمكن النشر قبل اكتمال الشروط.', live: 'هذه النسخة معروضة الآن للجمهور.' },
       history: 'النسخ', forYou: 'ما يعنيه لك',
       vCols: ['القيمة', 'الحالية', 'سارية منذ', 'الأساس القانوني', 'مستعملة في'],
-      vNames: { cap: 'أقصى قيمة في كل تنقّل', trips: 'أقصى عدد تنقّلات في الشهر', duty: 'الحقوق الجمركية', shelf: 'أدنى مدة صلاحية متبقّية', tax: 'الضريبة الجزافية الخاصة' },
+      vNames: { cap: 'أقصى قيمة في كل تنقّل', trips: 'أقصى عدد تنقّلات في الشهر', duty: 'الحقوق الجمركية', shelf: 'أدنى مدة صلاحية متبقّية', tax: 'الضريبة الجزافية الوحيدة', margin: 'الهامش الجزافي لوعاء الضريبة', lead: 'مهلة التصريح المسبق (ساعات)' },
       articlesN: { one: 'مادة واحدة', two: 'مادّتان', few: 'مواد', many: 'مادة' },
       propose: 'اقترح نسخة جديدة', pendingT: 'النسخة المقترحة', newVal: 'القيمة الجديدة', effective: 'سارية من',
       impact: 'المواد التي ستعرض القيمة الجديدة', figsToo: 'والأرقام الرئيسية في صفحة المستوردين.',
@@ -428,7 +428,7 @@ class Component extends DCLogic {
       notes: { waiting: 'En attente d’un approbateur.', notSubmitted: 'Pas encore soumis par l’auteur.', superadmin: 'Le super-admin attribue les rôles. Il ne rédige ni ne publie les règles.', self: 'Vous avez rédigé cette version. Un autre approbateur doit la publier.', blocked: 'Publication impossible tant que les contrôles ne sont pas remplis.', live: 'Cette version est affichée au public.' },
       history: 'Versions', forYou: 'Pour vous',
       vCols: ['Valeur', 'Actuelle', 'En vigueur depuis', 'Base légale', 'Utilisée dans'],
-      vNames: { cap: 'Valeur maximale par voyage', trips: 'Voyages par mois, au plus', duty: 'Droit de douane', shelf: 'Durée de vie restante minimale', tax: 'Impôt forfaitaire spécial' },
+      vNames: { cap: 'Valeur maximale par voyage', trips: 'Voyages par mois, au plus', duty: 'Droit de douane', shelf: 'Durée de vie restante minimale', tax: 'Impôt forfaitaire unique', margin: 'Marge forfaitaire de l’assiette', lead: 'Délai de pré-déclaration (heures)' },
       articlesN: { one: 'article', many: 'articles' },
       propose: 'Proposer une nouvelle version', pendingT: 'Version proposée', newVal: 'Nouvelle valeur', effective: 'En vigueur à partir du',
       impact: 'Articles qui afficheront la nouvelle valeur', figsToo: 'Et les chiffres clés de la page Micro-importateurs.',
@@ -466,7 +466,7 @@ class Component extends DCLogic {
       notes: { waiting: 'Waiting for an approver.', notSubmitted: 'Not submitted by the author yet.', superadmin: 'Superadmins assign roles. They do not write or publish rules.', self: 'You wrote this version. Another approver must publish it.', blocked: 'Publishing is blocked until every check passes.', live: 'This version is live on the public page.' },
       history: 'Versions', forYou: 'What this means for you',
       vCols: ['Value', 'Current', 'In force since', 'Legal basis', 'Used in'],
-      vNames: { cap: 'Maximum value per trip', trips: 'Trips per month, at most', duty: 'Customs duty', shelf: 'Minimum shelf life remaining', tax: 'Special flat tax' },
+      vNames: { cap: 'Maximum value per trip', trips: 'Trips per month, at most', duty: 'Customs duty', shelf: 'Minimum shelf life remaining', tax: 'Single flat tax', margin: 'Flat margin in the tax base', lead: 'Pre-declaration lead time (hours)' },
       articlesN: { one: 'article', many: 'articles' },
       propose: 'Propose a new version', pendingT: 'Proposed version', newVal: 'New value', effective: 'In force from',
       impact: 'Articles that will show the new value', figsToo: 'Plus the key figures on the micro-importer page.',
@@ -512,8 +512,8 @@ class Component extends DCLogic {
     const M = window.MaabarRules;
     const missing = this.LANGS.filter(l => a.tx[l].some(x => !String(x || '').trim())).map(l => l.toUpperCase());
     const used = [...new Set(this.LANGS.flatMap(l => a.tx[l].join(' ').match(/\{(\w+)\}/g) || []).map(x => x.slice(1, -1)))];
-    const unknown = used.filter(k => !M.values[k] && k !== 'tax');
-    const pending = used.filter(k => k === 'tax');
+    const unknown = used.filter(k => !M.values[k] && k !== 'lead');
+    const pending = used.filter(k => k === 'lead');
     const ins = M.instruments[a.ref[0]];
     const out = [
       { id: 'text', ok: !missing.length, why: t.why.text + missing.join(', ') },
@@ -583,11 +583,11 @@ class Component extends DCLogic {
     for (let v = oldest - 1; v >= 1; v--) history.push({ v: 'v' + v, status: t.status.superseded, when: '', who: '' });
 
     // regulatory values view
-    const vkeys = ['cap', 'trips', 'duty', 'shelf', 'tax'];
-    const vOf = k => k === 'tax' ? M.pendingValues[0] : M.values[k];
+    const vkeys = ['cap', 'trips', 'duty', 'tax', 'margin', 'shelf', 'lead'];
+    const vOf = k => k === 'lead' ? M.pendingValues[0] : M.values[k];
     const usedIn = k => all.filter(x => x.status === 'published' && this.LANGS.some(l => x.tx[l].join(' ').includes('{' + k + '}')));
     const vk = vkeys.includes(s.val) ? s.val : 'cap';
-    const V = vOf(vk), isPend = vk === 'tax';
+    const V = vOf(vk), isPend = vk === 'lead';
     const vChecks = [
       { id: 'legal', ok: !M.instruments[V.ref[0]].pending, why: t.why.legal },
       { id: 'sep', ok: !(s.role === 'approver' && V.by === me), why: t.why.sep },
@@ -665,7 +665,7 @@ class Component extends DCLogic {
       actions, note, hasNote: !!note,
       history,
 
-      vrows: vkeys.map(k => ({ key: vOf(k).key, name: t.vNames[k], value: M.valueText(vOf(k), lang), isPending: k === 'tax', on: k === vk,
+      vrows: vkeys.map(k => ({ key: vOf(k).key, name: t.vNames[k], value: M.valueText(vOf(k), lang), isPending: k === 'lead', on: k === vk,
         bg: k === vk ? 'var(--neutral-bg)' : 'transparent', fw: k === vk ? 600 : 500, pick: () => this.setState({ val: k }) })),
       vtable: vkeys.map(k => ({ name: t.vNames[k], value: M.valueText(vOf(k), lang), since: M.date(vOf(k).since, lang), basis: M.ref(vOf(k).ref, lang),
         used: this.count(usedIn(k).length, t, t.articlesN), on: k === vk, pick: () => this.setState({ val: k }) })),
@@ -678,7 +678,7 @@ class Component extends DCLogic {
         onDraft: e => this.setState({ vDraft: Object.assign({}, s.vDraft, { [vk]: e.target.value }) }),
         onFrom: e => this.setState({ vFrom: Object.assign({}, s.vFrom, { [vk]: e.target.value }) }),
         ins: M.instruments[V.ref[0]][lang], src: M.instruments[V.ref[0]].src[lang],
-        impact: (isPend ? all.filter(x => x.id === 'RUL-112') : usedIn(vk)).map(x => ({ ref: x.id, title: M.fill(x.tx[lang][0], lang), aud: audName(x.aud) })),
+        impact: (isPend ? all.filter(x => x.id === 'RUL-114') : usedIn(vk)).map(x => ({ ref: x.id, title: M.fill(x.tx[lang][0], lang), aud: audName(x.aud) })),
         figs: !isPend,
         checks: vChecks, actions: vActions, note: vNote, hasNote: !!vNote
       }

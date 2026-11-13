@@ -94,7 +94,7 @@ because that is the part with actual value.
 | `authorisation_validity_months` | duration | 12 (one year, renewable) | Decree 25-170 **art. 12** |
 | `shelf_life_min_remaining_ratio` | ratio | 0.5 | Decree 25-170 **art. 6** |
 | `restricted_categories` | list | category codes | Decree 25-170 |
-| `required_documents_per_role` | list | ANAE card, general authorisation, NIF, CASNOS / commercial register, NIF, address | Decree 25-170 art. 4; Law 18-05 |
+| `required_documents_per_role` | list | ANAE card, general authorisation, NIF, CASNOS, BEA foreign-currency account, residence in Algeria / commercial register, NIF, address | Decree 25-170 arts. 5–6; Law 18-05 |
 
 `required_documents_per_role` being a rule rather than an enum is why `document_types` is a lookup
 table: a newly required document is a rule version plus a lookup row, **not a deployment**.

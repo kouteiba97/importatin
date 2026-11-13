@@ -61,7 +61,9 @@ reader's language:
 | `{trips}` | `max_trips_per_month` | 2 | Decree 25-170 art. 2 |
 | `{duty}` | `customs_duty_rate` | 5% | Decree 25-170 art. 4 |
 | `{shelf}` | `shelf_life_min_remaining` | more than 50% | Decree 25-170 art. 6 |
-| `{tax}` | `flat_tax_rate` | 0.5% — **proposed, not approved** | Finance Law 2026 (official text not yet confirmed) |
+| `{tax}` | `flat_tax_rate` | 0.5% | Law 25-17 (Finance Law 2026) art. 143 |
+| `{margin}` | `flat_tax_margin` | 30% | Law 25-17 art. 143 |
+| `{lead}` | `declaration_lead_hours` | 48 — **proposed, not approved** | Unofficial guides only (no official text) |
 
 When a new value version becomes active, every article using its placeholder shows the
 new figure the same day, in all three languages. The admin "Regulatory values" view
@@ -91,8 +93,8 @@ shows, before approval, exactly which published articles will change (impact pre
 4. Publisher ≠ author.
 
 If any check fails, the "Approve and publish" button is disabled and the failing
-reason is shown. Example in the design: `RUL-112` (Finance Law 2026 flat tax) — Arabic
-text incomplete, official text not confirmed, `{tax}` not approved → cannot be published.
+reason is shown. Example in the design: `RUL-114` (48-hour declaration advice from unofficial
+guides) — Arabic text incomplete, no official text, `{lead}` not approved → cannot be published.
 
 ---
 
@@ -130,8 +132,9 @@ Only verified official texts:
 
 - Executive Decree 25-170 of 28 June 2025, Official Journal n°40 of 29 June 2025 —
   arts 2, 3, 4, 5, 6, 7, 8, 9, 11, 12, 13, 14, 15.
+- Law 25-17 of 14 December 2025 (Finance Law 2026), Official Journal n°88 of 31 December 2025 — art. 143.
 - Law 18-05 of 10 May 2018 on e-commerce (registration of online sellers).
 - Law 09-03 on consumer protection and fraud repression.
 
-Anything not confirmed in an official text (currently the Finance Law 2026 flat tax) stays
-a draft and never reaches the public.
+Anything not confirmed in an official text stays a draft and never reaches the public.
+Full article-by-article check: `docs/LEGAL-COMPLIANCE.md`.

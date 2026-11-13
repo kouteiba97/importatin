@@ -10,7 +10,8 @@
    · articles — one rule = audience + topic + level + legal reference
                 + text in EN/FR/AR + version/status/reviewer.
    Only facts verified against official sources are published here
-   (Decree 25-170, JO n°40 of 29 June 2025; Laws 18-05 and 09-03).
+   (Decree 25-170, JO n°40 of 29 June 2025; Finance Law 2026, art. 143,
+   JO n°88 of 31 December 2025; Laws 18-05 and 09-03).
    Anything unconfirmed stays a draft and never reaches the public.
    ============================================================ */
 (function () {
@@ -26,12 +27,14 @@
     cap:   { key: 'max_value_per_trip', n: 1800000, kind: 'money', since: '2025-06-29', ref: ['d25170', '2'] },
     trips: { key: 'max_trips_per_month', n: 2, kind: 'int', since: '2025-06-29', ref: ['d25170', '2'] },
     duty:  { key: 'customs_duty_rate', n: 5, kind: 'pct', since: '2025-06-29', ref: ['d25170', '4'] },
-    shelf: { key: 'shelf_life_min_remaining', n: 50, kind: 'pct', since: '2025-06-29', ref: ['d25170', '6'] }
+    shelf: { key: 'shelf_life_min_remaining', n: 50, kind: 'pct', since: '2025-06-29', ref: ['d25170', '6'] },
+    tax:   { key: 'flat_tax_rate', n: 0.5, kind: 'pct', since: '2025-06-28', ref: ['lf2026', '143'] },
+    margin: { key: 'flat_tax_margin', n: 30, kind: 'pct', since: '2025-06-28', ref: ['lf2026', '143'] }
   };
 
   /* Proposed value versions waiting for approval — never shown to the public. */
   const pendingValues = [
-    { key: 'flat_tax_rate', n: 0.5, kind: 'pct', since: '2026-01-01', ref: ['lf2026', ''], status: 'review', by: 'ADM-031' }
+    { key: 'declaration_lead_hours', n: 48, kind: 'int', since: '2026-12-01', ref: ['guides', ''], status: 'review', by: 'ADM-031' }
   ];
 
   const instruments = {
@@ -41,8 +44,10 @@
               src: { en: 'Law of 10 May 2018', fr: 'Loi du 10 mai 2018', ar: 'قانون 10 ماي 2018' } },
     l0903:  { en: 'Law 09-03 on consumer protection', fr: 'Loi 09-03 relative à la protection du consommateur', ar: 'القانون 09-03 المتعلق بحماية المستهلك',
               src: { en: 'Consumer protection and fraud repression', fr: 'Protection du consommateur et répression des fraudes', ar: 'حماية المستهلك وقمع الغش' } },
-    lf2026: { en: 'Finance Law 2026', fr: 'Loi de finances 2026', ar: 'قانون المالية 2026',
-              pending: true, src: { en: 'Awaiting the official text', fr: 'En attente du texte officiel', ar: 'في انتظار النص الرسمي' } },
+    lf2026: { en: 'Finance Law 2026 (Law 25-17)', fr: 'Loi de finances 2026 (loi 25-17)', ar: 'قانون المالية 2026 (القانون 25-17)',
+              src: { en: 'Official Journal n°88, 31 December 2025', fr: 'Journal officiel n°88, 31 décembre 2025', ar: 'الجريدة الرسمية عدد 88، 31 ديسمبر 2025' } },
+    guides: { en: 'Unofficial practice guides', fr: 'Guides pratiques non officiels', ar: 'أدلّة عملية غير رسمية',
+              pending: true, src: { en: 'No official text found', fr: 'Aucun texte officiel trouvé', ar: 'لا يوجد نص رسمي' } },
     platform: { en: 'Maabar terms of use', fr: 'Conditions d’utilisation de Maabar', ar: 'شروط استعمال مَعْبَر',
               src: { en: 'Platform policy, not a law', fr: 'Règle de la plateforme, pas une loi', ar: 'قاعدة المنصّة وليست قانوناً' } }
   };
@@ -91,7 +96,7 @@
     /* ───────── SHOPPERS ───────── */
     A('RUL-001', 'shopper', 'missing', 'prohibited', ['d25170', '9'], PUB(3, '2026-09-14'), {
       en: ['Some goods can never be imported this way', 'Prohibited and sensitive goods, sensitive equipment, pharmaceutical products, goods that need a special licence, and anything that harms security, public order or morals are excluded from micro-importing.', 'You won’t find medicines or licence-restricted goods on Maabar. That is the law, not a stock problem.'],
-      fr: ['Certaines marchandises ne peuvent jamais être importées ainsi', 'Les marchandises interdites et sensibles, les équipements sensibles, les produits pharmaceutiques, les biens soumis à licence spéciale et tout ce qui porte atteinte à la sécurité, à l’ordre public ou aux bonnes mœurs sont exclus de l’importation de faible valeur.', 'Vous ne trouverez pas de médicaments ni de biens soumis à licence sur Maabar. C’est la loi, pas une rupture de stock.'],
+      fr: ['Certaines marchandises ne peuvent jamais être importées ainsi', 'Les marchandises interdites et sensibles, les équipements sensibles, les produits pharmaceutiques, les biens soumis à licence spéciale et tout ce qui porte atteinte à la sécurité, à l’ordre public ou aux bonnes mœurs sont exclus de la micro-importation.', 'Vous ne trouverez pas de médicaments ni de biens soumis à licence sur Maabar. C’est la loi, pas une rupture de stock.'],
       ar: ['سلع لا يمكن استيرادها بهذه الطريقة أبداً', 'السلع المحظورة والحساسة، والتجهيزات الحساسة، والمنتجات الصيدلانية، والسلع الخاضعة لرخص خاصة، وكل ما يمسّ بالأمن والنظام العام والأخلاق، مستثناة من الاستيراد المصغّر.', 'لن تجد أدوية ولا سلعاً تحتاج رخصة خاصة على مَعْبَر. هذا حكم القانون، وليس نقصاً في المخزون.']
     }),
     A('RUL-002', 'shopper', 'missing', 'conditional', ['d25170', '6'], PUB(2, '2026-09-14'), {
@@ -110,9 +115,9 @@
       ar: ['كل بائع تاجر مقيّد في السجل التجاري', 'البيع الإلكتروني للمستهلكين يشترط القيد في السجل التجاري.', 'كل متجر على مَعْبَر تاجر مُتحقَّق منه. المستوردون المصغّرون يبيعون للتجّار، ولا يبيعون لك مباشرة.']
     }),
     A('RUL-005', 'shopper', 'sellers', 'info', ['d25170', '14'], PUB(1, '2026-09-14'), {
-      en: ['The label tells you where it came from', 'Imported goods must carry the importer’s name and address, the product name and its country of origin, in Arabic.', 'Check the label when you collect. If it is missing, ask the seller or report the listing.'],
-      fr: ['L’étiquette vous dit d’où vient le produit', 'Les marchandises importées doivent porter le nom et l’adresse de l’importateur, la désignation du produit et son pays d’origine, en arabe.', 'Vérifiez l’étiquette à la remise. Si elle manque, interrogez le vendeur ou signalez l’annonce.'],
-      ar: ['الوسم يخبرك من أين جاءت السلعة', 'يجب أن تحمل السلع المستوردة اسم المستورد وعنوانه، وتسمية السلعة، وبلد منشئها، باللغة العربية.', 'تحقّق من الوسم عند الاستلام. إن غاب، اسأل البائع أو أبلغ عن العرض.']
+      en: ['The label tells you where it came from', 'Imported goods must carry the importer’s name and address, the product name and its country of origin or provenance.', 'Check the label when you collect. If it is missing, ask the seller or report the listing.'],
+      fr: ['L’étiquette vous dit d’où vient le produit', 'Les marchandises importées doivent porter le nom et l’adresse de l’importateur, la désignation du produit et son pays d’origine ou de provenance.', 'Vérifiez l’étiquette à la remise. Si elle manque, interrogez le vendeur ou signalez l’annonce.'],
+      ar: ['الوسم يخبرك من أين جاءت السلعة', 'يجب أن تحمل السلع المستوردة اسم المستورد وعنوانه، وتسمية السلعة، وبلد منشئها أو مصدرها.', 'تحقّق من الوسم عند الاستلام. إن غاب، اسأل البائع أو أبلغ عن العرض.']
     }),
     A('RUL-006', 'shopper', 'buying', 'info', ['l0903', ''], PUB(1, '2026-09-14'), {
       en: ['Your rights as a consumer', 'The seller is responsible for the conformity and safety of what it sells to you.', 'If goods don’t match what was agreed, open a report — the seller’s record is affected by the decision.'],
@@ -127,9 +132,9 @@
 
     /* ───────── MICRO-IMPORTERS ───────── */
     A('RUL-101', 'importer', 'who', 'obligation', ['d25170', '5–6'], PUB(2, '2026-09-14'), {
-      en: ['Who may become a micro-importer', 'You must be an Algerian national resident in Algeria, of legal working age, with no other paid activity, affiliated to CASNOS, holding a foreign-currency account at BEA, a valid auto-entrepreneur card for “micro-import”, and the general authorisation from the Ministry of Foreign Trade.', 'Upload these documents in Verification. Maabar reminds you before any of them expires.'],
-      fr: ['Qui peut devenir micro-importateur', 'Il faut être de nationalité algérienne et résider en Algérie, avoir l’âge légal de travailler, n’exercer aucune autre activité rémunérée, être affilié à la CASNOS, détenir un compte devises à la BEA, une carte d’auto-entrepreneur valide pour « importation de faible valeur » et l’autorisation générale du ministère du Commerce extérieur.', 'Déposez ces documents dans Vérification. Maabar vous prévient avant toute expiration.'],
-      ar: ['من يحقّ له أن يصبح مستورداً مصغّراً', 'يجب أن تكون جزائري الجنسية مقيماً في الجزائر، في سنّ العمل القانونية، دون أي نشاط مربح آخر، منتسباً إلى CASNOS، صاحب حساب بالعملة الصعبة لدى BEA، وحاملاً لبطاقة مقاول ذاتي سارية بميدان «الاستيراد المصغّر» وللرخصة العامة من وزارة التجارة الخارجية.', 'ارفع هذه الوثائق في صفحة التحقّق. مَعْبَر تنبّهك قبل انتهاء صلاحية أيّ منها.']
+      en: ['Who may become a micro-importer', 'You must be an Algerian national resident in Algeria, of legal working age, with no other paid activity, affiliated to CASNOS, holding a foreign-currency account at BEA, a valid auto-entrepreneur card for “micro-import”, and the general authorisation from the Ministry of Foreign Trade. Exercising the activity ends any right to the unemployment allowance.', 'Upload these documents in Verification. Maabar reminds you before any of them expires.'],
+      fr: ['Qui peut devenir micro-importateur', 'Il faut être de nationalité algérienne et résider en Algérie, avoir l’âge légal de travailler, n’exercer aucune autre activité rémunérée, être affilié à la CASNOS, détenir un compte devises à la BEA, une carte d’auto-entrepreneur valide pour « micro-importation » et l’autorisation générale du ministère du Commerce extérieur. L’exercice de l’activité exclut le bénéfice de l’allocation chômage.', 'Déposez ces documents dans Vérification. Maabar vous prévient avant toute expiration.'],
+      ar: ['من يحقّ له أن يصبح مستورداً مصغّراً', 'يجب أن تكون جزائري الجنسية مقيماً في الجزائر، في سنّ العمل القانونية، دون أي نشاط مربح آخر، منتسباً إلى CASNOS، صاحب حساب بالعملة الصعبة لدى BEA، وحاملاً لبطاقة مقاول ذاتي سارية بميدان «الاستيراد المصغّر» وللرخصة العامة من وزارة التجارة الخارجية. وممارسة النشاط تُسقط الحق في منحة البطالة.', 'ارفع هذه الوثائق في صفحة التحقّق. مَعْبَر تنبّهك قبل انتهاء صلاحية أيّ منها.']
     }),
     A('RUL-102', 'importer', 'who', 'obligation', ['d25170', '3, 11–12'], PUB(2, '2026-09-14'), {
       en: ['Strictly personal, never transferable', 'The activity is exercised exclusively and personally. The general authorisation is issued within 5 working days, is valid one year, renewable, personal and non-transferable.', 'No one may travel or buy on your card — not family, not a partner, not a company.'],
@@ -167,14 +172,14 @@
       ar: ['تُباع على حالتها', 'تُستورد السلع لإعادة بيعها على حالتها، دون تحويل.', 'إعادة التعبئة أو التركيب قبل البيع تُخرج السلع من هذا النظام.']
     }),
     A('RUL-109', 'importer', 'trip', 'obligation', ['d25170', '13'], PUB(2, '2026-09-14'), {
-      en: ['Pre-declare every operation on anae.dz', 'Each import operation must be declared in advance on the digital platform of the Ministry of Start-ups (anae.dz), which is linked to customs.', 'Maabar reminds you before each trip. It never declares on your behalf.'],
-      fr: ['Pré-déclarer chaque opération sur anae.dz', 'Chaque opération d’importation doit être déclarée à l’avance sur la plateforme numérique du ministère des Start-up (anae.dz), reliée à la douane.', 'Maabar vous le rappelle avant chaque voyage. Elle ne déclare jamais à votre place.'],
-      ar: ['التصريح المسبق بكل عملية على anae.dz', 'يجب التصريح المسبق بكل عملية استيراد عبر المنصة الرقمية لوزارة اقتصاد المعرفة والمؤسسات الناشئة (anae.dz)، المربوطة بالجمارك.', 'مَعْبَر تذكّرك قبل كل رحلة، ولا تصرّح نيابةً عنك أبداً.']
+      en: ['Pre-declare every operation', 'Before each import operation, the goods must be declared on the digital platform set up for this purpose at the ministry in charge of start-ups, which is linked to customs.', 'Maabar reminds you before each trip. It never declares on your behalf.'],
+      fr: ['Pré-déclarer chaque opération', 'Avant chaque opération d’importation, les marchandises doivent être déclarées sur la plateforme numérique mise en place à cet effet au ministère chargé des start-up, reliée à la douane.', 'Maabar vous le rappelle avant chaque voyage. Elle ne déclare jamais à votre place.'],
+      ar: ['التصريح المسبق بكل عملية', 'قبل كل عملية استيراد، يجب التصريح بالسلع عبر المنصة الرقمية الموضوعة لهذا الغرض لدى الوزارة المكلّفة بالمؤسسات الناشئة، والمربوطة بالجمارك.', 'مَعْبَر تذكّرك قبل كل رحلة، ولا تصرّح نيابةً عنك أبداً.']
     }),
     A('RUL-110', 'importer', 'trip', 'obligation', ['d25170', '14'], PUB(2, '2026-09-14'), {
-      en: ['Label every unit, issue a delivery note', 'Each item must carry your name and address, the product name and the country of origin or provenance. A simplified delivery note states quantity, weight and volume.', 'The label generator in Records prints the label in Arabic and the delivery note for each sale.'],
-      fr: ['Étiqueter chaque unité, émettre un bon de remise', 'Chaque article doit porter vos nom et adresse, la désignation du produit et le pays d’origine ou de provenance. Un bon de remise simplifié indique quantité, poids et volume.', 'Le générateur d’étiquettes dans Registres imprime l’étiquette en arabe et le bon de remise de chaque vente.'],
-      ar: ['وسم كل وحدة وإصدار وصل تسليم', 'يجب أن تحمل كل سلعة اسمك وعنوانك، وتسمية السلعة، وبلد المنشأ أو المصدر. ويبيّن وصل تسليم مبسّط الكمية والوزن والحجم.', 'مولّد الوسم في السجلّات يطبع الملصق بالعربية ووصل التسليم لكل بيع.']
+      en: ['Label every unit, issue a delivery note', 'Each item must carry your name and address, the product name and the country of origin or provenance. A simplified delivery note also states the quantity, weight or volume, as applicable.', 'The label generator in Records prints the label in Arabic and the delivery note for each sale.'],
+      fr: ['Étiqueter chaque unité, émettre un bon de remise', 'Chaque article doit porter vos nom et adresse, la désignation du produit et le pays d’origine ou de provenance. Un bon de livraison simplifié indique en plus la quantité, le poids ou le volume, selon le cas.', 'Le générateur d’étiquettes dans Registres imprime l’étiquette en arabe et le bon de remise de chaque vente.'],
+      ar: ['وسم كل وحدة وإصدار وصل تسليم', 'يجب أن تحمل كل سلعة اسمك وعنوانك، وتسمية السلعة، وبلد المنشأ أو المصدر. ويبيّن وصل تسليم مبسّط كذلك الكمية أو الوزن أو الحجم، حسب الحالة.', 'مولّد الوسم في السجلّات يطبع الملصق بالعربية ووصل التسليم لكل بيع.']
     }),
     A('RUL-111', 'importer', 'sanctions', 'prohibited', ['d25170', '15'], PUB(2, '2026-09-14'), {
       en: ['Removal from the register', 'You can be struck off for breaching consumer protection or national security rules, refusing the pre-declaration, making false declarations, using the card for another purpose, or breaching the decree.', 'Maabar also suspends trips for any account under removal.'],
@@ -190,12 +195,12 @@
     }),
     A('RUL-202', 'trader', 'public', 'prohibited', ['d25170', '9'], PUB(2, '2026-09-14'), {
       en: ['Excluded goods cannot be listed', 'Goods excluded from micro-importing — prohibited and sensitive goods, pharmaceutical products, licence-restricted goods — cannot be sold as micro-imported goods.', 'Listings in these categories are refused at moderation.'],
-      fr: ['Les marchandises exclues ne peuvent pas être proposées', 'Les marchandises exclues de l’importation de faible valeur — interdites et sensibles, pharmaceutiques, soumises à licence — ne peuvent pas être vendues comme telles.', 'Les annonces dans ces catégories sont refusées à la modération.'],
+      fr: ['Les marchandises exclues ne peuvent pas être proposées', 'Les marchandises exclues de la micro-importation — interdites et sensibles, pharmaceutiques, soumises à licence — ne peuvent pas être vendues comme telles.', 'Les annonces dans ces catégories sont refusées à la modération.'],
       ar: ['لا يمكن عرض السلع المستثناة', 'السلع المستثناة من الاستيراد المصغّر — المحظورة والحساسة والصيدلانية والخاضعة لرخص — لا يمكن بيعها على أنها سلع مستوردة بهذا النظام.', 'العروض في هذه الفئات تُرفض عند المراجعة.']
     }),
     A('RUL-203', 'trader', 'sourcing', 'info', ['d25170', '2–3'], PUB(1, '2026-09-14'), {
       en: ['Deal with the named importer', 'Micro-imported goods are bought for resale as they are, and the importer must act personally.', 'Commitments on Maabar are with the verified importer named on the trip — never with an intermediary.'],
-      fr: ['Traitez avec l’importateur nommé', 'Les marchandises importées en faible valeur sont achetées pour être revendues en l’état, et l’importateur doit agir personnellement.', 'Les engagements sur Maabar se font avec l’importateur vérifié nommé sur le voyage — jamais avec un intermédiaire.'],
+      fr: ['Traitez avec l’importateur nommé', 'Les marchandises issues de la micro-importation sont achetées pour être revendues en l’état, et l’importateur doit agir personnellement.', 'Les engagements sur Maabar se font avec l’importateur vérifié nommé sur le voyage — jamais avec un intermédiaire.'],
       ar: ['تعامل مع المستورد المسمّى', 'تُشترى السلع المستوردة بهذا النظام لإعادة بيعها على حالتها، ويجب أن يتصرّف المستورد شخصياً.', 'الالتزامات على مَعْبَر تكون مع المستورد المُتحقَّق منه المسمّى في الرحلة — لا مع وسيط.']
     }),
     A('RUL-204', 'trader', 'sourcing', 'conditional', ['d25170', '6'], PUB(1, '2026-09-14'), {
@@ -204,9 +209,9 @@
       ar: ['السلع المؤرَّخة تخضع لقاعدة الصلاحية', 'يجب أن يكون قد تبقّى للسلع المؤرَّخة أكثر من {shelf} من مدة صلاحيتها عند الاستيراد.', 'اطلب من المستورد تاريخَي الإنتاج والانتهاء قبل الالتزام بسلع مؤرَّخة.']
     }),
     A('RUL-205', 'trader', 'duties', 'obligation', ['d25170', '14'], PUB(1, '2026-09-14'), {
-      en: ['Keep the import label on the goods', 'Imported goods carry the importer’s name and address, the product name and the country of origin.', 'Do not remove the label when you resell; buyers are told to check it.'],
-      fr: ['Conservez l’étiquette d’importation', 'Les marchandises importées portent le nom et l’adresse de l’importateur, la désignation du produit et le pays d’origine.', 'Ne retirez pas l’étiquette à la revente ; les acheteurs sont invités à la vérifier.'],
-      ar: ['احتفظ بوسم الاستيراد على السلع', 'تحمل السلع المستوردة اسم المستورد وعنوانه، وتسمية السلعة، وبلد المنشأ.', 'لا تنزع الوسم عند إعادة البيع؛ فالمشترون مدعوّون للتحقّق منه.']
+      en: ['Keep the import label on the goods', 'Imported goods carry the importer’s name and address, the product name and the country of origin or provenance.', 'Do not remove the label when you resell; buyers are told to check it.'],
+      fr: ['Conservez l’étiquette d’importation', 'Les marchandises importées portent le nom et l’adresse de l’importateur, la désignation du produit et le pays d’origine ou de provenance.', 'Ne retirez pas l’étiquette à la revente ; les acheteurs sont invités à la vérifier.'],
+      ar: ['احتفظ بوسم الاستيراد على السلع', 'تحمل السلع المستوردة اسم المستورد وعنوانه، وتسمية السلعة، وبلد المنشأ أو المصدر.', 'لا تنزع الوسم عند إعادة البيع؛ فالمشترون مدعوّون للتحقّق منه.']
     }),
     A('RUL-206', 'trader', 'duties', 'obligation', ['l0903', ''], PUB(1, '2026-09-14'), {
       en: ['You answer to the buyer for what you sell', 'As the seller, you are responsible for the conformity and safety of the goods you sell to consumers.', 'Describe goods accurately and keep purchase records — they are your evidence in a dispute.'],
@@ -220,15 +225,25 @@
     }),
 
     /* ───────── DRAFTS (admin only — never on the public page) ───────── */
-    A('RUL-112', 'importer', 'limits', 'info', ['lf2026', ''], { v: 1, status: 'review', reviewed: '', by: 'ADM-031', ok: '' }, {
-      en: ['Special flat tax for micro-importers', 'A special tax regime applies to micro-importing at a rate of {tax}.', 'Your ledger in Records will apply this rate once the official text is confirmed.'],
-      fr: ['Impôt forfaitaire spécial', 'Un régime fiscal spécial s’applique à l’importation de faible valeur au taux de {tax}.', 'Votre registre appliquera ce taux dès confirmation du texte officiel.'],
-      ar: ['ضريبة جزافية خاصة', 'يُطبَّق على الاستيراد المصغّر نظام جبائي خاص بمعدل {tax}.', '']
+    A('RUL-112', 'importer', 'limits', 'obligation', ['lf2026', '143'], PUB(2, '2026-11-12'), {
+      en: ['Flat tax on each import', 'Each import operation is subject to the single flat tax at {tax}, in full discharge. It is calculated on the customs value plus the customs duty plus a flat margin of {margin}, and is paid to customs when the goods are released.', 'Your ledger in Records shows this tax next to the customs duty for each trip.'],
+      fr: ['Impôt forfaitaire à chaque importation', 'Chaque opération d’importation est soumise à l’impôt forfaitaire unique au taux de {tax}, libératoire. Il est calculé sur la valeur en douane, augmentée des droits de douane et d’une marge forfaitaire de {margin}, et il est acquitté auprès de la douane lors de la mise à la consommation.', 'Votre registre affiche cet impôt à côté du droit de douane pour chaque voyage.'],
+      ar: ['ضريبة جزافية عند كل استيراد', 'تخضع كل عملية استيراد للضريبة الجزافية الوحيدة بمعدل {tax}، وهي محرِّرة. تُحسب على أساس القيمة لدى الجمارك مضافاً إليها الحقوق الجمركية وهامش جزافي قدره {margin}، وتُدفع لدى مصالح الجمارك عند وضع السلع للاستهلاك.', 'يعرض دفترك في السجلّات هذه الضريبة بجانب الرسم الجمركي لكل رحلة.']
+    }),
+    A('RUL-113', 'importer', 'limits', 'info', ['lf2026', '143'], PUB(1, '2026-11-12'), {
+      en: ['No VAT at import, simplified customs declaration', 'Micro-import operations pay the reduced customs duty of {duty} and are exempt from VAT, customs fees and the other duties and taxes due at import. Clearance is done on a simplified customs declaration.', 'Budget each trip with the customs duty and the flat tax only. Customs calculate the final amounts.'],
+      fr: ['Pas de TVA à l’importation, déclaration en douane simplifiée', 'Les opérations de micro-importation sont soumises au taux réduit de {duty} des droits de douane et exemptées de la TVA, des redevances douanières et des autres droits et taxes exigibles à l’importation. Le dédouanement s’effectue au vu d’une déclaration en douane simplifiée.', 'Prévoyez pour chaque voyage le droit de douane et l’impôt forfaitaire uniquement. La douane calcule les montants définitifs.'],
+      ar: ['لا رسم على القيمة المضافة عند الاستيراد، وتصريح جمركي مبسّط', 'تخضع عمليات الاستيراد المصغّر للمعدل المخفّض {duty} من الحقوق الجمركية، وتُعفى من الرسم على القيمة المضافة والأتاوى الجمركية وباقي الحقوق والرسوم المستحقة عند الاستيراد. وتتمّ الجمركة بناءً على تصريح جمركي مبسّط.', 'احسب لكل رحلة الرسم الجمركي والضريبة الجزافية فقط. والجمارك هي التي تحدّد المبالغ النهائية.']
+    }),
+    A('RUL-114', 'importer', 'trip', 'info', ['guides', ''], { v: 1, status: 'review', reviewed: '', by: 'ADM-031', ok: '' }, {
+      en: ['Declare at least {lead} hours before you return', 'Some guides advise filing the pre-declaration at least {lead} hours before arrival in Algeria.', 'Maabar would remind you this long before your return date.'],
+      fr: ['Déclarer au moins {lead} heures avant le retour', 'Certains guides conseillent de déposer la pré-déclaration au moins {lead} heures avant l’arrivée en Algérie.', 'Maabar vous le rappellerait ce délai avant votre date de retour.'],
+      ar: ['صرّح قبل عودتك بـ {lead} ساعة على الأقل', 'تنصح بعض الأدلّة بإيداع التصريح المسبق قبل الوصول إلى الجزائر بـ {lead} ساعة على الأقل.', '']
     }),
     A('RUL-103', 'importer', 'limits', 'limit', ['d25170', '2, 8'], { v: 4, status: 'draft', reviewed: '', by: 'ADM-031', ok: '', draftOf: 'RUL-103' }, {
-      en: ['Value per trip and trips per month', 'Goods may be worth up to {cap} per trip, with at most {trips} trips per month. Any amount above the limit is not allowed, and the excess is held by customs.', 'Maabar’s meters track value, weight and volume against these limits while you build your buying list.'],
-      fr: ['Valeur par voyage et voyages par mois', 'Les marchandises peuvent valoir jusqu’à {cap} par voyage, avec au plus {trips} voyages par mois. Tout dépassement est interdit et l’excédent est retenu par la douane.', 'Les compteurs de Maabar suivent valeur, poids et volume face à ces plafonds pendant que vous préparez votre liste.'],
-      ar: ['القيمة في كل تنقّل وعدد التنقّلات في الشهر', 'يمكن أن تصل قيمة السلع إلى {cap} في كل تنقّل، بحدّ أقصى {trips} تنقّلات في الشهر. ويُمنع أي تجاوز للحصّة، وتحجز الجمارك الفائض.', 'عدّادات مَعْبَر تتابع القيمة والوزن والحجم مقارنة بهذه الحدود وأنت تُعدّ قائمة الشراء.']
+      en: ['Value per trip and trips per month', 'Goods may be worth up to {cap} per trip, with at most {trips} trips per month. Any amount above the limit is not allowed. The annual tourist allowance is not counted in this value.', 'Maabar’s meters track value, weight and volume against these limits while you build your buying list.'],
+      fr: ['Valeur par voyage et voyages par mois', 'Les marchandises peuvent valoir jusqu’à {cap} par voyage, avec au plus {trips} voyages par mois. Tout dépassement est interdit. L’allocation touristique annuelle n’est pas comprise dans cette valeur.', 'Les compteurs de Maabar suivent valeur, poids et volume face à ces plafonds pendant que vous préparez votre liste.'],
+      ar: ['القيمة في كل تنقّل وعدد التنقّلات في الشهر', 'يمكن أن تصل قيمة السلع إلى {cap} في كل تنقّل، بحدّ أقصى {trips} تنقّلات في الشهر. ويُمنع أي تجاوز للحصّة. ولا تدخل المنحة السياحية السنوية في هذه القيمة.', 'عدّادات مَعْبَر تتابع القيمة والوزن والحجم مقارنة بهذه الحدود وأنت تُعدّ قائمة الشراء.']
     })
   ];
 
@@ -248,7 +263,7 @@
     return lang === 'en' ? d + ' ' + MONTHS.en[m - 1] + ' ' + y : d + ' ' + MONTHS[lang][m - 1] + ' ' + y;
   }
   function fill(text, lang) {
-    const all = Object.assign({}, values, { tax: pendingValues[0] });
+    const all = Object.assign({}, values, { lead: pendingValues[0] });
     return String(text).replace(/\{(\w+)\}/g, (m, k) => (all[k] ? valueText(all[k], lang) : m));
   }
   function ref(r, lang) {
